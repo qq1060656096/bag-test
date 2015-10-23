@@ -181,6 +181,7 @@ str;
             $is_post = true;
             isset($_POST['Survey']['title']) ? $model->title = $_POST['Survey']['title'] : null;
             isset($_POST['Survey']['intro']) ? $model->intro = $_POST['Survey']['intro'] : null;
+            $model->uid = ZCommonSessionFun::get_user_id();
             
         }
         if( $is_post && $model->save()){
@@ -306,6 +307,8 @@ str;
         return $this->render('step4', [
             'model_SurveyResulte'=>$model_SurveyResulte,
             'a_SurveyResulte'=>$a_SurveyResulte,
+            'tax'=>$model->tax,
+            'model'=>$model,
         ]);
     }
     
