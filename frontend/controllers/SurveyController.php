@@ -147,6 +147,7 @@ str;
      */
     public function actionStep1()
     {
+        $this->layout = false;
 //         $model = new Survey();
         return $this->render('step1', [
             
@@ -160,6 +161,7 @@ str;
      */
     public function actionStep2()
     {
+        $this->layout = false;
         $tax = Yii::$app->request->get('tax');
         $id = Yii::$app->request->get('id');
         //测试不存在
@@ -192,6 +194,7 @@ str;
 //         ZCommonFun::print_r_debug($model);
         return $this->render('step2', [
             'model' => $model,
+            'tax'=>$tax,
         ]);
         
     }
@@ -201,6 +204,7 @@ str;
      */
     public function actionStep1_3($id)
     {
+        $this->layout = false;
         $model  = Survey::findOne($id);
         //没有找到
         if(!$model){    
@@ -263,6 +267,8 @@ str;
 //         ZCommonFun::print_r_debug($model_Images);
         return $this->render('step1_3', [
             'model_Images' => $model_Images,
+            'tax'=>$model->tax,
+            'model'=>$model,
         ]);
     
     }
@@ -271,7 +277,7 @@ str;
      * 奇趣测试 结果
      */
     public function actionStep4($id){
-        
+        $this->layout = false;
         $model  = Survey::findOne($id);
         //没有找到
         if(!$model){    
@@ -422,6 +428,7 @@ str;
      */
     public function actionCreate()
     {
+        
         $model = new Survey();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
