@@ -99,11 +99,14 @@ class ZCommonSessionFun
     public static function get_user_id(){
         $uid = 0;
         $user = self::get_user_session();
+        
         if ( isset($user['uid']) ) {
             $uid = $user['uid'];
             $uid = $uid>0 ? $uid :0 ;
             
         }
+//         ZCommonFun::print_r_debug($user);
+//         echo $uid;
         return $uid;
     }
     /**

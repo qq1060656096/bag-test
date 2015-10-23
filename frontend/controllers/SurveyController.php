@@ -40,6 +40,7 @@ class SurveyController extends ZController
         $this->layout = false;
         $searchModel = new SurverySearch();
         $queryParams = Yii::$app->request->queryParams;
+        
         $query = $searchModel->query( $queryParams );
         
         $count = $query->count();
@@ -400,10 +401,10 @@ str;
         }
         $searchModel = new SurverySearch();
         $queryParams = Yii::$app->request->queryParams;
-        $queryParams['SurverySearch']['uid'] = ZCommonSessionFun::get_user_id();
+//         $queryParams['SurverySearch']['uid'] = ZCommonSessionFun::get_user_id();
         $query = $searchModel->query( $queryParams );
         $count = $query->count();
-        
+//         echo $count;
         //分页
         $pagination = new Pagination();
         //每页现实数量

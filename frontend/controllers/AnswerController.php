@@ -44,6 +44,12 @@ class AnswerController extends Controller{
             $model->save();
             
 //             ZCommonFun::print_r_debug($result);
+            return $this->render('step1_post',[
+                'data'=>$data,
+                'model'=>$model,
+                'result'=>$result,
+                'posts'=>$posts,
+            ]);
         }
 //         ZCommonFun::print_r_debug($posts);
         return $this->render('step1',[

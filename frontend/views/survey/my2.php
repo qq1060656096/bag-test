@@ -26,10 +26,10 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 			<div class="list_box">
     			<?php 
                 foreach ($a_models as $key=>$row){              
-                    $row_url = Yii::$app->urlManager->createUrl(['survey/step2','id'=>$row->id]);           
+                    $row_url = Yii::$app->urlManager->createUrl(['answer/step1','id'=>$row->id]);           
                 ?>
 				<dl>
-					<a href="./start.html">
+					<a href="<?php echo $row_url;?>">
 						<dt>
 							<img src="./bag-test/test-images/103754b6unkvhquepniein.jpg!50"
 								alt="<?php echo $row->title;?>">

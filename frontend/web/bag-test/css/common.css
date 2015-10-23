@@ -64,3 +64,13 @@ footer{
 .hide{
 	display: none;
 }
+.line{
+	border-bottom: 1px solid #ddd;
+	padding: 0.5em 0;
+}
+.text-red{
+	color: red;
+}
+.text-bold{
+	font-weight: bold;
+}

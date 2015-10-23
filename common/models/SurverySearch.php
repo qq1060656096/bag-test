@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Survey;
+use common\z\ZCommonFun;
 
 /**
  * SurverySearch represents the model behind the search form about `common\models\Survey`.
@@ -99,9 +100,9 @@ class SurverySearch extends Survey
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
-            return $dataProvider;
+            return $query;
         }
-    
+//         ZCommonFun::print_r_debug($this->attributes);
         $query->andFilterWhere([
             'id' => $this->id,
             'tax' => $this->tax,
