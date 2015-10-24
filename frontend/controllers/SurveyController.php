@@ -25,7 +25,7 @@ use common\z\ZCommonSessionFun;
  */
 class SurveyController extends ZController
 {
-
+    public $pageSize = 2;
 
     /**
      * Lists all Survey models.
@@ -48,7 +48,7 @@ class SurveyController extends ZController
         //分页
         $pagination = new Pagination();
         //每页现实数量
-        $pagination->pageSize = 10;
+        $pagination->pageSize = $this->pageSize;
         //总数量
         $pagination->totalCount = $count;
         $offset = $pagination->getOffset();
@@ -86,22 +86,35 @@ class SurveyController extends ZController
     public function actionIndexAjax()
     {
         $sort = Yii::$app->request->get('sort',1);
+        $self = Yii::$app->request->get('self',0);
+        $queryParams = Yii::$app->request->queryParams;
+        if($self > 0){
+            
+            if(  ZCommonSessionFun::get_user_id()<1 ){
+                $url = Yii::$app->urlManager->createUrl([ZCommonSessionFun::urlLoginUserStr]);
+                return $this->redirect($url);
+            }
+            $queryParams['SurverySearch']['uid'] = ZCommonSessionFun::get_user_id();
+        }
         $this->layout = false;
         $searchModel = new SurverySearch();
-        $queryParams = Yii::$app->request->queryParams;
+        
         $query = $searchModel->query( $queryParams );
         $count = $query->count();
         
         //分页
         $pagination = new Pagination();
         //每页现实数量
-        $pagination->pageSize = 10;
+        $pagination->pageSize = $this->pageSize;
         //总数量
         $pagination->totalCount = $count;
         $offset = $pagination->getOffset();
         $limit = $pagination->getLimit();
         $query->offset($offset);
         $query->limit($limit);
+        if($self > 0){
+            $sort = 1;
+        }
         //最新
         if($sort>0){
             $query->orderBy(['created'=>SORT_DESC]);
@@ -406,14 +419,14 @@ str;
         }
         $searchModel = new SurverySearch();
         $queryParams = Yii::$app->request->queryParams;
-//         $queryParams['SurverySearch']['uid'] = ZCommonSessionFun::get_user_id();
+        $queryParams['SurverySearch']['uid'] = ZCommonSessionFun::get_user_id();
         $query = $searchModel->query( $queryParams );
         $count = $query->count();
 //         echo $count;
         //分页
         $pagination = new Pagination();
         //每页现实数量
-        $pagination->pageSize = 10;
+        $pagination->pageSize = $this->pageSize;
         //总数量
         $pagination->totalCount = $count;
         $offset = $pagination->getOffset();
@@ -426,6 +439,7 @@ str;
             'searchModel' => $searchModel,
             'a_models' => $a_models,
             'pagination'=>$pagination,
+            'self' => 1,
         ]);
         
     }

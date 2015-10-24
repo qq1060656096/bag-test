@@ -51,4 +51,38 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 		
       
  </div>
+ <script type="text/javascript">
+ajaxLoad();
+/**
+ * ajax加载分页
+ */
+function ajaxLoad(){
+	page = 1;
+	isAjaxLoad = false; 
+    $(".load_more").click(function(){
+        var now =$(this);
+        page++;
+        var url = "<?php echo Yii::$app->urlManager->createUrl(['survey/index-ajax','page'=>'#page#','sort'=>1,'self'=>1]);?>";
+        url = url.replace('%23page%23',page);
+        
+        //有没有执行ajax就执行ajax,在执行，等执行后在加载
+        if(!isAjaxLoad){
+        	isAjaxLoad = true;
+        	now.text('加载中');
+            $.get(url,function(html){
+            	now.text('加载更多');
+            	isAjaxLoad = false;
+                console.log(html);
+                //没有找到
+                if(html==''){
+                	isAjaxLoad = true;
+                	now.text('已经没有了');
+                	console.log('已经没有了');
+                }
+                $(".list_box").append( html );
+            });
+        }
+    });
+}
+</script>
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>
