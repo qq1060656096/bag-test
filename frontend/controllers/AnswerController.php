@@ -176,6 +176,12 @@ class AnswerController extends Controller{
                             $model->setAnswerCount($id);
                             $model_SurveyResulte = new SurveyResulte();
                             $result = $model_SurveyResulte->getStep2Result($id, $total_score);
+                            return $this->render('step2_answer_post',[
+                                'data'=>$data,
+                                'model'=>$model,
+                                'result'=>$result,
+                                'posts'=>$posts,
+                            ]);
                         }else{
                             $error = '没有选项';
                             $transaction->rollBack();
@@ -184,7 +190,7 @@ class AnswerController extends Controller{
                 }
             } catch (\Exception $e) {
                 $error = '事物异常';
-//                 ZCommonFun::print_r_debug($e);
+                ZCommonFun::print_r_debug($e);
                 $transaction->rollBack();
             }
             
@@ -192,6 +198,7 @@ class AnswerController extends Controller{
             
         }
         echo $error;
+        exit;
 //         ZCommonFun::print_r_debug($result);
         return $this->render('step2_answer',[
             'data'=>$data,

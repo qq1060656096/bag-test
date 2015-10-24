@@ -113,6 +113,6 @@ class SurveyResulte extends \yii\db\ActiveRecord
                 return $model;
             }
         }
-        return $models[0];
+        return isset($models[0]) ? $models[0] : null;
     }
 }

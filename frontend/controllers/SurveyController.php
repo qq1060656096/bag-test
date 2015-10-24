@@ -317,6 +317,7 @@ str;
      * 分数型心里测试 问题
      */
     public function actionStep4_2_question($id){
+        $this->layout = false;
         $model  = Survey::findOne($id);
         //没有找到
         if(!$model){
@@ -338,7 +339,8 @@ str;
         }
         
         return $this->render('step4_2_question',[
-    
+            'tax'=>$model->tax,
+            'model'=>$model,
         ]);
     }
     
@@ -346,7 +348,8 @@ str;
      * 分数型心里测试 结果
      */
     public function actionStep4_2($id){
-    $model  = Survey::findOne($id);
+        $this->layout = false;
+        $model  = Survey::findOne($id);
         //没有找到
         if(!$model){    
             $model = new Survey();
@@ -371,6 +374,8 @@ str;
         return $this->render('step4_2',[
             'model_SurveyResulte'=>$model_SurveyResulte,
             'a_SurveyResulte'=>$a_SurveyResulte,
+            'tax'=>$model->tax,
+            'model'=>$model,
         ]);
     }
     
