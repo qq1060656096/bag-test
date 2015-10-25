@@ -33,7 +33,8 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
 	text-indent: 2em;
 }
 </style>
-<script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js1"></script>
+<script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="./common/js/cropit-master/dist/jquery.cropit.js"></script>
 <div id="main_body">
     
 	
@@ -44,7 +45,18 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
     <?php $form = ActiveForm::begin(['id'=>'form1']); ?>
         <h1 class="po_title common-color"><?php echo $model->title;?></h1>
         <p class="intro"><?php echo $model->intro;?></p>
-        <?= $form->field($model_Images, 'image') ?>
+        <?= $form->field($model_Images, 'image')->hiddenInput(); ?>
+        <textarea rows="" cols="" name="upload" id="upload"></textarea>
+        <div class="image-editor">
+          <input type="file" class="cropit-image-input">
+          <div class="cropit-image-preview"></div>
+          <div class="image-size-label">
+      
+          </div>
+          <input type="range" class="cropit-image-zoom-input">
+          
+        </div>
+    
         <div class="btn_bg" >
 			<input type="submit" id="submit" value="保存"> 
 		</div>
@@ -56,4 +68,62 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
 		
       
  </div>
+<script>
+var change = false;
+
+  $(function() {
+    $('.image-editor').cropit({
+    	imageState: {
+            src: '<?php echo Yii::$app->request->hostInfo.Yii::$app->request->baseUrl.UPLOAD_DIR.$model_Images->image;?>',
+          }
+    });
+    $(".cropit-image-input").change(function(){
+//         console.log($(this).val());
+    	change = true;
+    });
+    $('form').submit(function() {
+      $(".cropit-image-input").val('');
+      var imageData = $('.image-editor').cropit('export');
+      if(change){
+    	  $("#upload").val(imageData);
+      }
+      
+      
+    });
+  });
+</script> 
+<style>
+    #upload{
+	display: none;
+    height: 0;
+    	width:0;
+    }
+      .cropit-image-preview {
+        background-color: #f8f8f8;
+        background-size: cover;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin-top: 7px;
+        width: 400px;
+        height: 400px;
+        cursor: move;
+      }
+
+      .cropit-image-background {
+        opacity: .2;
+        cursor: auto;
+      }
+
+      .image-size-label {
+        margin-top: 10px;
+      }
+
+      input {
+        display: block;
+      }
+
+      .export {
+        margin-top: 10px;
+      }
+    </style>
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>  

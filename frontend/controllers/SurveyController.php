@@ -19,13 +19,14 @@ use yii\db\Transaction;
 use frontend\models\SurveyOperation;
 use frontend\models\frontend\models;
 use common\z\ZCommonSessionFun;
+use common;
 
 /**
  * SurveyController implements the CRUD actions for Survey model.
  */
 class SurveyController extends ZController
 {
-    public $pageSize = 2;
+    public $pageSize = 10;
 
     /**
      * Lists all Survey models.
@@ -134,11 +135,12 @@ class SurveyController extends ZController
                 return '';
             }
                 foreach ($a_models as $key=>$row){
+                   $image = isset( $row->images->image ) ? UPLOAD_DIR.$row->images->image : DEFAULT_IMAGE;
                    echo <<<str
 <dl>
 	<a href="./start.html">
 		<dt>
-			<img src="./bag-test/test-images/103754b6unkvhquepniein.jpg!50"
+			<img src="{$image}"
 				alt="你有多怕谈恋爱：恋爱恐怖程度自评">
 		</dt>
 		<dd>
@@ -231,13 +233,24 @@ str;
         $model_Images = Images::findOne($model->front_img);
         if(!$model_Images){
             $model_Images = new Images();
+            $model_Images->use_count=0;
         }
         
-        $load = $model_Images->load(Yii::$app->request->post());
-        $model_Images->use_count=0;
-//         print_r($model_Images);
-        if($load){        
-        
+       
+        if(isset($_POST['upload']) && !empty($_POST['upload'])){
+            $load = true;
+//             $image = substr($_POST['upload'],0,20);
+//             $arr = explode(';', $image);
+            //文件后缀
+            preg_match('/^(data:\s*image\/(\w+);base64,)/', $_POST['upload'], $result);
+            $type = isset( $result[2] ) ? $result[2] : '';
+//             ZCommonFun::print_r_debug($result);
+//             exit;
+            $fileName = ZCommonFun::getFileName($type);          
+            $img = base64_decode(str_replace($result[1], '', $_POST['upload']));
+            //保存  
+            file_put_contents( UPLOAD_DIR.$fileName , $img );
+            $model_Images->image = $fileName;
             if(empty($model_Images->image)){
                 $model_Images->addError('image','请上传图片');
             }
@@ -252,33 +265,36 @@ str;
                     //设置测试封面
                     $model->front_img = $model_Images->id;
                     if ($model->save()){
-                        $transaction->commit();  
-                        
+                        $transaction->commit();
+                
                         switch ( $model->tax ){
                             //奇趣测试
                             case 1:
                                 //跳转到添加测试结果
-                                return $this->redirect(['step4','id'=>$model->id]); 
-                            break;
-                                        
-                            //分数型心里测试
+                                return $this->redirect(['step4','id'=>$model->id]);
+                                break;
+                
+                                //分数型心里测试
                             case 2:
                                 return $this->redirect(['step4_2_question','id'=>$model->id]);
                                 break;
-                        
-                            //跳转型心里测试
+                
+                                //跳转型心里测试
                             case 3:
                                 return $this->redirect(['step4_3','id'=>$model->id]);
                                 break;
                             default:
                                 break;
                         }
-                    }         
+                    }
                 }
             } catch (\Exception $e) {
                 $transaction->rollBack();
             }
+//             ZCommonFun::print_r_debug($arr);
+//             exit;
         }
+        
 //         ZCommonFun::print_r_debug($model_Images);
         return $this->render('step1_3', [
             'model_Images' => $model_Images,

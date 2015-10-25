@@ -174,4 +174,13 @@ class ZCommonFun{
     public static function getRQCodeUrl($qrcode){
         return Yii::$app->urlManager->hostInfo.Yii::$app->request->baseUrl.'/common/phpqrcode/index2.php?qrcode='.$qrcode;
     }
+    /**
+     * 获取文件名
+     * @param string $suffix
+     * @return string
+     */
+    public static function getFileName($suffix){
+        $fileName = NOW_TIME_STAMP.rand(1, 10).'.'.$suffix;
+        return $fileName;
+    }
 }

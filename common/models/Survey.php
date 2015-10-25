@@ -197,4 +197,8 @@ class Survey extends \yii\db\ActiveRecord
         $rand<=8?$count++:$count+=10;
         return $count;
     }
+    
+    public function  getImages(){
+        return $this->hasOne(Images::className(),  ['id'=>'front_img']);
+    }
 }

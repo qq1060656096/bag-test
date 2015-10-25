@@ -10,12 +10,12 @@ Yii::setAlias('console', dirname(dirname(__DIR__)) . '/console');
  * 上传文件夹
  * @var string
  */
-define('UPLOAD_DIR', Yii::getAlias('@frontend').'/web/uploads/real/');
+define('UPLOAD_DIR', './uploads/real/');
 /**
  * 默认图片
  * @var string
  */
-define('DEFAULT_IMAGE', '');
+define('DEFAULT_IMAGE', './bag-test/test-images/103754b6unkvhquepniein.jpg!50');
 /**
  * 上传零时文件夹
  * @var string

@@ -25,14 +25,16 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 			
 			<div class="list_box">
     			<?php 
-                foreach ($a_models as $key=>$row){              
+                foreach ($a_models as $key=>$row){            
+//                     ZCommonFun::print_r_debug($row->images);  
                     $row_url = Yii::$app->urlManager->createUrl(['answer/step1','id'=>$row->id]); 
-                    $row_ur_change = Yii::$app->urlManager->createUrl(['survey/step2','id'=>$row->id]);          
+                    $row_ur_change = Yii::$app->urlManager->createUrl(['survey/step2','id'=>$row->id]); 
+                    $image = isset( $row->images->image ) ? UPLOAD_DIR.$row->images->image : DEFAULT_IMAGE;         
                 ?>
 				<dl>
 					<a href="<?php echo $row_url;?>">
 						<dt>
-							<img src="./bag-test/test-images/103754b6unkvhquepniein.jpg!50"
+							<img src="<?php echo $image;?>"
 								alt="<?php echo $row->title;?>">
 						</dt>
 						<dd>

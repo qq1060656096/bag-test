@@ -31,11 +31,12 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
                 }else{
                     $url = Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$row->id]);
                 }
+                $image = isset( $row->images->image ) ? UPLOAD_DIR.$row->images->image : DEFAULT_IMAGE;
             ?>
 			<dl>
 				<a href="<?php echo $url;?>">
 					<dt>
-						<img src="./bag-test/test-images/103754b6unkvhquepniein.jpg!50"
+						<img src="<?php echo $image;?>"
 							alt="你有多怕谈恋爱：恋爱恐怖程度自评">
 					</dt>
 					<dd>
