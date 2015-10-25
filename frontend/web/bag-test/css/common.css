@@ -74,3 +74,10 @@ footer{
 .text-bold{
 	font-weight: bold;
 }
+dd .btn_bg{
+	display: inline-block;
+	background: #FE8C78;
+    color: white;
+	padding: 0.4em 0.5em 0.5em 0.5em;
+	border-radius: 5px;
+}

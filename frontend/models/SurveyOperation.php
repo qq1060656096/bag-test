@@ -30,7 +30,7 @@ class SurveyOperation extends Survey{
             foreach ($post['name'] as $key=>$name){
                 $value = isset($post['value'][$key]) ? $post['value'][$key] : '';
                 if( isset($value[0])&& isset($name[0]) ){
-                    $post_data[$key]['name'] = $value;
+                    $post_data[$key]['name'] = $name;
                     $post_data[$key]['value'] = $value;
                 }
             }
@@ -61,6 +61,10 @@ class SurveyOperation extends Survey{
                 }
             }
         }
+        
+//         ZCommonFun::print_r_debug($post);
+//         ZCommonFun::print_r_debug($post_data);
+//         exit;
         return $url;
     }
     
@@ -73,7 +77,7 @@ class SurveyOperation extends Survey{
         $url='';
         $error='';
         if( isset($posts['label']['option-label'][0])){     
-            ZCommonFun::print_r_debug($posts);
+//             ZCommonFun::print_r_debug($posts);
             //保存问题
             if( !empty($posts['label-name'] ) ){
                 $transacation = Yii::$app->db->beginTransaction();

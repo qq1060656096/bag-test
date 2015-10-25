@@ -9,6 +9,8 @@ global $survey_tax;
 $a_SurveyResulte = [];
 echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
 $this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey_tax['0'];
+
+// ZCommonFun::print_r_debug($questionData);
 ?>
 <style>
 .s_login div,.s_reg div{
@@ -88,8 +90,45 @@ $this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey
     <?php echo $this->renderFile(__DIR__.'/../layouts/head-top.php');?>
     <section class="s_moreread s_reg s_login">
     <?php $form = ActiveForm::begin(['id'=>'form1']); ?>
-        
+        <?php if( isset($questionData['question']) ){?>
         <div class="row">
+            <textarea class="textarea-label" class="col" name="label-name" placeholder="问题"><?php echo $questionData['question']->label;?></textarea>
+            <?php 
+            isset($questionData['options'][0]) ? null : $questionData['options']=[];
+            foreach ($questionData['options'] as $key=>$row2){
+        
+                switch ($row2->option_score){
+                    case 5:
+                        $select5 = 'selected="selected"';
+                        break;
+                    case 4:
+                        $select4 = 'selected="selected"';
+                        break;
+                    case 3:
+                        $select3 = 'selected="selected"';
+                        break;
+                    case 2:
+                        $select2 = 'selected="selected"';
+                        break;
+                    default:
+                        $select1 = 'selected="selected"';
+                        break;
+                }
+            ?>
+            <div class="option">
+                <input type="text" value="<?php echo $row2->option_label;?>" class="option-label" name="label[option-label][]" placeholder="选项"/>
+                <label>选项得分</label><select class="option-score" name="label[option-score][]"/>
+                    <option value="1" <?php echo isset($select1)  ? $select1 : '';?>>1分</option>
+                    <option value="2" <?php echo isset($select2)  ? $select2 : '';?>>2分</option>
+                    <option value="3" <?php echo isset($select3)  ? $select3 : '';?>>3分</option>
+                    <option value="4" <?php echo isset($select4)  ? $select4 : '';?>>4分</option>
+                    <option value="5" <?php echo isset($select5)  ? $select5 : '';?>>5分</option>
+                </select>
+            </div>
+            <?php } ?>
+         </div>
+         <?php }else{ ?>
+         <div class="row">
             <textarea class="textarea-label" class="col" name="label-name" placeholder="问题"></textarea>
             <div class="option">
                 <input type="text" class="option-label" name="label[option-label][]" placeholder="选项"/>
@@ -102,7 +141,7 @@ $this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey
                 </select>
             </div>
          </div>
-         
+         <?php }?>
          
         <button type="text" class="btn_bg add-btn">增加一个选项</button>
         <button type="submit" class="btn_bg btn btn-primary btn-2" name="save-next">保存/编辑下一题</button>

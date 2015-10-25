@@ -26,7 +26,8 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 			<div class="list_box">
     			<?php 
                 foreach ($a_models as $key=>$row){              
-                    $row_url = Yii::$app->urlManager->createUrl(['answer/step1','id'=>$row->id]);           
+                    $row_url = Yii::$app->urlManager->createUrl(['answer/step1','id'=>$row->id]); 
+                    $row_ur_change = Yii::$app->urlManager->createUrl(['survey/step2','id'=>$row->id]);          
                 ?>
 				<dl>
 					<a href="<?php echo $row_url;?>">
@@ -39,6 +40,7 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 						</dd>
 						<dd><?php echo $row->intro;?></dd>
 						<dd>
+						    <a class="btn_bg" href="<?php echo $row_ur_change;?>">修改</a>
 							<span>测试过：<?php echo $row->answer_count;?></span>
 						</dd>
 					</a>

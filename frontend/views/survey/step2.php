@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Survey */
 /* @var $form yii\widgets\ActiveForm */
 echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
-$this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
+$this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['1'];
 
 
 ?>

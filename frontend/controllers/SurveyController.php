@@ -318,6 +318,7 @@ str;
         
         
 //         ZCommonFun::print_r_debug($post_data);
+//         exit;
         return $this->render('step4', [
             'model_SurveyResulte'=>$model_SurveyResulte,
             'a_SurveyResulte'=>$a_SurveyResulte,
@@ -338,6 +339,8 @@ str;
             if(!$model)
                 return $this->redirect(['my']);
         }
+        //查找问题
+        $questionData = $model->findOneQuestion($model->id, 1, 0);
         $error = '';
         $posts = Yii::$app->request->post();
         //post提交
@@ -354,6 +357,7 @@ str;
         return $this->render('step4_2_question',[
             'tax'=>$model->tax,
             'model'=>$model,
+            'questionData'=>$questionData,
         ]);
     }
     
@@ -383,10 +387,10 @@ str;
         if($url){
             return $this->redirect($url);
         }
-        
+//         ZCommonFun::print_r_debug($a_SurveyResulte);
         return $this->render('step4_2',[
             'model_SurveyResulte'=>$model_SurveyResulte,
-            'a_SurveyResulte'=>$a_SurveyResulte,
+            'a'=>$a_SurveyResulte,
             'tax'=>$model->tax,
             'model'=>$model,
         ]);

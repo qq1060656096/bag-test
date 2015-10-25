@@ -76,7 +76,10 @@ class SurveyResulte extends \yii\db\ActiveRecord
         $tem = $name.$birth;
         $number = $this->getStrAsciiCode($name);
         $number = abs($number);
-        $number = sprintf("%.0f", $number);;       
+        $number = sprintf("%.0f", $number);
+        if($count<1)
+            return null;
+            
         $index = $number%$count;     
         return $models[$index];
     }
