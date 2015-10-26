@@ -36,6 +36,7 @@ return [
             // 配置主服务器
             'masterConfig' => [
                 'username' => 'root',
+//                 'password' => 'root0601',
                 'password' => 'root',
                 'charset' => 'utf8',
                 'attributes' => [
@@ -55,6 +56,7 @@ return [
             // 配置从服务器
             'slaveConfig' => [
                 'username' => 'root',
+//                 'password' => 'root0601',
                 'password' => 'root',
                 'charset' => 'utf8',
                 'attributes' => [

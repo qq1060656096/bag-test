@@ -47,6 +47,10 @@
 	height: 1.2em;
 }
 </style>
+<?php 
+
+$model_SurveyTotal = new common\models\Survey();
+?>
 <div class="user-info">
 	<table>
 		<tr>
@@ -55,7 +59,9 @@
 			<td class="td-2">
 				<h3 class="common-color">风之谷</h3>
 				<div>
-					创建了<sapn class="common-color">100685</sapn>个测试
+					创建了<sapn class="common-color">
+					<?php echo $model_SurveyTotal->getMySurveyCount();?>
+					</sapn>个测试
 				</div>
 				<div>
 					收到打赏<sapn class="common-color">10089</sapn>元

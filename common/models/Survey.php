@@ -1,9 +1,10 @@
 <?php
-
 namespace common\models;
 
 use Yii;
 use common\z\ZCommonFun;
+use common\z\ZCommonSessionFun;
+
 
 /**
  * This is the model class for table "survey".
@@ -202,4 +203,17 @@ class Survey extends \yii\db\ActiveRecord
     public function  getImages(){
         return $this->hasOne(Images::className(),  ['id'=>'front_img']);
     }
+    /**
+     * 获取我创建测得测试数量
+     */
+     public function getMySurveyCount(){
+         $uid = ZCommonSessionFun::get_user_id();
+         if($uid<1){
+             return 0;
+         }
+        $count = $this->find()->where(['uid'=>$uid])->count();
+        
+        $count ? null : $count=0;
+        return $count;
+    } 
 }
