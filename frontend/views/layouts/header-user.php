@@ -64,15 +64,15 @@ $model_SurveyTotal = new common\models\Survey();
 					</sapn>个测试
 				</div>
 				<div>
-					收到打赏<sapn class="common-color">10089</sapn>元
+					收到打赏<sapn class="common-color">0.00</sapn>元
 				</div>
 			</td>
 			<td class="td-3">
 				<div>
-					测过<sapn class="common-color">1258</sapn>次
+					测过<sapn class="common-color">0</sapn>次
 				</div>
 				<div>
-					给朋友打赏<sapn class="common-color"> 2080.96</sapn>元
+					给朋友打赏<sapn class="common-color">0.00</sapn>元
 				</div>
 			</td>
 		</tr>
