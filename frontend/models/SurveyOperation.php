@@ -73,16 +73,27 @@ class SurveyOperation extends Survey{
      * @param unknown $posts
      * @param unknown $id
      */
-    public function step4_2_questionSave($posts,$id){
+    public function step4_2_questionSave($posts,$id,$page){
         $url='';
         $error='';
         if( isset($posts['label']['option-label'][0])){     
 //             ZCommonFun::print_r_debug($posts);
+//             exit;
             //保存问题
             if( !empty($posts['label-name'] ) ){
                 $transacation = Yii::$app->db->beginTransaction();
                 try {
-                    $model_Question = new Question();
+                    $question_id = isset ($posts['qid'] ) ? $posts['qid'] : 0;
+                    if($question_id>0){
+                        $model_Question = Question::findOne($question_id);
+                        //不是当前测试的问题
+                        if($model_Question->table_id!=$id){
+                            continue;
+                        }
+                    }else{
+                        $model_Question = new Question();
+                    }
+                    
                     $model_Question->label = $posts['label-name'];
                     $model_Question->table_id = $id;
                     $save = 0 ;
@@ -90,13 +101,24 @@ class SurveyOperation extends Survey{
                         
                         foreach ($posts['label']['option-label'] as $key=>$value){
                             if(empty($value)) continue;
-                            $model_QuestionOptions = new QuestionOptions();
+                            
+                            $qo_id = isset ($posts['label']['qo-id'][$key] ) ? $posts['label']['qo-id'][$key] : 0;
+                            if($qo_id>0){
+                                $model_QuestionOptions = QuestionOptions::findOne($qo_id);
+                                //不是当前测试的选项
+                                if($model_QuestionOptions->table_id!=$id){
+                                    continue;
+                                }
+                                $save++;
+                            }else{                       
+                                $model_QuestionOptions = new QuestionOptions();
+                            }
                             $model_QuestionOptions->question_id = $model_Question->question_id;
                             $model_QuestionOptions->table_id = $id;
                             $model_QuestionOptions->uid = ZCommonSessionFun::get_user_id();
                             $model_QuestionOptions->option_label = $value;
                             $model_QuestionOptions->question_id = $model_Question->question_id;
-                            $score = isset($posts['label']['option-score']) ?$posts['label']['option-score']:1;
+                            $score = isset($posts['label']['option-score'][$key]) ?$posts['label']['option-score'][$key]:1;
                             $score = (int)$score;
                             $model_QuestionOptions->option_score = $score;
                             if($model_QuestionOptions->save()) $save++;
@@ -111,8 +133,9 @@ class SurveyOperation extends Survey{
                             $transacation->commit();
         
                             if(isset($posts['save-next'])){
-        
-                               return $url = ['step4_2_question','id'=>$id];
+//                                ZCommonFun::print_r_debug($save);
+//                                exit;
+                               return $url = ['step4_2_question','id'=>$id,'page'=>$page];
                             }else{
                                return $url = ['step4_2','id'=>$id];
                             }
@@ -124,12 +147,15 @@ class SurveyOperation extends Survey{
                     }
         
                 } catch (\Exception $e) {
+                    ZCommonFun::print_r_debug($e);
                     $transacation->rollBack();
                     $error ='事物异常';
                 }
             }else{
                 $error ='提交表单错误';
             }
+//             ZCommonFun::print_r_debug($posts);
+//             exit;
             $this->errorResulte = $error;
         }
     }

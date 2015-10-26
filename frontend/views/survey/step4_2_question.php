@@ -89,10 +89,11 @@ $this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey
 
     <?php echo $this->renderFile(__DIR__.'/../layouts/head-top.php');?>
     <section class="s_moreread s_reg s_login">
-    <?php $form = ActiveForm::begin(['id'=>'form1']); ?>
+    <?php $form = ActiveForm::begin(['id'=>'form1','action'=>['survey/step4_2_question','id'=>$model->id,'page'=>$page+1]]); ?>
         <?php if( isset($questionData['question']) ){?>
         <div class="row">
             <textarea class="textarea-label" class="col" name="label-name" placeholder="问题"><?php echo $questionData['question']->label;?></textarea>
+            <input type="text" name="qid" value="<?php echo $questionData['question']->question_id;?>"/>
             <?php 
             isset($questionData['options'][0]) ? null : $questionData['options']=[];
             foreach ($questionData['options'] as $key=>$row2){
@@ -116,6 +117,7 @@ $this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey
                 }
             ?>
             <div class="option">
+                <input type="text" name="label[qo-id][]" value="<?php echo $row2->qo_id;?>"/>
                 <input type="text" value="<?php echo $row2->option_label;?>" class="option-label" name="label[option-label][]" placeholder="选项"/>
                 <label>选项得分</label><select class="option-score" name="label[option-score][]"/>
                     <option value="1" <?php echo isset($select1)  ? $select1 : '';?>>1分</option>

@@ -41,7 +41,7 @@ class SurveyController extends ZController
         $this->layout = false;
         $searchModel = new SurverySearch();
         $queryParams = Yii::$app->request->queryParams;
-        
+        $queryParams['SurverySearch']['is_publish'] = 1;
         $query = $searchModel->query( $queryParams );
         
         $count = $query->count();
@@ -89,6 +89,7 @@ class SurveyController extends ZController
         $sort = Yii::$app->request->get('sort',1);
         $self = Yii::$app->request->get('self',0);
         $queryParams = Yii::$app->request->queryParams;
+        
         if($self > 0){
             
             if(  ZCommonSessionFun::get_user_id()<1 ){
@@ -96,7 +97,10 @@ class SurveyController extends ZController
                 return $this->redirect($url);
             }
             $queryParams['SurverySearch']['uid'] = ZCommonSessionFun::get_user_id();
+        }else{
+            $queryParams['SurverySearch']['is_publish'] = 1;
         }
+        
         $this->layout = false;
         $searchModel = new SurverySearch();
         
@@ -237,20 +241,23 @@ str;
         }
         
        
-        if(isset($_POST['upload']) && !empty($_POST['upload'])){
+        if(isset($_POST['upload']) ){
             $load = true;
 //             $image = substr($_POST['upload'],0,20);
 //             $arr = explode(';', $image);
+            $fileName = '';
+            if(!empty($_POST['upload'])){
             //文件后缀
-            preg_match('/^(data:\s*image\/(\w+);base64,)/', $_POST['upload'], $result);
-            $type = isset( $result[2] ) ? $result[2] : '';
-//             ZCommonFun::print_r_debug($result);
-//             exit;
-            $fileName = ZCommonFun::getFileName($type);          
-            $img = base64_decode(str_replace($result[1], '', $_POST['upload']));
-            //保存  
-            file_put_contents( UPLOAD_DIR.$fileName , $img );
-            $model_Images->image = $fileName;
+                preg_match('/^(data:\s*image\/(\w+);base64,)/', $_POST['upload'], $result);
+                $type = isset( $result[2] ) ? $result[2] : '';
+    //             ZCommonFun::print_r_debug($result);
+    //             exit;
+                $fileName = ZCommonFun::getFileName($type);          
+                $img = base64_decode(str_replace($result[1], '', $_POST['upload']));
+                //保存  
+                file_put_contents( UPLOAD_DIR.$fileName , $img );
+            }
+            $model_Images->image = $fileName ? $fileName : $model_Images->image;
             if(empty($model_Images->image)){
                 $model_Images->addError('image','请上传图片');
             }
@@ -329,6 +336,8 @@ str;
         $model_SurveyResulte = new SurveyOperation();
         $url = $model_SurveyResulte->step4SaveResulteCondition1($post, $condition, $id);
         if($url){
+            $model->is_publish = 1;
+            $model->save();
             return $this->redirect($url);
         }
         
@@ -355,13 +364,18 @@ str;
             if(!$model)
                 return $this->redirect(['my']);
         }
+        $page = Yii::$app->request->get('page',1);
+
         //查找问题
-        $questionData = $model->findOneQuestion($model->id, 1, 0);
+        $questionData = $model->findOneQuestion($model->id, 1, $page-1);
+
+
         $error = '';
         $posts = Yii::$app->request->post();
         //post提交
         $model_SurveyResulte = new SurveyOperation();
-        $url = $model_SurveyResulte->step4_2_questionSave($posts, $id);
+  
+        $url = $model_SurveyResulte->step4_2_questionSave($posts, $id,$page);
         if($url){
 //             echo $url;
 //             ZCommonFun::print_r_debug($url);
@@ -373,6 +387,7 @@ str;
         return $this->render('step4_2_question',[
             'tax'=>$model->tax,
             'model'=>$model,
+            'page'=>$page,
             'questionData'=>$questionData,
         ]);
     }
@@ -401,6 +416,8 @@ str;
         $model_SurveyResulte = new SurveyOperation();
         $url = $model_SurveyResulte->step4_2SaveResulteCondition2($posts, $condition, $id);
         if($url){
+            $model->is_publish = 1;
+            $model->save();
             return $this->redirect($url);
         }
 //         ZCommonFun::print_r_debug($a_SurveyResulte);
