@@ -75,7 +75,7 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
             <textarea class="input-name" class="col" name="name[]" ><?php echo $row->name;?></textarea>
             <label class="label-name">姓名</label>
             <textarea class="input-value"  name="value[]"><?php echo $row->value;?></textarea>   
-            <input type="hidden" name="sr-id[]" value="<?php echo $row->sr_id;?>"> 
+            <input type="hidden" name="sr-id[]" value="<?php echo $row->sr_id;?>" /> 
         </div>
         <?php }?>
         <div class="row">         
@@ -128,4 +128,4 @@ $(document).ready(function(){
 </script>
     </section>
  </div>
-<?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>  
+<?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

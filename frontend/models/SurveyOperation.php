@@ -180,7 +180,7 @@ class SurveyOperation extends Survey{
                     }
         
                 } catch (\Exception $e) {
-                    ZCommonFun::print_r_debug($e);
+//                     ZCommonFun::print_r_debug($e);
                     $transacation->rollBack();
                     $error ='事物异常';
                 }
