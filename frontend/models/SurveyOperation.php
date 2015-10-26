@@ -32,25 +32,58 @@ class SurveyOperation extends Survey{
                 if( isset($value[0])&& isset($name[0]) ){
                     $post_data[$key]['name'] = $name;
                     $post_data[$key]['value'] = $value;
+                    isset($post['sr-id'][$key])? $post_data[$key]['sr-id'] = $post['sr-id'][$key] : null;
                 }
             }
+            //删除结果
+            $deleteSurveyResulte = new SurveyResulte();
+            $deleteAll = $deleteSurveyResulte->getAll($id);
+            isset($deleteAll[0]) ?  null : $deleteAll=[];
+            $sr_ids = ZCommonFun::listData($deleteAll, 'sr_id', 'sr_id');
+            
+//             ZCommonFun::print_r_debug($sr_ids);
+//             ZCommonFun::print_r_debug($post_data);
+//             exit;
+            
             //有结果
             if($post_data){
                 //保存结果
                 $transaction = Yii::$app->db->beginTransaction();
-                //删除所有结果
-                SurveyResulte::deleteAll($condition);
+                
                 $save=0;
                 try {
                     foreach ($post_data as $key=>$row){
-                        $row_SurveyResulte = new SurveyResulte();
+                        if( isset( $row['sr-id']) && $row['sr-id']>0 ){
+                            $row_SurveyResulte = SurveyResulte::findOne($row['sr-id']);
+                            if($row_SurveyResulte ){
+                                
+                                //结果存在，就不删除
+                                unset($sr_ids[$row['sr-id']]);
+                                if($row_SurveyResulte->s_id != $id){
+                                    continue;
+                                }
+                               $save ++ ;
+                            }else{
+                                $row_SurveyResulte = new SurveyResulte();
+                            }
+                        }else{
+                            $row_SurveyResulte = new SurveyResulte();
+                        }
                         $row_SurveyResulte->name = $row['name'];
                         $row_SurveyResulte->value = $row['value'];
                         $row_SurveyResulte->s_id = $id;
-                        $row_SurveyResulte->save() ? $save++:null;
+                        
                         $row_SurveyResulte->uid = ZCommonSessionFun::get_user_id(); 
+                        $row_SurveyResulte->save() ? $save++:null;
                     }
                     if($save>0){
+                        $condition = null;
+                        if(count($sr_ids)>0){
+                            $condition['sr_id'] = $sr_ids;
+                            $condition['s_id'] = $id;
+                            //删除所有结果
+                            SurveyResulte::deleteAll($condition);
+                        }
                         $transaction->commit();
                         $url=['my'] ;
                     }else{
@@ -184,7 +217,7 @@ class SurveyOperation extends Survey{
                     $post_data[$key]['name'] = $value;
                     $post_data[$key]['value'] = $value;
                     $post_data[$key]['intro'] = $intro;
-                    
+                    $post_data[$key]['sr-id'] =isset($post['sr-id'][$key])? $post['sr-id'][$key] : null;
                     $post_data[$key]['min'] = $min;
                     $post_data[$key]['max'] = $max;
                 }
@@ -193,12 +226,32 @@ class SurveyOperation extends Survey{
             if($post_data){
                 //保存结果
                 $transaction = Yii::$app->db->beginTransaction();
-                //删除所有结果
-                SurveyResulte::deleteAll($condition);
+                
+                //删除结果
+                $deleteSurveyResulte = new SurveyResulte();
+                $deleteAll = $deleteSurveyResulte->getAll($id);
+                isset($deleteAll[0]) ?  null : $deleteAll=[];
+                $sr_ids = ZCommonFun::listData($deleteAll, 'sr_id', 'sr_id');
+                
                 $save=0;
                 try {
                     foreach ($post_data as $key=>$row){
-                        $row_SurveyResulte = new SurveyResulte();
+                        if( isset( $row['sr-id']) && $row['sr-id']>0 ){
+                            $row_SurveyResulte = SurveyResulte::findOne($row['sr-id']);
+                            if($row_SurveyResulte ){
+                                
+                                //结果存在，就不删除
+                                unset($sr_ids[$row['sr-id']]);
+                                if($row_SurveyResulte->s_id != $id){
+                                    continue;
+                                }
+                               $save ++ ;
+                            }else{
+                                $row_SurveyResulte = new SurveyResulte();
+                            }
+                        }else{
+                            $row_SurveyResulte = new SurveyResulte();
+                        }
                         
                         $row_SurveyResulte->score_max = $row['max'];
                         $row_SurveyResulte->score_min = $row['min'];
@@ -213,17 +266,30 @@ class SurveyOperation extends Survey{
                         $row_SurveyResulte->save() ? $save++:null;
                     }
                     if($save>0){
+                        $condition = null;
+                        if(count($sr_ids)>0){
+                            $condition['sr_id'] = $sr_ids;
+                            $condition['s_id'] = $id;
+                            //删除所有结果
+                            SurveyResulte::deleteAll($condition);
+                        }
+                        
+                        
                         $transaction->commit();
                         $url = ['my'];
-                    }else{
-                        $transaction->rollBack();
                     }
+//                     ZCommonFun::print_r_debug($sr_ids);
+//                     ZCommonFun::print_r_debug($post_data);
+//                     exit;
+                    $url = ['my'];
                 }catch (\Exception $e){
+//                     ZCommonFun::print_r_debug($e);
                     $transaction->rollBack();
                 }
             }
             
         }
+        
         return $url;
     }
 }

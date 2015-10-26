@@ -93,7 +93,7 @@ $this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey
         <?php if( isset($questionData['question']) ){?>
         <div class="row">
             <textarea class="textarea-label" class="col" name="label-name" placeholder="问题"><?php echo $questionData['question']->label;?></textarea>
-            <input type="text" name="qid" value="<?php echo $questionData['question']->question_id;?>"/>
+            <input type="hidden" name="qid" value="<?php echo $questionData['question']->question_id;?>"/>
             <?php 
             isset($questionData['options'][0]) ? null : $questionData['options']=[];
             foreach ($questionData['options'] as $key=>$row2){
@@ -117,7 +117,7 @@ $this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey
                 }
             ?>
             <div class="option">
-                <input type="text" name="label[qo-id][]" value="<?php echo $row2->qo_id;?>"/>
+                <input type="hidden" name="label[qo-id][]" value="<?php echo $row2->qo_id;?>"/>
                 <input type="text" value="<?php echo $row2->option_label;?>" class="option-label" name="label[option-label][]" placeholder="选项"/>
                 <label>选项得分</label><select class="option-score" name="label[option-score][]"/>
                     <option value="1" <?php echo isset($select1)  ? $select1 : '';?>>1分</option>

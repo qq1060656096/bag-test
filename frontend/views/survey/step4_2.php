@@ -118,6 +118,7 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
             <textarea class="input-name" class="col" name="name[]" ><?php echo $row->name;?><?php echo $row->name;?></textarea>
             <label clss="">姓名</label>
             <textarea class="input-value"  name="value[]"><?php echo $row->value;?><?php echo $row->value;?></textarea>
+            <input type="hidden" name="sr-id[]" value="<?php echo $row->sr_id;?>">
             <label>结果详情</label>
              
             <textarea class="input-value"  name="intro[]"><?php echo $row->intro;?><?php echo $row->intro;?></textarea>
