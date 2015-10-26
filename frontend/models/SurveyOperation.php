@@ -208,10 +208,13 @@ class SurveyOperation extends Survey{
                 $intro = isset($post['intro'][$key]) ? $post['intro'][$key] : '';
                 $min = isset($post['score-min'][$key]) ? $post['score-min'][$key] : 1;
                 $max = isset($post['score-max'][$key]) ? $post['score-max'][$key] : 1;
-
+                
                 $temp = $min>$max ?$min:$max;
-                $max = $temp;
-                $min = $max;
+                if($min>$max){
+                    $temp = $min;
+                    $min = $max;
+                    $max = $temp;
+                }
                 
                 if($max>0&& $min>0 &&!empty($value)&& isset($name[0]) ){
                     $post_data[$key]['name'] = $value;
@@ -222,6 +225,10 @@ class SurveyOperation extends Survey{
                     $post_data[$key]['max'] = $max;
                 }
             }
+            
+//             ZCommonFun::print_r_debug($post_data);
+//             ZCommonFun::print_r_debug($post);
+//             exit();
             //有结果
             if($post_data){
                 //保存结果

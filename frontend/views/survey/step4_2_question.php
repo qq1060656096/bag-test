@@ -120,7 +120,9 @@ $this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey
                 <input type="hidden" name="label[qo-id][]" value="<?php echo $row2->qo_id;?>"/>
                 <input type="text" value="<?php echo $row2->option_label;?>" class="option-label" name="label[option-label][]" placeholder="选项"/>
                 <label>选项得分</label><select class="option-score" name="label[option-score][]"/>
+                    
                     <option value="1" <?php echo isset($select1)  ? $select1 : '';?>>1分</option>
+                   
                     <option value="2" <?php echo isset($select2)  ? $select2 : '';?>>2分</option>
                     <option value="3" <?php echo isset($select3)  ? $select3 : '';?>>3分</option>
                     <option value="4" <?php echo isset($select4)  ? $select4 : '';?>>4分</option>

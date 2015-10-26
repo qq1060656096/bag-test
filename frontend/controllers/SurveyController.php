@@ -404,6 +404,8 @@ str;
             if(!$model)
                 return $this->redirect(['my']);
         }
+        $questionData = $model->FindAllQuestionsOptions($id);
+//         ZCommonFun::print_r_debug($questionData);
         //查询所有结果
         $condition['s_id'] = $id;
         $a_SurveyResulte = SurveyResulte::findAll($condition);
@@ -421,11 +423,13 @@ str;
             return $this->redirect($url);
         }
 //         ZCommonFun::print_r_debug($a_SurveyResulte);
+// ZCommonFun::print_r_debug($questionData['question_total_score']);
         return $this->render('step4_2',[
             'model_SurveyResulte'=>$model_SurveyResulte,
             'a'=>$a_SurveyResulte,
             'tax'=>$model->tax,
             'model'=>$model,
+            'question_total_score'=>$questionData['question_total_score'],//问题总分数
         ]);
     }
     

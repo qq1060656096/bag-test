@@ -79,40 +79,7 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
 //         ZCommonFun::print_r_debug($a_SurveyResulte);
         
         foreach ($a as $key=>$row){
-            switch ($row->score_min){
-                case 5:
-                    $select5 = 'selected="selected"';
-                    break;
-                case 4:
-                    $select4 = 'selected="selected"';
-                    break;
-                case 3:
-                    $select3 = 'selected="selected"';
-                    break;
-                case 2:
-                    $select2 = 'selected="selected"';
-                    break;
-                default:
-                    $select1 = 'selected="selected"';
-                    break;
-            }
-            switch ($row->score_max){
-                case 5:
-                    $select55 = 'selected="selected"';
-                    break;
-                case 4:
-                    $select44 = 'selected="selected"';
-                    break;
-                case 3:
-                    $select33 = 'selected="selected"';
-                    break;
-                case 2:
-                    $select22 = 'selected="selected"';
-                    break;
-                default:
-                    $select11 = 'selected="selected"';
-                    break;
-            }
+            
         ?>
         <div class="row">
             <textarea class="input-name" class="col" name="name[]" ><?php echo $row->name;?><?php echo $row->name;?></textarea>
@@ -125,18 +92,27 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
             <div class="options">
                 <label>分数范围</label>
                 <select class="option-score"  name="score-min[]"/>
-                    <option value="1" <?php echo isset($select1)  ? $select1 : '';?>>1分</option>
-                    <option value="2" <?php echo isset($select2)  ? $select2 : '';?>>2分</option>
-                    <option value="3" <?php echo isset($select3)  ? $select3 : '';?>>3分</option>
-                    <option value="4" <?php echo isset($select4)  ? $select4 : '';?>>4分</option>
-                    <option value="5" <?php echo isset($select5)  ? $select5 : '';?>>5分</option>
+                    <?php 
+                    $question_total_score>1 ? null:$question_total_score=5;
+                    for ($i=1;$i<=$question_total_score;$i++){
+                        $now_scor_name = 'selected';
+                        $now_scor_name = $row->score_min==$i ? $now_scor_name.$i :'';
+                        isset($now_scor_name[0]) ? $$now_scor_name = 'selected="selected"' : '';
+                    ?>
+                    <option value="<?php echo $i;?>" <?php echo isset($$now_scor_name)  ? $$now_scor_name : '';?>><?php echo $i;?>分</option>
+                    <?php }?>
+
                 </select>
                 <select class="option-score"  name="score-max[]"/>
-                    <option value="1" <?php echo isset($select11)  ? $select11 : '';?>>1分</option>
-                    <option value="2" <?php echo isset($select22)  ? $select22 : '';?>>2分</option>
-                    <option value="3" <?php echo isset($select33)  ? $select33 : '';?>>3分</option>
-                    <option value="4" <?php echo isset($select44)  ? $select44 : '';?>>4分</option>
-                    <option value="5" <?php echo isset($select55)  ? $select55 : '';?>>5分</option>
+                    <?php 
+                    $question_total_score>1 ? null:$question_total_score=5;
+                    for ($i=1;$i<=$question_total_score;$i++){
+                        $now_scor_name = 'selected';
+                        $now_scor_name = $row->score_max==$i ? $now_scor_name.$i :'';
+                        isset($now_scor_name[0]) ? $$now_scor_name = 'selected="selected"' : '';
+                    ?>
+                    <option value="<?php echo $i;?>" <?php echo isset($$now_scor_name)  ? $$now_scor_name : '';?>><?php echo $i;?>分</option>
+                    <?php }?>
                 </select>
             </div>
          </div>
@@ -152,18 +128,23 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
             <div class="options">
                 <label>分数范围</label>
                 <select class="option-score"  name="score-min[]"/>
-                    <option value="1">1分</option>
-                    <option value="2">2分</option>
-                    <option value="3">3分</option>
-                    <option value="4">4分</option>
-                    <option value="5">5分</option>
+                    <?php 
+                    $question_total_score>1 ? null:$question_total_score=5;
+                    for ($i=1;$i<=$question_total_score;$i++){
+                       
+                    ?>
+                    <option value="<?php echo $i;?>" ><?php echo $i;?>分</option>
+                    <?php }?>
+
                 </select>
                 <select class="option-score"  name="score-max[]"/>
-                    <option value="1">1分</option>
-                    <option value="2">2分</option>
-                    <option value="3">3分</option>
-                    <option value="4">4分</option>
-                    <option value="5">5分</option>
+                    <?php 
+                    $question_total_score>1 ? null:$question_total_score=5;
+                    for ($i=1;$i<=$question_total_score;$i++){
+                  
+                    ?>
+                    <option value="<?php echo $i;?>"><?php echo $i;?>分</option>
+                    <?php }?>
                 </select>
             </div>
          </div>
@@ -182,18 +163,23 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
         <div class="options">
             <label>分数范围</label>
                 <select class="option-score"  name="score-min[]"/>
-                    <option value="1">1分</option>
-                    <option value="2">2分</option>
-                    <option value="3">3分</option>
-                    <option value="4">4分</option>
-                    <option value="5">5分</option>
+                    <?php 
+                    $question_total_score>1 ? null:$question_total_score=5;
+                    for ($i=1;$i<=$question_total_score;$i++){
+                       
+                    ?>
+                    <option value="<?php echo $i;?>" ><?php echo $i;?>分</option>
+                    <?php }?>
+
                 </select>
                 <select class="option-score"  name="score-max[]"/>
-                    <option value="1">1分</option>
-                    <option value="2">2分</option>
-                    <option value="3">3分</option>
-                    <option value="4">4分</option>
-                    <option value="5">5分</option>
+                    <?php 
+                    $question_total_score>1 ? null:$question_total_score=5;
+                    for ($i=1;$i<=$question_total_score;$i++){
+                  
+                    ?>
+                    <option value="<?php echo $i;?>"><?php echo $i;?>分</option>
+                    <?php }?>
                 </select>
         </div>
     </div>

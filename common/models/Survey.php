@@ -150,9 +150,9 @@ class Survey extends \yii\db\ActiveRecord
         $condition['table_id'] = $survey_id;
         
        
-        $a_Question = $model_Question->find($condition)->orderBy([])->all();
+        $a_Question = $model_Question->find()->where($condition)->orderBy([])->all();
         
-        $a_QuestionOptions = $model_QuestionOptions->find($condition)->orderBy([])->all();
+        $a_QuestionOptions = $model_QuestionOptions->find()->where($condition)->orderBy([])->all();
         
         $a_Question? null :$a_Question=[];
         $a_QuestionOptions? null :$a_QuestionOptions=[];
@@ -169,6 +169,7 @@ class Survey extends \yii\db\ActiveRecord
                     if($row->question_id==$row2->question_id){
                         $a_options[$key][] = $row2;
                         $question_total_score+=$row2->option_score;
+//                         echo $row2->option_score,'=',$question_total_score,'<br/>';
                     }
                     
                 }
