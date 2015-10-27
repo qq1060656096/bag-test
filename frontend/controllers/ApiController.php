@@ -61,20 +61,21 @@ class ApiController extends Controller{
             $keys['code'] = $_REQUEST['code'];
             $keys['redirect_uri'] = WB_CALLBACK_URL;
             try {
-                $token = $o->getAccessToken( 'code', $keys ) ;
+                $token = $weibo->getAccessToken( 'code', $keys ) ;
             } catch (OAuthException $e) {
             }
         }
         
         if ($token) {
             $_SESSION['token'] = $token;
-            setcookie( 'weibojs_'.$o->client_id, http_build_query($token) );
+            setcookie( 'weibojs_'.$weibo->client_id, http_build_query($token) );
             
         $uid_get = $weibo->get_uid();
         $uid = $uid_get['uid'];
-        $user_message = $weibo->show_user_by_id( $uid);//根据ID获取用户等基本信息
+        $user_message = $weibo->show_user_by_id($uid);//根据ID获取用户等基本信息
 
         ZCommonFun::print_r_debug($user_message);
         exit;
+        }
     }
 }
