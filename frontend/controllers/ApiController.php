@@ -10,7 +10,7 @@ use yii\helpers\Json;
 /**
  * 登录
  * @author pc
- *
+ *  
  */
 class ApiController extends Controller{
     
@@ -31,10 +31,10 @@ class ApiController extends Controller{
      */
     public function actionCallbackQq(){
         $qq = new QQ();
-       
-
-        $data = $qq->get_info();
+        echo $qq->qq_callback();
         echo $qq->get_openid();
+        $data = $qq->get_info();
+        
         ZCommonFun::print_r_debug($data);
         exit;
     }

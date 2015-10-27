@@ -9,7 +9,7 @@ use common\z\ZCommonSessionFun;
 <!-- saved from url=(0036)http://m.xinli001.com/account/login/ -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="UTF-8"> 
-<title>登录 - 壹心理(手机版)</title>
+<title>登陆-奇趣测试</title>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"> 
 <meta content="yes" name="apple-mobile-web-app-capable"> 
 <meta content="black" name="apple-mobile-web-app-status-bar-style"> 
@@ -69,13 +69,13 @@ use common\z\ZCommonSessionFun;
     <div class="qita">
     	<ul>
     		<li class="">
-    			<a href="http://m.xinli001.com/qq/login/?next=http://m.xinli001.com/"><img src="./bag-test/logo/logo-qq.jpg" />使用QQ账号登录</a>
+    			<a href="<?php echo Yii::$app->urlManager->createUrl(['api/login-qq']); ?>"><img src="./bag-test/logo/logo-qq.jpg" />使用QQ账号登录</a>
     		</li>
     		<li class="">
-    			<a href="http://m.xinli001.com/weibo/login/?next=http://m.xinli001.com/"><img src="./bag-test/logo/logo-weibo.jpg" />使用新浪微博登录</a>
+    			<a href="<?php echo Yii::$app->urlManager->createUrl(['api/login-weibo']); ?>"><img src="./bag-test/logo/logo-weibo.jpg" />使用新浪微博登录</a>
     		</li>
     		<li class="">
-    			<a href="http://m.xinli001.com/renren/login/?next=http://m.xinli001.com/"><img src="./bag-test/logo/logo-weixin.jpg" />使用人人账号登录</a>
+    			<a href="<?php echo Yii::$app->urlManager->createUrl(['api/login-weixin']); ?>"><img src="./bag-test/logo/logo-weixin.jpg" />使用人人账号登录</a>
     		</li>
     	</ul>
     </div>
