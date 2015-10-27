@@ -73,10 +73,10 @@ function answer(){
 		<br>
 		<div id="id_ceshi_show">
 			<div>
-				<img src="./bag-test/test-images/103754b6unkvhquepniein.jpg"
-					alt="你有多怕谈恋爱：恋爱恐怖程度自评">
+				<img src="<?php echo $image = isset( $model->images->image ) ? UPLOAD_DIR.$model->images->image : DEFAULT_IMAGE;?>"
+					alt="<?php echo $model->title;?>">
 			</div>
-			<div>爱情就像一场赌博,你越恐惧就越得不到幸福。你会因为曾经的伤害,而不敢接受新的恋情吗?完成测试,看看你的恐惧指数有多高。</div>
+			<div><?php echo $model->intro;?></div>
 			<a href="http://m.xinli001.com/ceshi/99897421/#" id="id_start_ceshi"
 				class="ui-link">开始测试</a> <span class="stip">此测试仅供娱乐，不做专业指导！</span>
 
@@ -92,10 +92,11 @@ function answer(){
 			<div id="id_question_list" style="display: none" data-type="score">
 
                 <?php 
+                $question_count = count($data['questions']);
                 foreach ($data['questions'] as $key=>$question){
                 ?>
 				<div id="id_question_list" class="question-item">
-					<div>当前第<?php echo $key+1;?>/10题</div>
+					<div>当前第<?php echo $key+1;?>/<?php echo $question_count;?>题</div>
 
 					<fieldset data-role="controlgroup"
 						class="ui-corner-all ui-controlgroup ui-controlgroup-vertical">

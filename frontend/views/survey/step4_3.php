@@ -8,7 +8,8 @@ global $survey_tax;
 /* @var $form yii\widgets\ActiveForm */
 ?>
  <?php $form = ActiveForm::begin(); ?>
-        <?php 
+        <?php
+        $a_SurveyResulte?null : $a_SurveyResulte=[];
         foreach ($a_SurveyResulte as $key=>$row){
         ?>
         <div class="row">

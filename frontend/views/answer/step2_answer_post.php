@@ -32,7 +32,7 @@ echo $this->renderFile(__DIR__ . '/../layouts/head-answer.php');
             <span class="sys">经过对你的名字进行分析，系统认为：</span>
             <span>
             <?php echo $result->name;?>
-            <span class="text-red text-bold"><?php echo $posts['name'];?></span>
+            <span class="text-red text-bold"><?php echo $result->value;?></span>
             <?php echo $result->value;?>
             <span class="text-red"><?php echo $result->intro;?></span>
             </span>
@@ -42,10 +42,10 @@ echo $this->renderFile(__DIR__ . '/../layouts/head-answer.php');
 		
 		<div id="id_ceshi_show">
 			<div>
-				<img src="./bag-test/test-images/103754b6unkvhquepniein.jpg" id="front-img"
-					alt="你有多怕谈恋爱：恋爱恐怖程度自评">
+				<img src="<?php echo $image = isset( $model->images->image ) ? UPLOAD_DIR.$model->images->image : DEFAULT_IMAGE;?>" id="front-img"
+					alt="<?php echo $model->title;?>">
 			</div>
-			<div>爱情就像一场赌博,你越恐惧就越得不到幸福。你会因为曾经的伤害,而不敢接受新的恋情吗?完成测试,看看你的恐惧指数有多高。</div>
+			<div><?php echo $model->intro;?></div>
 			<span class="stip">此测试仅供娱乐，不做专业指导！</span>
 
 

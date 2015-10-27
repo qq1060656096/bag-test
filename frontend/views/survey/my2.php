@@ -27,7 +27,16 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
     			<?php 
                 foreach ($a_models as $key=>$row){            
 //                     ZCommonFun::print_r_debug($row->images);  
-                    $row_url = Yii::$app->urlManager->createUrl(['answer/step1','id'=>$row->id]); 
+                    switch( $row->tax){
+                        case 1: 
+                            $row_url = Yii::$app->urlManager->createUrl(['answer/step1','id'=>$row->id]);
+                            break;
+                        case 2: 
+                            $row_url = Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$row->id]);
+                            break;
+                        default: $row_url='';break;
+                    }
+                    
                     $row_ur_change = Yii::$app->urlManager->createUrl(['survey/step2','id'=>$row->id]); 
                     $image = isset( $row->images->image ) ? UPLOAD_DIR.$row->images->image : DEFAULT_IMAGE;         
                 ?>

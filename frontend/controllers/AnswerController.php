@@ -131,7 +131,7 @@ class AnswerController extends Controller{
         $error = '';
         if(isset($posts['save'])){
             $op = count($posts['options'])>0 ? true :false;
-            ZCommonFun::print_r_debug($posts);
+//             ZCommonFun::print_r_debug($posts);
 //             ZCommonFun::print_r_debug($data['options']);
 //             exit;
             $total_score = 0;
@@ -176,6 +176,8 @@ class AnswerController extends Controller{
                             $model->setAnswerCount($id);
                             $model_SurveyResulte = new SurveyResulte();
                             $result = $model_SurveyResulte->getStep2Result($id, $total_score);
+//                             ZCommonFun::print_r_debug($result);
+//                             exit();
                             return $this->render('step2_answer_post',[
                                 'data'=>$data,
                                 'model'=>$model,
@@ -197,8 +199,8 @@ class AnswerController extends Controller{
             
             
         }
-        echo $error;
-        exit;
+//         echo $error;
+//         exit;
 //         ZCommonFun::print_r_debug($result);
         return $this->render('step2_answer',[
             'data'=>$data,

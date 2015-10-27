@@ -139,10 +139,16 @@ class SurveyController extends ZController
                 return '';
             }
                 foreach ($a_models as $key=>$row){
+                    if($row->tax==1){
+                        $url = Yii::$app->urlManager->createUrl(['answer/step1','id'=>$row->id]);
+                    }else{
+                        $url = Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$row->id]);
+                    }
+               
                    $image = isset( $row->images->image ) ? UPLOAD_DIR.$row->images->image : DEFAULT_IMAGE;
                    echo <<<str
 <dl>
-	<a href="./start.html">
+	<a href="{$url}">
 		<dt>
 			<img src="{$image}"
 				alt="你有多怕谈恋爱：恋爱恐怖程度自评">
