@@ -104,4 +104,71 @@ class User extends \yii\db\ActiveRecord
         }
         return false;
     }
+    /**
+     * 绑定用户信息
+     * @param unknown $user 用户名
+     * @param unknown $pass 密码
+     * @param unknown $uid 用户id
+     * @param unknown $openid 开放id
+     * @param unknown $type 类型
+     * @param unknown $nickname 昵称
+     * @param unknown $head_image 头像
+     * @param string $is_register true注册用户|false老用户绑定
+     * @return number
+     */
+    public function userBind($user,$pass,$uid,$openid,$type,$nickname,$head_image,$is_register=false){
+        //已存在用户
+        if(!$is_register){
+            //如果有用户
+            if( $uid>0 || !empty($user) ){
+                $model_User = new User();
+                $uid>0 ? $condition['uid'] = $uid : $condition['user'] = $user;
+                $model_User = $model_User->findOne($condition);
+                //用户不存
+                if(!$model_User){
+                    return -2;
+                }
+            }
+        }//注册用户
+        else{
+            $model_User = new User();
+            $max_uid = User::find()->max('uid');
+            $max_uid ++;
+            $model_User->user = $max_uid;
+            $model_User->created = NOW_TIME_YmdHis;
+            $model_User->save();
+        }
+        
+        
+        $model_OauthBind = new OauthBind();
+        $condition['openid'] = $openid;
+        $condition['type'] = $type;
+        //如果绑定了
+        if($model_OauthBind->findOne($condition) ){
+            return 1;
+        }
+        
+        $model_OauthBind = new OauthBind();
+        $model_OauthBind->openid = $openid;
+        $model_OauthBind->type = $type;
+        $model_OauthBind->uid = $model_User->uid;
+        if( $model_OauthBind->save() ){
+            $model_UserProfile = UserProfile::find()->where(['uid'=>$model_User->uid])->one();
+            //如果没有设置过用户信息，就设置用户信息
+            if(!$model_UserProfile){ 
+                $model_UserProfile = new UserProfile();
+                $model_UserProfile->uid = $model_User->uid;
+                $model_UserProfile->nickname = $nickname;
+                $model_UserProfile->head_image = $head_image;
+                $model_UserProfile->money = 0;
+                $model_UserProfile->friend_money = 0;
+                $model_UserProfile->save();
+            }
+            $this->operationData['user'] = $model_User;
+            $this->operationData['oauth_bind'] = $model_OauthBind;
+            $this->operationData['user_profile'] = $model_UserProfile;
+            return 0;
+        }
+        return -1;
+    }
 }

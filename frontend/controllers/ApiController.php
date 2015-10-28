@@ -20,7 +20,7 @@ class ApiController extends Controller{
      * qq登录
      */
     public function actionLoginQq(){
-       $qq = new QQ();
+      $qq = new QQ();
         
       $qq->qq_login();
       exit;
@@ -34,7 +34,9 @@ class ApiController extends Controller{
         echo $qq->qq_callback();
         echo $qq->get_openid();
         $data = $qq->get_info();
-        
+        $model_User = new User();
+//         $model_User->userBind($user, $pass, $uid, $openid, $type, $nickname, $head_image);
+//         ZCommonFun::print_r_debug( $model_User->operationData );
         ZCommonFun::print_r_debug($data);
         exit;
     }
@@ -73,6 +75,9 @@ class ApiController extends Controller{
         $uid_get = $weibo->get_uid();
         $uid = $uid_get['uid'];
         $user_message = $weibo->show_user_by_id($uid);//根据ID获取用户等基本信息
+        $model_User = new User();
+//         $model_User->userBind($user, $pass, $uid, $openid, $type, $nickname, $head_image);
+//         ZCommonFun::print_r_debug( $model_User->operationData );
 
         ZCommonFun::print_r_debug($user_message);
         exit;
