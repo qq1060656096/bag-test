@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use common\z\ZCommonFun;
 use common\models\Survey;
+use common\z\ZCommonSessionFun;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\SurverySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -11,6 +12,7 @@ $this->title = '个人中心';
 $this->params['breadcrumbs'][] = $this->title;
 
 echo $this->renderFile(__DIR__.'/../layouts/head.php');
+
 ?>
 
 <script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js"></script>

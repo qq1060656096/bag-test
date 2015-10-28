@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "{{%user_profile}}".
+ * This is the model class for table "user_profile".
  *
  * @property integer $id
  * @property integer $uid
@@ -21,7 +21,7 @@ class UserProfile extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%user_profile}}';
+        return 'user_profile';
     }
 
     /**
@@ -30,8 +30,7 @@ class UserProfile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'uid'], 'integer'],
+            [['uid'], 'integer'],
             [['money', 'friend_money'], 'number'],
             [['nickname', 'head_image'], 'string', 'max' => 255]
         ];

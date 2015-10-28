@@ -20,6 +20,9 @@ class User extends \yii\db\ActiveRecord
     public $operationError=0;
     public $operationMessage=null;
     public $operationData = null;
+    
+    const scenarioOauthBind = 'oauth-bind';
+    
     public function clearOperation(){
         $this->operationError = 0;
         $this->operationMessage = null;
@@ -44,7 +47,8 @@ class User extends \yii\db\ActiveRecord
             [['user'], 'string', 'max' => 128],
             [['pass'], 'string', 'max' => 255],
             [['user'], 'unique','message'=>'{attribute}已经存在'],
-            [['user','pass'], 'required','message'=>'{attribute}不能为空']
+            [['user','pass'], 'required','message'=>'{attribute}不能为空'],
+            [['pass'], 'safe', 'on' =>self::scenarioOauthBind],
         ];
     }
 
@@ -132,9 +136,11 @@ class User extends \yii\db\ActiveRecord
         }//注册用户
         else{
             $model_User = new User();
+    
             $max_uid = User::find()->max('uid');
             $max_uid ++;
-            $model_User->user = $max_uid;
+            $model_User->user = $max_uid.'';
+            $model_User->pass = $model_User->user;
             $model_User->created = NOW_TIME_YmdHis;
             $model_User->save();
         }
@@ -143,17 +149,36 @@ class User extends \yii\db\ActiveRecord
         $model_OauthBind = new OauthBind();
         $condition['openid'] = $openid;
         $condition['type'] = $type;
-        //如果绑定了
-        if($model_OauthBind->findOne($condition) ){
+        $model_OauthBind=$model_OauthBind->findOne($condition);
+        //已经绑定了
+        if( $model_OauthBind ){
+            $this->operationData['user'] = $model_User;
+            $model_UserProfile = UserProfile::findOne(['uid'=>$model_User->uid]);
+            if(!$model_UserProfile){
+                $model_UserProfile = new UserProfile();
+                $model_UserProfile->uid = $model_User->uid;
+                $model_UserProfile->nickname = $nickname;
+                $model_UserProfile->head_image = $head_image;
+                $model_UserProfile->money = 0;
+                $model_UserProfile->friend_money = 0;
+                
+                $model_UserProfile->save();
+//                 ZCommonFun::print_r_debug($model_UserProfile);
+//                 exit;
+            }
+            
+            $this->operationData['oauth_bind'] = $model_OauthBind;
+            $this->operationData['user_profile'] = $model_UserProfile ;
             return 1;
         }
         
         $model_OauthBind = new OauthBind();
-        $model_OauthBind->openid = $openid;
+        $model_OauthBind->openid = $openid.'';
         $model_OauthBind->type = $type;
         $model_OauthBind->uid = $model_User->uid;
+        $model_OauthBind->created = NOW_TIME_YmdHis;
         if( $model_OauthBind->save() ){
-            $model_UserProfile = UserProfile::find()->where(['uid'=>$model_User->uid])->one();
+            $model_UserProfile = UserProfile::findOne(['uid'=>$model_User->uid]);
             //如果没有设置过用户信息，就设置用户信息
             if(!$model_UserProfile){ 
                 $model_UserProfile = new UserProfile();
@@ -162,13 +187,15 @@ class User extends \yii\db\ActiveRecord
                 $model_UserProfile->head_image = $head_image;
                 $model_UserProfile->money = 0;
                 $model_UserProfile->friend_money = 0;
+            
                 $model_UserProfile->save();
             }
+            
             $this->operationData['user'] = $model_User;
-            $this->operationData['oauth_bind'] = $model_OauthBind;
             $this->operationData['user_profile'] = $model_UserProfile;
             return 0;
         }
+        
         return -1;
     }
 }

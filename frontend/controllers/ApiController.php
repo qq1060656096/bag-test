@@ -7,6 +7,8 @@ use common\z\ZCommonFun;
 use common\z\oauth\qq\QQ;
 use common\z\oauth\weibo\WeiBo;
 use yii\helpers\Json;
+use common\models\OauthBind;
+use common\z\ZCommonSessionFun;
 /**
  * 登录
  * @author pc
@@ -31,13 +33,24 @@ class ApiController extends Controller{
      */
     public function actionCallbackQq(){
         $qq = new QQ();
-        echo $qq->qq_callback();
-        echo $qq->get_openid();
-        $data = $qq->get_info();
+        $access_token = $qq->qq_callback();
+        $openid = $qq->get_openid();
+        $qq = new QQ($access_token,$openid);
+        $user_info = $qq->get_user_info();
         $model_User = new User();
-//         $model_User->userBind($user, $pass, $uid, $openid, $type, $nickname, $head_image);
-//         ZCommonFun::print_r_debug( $model_User->operationData );
-        ZCommonFun::print_r_debug($data);
+        $return = $model_User->userBind('', '', '', $openid, OauthBind::typeQQ, $user_info['nickname'], $user_info['figureurl'],true);
+        //绑定成功或者已经绑定
+        if($return===0 || $return===1){
+            $user = $model_User->operationData['user']->attributes;
+            $user['nickname'] = $model_User->operationData['user_profile']->nickname;
+            $user['head_image'] = $model_User->operationData['user_profile']->head_image;
+            $user['openid'] = $openid;
+            ZCommonSessionFun::set_user_session($user);
+            return $this->redirect([ZCommonSessionFun::urlMyStr]);
+        }
+       echo $return;
+        ZCommonFun::print_r_debug( $model_User->operationData );
+        
         exit;
     }
     
@@ -73,11 +86,27 @@ class ApiController extends Controller{
             setcookie( 'weibojs_'.$weibo->client_id, http_build_query($token) );
             
         $uid_get = $weibo->get_uid();
-        $uid = $uid_get['uid'];
-        $user_message = $weibo->show_user_by_id($uid);//根据ID获取用户等基本信息
-        $model_User = new User();
-//         $model_User->userBind($user, $pass, $uid, $openid, $type, $nickname, $head_image);
-//         ZCommonFun::print_r_debug( $model_User->operationData );
+        $openid = $uid = $uid_get['uid'];
+        echo $uid;
+        $user_message = $weibo->show_user_by_id($openid);//根据ID获取用户等基本信息
+        if( isset( $user_message['name'] ) && count($user_message)>0){
+            $model_User = new User();
+            $return = $model_User->userBind('', '', '', $openid, OauthBind::typeWeiBo, $user_message['name'], $user_message['profile_image_url'],true);
+            //绑定成功或者已经绑定
+            if($return===0 || $return===1){
+                $user = $model_User->operationData['user']->attributes;
+                $user['nickname'] = $model_User->operationData['user_profile']->nickname;
+                $user['head_image'] = $model_User->operationData['user_profile']->head_image;
+                $user['openid'] = $openid;
+                ZCommonSessionFun::set_user_session($user);
+//                 ZCommonFun::print_r_debug($user_message);
+//                 ZCommonFun::print_r_debug( $model_User->operationData );
+//                 exit;
+                return $this->redirect([ZCommonSessionFun::urlMyStr]);
+            }
+        }
+        echo $return;
+        ZCommonFun::print_r_debug( $model_User->operationData );
 
         ZCommonFun::print_r_debug($user_message);
         exit;

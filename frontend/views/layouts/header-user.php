@@ -48,16 +48,18 @@
 }
 </style>
 <?php 
-
+use common\z\ZCommonSessionFun;
 $model_SurveyTotal = new common\models\Survey();
+$sessionUser = ZCommonSessionFun::get_user_session();
 ?>
 <div class="user-info">
 	<table>
 		<tr>
-			<td class="td-1"><i class="fa fa-user user-image  common-color"></i>
+			<td class="td-1">
+			     <?php echo isset($sessionUser['head_image']) ? '<img width="48" height="48" src="'.$sessionUser['head_image'].'"/>': '<i class="fa fa-user user-image  common-color"></i>'?>
 			</td>
 			<td class="td-2">
-				<h3 class="common-color">风之谷</h3>
+				<h3 class="common-color"><?php echo isset($sessionUser['nickname']) ? $sessionUser['nickname']: '暂无昵称'?></h3>
 				<div>
 					创建了<sapn class="common-color">
 					<?php echo $model_SurveyTotal->getMySurveyCount();?>

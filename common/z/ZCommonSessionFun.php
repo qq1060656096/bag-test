@@ -15,6 +15,11 @@ class ZCommonSessionFun
      */
     const urlIndexUserStr = 'survey/index';
     /**
+     * 个人中心
+     * @var unknown
+     */
+    const urlMyStr = 'survey/my';
+    /**
      * 用户session前缀
      * @var unknown
      */
