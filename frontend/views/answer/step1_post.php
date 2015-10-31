@@ -45,8 +45,8 @@ $image = Yii::$app->request->hostInfo.Yii::$app->request->baseUrl.'/'.$image;
 		
 		<div id="id_ceshi_show">
 			<div>
-				<img src="./bag-test/test-images/103754b6unkvhquepniein.jpg"
-					id="front-img" alt="你有多怕谈恋爱：恋爱恐怖程度自评">
+				<img src="<?php echo $image;?>"
+					id="front-img" alt="<?php echo $model->title;?>">
 			</div>
 			<div><?php echo $model->intro;?></div>
 			<span class="stip">此测试仅供娱乐，不做专业指导！</span>
@@ -90,6 +90,7 @@ $image = Yii::$app->request->hostInfo.Yii::$app->request->baseUrl.'/'.$image;
 			  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
           </script>
 		</div>
+		
 	</div>
 
 	<style>

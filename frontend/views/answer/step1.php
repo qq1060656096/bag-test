@@ -4,6 +4,11 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Survey */
 
 echo $this->renderFile(__DIR__ . '/../layouts/head-answer.php');
+
+$share_url = '';
+
+$image = isset( $model->images->image ) ? UPLOAD_DIR.$model->images->image : DEFAULT_IMAGE;
+$image = Yii::$app->request->hostInfo.Yii::$app->request->baseUrl.'/'.$image;
 ?>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -73,17 +78,54 @@ function answer(){
 		<br>
 		<div id="id_ceshi_show">
 			<div>
-				<img src="./bag-test/test-images/103754b6unkvhquepniein.jpg" id="front-img"
-					alt="你有多怕谈恋爱：恋爱恐怖程度自评">
+				<img src="<?php echo $image;?>" id="front-img"
+					alt="<?php echo $model->title;?>">
 			</div>
-			<div>爱情就像一场赌博,你越恐惧就越得不到幸福。你会因为曾经的伤害,而不敢接受新的恋情吗?完成测试,看看你的恐惧指数有多高。</div>
+			<div><?php echo $model->intro;?></div>
 			<a href="http://m.xinli001.com/ceshi/99897421/#" id="id_start_ceshi"
 				class="ui-link">开始测试</a> <span class="stip">此测试仅供娱乐，不做专业指导！</span>
 
-
+            
+            <div class="baidu_share">
+		    <div id="share_label" style="border-bottom: none">
+                <span>分享到 : </span>
+            </div>
+			<div class="bdsharebuttonbox">
+				<a href="#" class="bds_more" data-cmd="more"></a>
+				<a href="#" class="bds_sqq" data-cmd="sqq"></a>
+				<a href="#" class="bds_weixin" data-cmd="weixin"></a>
+				<a href="#" class="bds_tsina" data-cmd="tsina"></a>
+				<a href="#" class="bds_qzone" data-cmd="qzone"></a>			
+				<a href="#" class="bds_tqf" data-cmd="tqf"></a>
+				<a href="#" class="bds_tieba" data-cmd="tieba"></a>	
+				
+			</div>
+			<script>
+			  window._bd_share_config={
+					  "common":{
+						    bdText : '<?php echo $model->title;?>',	
+                            bdDesc : '<?php echo $model->intro;?>',	
+                            bdUrl : '<?php echo $share_url;?>', 	
+                            bdPic : '<?php echo $image?>'	
+						  },
+						  "share":[{
+								"bdSize" : 32
+							}],
+						  "image":{
+							  "viewList":
+								  ["qzone","tsina",'tqf',"sqq","tieba","weixin"],
+							  "viewText":"分享到：","viewSize":"16"},
+							  "selectShare":{
+								  "bdContainerClass":null,
+								  "bdSelectMiniList":
+									  ["qzone","tsina","tqq","renren","weixin"]}};
+			  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+          </script>
+		</div>
+		
 		</div>
 
-
+            
 
 		
         <?php $form = ActiveForm::begin(); ?>
