@@ -4,14 +4,12 @@ use yii\widgets\ActiveForm;
 use common\z\ZCommonFun;
 /* @var $model common\models\Survey */
 // ZCommonFun::print_r_debug($data['options']);
+global $share_url,$image;
+echo $this->renderFile(__DIR__.'/../layouts/head-answer.php',['model'=>$model]);
 
-$share_url = '';
-
-$image = isset( $model->images->image ) ? UPLOAD_DIR.$model->images->image : DEFAULT_IMAGE;
-$image = Yii::$app->request->hostInfo.Yii::$app->request->baseUrl.'/'.$image;
 ?>
 
-<?php echo $this->renderFile(__DIR__.'/../layouts/head-answer.php');?>
+
 <script type="text/javascript">
 $(document).ready(function(){
 	answerStart();
@@ -76,7 +74,17 @@ function answer(){
 				style="display: inline-block; float: right;"><?php echo $model->created;?></span>
 		</div>
 		<br>
-		<div class="baidu_share">
+		
+		<div id="id_ceshi_show">
+			<div>
+				<img src="<?php echo $image = isset( $model->images->image ) ? UPLOAD_DIR.$model->images->image : DEFAULT_IMAGE;?>"
+					alt="<?php echo $model->title;?>">
+			</div>
+			<div><?php echo $model->intro;?></div>
+			<a href="http://m.xinli001.com/ceshi/99897421/#" id="id_start_ceshi"
+				class="ui-link">开始测试</a> <span class="stip">此测试仅供娱乐，不做专业指导！</span>
+
+            <div class="baidu_share">
 		    <div id="share_label" style="border-bottom: none">
                 <span>分享到 : </span>
             </div>
@@ -112,16 +120,7 @@ function answer(){
 			  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
           </script>
 		</div>
-		<div id="id_ceshi_show">
-			<div>
-				<img src="<?php echo $image = isset( $model->images->image ) ? UPLOAD_DIR.$model->images->image : DEFAULT_IMAGE;?>"
-					alt="<?php echo $model->title;?>">
-			</div>
-			<div><?php echo $model->intro;?></div>
-			<a href="http://m.xinli001.com/ceshi/99897421/#" id="id_start_ceshi"
-				class="ui-link">开始测试</a> <span class="stip">此测试仅供娱乐，不做专业指导！</span>
-
-
+		
 		</div>
 
 

@@ -3,11 +3,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 /* @var $model common\models\Survey */
 $this->title = $model->title.'--测试结果';
-echo $this->renderFile(__DIR__ . '/../layouts/head-answer.php');
-$share_url = '';
-
-$image = isset( $model->images->image ) ? UPLOAD_DIR.$model->images->image : DEFAULT_IMAGE;
-$image = Yii::$app->request->hostInfo.Yii::$app->request->baseUrl.'/'.$image;
+echo $this->renderFile(__DIR__ . '/../layouts/head-answer.php',['model'=>$model,'model_Answer'=>$model_Answer]);
+global $share_url,$image;
 ?>
 <div data-role="page" id="id_ceshi_page" data-url="id_ceshi_page"
 	data-dom-cache="false" tabindex="0"
@@ -29,7 +26,31 @@ $image = Yii::$app->request->hostInfo.Yii::$app->request->baseUrl.'/'.$image;
 		</div>
 		<div class="line"></div>
 		<br>
-		<div class="baidu_share">
+		
+    	
+	   <?php if( isset($result) ){?>
+        <div class="result">
+            <span class="sys">经过对你的名字进行分析，系统认为：</span>
+            <span>
+            <?php echo $result->name;?>
+            <span class="text-red text-bold"><?php echo $result->value;?></span>
+            <?php echo $result->value;?>
+            <span class="text-red"><?php echo $result->intro;?></span>
+            </span>
+        </div>
+        <?php } ?>
+    	
+		
+		<div id="id_ceshi_show">
+			<div>
+				<img src="<?php echo $image = isset( $model->images->image ) ? UPLOAD_DIR.$model->images->image : DEFAULT_IMAGE;?>" id="front-img"
+					alt="<?php echo $model->title;?>">
+			</div>
+			<div><?php echo $model->intro;?></div>
+			<span class="stip">此测试仅供娱乐，不做专业指导！</span>
+
+            
+            <div class="baidu_share">
 		    <div id="share_label" style="border-bottom: none">
                 <span>分享到 : </span>
             </div>
@@ -65,29 +86,7 @@ $image = Yii::$app->request->hostInfo.Yii::$app->request->baseUrl.'/'.$image;
 			  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
           </script>
 		</div>
-    	
-	   <?php if( isset($result) ){?>
-        <div class="result">
-            <span class="sys">经过对你的名字进行分析，系统认为：</span>
-            <span>
-            <?php echo $result->name;?>
-            <span class="text-red text-bold"><?php echo $result->value;?></span>
-            <?php echo $result->value;?>
-            <span class="text-red"><?php echo $result->intro;?></span>
-            </span>
-        </div>
-        <?php } ?>
-    	
 		
-		<div id="id_ceshi_show">
-			<div>
-				<img src="<?php echo $image = isset( $model->images->image ) ? UPLOAD_DIR.$model->images->image : DEFAULT_IMAGE;?>" id="front-img"
-					alt="<?php echo $model->title;?>">
-			</div>
-			<div><?php echo $model->intro;?></div>
-			<span class="stip">此测试仅供娱乐，不做专业指导！</span>
-
-
 		</div>
 	</div>
 

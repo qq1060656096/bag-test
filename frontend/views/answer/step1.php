@@ -2,13 +2,10 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 /* @var $model common\models\Survey */
+global $share_url,$image;
+echo $this->renderFile(__DIR__ . '/../layouts/head-answer.php',['model'=>$model]);
 
-echo $this->renderFile(__DIR__ . '/../layouts/head-answer.php');
 
-$share_url = '';
-
-$image = isset( $model->images->image ) ? UPLOAD_DIR.$model->images->image : DEFAULT_IMAGE;
-$image = Yii::$app->request->hostInfo.Yii::$app->request->baseUrl.'/'.$image;
 ?>
 <script type="text/javascript">
 $(document).ready(function(){

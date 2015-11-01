@@ -29,8 +29,27 @@ class AnswerController extends Controller{
         
         $q = new Question();
         $posts = Yii::$app->request->post();
+        //查找answer操作
+        $aid = Yii::$app->request->get('aid',0);
+        $aid = (int)$aid;
+        $model_Answer = new Answer();
+        if($aid>0){
+            $model_Answer = $model_Answer->findOne(['a_id'=>$aid,'table_id'=>$id]);
+        }
         $result = null;
-        if( isset($posts['name']) ){
+        if( ( isset($posts['name']) && !empty($posts['name'])) || $model_Answer){
+            if(isset($posts['name'])){
+                $model->save();
+                $model_Answer = new Answer();
+                $model_Answer->table_id = $id;
+                $model_Answer->value = $posts['name'];
+                $model_Answer->save();
+            }else{
+                $posts['name'] = $model_Answer->value;
+            }
+//             ZCommonFun::print_r_debug($posts['name']);
+//             ZCommonFun::print_r_debug($model_Answer);
+//             exit;
             $name = isset($posts['name']) ? $posts['name'] : '';
             $year = isset($posts['birth']['year']) ? $posts['birth']['year'] : 2015;
             $month = isset($posts['birth']['month']) ? $posts['birth']['month'] : 1;
@@ -41,7 +60,7 @@ class AnswerController extends Controller{
             //计算测试结果
             $result = $model_SurveyResulte->getStep1Result($id, $name, $birth);
             $model->answer_count = $model->randCount($model->answer_count);
-            $model->save();
+            
             
 //             ZCommonFun::print_r_debug($result);
             return $this->render('step1_post',[
@@ -49,6 +68,7 @@ class AnswerController extends Controller{
                 'model'=>$model,
                 'result'=>$result,
                 'posts'=>$posts,
+                'model_Answer'=>$model_Answer,
             ]);
         }
 //         ZCommonFun::print_r_debug($posts);
@@ -88,31 +108,7 @@ class AnswerController extends Controller{
         ]);
     }
     
-    /**
-     * 分数型问题回答
-     */
-    public function actionStep2Answer($id,$page){
-        
-        $model = Survey::findOne($id);
-        if(!$model){//没找到
-            $model = new Survey();
-        }
-        $data = $model->findOneQuestion($id, 1, $page);
-//         ZCommonFun::print_r_debug($data);
-        $posts = Yii::$app->request->post();
-        
-        
-        if(isset($posts['save'])){
-        
-        }
-        
-        return $this->render('step2_answer',[
-                    'data'=>$data,
-            'model'=>$model,
-            'page'=>$page,
-            'posts'=>$posts,
-        ]);
-    }
+   
     
     
     /**
@@ -128,8 +124,28 @@ class AnswerController extends Controller{
 //                 ZCommonFun::print_r_debug($_POST);
         $posts = Yii::$app->request->post();
     
+        //查找answer操作
+        $aid = Yii::$app->request->get('aid',0);
+        $aid = (int)$aid;
+        $model_Answer = new Answer();
+        if($aid>0){
+            $model_Answer = $model_Answer->findOne(['a_id'=>$aid,'table_id'=>$id]);
+            //如果已经有回答者了，直接显示
+            if($model_Answer){
+                $model_SurveyResulte = new SurveyResulte();
+                $result = $model_SurveyResulte->getStep2Result($id, $model_Answer->answer_score);
+                return $this->render('step2_answer_post',[
+                    'data'=>$data,
+                    'model'=>$model,
+                    'result'=>$result,
+                    'posts'=>$posts,
+                    'model_Answer'=>$model_Answer
+                ]);
+            }
+        }
+        
         $error = '';
-        if(isset($posts['save'])){
+        if(isset($posts['save']) ){
             $op = count($posts['options'])>0 ? true :false;
 //             ZCommonFun::print_r_debug($posts);
 //             ZCommonFun::print_r_debug($data['options']);
@@ -137,6 +153,7 @@ class AnswerController extends Controller{
             $total_score = 0;
             $save =0;
             $result = null;
+            
             //保存结果
             $transaction = Yii::$app->db->beginTransaction();
      
@@ -160,7 +177,7 @@ class AnswerController extends Controller{
                                     $model_Answer->table_id = $id;
                                     $model_Answer->question_id = $option->question_id;
                                     $model_Answer->qo_id = $row[0];
-                                    $model_Answer->answer_score = $option->option_score;
+                                    $model_Answer->answer_score += $option->option_score;
                                     $model_Answer->au_id = $model_AnswerUser->au_id;
                                     $total_score += $model_Answer->answer_score;
                                     $model_Answer->save() ? $save++:null;
@@ -183,6 +200,7 @@ class AnswerController extends Controller{
                                 'model'=>$model,
                                 'result'=>$result,
                                 'posts'=>$posts,
+                                'model_Answer'=>$model_Answer
                             ]);
                         }else{
                             $error = '没有选项';

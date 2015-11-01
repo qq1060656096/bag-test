@@ -3,12 +3,9 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 /* @var $model common\models\Survey */
 $this->title = $model->title . '--测试结果';
-echo $this->renderFile(__DIR__ . '/../layouts/head-answer.php');
+global $share_url,$image;
+echo $this->renderFile(__DIR__ . '/../layouts/head-answer.php',['model'=>$model,'model_Answer'=>$model_Answer]);
 
-$share_url = '';
-
-$image = isset( $model->images->image ) ? UPLOAD_DIR.$model->images->image : DEFAULT_IMAGE;
-$image = Yii::$app->request->hostInfo.Yii::$app->request->baseUrl.'/'.$image;
 ?>
 <div data-role="page" id="id_ceshi_page" data-url="id_ceshi_page"
 	data-dom-cache="false" tabindex="0"
