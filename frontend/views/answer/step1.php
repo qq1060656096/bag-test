@@ -80,7 +80,8 @@ function answer(){
 			</div>
 			<div><?php echo $model->intro;?></div>
 			<a href="http://m.xinli001.com/ceshi/99897421/#" id="id_start_ceshi"
-				class="ui-link">开始测试</a> <span class="stip">此测试仅供娱乐，不做专业指导！</span>
+				class="ui-link">开始测试</a> 
+				<span class="stip">此测试仅供娱乐，不做专业指导！</span>
 
             
             <div class="baidu_share">

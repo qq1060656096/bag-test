@@ -32,8 +32,9 @@ class AnswerController extends Controller{
         //查找answer操作
         $aid = Yii::$app->request->get('aid',0);
         $aid = (int)$aid;
-        $model_Answer = new Answer();
+        $model_Answer = null;
         if($aid>0){
+            $model_Answer = new Answer();
             $model_Answer = $model_Answer->findOne(['a_id'=>$aid,'table_id'=>$id]);
         }
         $result = null;
