@@ -41,8 +41,18 @@ function answerPrevQuestion(){
 function answer(){
 	$("label>input").click(function(){
 		var now_question = $(this).closest('.question-item');
-		if(now_question){
-			console.log( now_question );
+		console.log( now_question );
+		var label = $(this).closest('label');
+		var skip_id = label.attr('skip-question');
+		skip_id = skip_id-1;
+		console.log(skip_id);
+		if(skip_id>0&&$('.question-item').eq(skip_id)){
+				now_question.hide();//隐藏当前问题
+				$('.question-item').eq(skip_id).show();
+			
+	    }
+		else if(now_question){
+			
 			var next = now_question.next();
 			//如果不是最后一个问题
 			if(next.length>0){
@@ -135,7 +145,7 @@ function answer(){
                 $question_count = count($data['questions']);
                 foreach ($data['questions'] as $key=>$question){
                 ?>
-				<div id="id_question_list" class="question-item">
+				<div id="id_question_list" question-id="<?php echo $question->question_id;?>" class="question-item">
 					<div>当前第<?php echo $key+1;?>/<?php echo $question_count;?>题</div>
 
 					<fieldset data-role="controlgroup"
@@ -146,7 +156,7 @@ function answer(){
                             isset($data['options'][$key]) ? null : $data['options'][$key]=[];
                             foreach ($data['options'][$key] as $key2=>$option){
                             ?>	
-							<label for="option-id-<?php echo $option->qo_id;?>" >
+							<label for="option-id-<?php echo $option->qo_id;?>" skip-question="<?php echo $option->skip_question;?>">
 						
 									<input type="radio" id="option-id-<?php echo $option->qo_id;?>" name="options[<?php echo $question->question_id; ?>][]" value="<?php echo $option->qo_id;?>">
 									<span ><?php echo $option->option_label;?></span>

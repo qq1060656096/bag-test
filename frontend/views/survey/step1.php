@@ -25,9 +25,9 @@ $this->title="创建测试";
         <?php 
         foreach ($survey_tax as $id=>$name){
             $url = Yii::$app->urlManager->createUrl(['survey/step2','tax'=>$id]);
-            if($id>=3){
-                break;
-            }
+//             if($id>=3){
+//                 break;
+//             }
         ?>
     
             <a class="btn_bg" href="<?php echo $url;?>">

@@ -34,6 +34,7 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
                             $row_url = Yii::$app->urlManager->createUrl(['answer/step1','id'=>$row->id]);
                             break;
                         case 2: 
+                        case 3:
                             $row_url = Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$row->id]);
                             break;
                         default: $row_url='';break;

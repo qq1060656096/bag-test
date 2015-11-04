@@ -294,7 +294,7 @@ str;
                 
                                 //跳转型心里测试
                             case 3:
-                                return $this->redirect(['step4_3','id'=>$model->id]);
+                                return $this->redirect(['step4_2_question','id'=>$model->id]);
                                 break;
                             default:
                                 break;
@@ -387,7 +387,26 @@ str;
 //             ZCommonFun::print_r_debug($url);
 //             ZCommonFun::print_r_debug($posts);
 //             exit;
-            return $this->redirect($url);
+   
+            
+            switch ( $model->tax ){
+                    //分数型心里测试
+                case 2:
+                    return $this->redirect($url);
+                    break;
+            
+                    //跳转型心里测试
+                case 3:
+                   
+                    if(isset($url[0])&&$url[0]=='step4_2_question'){
+                        return $this->redirect($url);
+                    }else{
+                        return $this->redirect(['step4_3','id'=>$model->id]);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
         
         return $this->render('step4_2_question',[
@@ -443,6 +462,7 @@ str;
      * 跳转型心里测试 结果
      */
     public function actionStep4_3($id){
+        $this->layout = false;
         $model  = Survey::findOne($id);
         //没有找到
         if(!$model){
@@ -450,8 +470,33 @@ str;
             if(!$model)
                 return $this->redirect(['my']);
         }
+        $data = $model->FindAllQuestionsOptions($id);
+        $posts = Yii::$app->request->post();
+        //post提交
+        if(isset($posts['option'])&& count($posts['option'])>0){
+//             ZCommonFun::print_r_debug( $data );
+            isset($data['options'][0]) ? null:$data['options']=[];
+            foreach ( $data['options'] as $key=>$row ){
+                if( !isset( $row[0] ) )
+                    continue; 
+                foreach ($row as $key2=>$row_option){
+                    if(isset($posts['option']["{$row_option->qo_id}"])&& $posts['option']["{$row_option->qo_id}"] >$key+1){
+                        $row_option->skip_question=$posts['option']["{$row_option->qo_id}"];
+                        $row_option->save();
+                    }
+                    
+                }
+                $url = ['step4_2','id'=>$id];
+                return $this->redirect($url);
+//                 ZCommonFun::print_r_debug($row_option);
+//                 exit;
+            }
+        }
+//         ZCommonFun::print_r_debug( $posts );
         return $this->render('step4_3',[
-            
+            'a_SurveyResulte'=>'',
+            'data'=>$data,
+            'model'=>$model,
         ]);
     }
     
