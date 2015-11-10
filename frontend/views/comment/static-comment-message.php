@@ -1,14 +1,15 @@
-<div class="ux-popmenu" style="position: fixed; display: none; background-color: rgba(0, 0, 0, 0.498039);vertical-align: bottom;">
+<div class="ux-popmenu ux-popmenu1" style="position: fixed; display: none; background-color: rgba(0, 0, 0, 0.498039);vertical-align: bottom;">
 <div id="box-comment" class="container stage-publisher">
 	
 	<div id="boxId_1447072618335_3"></div>
 	<header class="module-topbar" id="boxId_1447165659499_1" >
-		<a class="fl txt-link" href="javascript:history.go(-1);" data-node="back" title="取消" data-act-type="hover">取消</a> <a class="fr txt-link disable" href="javascript:;" data-node="send" title="发送" data-act-type="hover">发送</a>
+		<a class="fl txt-link cancel1" href=""  title="取消" >取消</a> 
+		<a class="fr txt-link disable1" href=""  title="发送" >发送</a>
 		<div class="title-group">
 			<h1 class="title txt-cut">回复评论</h1>
 		</div>
 	</header>
-	<article class="module-publisher" id="boxId_1447165659499_2">
+	<article class="module-publisher" >
 		<div class="txt-publisher-wrapper">
 			<textarea id="txt-publisher" name="content" class="J-textarea txt-publisher" placeholder=""></textarea>
 		</div>

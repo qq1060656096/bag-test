@@ -166,15 +166,17 @@ function answer(){
 
 
 		<?php ActiveForm::end(); ?>
-
-		<!-- template.cache.mobile-ceshi-show-questions.0c968bd61f3b7fa78b9483c21a4c8bea -->
+        
+		
 	</div>
-
+    <?php 
+        echo $this->renderFile(__DIR__ . '/../comment/static-list.php');
+    ?>
 
 </div>
 <!-- /page -->
 <?php 
-echo $this->renderFile(__DIR__ . '/../layouts/foot-comment.php',['model'=>$model]);
+echo $this->renderFile(__DIR__ . '/../layouts/foot-comment.php');
 ?>
 
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

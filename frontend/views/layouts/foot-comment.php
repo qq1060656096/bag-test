@@ -1,5 +1,7 @@
+
+
 <div class="ux-popmenu ux-popmenu2"
-	style="display: block; position: fixed; background-color: rgba(0, 0, 0, 0.498039);">
+	style="display: none; position: fixed; background-color: rgba(0, 0, 0, 0.498039);">
 	<div class="content show" style="bottom: 0px; position: fixed;">
 		<section class="card-combine">
 			<a href="" node-type="recommend" class="line-bottom"
@@ -10,6 +12,7 @@
 	</div>
 </div>
 <style>
+
 .ux-popmenu {
     display: none;
     position: absolute;
@@ -21,7 +24,9 @@
     transition: background-color .2s ease-in-out;
     overflow: hidden;
 }
-
+.ux-popmenu2{
+	display: none;
+}
 .ux-popmenu .content.show {
     bottom: 0;
     transition: bottom .2s ease-in-out;
@@ -52,18 +57,42 @@
     background: #f8f8f8;
 }
 </style>
+
+<?php 
+echo $this->renderFile(__DIR__ . '/../comment/static-comment-message.php');
+?>
 <script type="text/javascript">
+//点击显示评论
+$(".module-infobox").click(function(){
+	$(".ux-popmenu2").show();
+});
 //取消评论
 $(".ux-popmenu2 .close").click(function(){
 	$(this).closest(".ux-popmenu2").hide();
 });
 //评论
 $(".ux-popmenu2 .line-bottom").click(function(){
-	$(".ux-popmenu").show();
+	$(".ux-popmenu1").show();
 	$(".ux-popmenu2").hide();
 	return false;
 });
+
+//隐藏评论框
+// $("#box-comment a.fr.disable").click(function(){
+// 	alert(1);
+// 	$(this).closest(".ux-popmenu").hide();
+// 	return false;
+// });
+
+//隐藏评论框
+$(".ux-popmenu1 .module-topbar a.cancel1").click(function(){
+	$(".ux-popmenu1").hide();   
+	return false;
+});
+
+$(".ux-popmenu1 .module-topbar a.disable1").click(function(){
+
+	$(".ux-popmenu1").hide();
+	return false;
+});
 </script>
-<?php 
-echo $this->renderFile(__DIR__ . '/../comment/static-comment-message.php',['model'=>$model]);
-?>
