@@ -362,6 +362,7 @@ str;
      * 分数型心里测试 问题
      */
     public function actionStep4_2_question($id){
+        
         $this->layout = false;
         $model  = Survey::findOne($id);
         //没有找到
@@ -382,6 +383,7 @@ str;
         $model_SurveyResulte = new SurveyOperation();
   
         $url = $model_SurveyResulte->step4_2_questionSave($posts, $id,$page);
+//         ZCommonFun::print_r_debug($url);
         if($url){
 //             echo $url;
 //             ZCommonFun::print_r_debug($url);
@@ -392,6 +394,7 @@ str;
             switch ( $model->tax ){
                     //分数型心里测试
                 case 2:
+                   
                     return $this->redirect($url);
                     break;
             
@@ -399,8 +402,10 @@ str;
                 case 3:
                    
                     if(isset($url[0])&&$url[0]=='step4_2_question'){
+                       
                         return $this->redirect($url);
                     }else{
+                     
                         return $this->redirect(['step4_3','id'=>$model->id]);
                     }
                     break;

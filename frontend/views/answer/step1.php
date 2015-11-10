@@ -173,6 +173,8 @@ function answer(){
 
 </div>
 <!-- /page -->
-
+<?php 
+echo $this->renderFile(__DIR__ . '/../layouts/foot-comment.php',['model'=>$model]);
+?>
 
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>
