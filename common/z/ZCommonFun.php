@@ -185,7 +185,7 @@ class ZCommonFun{
     }
     
     public static function getPageSize(){
-        return $pageSize = 1;
+        return $pageSize = 10;
     }
     
     /**
