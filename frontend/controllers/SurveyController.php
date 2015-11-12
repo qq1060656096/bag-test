@@ -131,7 +131,7 @@ class SurveyController extends ZController
         
         $pageCount = $pagination->getPageCount();
         $page = Yii::$app->request->get('page',0);
-        //有数据,从第二页开始到最后一页
+        //有数据,从第1页开始到最后一页
         if($pageCount>0 && $page>0 ){
 //             echo $page,$pageCount;
             //超过最后一页

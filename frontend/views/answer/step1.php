@@ -170,7 +170,7 @@ function answer(){
 		
 	</div>
     <?php 
-        echo $this->renderFile(__DIR__ . '/../comment/static-list.php');
+        echo $this->renderFile(__DIR__ . '/../comment/static-list.php',['model'=>$model]);
     ?>
 
 </div>

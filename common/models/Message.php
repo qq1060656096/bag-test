@@ -36,10 +36,11 @@ class Message extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['from_uid', 'to_uid', 'add_time', 'last_update', 'is_read', 'parent_id', 'status', 'table_id'], 'integer'],
+            [['from_uid', 'to_uid', 'last_update', 'is_read', 'parent_id', 'status', 'table_id'], 'integer'],
             [['content'], 'string'],
             [['title'], 'string', 'max' => 100],
-            [['table'], 'string', 'max' => 64]
+            [['table'], 'string', 'max' => 64],
+            [['add_time'],'safe'],
         ];
     }
 

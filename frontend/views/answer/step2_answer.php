@@ -190,13 +190,13 @@ function answer(){
 	</div>
 
     <?php 
-        echo $this->renderFile(__DIR__ . '/../comment/static-list.php');
+        echo $this->renderFile(__DIR__ . '/../comment/static-list.php',['model'=>$model]);
     ?>
 </div>
 <!-- /page -->
 
 <?php 
-echo $this->renderFile(__DIR__ . '/../layouts/foot-comment.php');
+echo $this->renderFile(__DIR__ . '/../layouts/foot-comment.php',['model'=>$model]);
 ?>
 
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

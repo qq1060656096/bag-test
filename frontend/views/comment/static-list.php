@@ -7,7 +7,9 @@
 					class="arrow-up line-top"><i class="arrow-up-in line-top"></i></i></span><span
 					class="line-right"></span><span class="info-txt current"
 					data-node="comment">评论&nbsp;<em>66</em><i
-					class="arrow-up line-top"><i class="arrow-up-in line-top"></i></i></span>
+					class="arrow-up line-top"><i class="arrow-up-in line-top"></i>
+					</i></span>
+					<button class="comment-button" url="<?php echo Yii::$app->urlManager->createUrl(['comment/add','id'=>$model->id,'tid'=>$model->uid,'content'=>'#content#']); ?>">评论</button>
 			</div>
 			<div class="plus">
 				<span class="info-txt" data-node="like">赞&nbsp;<em>417</em><i
@@ -24,60 +26,9 @@
 		<ul class="comment-list">
 			<section class="mod-pagelist card-combine" id="boxId_1447072536042_5">
 				<div data-node="cardList" class="card-list">
-					<li class="module-infobox layout-box media-graphic line-bottom"
-						id="boxId_1447072536042_6"><a
-						href="http://m.weibo.cn/u/5344611241" class="mod-media size-xs"><div
-								class="media-main">
-								<img src="./bag-test/test-images/0(2)" height="34" width="34">
-							</div></a>
-					<div class="box-col item-list">
-							<div class="item-main txt-s mct-a txt-cut">余温GR</div>
-							<div class="item-other txt-xxs mct-d txt-cut">
-								<span class="time">20分钟前</span>
-							</div>
-							<div class="item-minor txt-l mct-b">中国人的发音问题 你说到韩国身上了
-								你脑子有病还是看不得韩国怎样?</div>
-						</div>
-						<!--<a href="/comment?id=3907343731089546&reply=3907362371056267&content=%E5%9B%9E%E5%A4%8D%40%E4%BD%99%E6%B8%A9GR%3A+" class="operate-box"><i class="icon-font icon-font-comment"></i></a>-->
-						<a href="" class="operate-box" data-node="zanPL"><i
-							class="icon icon-likesmall"></i><em class="num mct-d">1</em></a></li>
-							
-							<li class="module-infobox layout-box media-graphic line-bottom"
-						id="boxId_1447072536042_6"><a
-						href="http://m.weibo.cn/u/5344611241" class="mod-media size-xs"><div
-								class="media-main">
-								<img src="./bag-test/test-images/0(2)" height="34" width="34">
-							</div></a>
-					<div class="box-col item-list">
-							<div class="item-main txt-s mct-a txt-cut">余温GR</div>
-							<div class="item-other txt-xxs mct-d txt-cut">
-								<span class="time">20分钟前</span>
-							</div>
-							<div class="item-minor txt-l mct-b">中国人的发音问题 你说到韩国身上了
-								你脑子有病还是看不得韩国怎样?</div>
-						</div>
-						<!--<a href="/comment?id=3907343731089546&reply=3907362371056267&content=%E5%9B%9E%E5%A4%8D%40%E4%BD%99%E6%B8%A9GR%3A+" class="operate-box"><i class="icon-font icon-font-comment"></i></a>-->
-						<a href="" class="operate-box" data-node="zanPL"><i
-							class="icon icon-likesmall"></i><em class="num mct-d">1</em></a></li>
-							
-							<li class="module-infobox layout-box media-graphic line-bottom"
-						id="boxId_1447072536042_6"><a
-						href="http://m.weibo.cn/u/5344611241" class="mod-media size-xs"><div
-								class="media-main">
-								<img src="./bag-test/test-images/0(2)" height="34" width="34">
-							</div></a>
-					<div class="box-col item-list">
-							<div class="item-main txt-s mct-a txt-cut">余温GR</div>
-							<div class="item-other txt-xxs mct-d txt-cut">
-								<span class="time">20分钟前</span>
-							</div>
-							<div class="item-minor txt-l mct-b">中国人的发音问题 你说到韩国身上了
-								你脑子有病还是看不得韩国怎样?</div>
-						</div>
-						<!--<a href="/comment?id=3907343731089546&reply=3907362371056267&content=%E5%9B%9E%E5%A4%8D%40%E4%BD%99%E6%B8%A9GR%3A+" class="operate-box"><i class="icon-font icon-font-comment"></i></a>-->
-						<a href="" class="operate-box" data-node="zanPL"><i
-							class="icon icon-likesmall"></i><em class="num mct-d">1</em></a></li>
+					
 				</div>
+				<div class="load_more2">加载更多</div>
 			</section>
 		</ul>
 	</div>
@@ -349,4 +300,51 @@ a .mct-b, .mct-b {
     padding: 22px 12px 22px 0;
     cursor: pointer;
 }
+
+.load_more2 {
+    height: 30px;
+    font-size: 14px;
+    text-align: center;
+    border-top: 1px dashed #DFDFDF;
+    line-height: 30px;
+    color: #666;
+    padding: 10px 0;
+	cursor: pointer;
+}
 </style>
+<script>
+ajaxLoad2();
+$(".load_more2").click();
+/**
+ * ajax加载分页
+ */
+function ajaxLoad2(){
+	
+	commentPage = 0;
+	isAjaxLoad2 = false; 
+    $(".load_more2").click(function(){
+        var now =$(this);
+        commentPage++;
+        var url = "<?php echo Yii::$app->urlManager->createUrl(['comment/list','id'=>$model->id,'page'=>'#page#','sort'=>'sort']);?>";
+        url = url.replace('%23page%23',commentPage);
+        console.log(url);
+        //有没有执行ajax就执行ajax,在执行，等执行后在加载
+        if(!isAjaxLoad2){
+        	isAjaxLoad2 = true;
+        	now.text('加载中');
+            $.get(url,function(html){
+            	now.text('加载更多');
+            	isAjaxLoad2 = false;
+                console.log(html);
+                //没有找到
+                if(html==''){
+                	isAjaxLoad2 = true;
+                	now.text('已经没有了');
+                	console.log('已经没有了');
+                }
+                $(".card-list").append( html );
+            });
+        }
+    });
+}
+</script>

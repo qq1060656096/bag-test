@@ -62,9 +62,19 @@
 echo $this->renderFile(__DIR__ . '/../comment/static-comment-message.php');
 ?>
 <script type="text/javascript">
-//点击显示评论
-$(".module-infobox").click(function(){
-	$(".ux-popmenu2").show();
+$(document).ready(function(){
+    //点击显示评论
+    $(".card-list").on('click','.line-bottom',function(){
+        var url = $(this).attr('comment-url');
+        $("#box-comment").attr('url',url);
+    	$(".ux-popmenu2").show();
+    });
+    $(".comment-button").on('click',function(){
+        var url = $(this).attr('url');
+        $("#box-comment").attr('url',url);
+    	$(".ux-popmenu2").show();
+    	return false;
+    });
 });
 //取消评论
 $(".ux-popmenu2 .close").click(function(){
@@ -89,10 +99,28 @@ $(".ux-popmenu1 .module-topbar a.cancel1").click(function(){
 	$(".ux-popmenu1").hide();   
 	return false;
 });
-
+//提交评论
 $(".ux-popmenu1 .module-topbar a.disable1").click(function(){
-
+    var content = $('#txt-publisher').val();
 	$(".ux-popmenu1").hide();
+	if(content==''){
+		alert('请输入评论内容');
+	}
+	var url = $(this).closest('#box-comment').attr('url');
+	url = url.replace('%23content%23',content);
+
+	comment(url);
+	
 	return false;
 });
+//评论
+function comment(url){
+	$.get(url,function(json){
+    	if(json.message){
+        	alert(json.message);
+        }else{
+            alert("出错了");
+        }
+    });
+}
 </script>
