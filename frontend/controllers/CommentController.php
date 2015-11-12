@@ -33,7 +33,7 @@ class CommentController extends Controller
         $data = $model_Message->find()
             ->where($condition)
             ->limit($pagination->getLimit())
-            ->offset($pagination->getOffset())
+            ->offset($pagination->getOffset())->orderBy(' msg_id desc')
             ->all();
         isset($data[0]) ?  : $data = [];
         $pageCount = $pagination->getPageCount();
@@ -71,8 +71,9 @@ class CommentController extends Controller
     </a>
 </li>
 str;
-            exit;
+            
         }
+        exit;
     }
 
     /**
