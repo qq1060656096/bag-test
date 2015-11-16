@@ -4,7 +4,10 @@
     $url_hot    = Yii::$app->urlManager->createUrl(['survey/index','sort'=>0]);
     $url_find   = '';
     $url_me     = Yii::$app->urlManager->createUrl(['survey/my']);
+    
+    echo $this->renderFile(__DIR__.'/../layouts/share.php');
     ?>
+    
     <footer>
         <div>
             <nav class="footer-nav">

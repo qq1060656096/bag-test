@@ -51,42 +51,7 @@ echo $this->renderFile(__DIR__ . '/../layouts/head-answer.php',['model'=>$model,
 
 		</div>
 
-		<div class="baidu_share">
-		    <div id="share_label" style="border-bottom: none">
-                <span>分享到 : </span>
-            </div>
-			<div class="bdsharebuttonbox">
-				<a href="#" class="bds_more" data-cmd="more"></a>
-				<a href="#" class="bds_sqq" data-cmd="sqq"></a>
-				<a href="#" class="bds_weixin" data-cmd="weixin"></a>
-				<a href="#" class="bds_tsina" data-cmd="tsina"></a>
-				<a href="#" class="bds_qzone" data-cmd="qzone"></a>			
-				<a href="#" class="bds_tqf" data-cmd="tqf"></a>
-				<a href="#" class="bds_tieba" data-cmd="tieba"></a>	
-				
-			</div>
-			<script>
-			  window._bd_share_config={
-					  "common":{
-						    bdText : '<?php echo $model->title;?>',	
-                            bdDesc : '<?php echo $model->intro;?>',	
-                            bdUrl : '<?php echo $share_url;?>', 	
-                            bdPic : '<?php echo $image?>'	
-						  },
-						  "share":[{
-								"bdSize" : 32
-							}],
-						  "image":{
-							  "viewList":
-								  ["qzone","tsina",'tqf',"sqq","tieba","weixin"],
-							  "viewText":"分享到：","viewSize":"16"},
-							  "selectShare":{
-								  "bdContainerClass":null,
-								  "bdSelectMiniList":
-									  ["qzone","tsina","tqq","renren","weixin"]}};
-			  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
-          </script>
-		</div>
+		<?php echo $this->renderFile(__DIR__.'/../layouts/share.php');?>
 		
 	</div>
 
