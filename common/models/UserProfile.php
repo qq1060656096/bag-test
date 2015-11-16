@@ -13,9 +13,20 @@ use Yii;
  * @property string $head_image
  * @property string $money
  * @property string $friend_money
+ * @property integer $sex
+ * @property string $intro
+ * @property string $birthday
+ * @property string $address
+ * @property string $qq
+ * @property string $school
  */
 class UserProfile extends \yii\db\ActiveRecord
 {
+    static $sexData = array(
+        '-1'=>'未知',
+        '0'=>'女',
+        '1'=>'男'
+    );
     /**
      * @inheritdoc
      */
@@ -30,9 +41,12 @@ class UserProfile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uid'], 'integer'],
+            [['uid', 'sex'], 'integer'],
             [['money', 'friend_money'], 'number'],
-            [['nickname', 'head_image'], 'string', 'max' => 255]
+            [['intro'], 'string'],
+            [['birthday'], 'safe'],
+            [['nickname', 'head_image', 'address', 'school'], 'string', 'max' => 255],
+            [['qq'], 'string', 'max' => 24]
         ];
     }
 
@@ -43,11 +57,17 @@ class UserProfile extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'uid' => 'Uid',
-            'nickname' => 'Nickname',
-            'head_image' => 'Head Image',
+            'uid' => '用户uid',
+            'nickname' => '昵称',
+            'head_image' => '头像',
             'money' => 'Money',
             'friend_money' => 'Friend Money',
+            'sex' => '性别',
+            'intro' => '简介',
+            'birthday' => '生日',
+            'address' => '地址',
+            'qq' => 'QQ',
+            'school' => '学校',
         ];
     }
 }

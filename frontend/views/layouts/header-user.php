@@ -84,7 +84,7 @@ $sessionUser = ZCommonSessionFun::get_user_session();
 $url_my_test = Yii::$app->urlManager->createUrl(['survey/my']);
 $url_create_test = Yii::$app->urlManager->createUrl(['survey/step1']);
 $url_withdraw = '';
-$url_user_setting = '';
+$url_user_setting = Yii::$app->urlManager->createUrl(['user-profile/bind']);
 ?>
 <nav class="user-menu">
 	<a href="<?php echo $url_my_test;?>">我创建的测试<span class="vertical-line"></span></a> 

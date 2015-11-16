@@ -46,9 +46,9 @@ class ApiController extends Controller{
             $user['head_image'] = $model_User->operationData['user_profile']->head_image;
             $user['openid'] = $openid;
             ZCommonSessionFun::set_user_session($user);
-            return $this->redirect([ZCommonSessionFun::urlMyStr]);
+//             return $this->redirect([ZCommonSessionFun::urlMyStr]);
         }
-       echo $return;
+       
         ZCommonFun::print_r_debug( $model_User->operationData );
         
         exit;
