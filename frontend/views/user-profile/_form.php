@@ -51,6 +51,44 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
     </section>
 
 </div>
+
+
+<link href="./bag-test/bootstrap/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="./bag-test/bootstrap/datetimepicker.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="./bag-test/bootstrap/jquery.min.js"></script>    
+
+<script src="./bag-test/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="./bag-test/bootstrap/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+(function($){
+	$.fn.datetimepicker.dates['zh-CN'] = {
+			days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+			daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+			daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
+			months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+			monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+			today: "今天",
+			suffix: [],
+			meridiem: ["上午", "下午"]
+	};
+}(jQuery));
+$(document).ready(function(){
+	 $("#userprofile-birthday").datetimepicker({
+		 format:'yyyy-mm-dd',
+		 language:'zh-CN',
+		 startView:4,
+// 		 viewSelect:'day',
+		 todayBtn: true,
+		 todayHighlight:true,
+		 minView: 2,
+		 autoclose: true
+		
+     }).on('changeDate', function(ev){
+    	    console.log(ev.date);
+     });
+});
+   
+</script> 
 <style>
 div.notice{
 margin: 0;

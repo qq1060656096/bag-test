@@ -26,6 +26,11 @@ class UserProfileController extends Controller
      */
     public function actionBind()
     {
+        if( ZCommonSessionFun::get_user_id()<1 ){
+            $url = Yii::$app->urlManager->createUrl([ZCommonSessionFun::urlLoginUserStr]);
+            return $this->redirect($url);
+        }
+        
         $this->view->title='个人设置';
         $this->layout = false;
         $condition['uid']  = ZCommonSessionFun::get_user_id();
@@ -34,7 +39,7 @@ class UserProfileController extends Controller
             $model = new UserProfile();
         }
         $model->uid = ZCommonSessionFun::get_user_id();
-        
+        $model->birthday = $model->birthday ? date('Y-m-d',strtotime($model->birthday)):'';
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['bind']);
         } else {
