@@ -55,6 +55,30 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 
 <link href="./bag-test/bootstrap/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="./bag-test/bootstrap/datetimepicker.css" rel="stylesheet" media="screen">
+<style>
+div.notice{
+margin: 0;
+}
+.s_login div{
+padding: 2px;
+margin: 0;
+}
+label, label input {
+    vertical-align: middle;
+    width: 30px;
+    display: inline-block;
+    text-align: right;
+    padding-right: 5px;
+}
+.s_reg input[type="text"], .s_reg input[type="password"], .s_reg textarea {
+    padding: 0 5px;
+    height: 40px;
+    border: 1px solid #B1B1B1;
+    border: 1px solid #a7bed4;
+    border-radius: 5px;
+    width: 220px;
+}
+</style>
 <script type="text/javascript" src="./bag-test/bootstrap/jquery.min.js"></script>    
 
 <script src="./bag-test/bootstrap/bootstrap.min.js"></script>
@@ -89,19 +113,5 @@ $(document).ready(function(){
 });
    
 </script> 
-<style>
-div.notice{
-margin: 0;
-}
-.s_login div{
-padding: 3px;
-}
-label, label input {
-    vertical-align: middle;
-    width: 60px;
-    display: inline-block;
-    text-align: right;
-    padding-right: 5px;
-}
-</style>
+
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>
