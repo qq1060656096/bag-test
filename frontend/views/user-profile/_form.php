@@ -62,6 +62,7 @@ margin: 0;
 .s_login div{
 padding: 2px;
 margin: 0;
+
 }
 label, label input {
     vertical-align: middle;
