@@ -2,15 +2,7 @@
 <!-- saved from url=(0028)http://m.xinli001.com/ceshi/ -->
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="UTF-8">
-<title><?php echo $this->title;?></title>
-<meta name=""
-	content="">
-
-<meta name="keywords" content="">
-<meta name="description"
-	content="">
+<?php echo $this->renderFile(__DIR__.'/../layouts/title.php');?>
 <!--<meta name="apple-itunes-app" content="app-id=591341152">-->
 <meta
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"

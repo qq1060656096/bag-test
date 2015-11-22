@@ -7,9 +7,8 @@ use common\z\ZCommonSessionFun;
 ?>
 <!DOCTYPE html>
 <!-- saved from url=(0036)http://m.xinli001.com/account/login/ -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="UTF-8"> 
-<title>登录 - 壹心理(手机版)</title>
+<html><head>
+<?php echo $this->renderFile(__DIR__.'/../layouts/title.php');?>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"> 
 <meta content="yes" name="apple-mobile-web-app-capable"> 
 <meta content="black" name="apple-mobile-web-app-status-bar-style"> 

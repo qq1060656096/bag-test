@@ -3,6 +3,11 @@ namespace common\z;
 use yii\web\Controller;
 use yii;
 class ZController extends Controller{
+    /**
+     * 站点名
+     * @var string
+     */
+    public static $site_name = '大神蒜';
     public static $debug = '';
     /**
      * 初始化

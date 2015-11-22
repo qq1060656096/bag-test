@@ -6,11 +6,7 @@ use common\z\ZCommonFun;
 <!-- saved from url=(0037)http://m.xinli001.com/ceshi/99897421/ -->
 <html class="ui-mobile">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<!--<base href="http://m.xinli001.com/ceshi/99897421/">-->
-<base href=".">
-<meta charset="utf-8">
-<title><?php echo $this->title;?></title>
+<?php echo $this->renderFile(__DIR__.'/../layouts/title.php');?>
 <meta name="apple-itunes-app" content="app-id=591341152">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">

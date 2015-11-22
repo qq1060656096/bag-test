@@ -187,6 +187,9 @@ str;
      */
     public function actionStep2()
     {
+        global $survey_tax;
+//         ZCommonFun::print_r_debug($survey_tax);
+//         exit;
         $this->layout = false;
         $tax = Yii::$app->request->get('tax');
         $id = Yii::$app->request->get('id');
@@ -195,10 +198,13 @@ str;
             $model  = Survey::findOne($id);
             if(!$model)
             return $this->redirect(['my']);
+            
+            $this->view->title = $model->title;
         }else{
             $model = new  Survey();
             $model->tax = $tax;
             $model->type=0;
+            $this->view->title = isset( $survey_tax[$tax] ) ? $survey_tax[$tax] : '';
         }
 //         echo $tax;
         //post提交
