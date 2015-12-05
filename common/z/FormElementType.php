@@ -74,4 +74,7 @@ class FormElementType{
     const typeMultImageMatrix = 'multImageMatrix';
     
    
+    public function cache(){
+        
+    }
 }

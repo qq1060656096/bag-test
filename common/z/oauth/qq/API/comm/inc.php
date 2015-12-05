@@ -1,2 +1,2 @@
 <?php die('forbidden'); ?>
-{"appid":"101263714","appkey":"27a1a66bf9a7e9fcb9ee001bb2b3e3e9","callback":"http://mobile.testz.tk/index.php?r=api/callback-qq","scope":"get_info,get_user_info","errorReport":true,"storageType":"file","host":"localhost","user":"root","password":"root","database":"test"}
+{"appid":"101271674","appkey":"df03129ef4cd863f5e5ff124e344d2de","callback":"http://dashensuan.com/index.php?r=api/callback-qq","scope":"get_info,get_user_info","errorReport":true,"storageType":"file","host":"localhost","user":"root","password":"root","database":"test"}

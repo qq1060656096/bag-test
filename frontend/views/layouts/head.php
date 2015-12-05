@@ -11,9 +11,9 @@
 <meta content="black" name="apple-mobile-web-app-status-bar-style">
 <meta content="telephone=no" name="format-detection">
 <!-- qq三方登录验证  -->
-<meta property="qc:admins" content="1420421564145645342643" />
+<meta property="qc:admins" content="244463242305635166375" />
 <!-- 微博登录验证 -->
-<meta property="wb:webmaster" content="03e8c503d88ed1b2" />
+<meta property="wb:webmaster" content="27dde435d73bbec9" />
 
 <link rel="stylesheet" href="./bag-test/css/qz_home.css">
 <link rel="stylesheet" href="./bag-test/css/common.css">

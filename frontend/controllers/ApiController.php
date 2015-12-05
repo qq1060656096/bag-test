@@ -46,10 +46,10 @@ class ApiController extends Controller{
             $user['head_image'] = $model_User->operationData['user_profile']->head_image;
             $user['openid'] = $openid;
             ZCommonSessionFun::set_user_session($user);
-//             return $this->redirect([ZCommonSessionFun::urlMyStr]);
+            return $this->redirect([ZCommonSessionFun::urlMyStr]);
         }
        
-        ZCommonFun::print_r_debug( $model_User->operationData );
+//         ZCommonFun::print_r_debug( $model_User->operationData );
         
         exit;
     }
@@ -86,8 +86,11 @@ class ApiController extends Controller{
             setcookie( 'weibojs_'.$weibo->client_id, http_build_query($token) );
             
         $uid_get = $weibo->get_uid();
+//         ZCommonFun::print_r_debug($uid_get);
+//         exit;
         $openid = $uid = $uid_get['uid'];
-        echo $uid;
+//         echo $uid;
+        
         $user_message = $weibo->show_user_by_id($openid);//根据ID获取用户等基本信息
         if( isset( $user_message['name'] ) && count($user_message)>0){
             $model_User = new User();

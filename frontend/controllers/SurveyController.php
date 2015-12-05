@@ -245,6 +245,7 @@ str;
             if(!$model)
                 return $this->redirect(['my']);
         }
+        $this->view->title = $model->title;
         //图片不存在
         $model_Images = Images::findOne($model->front_img);
         if(!$model_Images){
@@ -391,9 +392,10 @@ str;
         $url = $model_SurveyResulte->step4_2_questionSave($posts, $id,$page);
 //         ZCommonFun::print_r_debug($url);
         if($url){
-//             echo $url;
+            
 //             ZCommonFun::print_r_debug($url);
 //             ZCommonFun::print_r_debug($posts);
+//             ZCommonFun::print_r_debug($model);
 //             exit;
    
             
@@ -401,19 +403,22 @@ str;
                     //分数型心里测试
                 case 2:
                    
-                    return $this->redirect($url);
+//                     return $this->redirect($url);
+                    return $this->redirect(['step4_3','id'=>$model->id]);
                     break;
             
                     //跳转型心里测试
                 case 3:
-                   
-                    if(isset($url[0])&&$url[0]=='step4_2_question'){
+                    return $this->redirect(['step4_2','id'=>$model->id]);
+                   /*  if(isset($url[0])&&$url[0]=='step4_2_question'){
                        
                         return $this->redirect($url);
                     }else{
-                     
+                           //跳转分数型问题
                         return $this->redirect(['step4_3','id'=>$model->id]);
-                    }
+                        //跳转到分数型结果
+//                         return $this->redirect(['step4_2','id'=>$model->id]);
+                    } */
                     break;
                 default:
                     break;
@@ -456,6 +461,10 @@ str;
         if($url){
             $model->is_publish = 1;
             $model->save();
+            if($model->tax==3){
+                $url = ['step4_4','id'=>$model->id];
+                return $this->redirect($url);
+            }
             return $this->redirect($url);
         }
 //         ZCommonFun::print_r_debug($a_SurveyResulte);
@@ -497,8 +506,14 @@ str;
                     }
                     
                 }
-                $url = ['step4_2','id'=>$id];
-                return $this->redirect($url);
+                //跳转型心里测试
+                if($model->tax==3){
+                    $url = ['step4_3_question','id'=>$id];
+                    return $this->redirect($url);
+                }else{ 
+                    $url = ['step4_2','id'=>$id];
+                    return $this->redirect($url);
+                }
 //                 ZCommonFun::print_r_debug($row_option);
 //                 exit;
             }
@@ -508,6 +523,53 @@ str;
             'a_SurveyResulte'=>'',
             'data'=>$data,
             'model'=>$model,
+        ]);
+    }
+    
+    /**
+     * 跳转型心里测试 结果选择
+     */
+    public function actionStep4_4($id){
+        $this->layout = false;
+        $model  = Survey::findOne($id);
+        //没有找到
+        if(!$model){
+            $model = new Survey();
+            if(!$model)
+                return $this->redirect(['my']);
+        }
+        $model_SurveyResulte = new SurveyResulte();
+        //获取调查所有的结果
+        $models_SurveyResulte = $model_SurveyResulte->getAll($id);
+        //获取所有问题选项
+        $data = $model->FindAllQuestionsOptions($id);
+        $posts = Yii::$app->request->post();
+        //post提交
+        if(isset($posts['option'])&& count($posts['option'])>0){
+//             ZCommonFun::print_r_debug( $data );
+            isset($data['options'][0]) ? null:$data['options']=[];
+            foreach ( $data['options'] as $key=>$row ){
+                if( !isset( $row[0] ) )
+                    continue; 
+                foreach ($row as $key2=>$row_option){
+                    if(isset($posts['option']["{$row_option->qo_id}"])&& $posts['option']["{$row_option->qo_id}"] >$key+1){
+                        $row_option->skip_question=$posts['option']["{$row_option->qo_id}"];
+                        $row_option->save();
+                    }
+                    
+                }
+                $url = ['my'];
+                return $this->redirect($url);
+//                 ZCommonFun::print_r_debug($row_option);
+//                 exit;
+            }
+        }
+//         ZCommonFun::print_r_debug( $posts );
+        return $this->render('step4_4',[
+            'a_SurveyResulte'=>'',
+            'data'=>$data,
+            'model'=>$model,
+            'models_SurveyResulte'=>$models_SurveyResulte
         ]);
     }
     

@@ -54,7 +54,7 @@ class SurveyResulte extends \yii\db\ActiveRecord
     }
     
     /**
-     * 获取调查所有id
+     * 获取调查id所有结果
      * @param unknown $sid
      */
     public function getAll($sid){

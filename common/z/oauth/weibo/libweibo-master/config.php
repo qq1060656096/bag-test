@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: text/html; charset=UTF-8');
 
-define( "WB_AKEY" , '3480256605' );
-define( "WB_SKEY" , '957a6674bf803d59ff52e2abc94b6ca9' );
-define( "WB_CALLBACK_URL" , 'http://mobile.testz.tk/index.php?r=api/callback-weibo' );
+define( "WB_AKEY" , '422901303' );
+define( "WB_SKEY" , 'e4df0153ed0927c67a3088134ef3eafb' );
+define( "WB_CALLBACK_URL" , 'http://dashensuan.com/index.php?r=api/callback-weibo' );
