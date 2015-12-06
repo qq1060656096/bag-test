@@ -409,16 +409,13 @@ str;
             
                     //跳转型心里测试
                 case 3:
-                    return $this->redirect(['step4_2','id'=>$model->id]);
-                   /*  if(isset($url[0])&&$url[0]=='step4_2_question'){
+                    
+                   if(isset($url[0])&&$url[0]=='step4_2_question'){
                        
                         return $this->redirect($url);
                     }else{
-                           //跳转分数型问题
-                        return $this->redirect(['step4_3','id'=>$model->id]);
-                        //跳转到分数型结果
-//                         return $this->redirect(['step4_2','id'=>$model->id]);
-                    } */
+                          return $this->redirect(['step4_2','id'=>$model->id]);
+                    } 
                     break;
                 default:
                     break;
@@ -540,29 +537,39 @@ str;
         }
         $model_SurveyResulte = new SurveyResulte();
         //获取调查所有的结果
-        $models_SurveyResulte = $model_SurveyResulte->getAll($id);
+        $models_SurveyResulte = $model_SurveyResulte->getAll($id) ;
+        isset( $models_SurveyResulte[0] ) ?  : $models_SurveyResulte = array();
         //获取所有问题选项
         $data = $model->FindAllQuestionsOptions($id);
         $posts = Yii::$app->request->post();
         //post提交
         if(isset($posts['option'])&& count($posts['option'])>0){
 //             ZCommonFun::print_r_debug( $data );
+//             ZCommonFun::print_r_debug($posts);
+//             exit;
             isset($data['options'][0]) ? null:$data['options']=[];
             foreach ( $data['options'] as $key=>$row ){
                 if( !isset( $row[0] ) )
                     continue; 
                 foreach ($row as $key2=>$row_option){
+                    $is_save = false;
                     if(isset($posts['option']["{$row_option->qo_id}"])&& $posts['option']["{$row_option->qo_id}"] >$key+1){
                         $row_option->skip_question=$posts['option']["{$row_option->qo_id}"];
-                        $row_option->save();
+                        
+                        $is_save = true;
                     }
-                    
+                    if(isset($posts['resulte']["{$row_option->qo_id}"])){
+                        $row_option->skip_resulte=$posts['resulte']["{$row_option->qo_id}"];
+                        $is_save= true;
+                    }
+                    $row_option->save();
                 }
-                $url = ['my'];
-                return $this->redirect($url);
-//                 ZCommonFun::print_r_debug($row_option);
-//                 exit;
+                
             }
+            $url = ['my'];
+            return $this->redirect($url);
+            //                 ZCommonFun::print_r_debug($row_option);
+            //                 exit;
         }
 //         ZCommonFun::print_r_debug( $posts );
         return $this->render('step4_4',[
@@ -586,6 +593,7 @@ str;
         $queryParams = Yii::$app->request->queryParams;
         $queryParams['SurverySearch']['uid'] = ZCommonSessionFun::get_user_id();
         $query = $searchModel->query( $queryParams );
+        
         $count = $query->count();
 //         echo $count;
         //分页
@@ -598,6 +606,7 @@ str;
         $limit = $pagination->getLimit();
         $query->offset($offset);
         $query->limit($limit);
+        $query->orderBy(['id'=>SORT_DESC]);
         $a_models = $query->all();
         
         return $this->render('my2', [

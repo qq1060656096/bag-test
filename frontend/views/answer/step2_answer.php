@@ -13,7 +13,7 @@ echo $this->renderFile(__DIR__.'/../layouts/head-answer.php',['model'=>$model]);
 <script type="text/javascript">
 $(document).ready(function(){
 	answerStart();
-	answerPrevQuestion();
+// 	answerPrevQuestion();
 	answer();
 });
 //开始答题
@@ -26,7 +26,7 @@ function answerStart(){
 		return false;
 	});
 }
-//回到上一题
+/* //回到上一题
 function answerPrevQuestion(){
 	$(".prev").click(function(){
 		var now_question = $(this).closest('.question-item');
@@ -36,16 +36,23 @@ function answerPrevQuestion(){
 			now_question.prev().show();//显示上一个问题
 		}
 	});
-}
+} */
 //问题点击，显示下一题
 function answer(){
-	$("label>input").click(function(){
+	$(".question-item label>input").click(function(){
+		var res = $(this).attr('res');
+		console.log(res);
+		if(res>0){
+			$("#resulte").val(res);
+// 			alert(res);
+			return true;
+		}
 		var now_question = $(this).closest('.question-item');
 		console.log( now_question );
 		var label = $(this).closest('label');
 		var skip_id = label.attr('skip-question');
 		skip_id = skip_id-1;
-		console.log(skip_id);
+// 		console.log(skip_id);
 		if(skip_id>0&&$('.question-item').eq(skip_id)){
 				now_question.hide();//隐藏当前问题
 				$('.question-item').eq(skip_id).show();
@@ -57,7 +64,7 @@ function answer(){
 			//如果不是最后一个问题
 			if(next.length>0){
 				now_question.hide();//隐藏当前问题
-				console.log(next);
+// 				console.log(next);
 				next.show();//显示下个问题
 			}
 			
@@ -102,15 +109,15 @@ function answer(){
 
 		
         <?php $form = ActiveForm::begin(['id'=>'id-form']); ?>
-
+            <input type="hidden" name="resulte" id="resulte" value=""/>
 
 			<div id="id_question_list" style="display: none" data-type="score">
-
+                
                 <?php 
                 $question_count = count($data['questions']);
                 foreach ($data['questions'] as $key=>$question){
                 ?>
-				<div id="id_question_list" question-id="<?php echo $question->question_id;?>" class="question-item">
+				<div id="id_question_list"  question-id="<?php echo $question->question_id;?>" class="question-item">
 					<div>当前第<?php echo $key+1;?>/<?php echo $question_count;?>题</div>
 
 					<fieldset data-role="controlgroup"
@@ -123,7 +130,9 @@ function answer(){
                             ?>	
 							<label for="option-id-<?php echo $option->qo_id;?>" skip-question="<?php echo $option->skip_question;?>">
 						
-									<input type="radio" id="option-id-<?php echo $option->qo_id;?>" name="options[<?php echo $question->question_id; ?>][]" value="<?php echo $option->qo_id;?>">
+									<input type="radio" id="option-id-<?php echo $option->qo_id;?>" 
+									res="<?php echo $option->skip_resulte;?>" 
+									name="options[<?php echo $question->question_id; ?>][]" value="<?php echo $option->qo_id;?>">
 									<span ><?php echo $option->option_label;?></span>
 								
 							</label><br/>

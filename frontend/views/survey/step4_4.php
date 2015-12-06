@@ -10,11 +10,19 @@ global $survey_tax;
 // echo $this->renderFile(__DIR__.'/../layouts/head.php');
 // echo $this->renderFile(__DIR__.'/../layouts/head-answer.php',['model'=>$model]);
 echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
+/**
+ * 显示跳转到多少题
+ * @param unknown $name
+ * @param unknown $start
+ * @param unknown $end
+ * @param string $select
+ * @return string
+ */
 function selectShow($name,$start,$end,$select=''){
     if($start-1==$end){
         return '';
     }
-    echo '<select name="',$name,'"><option value="" >请选择</option>';
+    echo '<select class="select-question" name="',$name,'"><option value="" >请选择跳转问题</option>';
     
     for($start;$start<=$end;$start++){
         $selected = $select==$start ? 'selected="selected"':'';
@@ -22,6 +30,22 @@ function selectShow($name,$start,$end,$select=''){
     }
     echo '</select>';
 }
+
+// ZCommonFun::print_r_debug($models_SurveyResulte);
+// exit;
+function selectShowResulte($models_SurveyResulte,$selected_id,$name=''){
+    $i = 0;
+    echo '<select class="select-resulte" name="',$name,'"><option value="" >请选择结果</option>';
+    foreach ($models_SurveyResulte as $key=>$row){
+        $selected = $selected_id==$row->sr_id ? 'selected="selected"':'';
+        $i++;
+        echo  '<option value="',$row->sr_id,'" ',$selected,'>结果',$i,'</option>';
+        
+    }
+    echo '</select>';
+}
+
+
 $this->title="跳转设置--跳转型测试";
 ?>
 <style>
@@ -64,6 +88,7 @@ fieldset {
 									<input type="radio" id="option-id-<?php echo $option->qo_id;?>" name="options[<?php echo $question->question_id; ?>][]" value="<?php echo $option->qo_id;?>">
 									<span ><?php echo $option->option_label;?></span>
 								    <?php echo selectShow("option[{$option->qo_id}]", $key+2, $question_count,$option->skip_question);?>
+								    <?php echo selectShowResulte($models_SurveyResulte, $option->skip_resulte,"resulte[{$option->qo_id}]");?>
 							</label><br/>
                             <?php } ?>
 
@@ -86,4 +111,35 @@ fieldset {
     		<br />
         <?php ActiveForm::end(); ?>
 </section>    
+<script type="text/javascript">
+$(document).ready(function(){
+	//点击问题
+	$("label").on('click','.select-question',function(){
+		var value = $(this).val();
+		var resulte = $(this).closest('label').find('.select-resulte');
+		if(value>0){
+			
+			resulte.find('option:selected').attr('selected',false);
+			resulte.hide();
+		    console.log(value+'--'+resulte.val() );
+	    }else{
+	    	resulte.show();
+		}
+	});
+
+	//点击结果
+	$("label").on('click','.select-resulte',function(){
+		var value = $(this).val();
+		var resulte = $(this).closest('label').find('.select-question');
+		if(value>0){
+			resulte.find('option:selected').attr('selected',false);
+			resulte.hide();
+		    console.log(value+'--'+resulte.val() );
+	    }else{
+	    	resulte.show();
+		}
+	});
+	$(".select-question,.select-resulte").click();
+});
+</script>
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

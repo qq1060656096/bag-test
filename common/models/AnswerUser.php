@@ -19,6 +19,7 @@ use Yii;
  * @property string $data
  * @property string $table
  * @property integer $table_id
+ * @property integer $sid 调查id
  */
 class AnswerUser extends \yii\db\ActiveRecord
 {
@@ -37,7 +38,7 @@ class AnswerUser extends \yii\db\ActiveRecord
     {
         return [
             [['star_time', 'end_time'], 'safe'],
-            [['uid', 'table_id'], 'integer'],
+            [['uid', 'table_id','sid'], 'integer'],
             [['data'], 'string'],
             [['ip'], 'string', 'max' => 24],
             [['address', 'url'], 'string', 'max' => 255],
@@ -65,6 +66,7 @@ class AnswerUser extends \yii\db\ActiveRecord
             'data' => '附加数据',
             'table' => '表id',
             'table_id' => '表id',
+            'sid'=>'调查id'
         ];
     }
 }

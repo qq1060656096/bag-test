@@ -23,6 +23,7 @@ use Yii;
  * @property integer $sort
  * @property integer $c_uid
  * @property integer $skip_question
+ * @property integer $skip_resulte
  */
 class QuestionOptions extends \yii\db\ActiveRecord
 {
@@ -40,7 +41,7 @@ class QuestionOptions extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['question_id', 'table_id', 'max_len', 'uid', 'option_total_count', 'sort', 'c_uid','skip_question'], 'integer'],
+            [['question_id', 'table_id', 'max_len', 'uid', 'option_total_count', 'sort', 'c_uid','skip_question','skip_resulte'], 'integer'],
             [['created'], 'safe'],
             [['option_score', 'option_total_score'], 'number'],
             [['table'], 'string', 'max' => 32],
@@ -70,6 +71,7 @@ class QuestionOptions extends \yii\db\ActiveRecord
             'sort' => '排序',
             'c_uid' => '问题创建者',
             'skip_question'=>'跳转问题',
+            'skip_resulte'=>'跳转结果',
         ];
     }
 }

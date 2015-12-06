@@ -117,6 +117,8 @@ class AnswerController extends Controller{
      */
     public function actionStep2Answer2($id){
         $this->layout = false;
+        
+        
         $model = Survey::findOne($id);
         if(!$model){//没找到
             $model = new Survey();
@@ -125,29 +127,13 @@ class AnswerController extends Controller{
 //                 ZCommonFun::print_r_debug($_POST);
         $posts = Yii::$app->request->post();
     
-        //查找answer操作
-        $aid = Yii::$app->request->get('aid',0);
-        $aid = (int)$aid;
-        $model_Answer = new Answer();
-        if($aid>0){
-            $model_Answer = $model_Answer->findOne(['a_id'=>$aid,'table_id'=>$id]);
-            //如果已经有回答者了，直接显示
-            if($model_Answer){
-                $model_SurveyResulte = new SurveyResulte();
-                $result = $model_SurveyResulte->getStep2Result($id, $model_Answer->answer_score);
-                return $this->render('step2_answer_post',[
-                    'data'=>$data,
-                    'model'=>$model,
-                    'result'=>$result,
-                    'posts'=>$posts,
-                    'model_Answer'=>$model_Answer
-                ]);
-            }
-        }
+        
         
         $error = '';
         if(isset($posts['save']) ){
             $op = count($posts['options'])>0 ? true :false;
+            $result_id = isset($posts['resulte']) ? intval($posts['resulte']):0;
+//             echo $result_id;
 //             ZCommonFun::print_r_debug($posts);
 //             ZCommonFun::print_r_debug($data['options']);
 //             exit;
@@ -162,7 +148,13 @@ class AnswerController extends Controller{
                 $model_AnswerUser = new AnswerUser();
                 $user_IP = !empty($_SERVER["HTTP_VIA"]) ? $_SERVER["HTTP_X_FORWARDED_FOR"] : $_SERVER["REMOTE_ADDR"];
                 $user_IP = !empty($user_IP) ? $user_IP : $_SERVER["REMOTE_ADDR"];
-                $model_AnswerUser->table_id = $id;
+                $model_AnswerUser->sid = $id;
+                //直接跳转答案
+                if($result_id>0){
+                    $model_AnswerUser->table = 'survey_resulte';
+                    $model_AnswerUser->table_id = $result_id;
+                }
+                
                 
                 $model_AnswerUser->ip = $user_IP;
                 if(!$model_AnswerUser->save()){
@@ -187,26 +179,18 @@ class AnswerController extends Controller{
                             }
                         }
                         
-                        if( $save>0){
-                                                      
-//                             $transaction->commit();
-                            //设置测试数量
-                            $model->setAnswerCount($id);
-                            $model_SurveyResulte = new SurveyResulte();
-                            $result = $model_SurveyResulte->getStep2Result($id, $total_score);
-//                             ZCommonFun::print_r_debug($result);
-//                             exit();
-                            return $this->render('step2_answer_post',[
-                                'data'=>$data,
-                                'model'=>$model,
-                                'result'=>$result,
-                                'posts'=>$posts,
-                                'model_Answer'=>$model_Answer
-                            ]);
-                        }else{
-                            $error = '没有选项';
-                            $transaction->rollBack();
-                        }
+                        
+                    }
+                    
+                    if( $save>0){
+                    
+                        //                             $transaction->commit();
+                        //设置测试数量
+                        $model->setAnswerCount($id);
+                        return $this->redirect(['show-resulte','auid'=>$model_AnswerUser->au_id]);
+                    }else{
+                        $error = '没有选项';
+                        $transaction->rollBack();
                     }
                 }
             } catch (\Exception $e) {
@@ -229,12 +213,37 @@ class AnswerController extends Controller{
         ]);
     }
     /**
-     * 分数型问题答题结果
+     * 显示结果
+     * @return \yii\base\string
      */
-    public function actionStep2Result($id){
-        $model = Survey::findOne($id);
-        if(!$model){//没找到
-            $model = new Survey();
+    public function actionShowResulte(){
+        //查找answer操作
+        $auid = Yii::$app->request->get('auid',0);
+        $auid = (int)$auid;
+        $model_Answer = new Answer();
+        if($auid>0){
+            $model_AnswerUser = new AnswerUser();
+            $model_AnswerUser = $model_AnswerUser->findOne(['au_id'=>$auid]);
+        
+            //如果已经有回答者了，直接显示
+            if($model_AnswerUser){
+                $id = $model_AnswerUser->table_id;
+                $model_SurveyResulte = new SurveyResulte();
+                //如果直接选择了答案
+                if($model_AnswerUser->table == 'survey_resulte' && $model_AnswerUser->table_id>0){
+                    $result = $model_SurveyResulte->findOne(['sr_id'=>$model_AnswerUser->table_id]);
+                }else{
+                    $result = $model_SurveyResulte->getStep2Result($id, $model_AnswerUser->answer_score);
+                }
+        
+                $model = \common\models\Survey::findOne(['id'=>$id]);
+                $model? : $model= new \common\models\Survey();
+                return $this->render('step2_answer_post',[   
+                    'model'=>$model,
+                    'result'=>$result,
+                    'model_Answer'=>$model_AnswerUser
+                ]);
+            }
         }
     }
     
