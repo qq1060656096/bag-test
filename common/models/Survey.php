@@ -216,4 +216,14 @@ class Survey extends \yii\db\ActiveRecord
         $count ? null : $count=0;
         return $count;
     } 
+    /**
+     * 获取图片
+     * @param \common\models\Survey $model 
+     * @return string
+     */
+    public static function getImageUrl($model){
+        $image = isset( $model->images->image ) ? UPLOAD_DIR.$model->images->image : DEFAULT_IMAGE;
+        $image = Yii::$app->request->hostInfo.Yii::$app->request->baseUrl.'/'.$image;
+        return $image;
+    }
 }

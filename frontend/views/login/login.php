@@ -75,7 +75,7 @@ $this->title = '登录';
     			<a href="<?php echo Yii::$app->urlManager->createUrl(['api/login-weibo']); ?>"><img src="./bag-test/logo/logo-weibo.jpg" />使用新浪微博登录</a>
     		</li>
     		<li class="">
-    			<a href="<?php echo Yii::$app->urlManager->createUrl(['api/login-weixin']); ?>"><img src="./bag-test/logo/logo-weixin.jpg" />使用人人账号登录</a>
+    			<a href="<?php echo Yii::$app->urlManager->createUrl(['api/login-wei-xin']); ?>"><img src="./bag-test/logo/logo-weixin.jpg" />使用微信登录</a>
     		</li>
     	</ul>
     </div>

@@ -1,0 +1,277 @@
+@charset "UTF-8";
+
+.main {
+    max-width: 640px;
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    -webkit-transform: translateX(-50%);
+    text-align: center;
+	width: 100%;
+}
+.speradbox{
+	background-color: #FEB443;
+}
+html,body,div,p,span,img{
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+html,body{
+	width: 100%;
+	height: 100%;
+	font-size: 20px;
+	font-family: "微软雅黑";
+	background-color: #424242;
+	text-align: center;
+	overflow: visible;
+} 
+.maintext{
+	height: 100%;
+	margin-bottom: 15px;
+	text-align: center;
+}
+.topimg{
+	width: 100%;
+	position: absolute;
+	left: 0;
+	top: -20px;
+	z-index: 1;
+}
+.gamebox{
+	width: 100%;
+	display: none;
+	margin-bottom: 20px;
+}
+.mainactive{
+	display: block;
+}
+
+/* 初始页面 */
+.maintitle{
+	font-size: 16px;
+	padding: 8px 0px; 
+	margin: 20px auto 0px auto;
+	text-align: center;
+	color: white;
+	background-color: #E35E43;
+	width: 88%;
+	border-radius: 10px;
+	letter-spacing: 3px;
+	margin-bottom: 10px;
+}
+.maindesc{
+	display: table;
+	table-layout: fixed;
+	width: 88%;
+	min-height: 200px;
+	padding-top: 6px;
+	padding-bottom: 12px;
+	text-indent: 2em;
+	text-align: left;
+	font-size: 14px;
+	line-height: 18px;
+	border-radius: 15px;
+	color: white;
+	background-color: #FFAB26;
+	margin: 20px auto;
+}
+.maindesc span {
+	width: 100%;
+	display: table-cell;
+	vertical-align: middle;
+	padding: 0px 10px 10px 10px;
+	letter-spacing: 2px;
+	line-height: 22px;
+}
+.startbtn{
+	position: relative;
+	display: block;
+	width: 130px;
+	padding: 15px 0px;
+	margin: 20px auto;
+	font-size: 16px;
+	color: white;
+	background-color: #E35E43;
+	border-radius: 10px;
+	box-shadow: 0px 6px 0px 0px #CB472D;
+	letter-spacing: 2px;
+}
+.startbtn1{
+	position: relative;
+	display: block;
+	width: 130px;
+	padding: 15px 0px;
+	margin: 20px auto;
+	font-size: 16px;
+	color: white;
+	background-color: #47BB1F;
+	border-radius: 10px;
+	box-shadow: 0px 6px 0px 0px #2AA300;
+	letter-spacing: 2px;
+}
+
+/* 问答页面样式 */
+.progress{
+	width: 40px;
+    height: 40px;
+    text-align: center;
+    display: block;
+    border-radius: 50%;
+    margin: 0 auto 10px auto;
+    background-color: #FEAA2A;
+    font-size: 14px;
+    color: white;
+    line-height: 40px;
+    margin-top: 13px;
+	
+}
+.questiontext{
+	width: 84%;
+	margin: 20px auto 20px auto;
+	color: white;
+	background-color: #FFAB26;
+	border-radius: 10px;
+	font-size: 14px;
+	text-align: left;
+	padding: 20px 10px;
+}
+.btnbox span{
+	position: relative;
+	display: block;
+	width: 80%;
+	font-size: 14px;
+	margin: 20px auto;
+	color: white;
+	background-color: #FF8C75;
+	padding: 10px 10px 10px 20px;
+	border-radius: 10px;
+}
+.btnbox span:before{
+	content: attr(num);
+	display: block;
+	position: absolute;
+	left: 3px;
+	width: 15px;
+	text-align: center;
+}
+/* 结果页面样式 */
+.resultbox {
+	width: 90%;
+	margin: 20px auto;
+	background-color: #F6B21F;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-radius: 15px;
+}
+.result-title{
+	width: 100%;
+	color: white;
+	margin: 10px auto;
+}
+.result-desc{
+	font-size: 14px;
+	text-align: left;
+	color: white;
+	text-indent: 2em;
+	padding: 10px 20px;
+	letter-spacing: 1px;
+}
+.morebtn{
+	margin: 50px auto;
+	width: 92%;
+	padding: 10px 0;
+	border-radius: 50px;
+	background-color: #FC5589;
+	color: #F9EB92;
+	box-shadow: 0px 5px 0px 0px #900F35;;
+}
+
+/* 动画 */
+
+.fadein{
+	-webkit-backface-visibility:visible;
+	-webkit-transform-origin: center center;
+	-webkit-animation: fadein 0.5s 0s 1 linear normal forwards;
+}
+.fadeout{
+	-webkit-backface-visibility:visible;
+	-webkit-transform-origin: center center;
+	-webkit-animation: fadeout 0.5s 0s 1 linear normal forwards;
+}
+@-webkit-keyframes fadein{
+    0%{
+        opacity:0;
+    }
+    100%{
+        opacity:1;
+    }
+}
+@-webkit-keyframes fadeout{
+    0%{
+        opacity:1;
+    }
+    100%{
+        opacity:0;
+    }
+}
+
+.btnclick{
+	-webkit-transform: translateY(6px) !important;
+    box-shadow: none !important;
+}
+.selectactive{
+	background-color: #fa684b !important;
+}
+
+
+/* 重构 */
+.bigbox{
+	position: relative;
+	width: 91.5%;
+	min-height: 70%;
+	left: 4.25%;
+	margin-top: 12%;
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	background-color: #FFDE54;
+	margin-bottom: 10px;
+}
+
+#gameresulebox{
+	margin-bottom: 20px;
+}
+#gameresulebox p {
+	font-size: 16px;
+    width: 90%;
+    line-height: 35px;
+    text-align: left;
+    margin: 0 auto;
+    padding:0px 2px;
+    letter-spacing: 1px;
+    color: #424242;
+}
+.resultP{
+	position: relative;
+}
+.resultP:after{
+	content: "";
+	position: absolute;
+	width: 100%;
+	left: 0;
+	bottom: 0;
+	border-bottom: 1px dashed black;
+	-webkit-transform: scaleY(0.5);
+}
+
+.image{
+	display: block;
+	width: 100%;
+}
+.answer-name{
+	color: blue;
+	font-weight: bold;
+}

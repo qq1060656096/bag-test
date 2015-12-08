@@ -9,6 +9,7 @@ use common\z\oauth\weibo\WeiBo;
 use yii\helpers\Json;
 use common\models\OauthBind;
 use common\z\ZCommonSessionFun;
+use common\z\oauth\weixin\WeiXin;
 /**
  * 登录
  * @author pc
@@ -114,5 +115,89 @@ class ApiController extends Controller{
         ZCommonFun::print_r_debug($user_message);
         exit;
         }
+    }
+    
+    /**
+     * 微信认证
+     */
+    public function actionWeiXinValid(){
+        $o_WeiXin = new WeiXin();
+        $o_WeiXin->valid();
+    }
+    
+    /**
+     * 微信登录授权
+     */
+    public function actionLoginWeiXin(){
+        $redirect_uri = Yii::$app->urlManager->createAbsoluteUrl(['api/wei-xin-callback']);
+        $o_WeiXin = new WeiXin();
+        $url = $o_WeiXin->oauth2_url($o_WeiXin->APPID, $redirect_uri);
+//         echo $url;
+//         exit;
+        header('Location: '.$url);
+        exit;
+    }
+    /**
+     * 授权回调地址
+     */
+    public function actionWeiXinCallback(){
+        $o_WeiXin = new WeiXin();
+//         echo '<pre>';
+        if( isset($_GET['code'])){
+            $code = $o_WeiXin->oautch_get_code();
+            if($code){
+                    $data = $o_WeiXin->oautch_access_token($o_WeiXin->APPID, $o_WeiXin->SECRETS, $code,false);
+                    //设置access_token
+                    if( isset( $data->openid ) && $data->openid ){
+                        $basic_access_token = Yii::$app->cache->get('basic_access_token');
+                        //if( !$basic_access_token ){
+                          //$basic_access_token = $o_WeiXin->oau(null,null,false);
+                            //echo $basic_access_token,'token','<br/>';
+//                           print_r($data);
+//                           print_r($basic_access_token);
+//                           exit;
+//                           print_r($basic_access_token);
+                            //Yii::$app->cache->set('basic_access_token', $basic_access_token,7000);
+                        //}
+//                         echo $basic_access_token,'token2222222','<br/>';
+                        $user_info = $o_WeiXin->user_info( $data->access_token , $data->openid,null,true );
+                        if(!isset($user_info->nickname)){
+                            echo '<br/>','userinfo';
+                            print_r($user_info);
+                            exit;
+                        }
+                        $openid = $data->openid;
+                        
+                        $model_User = new User();
+                        $return = $model_User->userBind('', '', '', $openid, OauthBind::typeWeiXin, $user_info->nickname , $user_info->headimgurl ,true);
+                        //绑定成功或者已经绑定
+                        if($return===0 || $return===1){
+                            $user = $model_User->operationData['user']->attributes;
+                            $user['nickname'] = $model_User->operationData['user_profile']->nickname;
+                            $user['head_image'] = $model_User->operationData['user_profile']->head_image;
+                            $user['openid'] = $openid;
+                            ZCommonSessionFun::set_user_session($user);
+//                                             ZCommonFun::print_r_debug($user);
+//                                             ZCommonFun::print_r_debug( $model_User->operationData );
+//                                             exit;
+                            return $this->redirect([ZCommonSessionFun::urlMyStr]);
+                        }
+                        
+                    }else{
+                      
+//                         print_r( $data );
+                    }
+
+                
+               
+                
+//                 
+            }
+            
+            
+            echo $code,'code';
+            print_r( $data );
+        }
+        
     }
 }

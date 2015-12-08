@@ -20,6 +20,8 @@ use Yii;
  * @property string $table
  * @property integer $table_id
  * @property integer $sid 调查id
+ * @property string $answer_name
+ * @property string $answer_age
  */
 class AnswerUser extends \yii\db\ActiveRecord
 {
@@ -41,10 +43,10 @@ class AnswerUser extends \yii\db\ActiveRecord
             [['uid', 'table_id','sid'], 'integer'],
             [['data'], 'string'],
             [['ip'], 'string', 'max' => 24],
-            [['address', 'url'], 'string', 'max' => 255],
+            [['address','answer_name', 'url'], 'string', 'max' => 255],
             [['phone'], 'string', 'max' => 15],
             [['email'], 'string', 'max' => 64],
-            [['table'], 'string', 'max' => 32]
+            [['table','answer_age'], 'string', 'max' => 32]
         ];
     }
 
@@ -66,7 +68,9 @@ class AnswerUser extends \yii\db\ActiveRecord
             'data' => '附加数据',
             'table' => '表id',
             'table_id' => '表id',
-            'sid'=>'调查id'
+            'sid'=>'调查id',
+            'answer_name'=>'回答姓名',
+            'answer_age'=>'回答年龄',
         ];
     }
 }
