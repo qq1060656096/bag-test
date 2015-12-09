@@ -205,11 +205,14 @@ class AnswerController extends Controller{
         $error = '';
         if(isset($posts['name']) ){
             $op = count($posts['options'])>0 ? true :false;
-           
-        
-//             ZCommonFun::print_r_debug($posts);
-//             ZCommonFun::print_r_debug($data['options']);
-//             exit;
+            $res = isset($posts['res']) ? intval($posts['res']) : 0;
+            $res_model_SurveyResulte = $res>0 ? SurveyResulte::findOne($res) : null;
+            if($res_model_SurveyResulte && $res_model_SurveyResulte->s_id ==$id ){
+               
+            }else{
+                $res_model_SurveyResulte = null;
+            }
+            
             $total_score = 0;
             $save =0;
             $result = null;
@@ -229,10 +232,10 @@ class AnswerController extends Controller{
                 $model_AnswerUser = new AnswerUser();   
                 $model_AnswerUser->sid = $id;
                 $model_AnswerUser->table = 'survey_resulte';
+                $res_model_SurveyResulte ? $model_AnswerUser->table_id = $res_model_SurveyResulte->sr_id : null;
                 $model_AnswerUser->answer_name = $name;
                 $model_AnswerUser->answer_age  = $birth;
-                
-                
+               
                 
                 $model_AnswerUser->ip = self::getUserIP();
                 if(!$model_AnswerUser->save()){
@@ -264,14 +267,20 @@ class AnswerController extends Controller{
                         $model_SurveyResulte = new SurveyResulte();
                         //如果直接选择了答案
                         if($model_AnswerUser->table == 'survey_resulte' && $model_AnswerUser->table_id>0){
-                            $result = $model_SurveyResulte->findOne(['sr_id'=>$model_AnswerUser->table_id]);
+                            $result = $res_model_SurveyResulte;
+//                             ZCommonFun::print_r_debug($posts);
+//                             ZCommonFun::print_r_debug($model_AnswerUser);
+//                             print_r($res_model_SurveyResulte);
+//                             ZCommonFun::print_r_debug($data['options']);
+//                             print_r($result);
+//                             exit;
                         }else{
                             $result = $model_SurveyResulte->getStep2Result($id, $model_AnswerUser->answer_score);
-                            if($result){
+                            if($result&& !$res_model_SurveyResulte){
                                 $model_AnswerUser->table == 'survey_resulte';
-                                $model_AnswerUser->table_id = $result->sr_id;
-                                $model_AnswerUser->save();
+                                $model_AnswerUser->table_id = $result->sr_id;      
                             }
+                            $model_AnswerUser->save();
                         }
                         
                         //                             $transaction->commit();

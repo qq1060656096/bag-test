@@ -79,7 +79,7 @@ echo $this->title,' ',$model->title;
                
             ?>
 			<!-- question start  -->
-			<div  class="maintext maintext-play" style="display: none;">
+			<div  class="maintext maintext-play row-qestion" style="display: none;">
 				<div class="maintitle">
 				    <?php echo $model->title;?>
 				</div>
@@ -97,23 +97,27 @@ echo $this->title,' ',$model->title;
                     
                     foreach ($data['options'][$key] as $key2=>$option){
                     ?>
-    				<span id="tia" vel="a" num="你的姓名" class="span <?php echo $question_count==$key+1 ? 'btnbox-submit':'';?>" >
+    				<span id="tia" vel="a" num="选项<?php echo $key2+1; ?>：" class="span options <?php echo $question_count==$key+1 ? 'btnbox-submit':'';?>" >
     				    <input type="radio" class="hide"
     				    id="option-id-<?php echo $option->qo_id;?>" 
 						res="<?php echo $option->skip_resulte;?>" 
+						skip-question="<?php echo $option->skip_question;?>"
 						name="options[<?php echo $question->question_id; ?>][]" value="<?php echo $option->qo_id;?>">
 						<?php echo $option->option_label;?>  
     				</span>
                     <?php } ?>
     			</div>
-    			<div  class="btnbox btn-ready btnactive  <?php echo $question_count==$key+1 ? 'btnbox-submit': 'btnbox-next';?>">
+    			<?php 
+    			/* <div  class="btnbox btn-ready btnactive  <?php echo $question_count==$key+1 ? 'btnbox-submit': 'btnbox-next';?>">
     				<p >下一题</p>
-    			</div>
+    			</div> */
+    			?>
 			</div>
 			<!-- question end  -->
+			
 			<?php } ?>
 			
-			
+			<input type="hidden" name="res" id="res" />
 			<?php ActiveForm::end(); ?>
 			
 			
@@ -136,8 +140,19 @@ echo $this->title,' ',$model->title;
 	</div>
 	
     <script type="text/javascript" src="./js/jquery.js"></script>
+    <link href="./js/jquery-ui.css" rel="stylesheet" type="text/css"/>  
+    <script src="./js/jquery-ui.min.js"></script> 
 	<script type="text/javascript">
 	$(document).ready(function(){
+		$.datepicker.regional["zh-CN"] = { closeText: "关闭", prevText: "&#x3c;上月", nextText: "下月&#x3e;", currentText: "今天", monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"], monthNamesShort: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"], dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"], dayNamesShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"], dayNamesMin: ["日", "一", "二", "三", "四", "五", "六"], weekHeader: "周", dateFormat: "yy-mm-dd", firstDay: 1, isRTL: !1, showMonthAfterYear: !0, yearSuffix: "年" };
+	    //设置默认语言
+	    $.datepicker.setDefaults($.datepicker.regional["zh-CN"]);
+	    //日期插件
+	    $( "#age" ).datepicker({
+	    	changeMonth: true,
+	    	changeYear: true,
+	    	yearRange: '-60'
+		});
 		var index = 0; 
 		$("#gameready,.btn-play .span,.btnbox-next,.btnbox-submit").click(function(){
 
@@ -159,17 +174,37 @@ echo $this->title,' ',$model->title;
 		    }
 			//选择答案
 		    $("input[type=radio]",this).attr('checked',true);
+		    //直接跳转结果
+		    var res = $(this).find('input').attr('res'); 
+			//提交
+		    if($(this).hasClass('options') &&  res ){
+		        $("#res").val(res);
+		    	$("form").submit();
+			    return true;
+			}
 		    //提交
 		    if($(this).hasClass('btnbox-submit')){
 		    	$("form").submit();
 			    return true;
 			}
-
+			//index当前元素索引 
+			//显示元素索引
+		    show_index = index+1;
+			  //跳到指定的题
+		    var skip_question =  $(this).find('input').attr('skip-question');
+		    skip_question++;
+		    skip_question--;
+			  //提交
+		    if($(this).closest(".row-qestion").length>0 &&  skip_question>0 ){
+		    	
+		    	show_index=index+skip_question-1;
+// 		    	alert(skip_question+"--"+show_index);
+			}
 		    
 			//zhao end 屏蔽 name和age元素动画	
 			$(".maintext-play").eq(index).animate({marginLeft:"-"+$(".maintext-play").eq(index).width()},'slow',function(){
 				$(".maintext-play").eq(index).hide();
-				$(".maintext-play").eq(index+1).fadeIn('slow');
+				$(".maintext-play").eq(show_index).fadeIn('slow');
 				$("#gameready").hide();
 				index++;
 		    });	    

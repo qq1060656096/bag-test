@@ -21,6 +21,7 @@ echo $this->title,' ',$model->title;
 ?>
 </title>
 <link rel="stylesheet" href="./css/v1.css">
+
 </head>
 <body>
 	<div id="mainbox" class="main">
@@ -96,8 +97,20 @@ echo $this->title,' ',$model->title;
 	</div>
 	
     <script type="text/javascript" src="./js/jquery.js"></script>
+    <link href="./js/jquery-ui.css" rel="stylesheet" type="text/css"/>  
+    <script src="./js/jquery-ui.min.js"></script> 
 	<script type="text/javascript">
 	$(document).ready(function(){
+		$.datepicker.regional["zh-CN"] = { closeText: "关闭", prevText: "&#x3c;上月", nextText: "下月&#x3e;", currentText: "今天", monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"], monthNamesShort: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"], dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"], dayNamesShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"], dayNamesMin: ["日", "一", "二", "三", "四", "五", "六"], weekHeader: "周", dateFormat: "yy-mm-dd", firstDay: 1, isRTL: !1, showMonthAfterYear: !0, yearSuffix: "年" };
+	    //设置默认语言
+	    $.datepicker.setDefaults($.datepicker.regional["zh-CN"]);
+	    //日期插件
+	    $( "#age" ).datepicker({
+	    	changeMonth: true,
+	    	changeYear: true,
+	    	yearRange: '-60'
+		});
+	    
 		var index = 0; 
 		$("#gameready,.btn-play .span").click(function(){
 			//zhao start 屏蔽 name和age元素动画	
