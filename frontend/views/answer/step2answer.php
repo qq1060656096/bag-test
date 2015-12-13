@@ -17,6 +17,8 @@ use common\z\ZController;
 <?php 
 echo empty(ZController::$site_name) ? '':ZController::$site_name.' - ';
 echo $this->title,' ',$model->title;
+
+$create_url = Yii::$app->urlManager->createUrl(['survey/step1','id'=>$model->id]);
 ?>
 </title>
 <link rel="stylesheet" href="./css/v1.css">
@@ -129,6 +131,9 @@ echo $this->title,' ',$model->title;
 			<!-- btn -->
 			<div id="gameready" class="btnbox btn-ready btnactive">
 				<p >开始测试</p>
+				
+				<p onclick="javascript:location.href='<?php echo $create_url;?>';" 
+				style="margin-top: 30px;">创建我的测试</p>
 			</div>
 
 			

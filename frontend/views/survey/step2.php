@@ -39,7 +39,7 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['1'];
         <?php $form = ActiveForm::begin(['id'=>'form1']); ?>
     
         <?= $form->field($model, 'tax')->hiddenInput()->label(false); ?>
-    
+
         <?= $form->field($model, 'title')->textInput(['placeholder'=>'测试标题']); ?>
     
         <?php  echo $form->field($model, 'intro')->textarea(['placeholder'=>'测试简介']) ?>
@@ -57,4 +57,15 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['1'];
 		
       
  </div>
+<style>
+.s_header nav,.s_reg .btn_bg,.s_reg input[type=submit]{
+	
+}
+
+label, label input {
+    vertical-align: middle;
+    font-size: 2em;
+	line-height: 2em;
+}
+</style> 
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>    

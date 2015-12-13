@@ -105,6 +105,7 @@ $('#more').click(function(){
 
 <script>
 $('#form1').submit(function(){
+	
 	var $this = $(this);
 	if($this.data('lock')) {
 		return false;
@@ -137,7 +138,8 @@ $('#form1').submit(function(){
 	var data = $this.serialize();
 	$.post(url, data, function(resp) {
 		if (resp.code == 0) {
-			window.location = '<?php echo Yii::$app->urlManager->createUrl([ZCommonSessionFun::urlIndexUserStr]);?>';
+			
+			window.location.href = '<?php echo Yii::$app->request->hostInfo.$gourl;?>';
 		} else {
 			alert('用户名或密码错误');
 			$this.data('lock', false);

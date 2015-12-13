@@ -20,6 +20,7 @@ use frontend\models\SurveyOperation;
 use frontend\models\frontend\models;
 use common\z\ZCommonSessionFun;
 use common;
+use yii\base\Model;
 
 /**
  * SurveyController implements the CRUD actions for Survey model.
@@ -27,7 +28,18 @@ use common;
 class SurveyController extends ZController
 {
     public $pageSize = 10;
-
+    public function beforeAction($action){
+        $no_login_actions = ['index','index-ajax'];
+        $action_id = strtolower($action->id);
+        if(in_array($action_id, $no_login_actions)){
+            return true;
+        }
+        if( ZCommonSessionFun::get_user_id()<1 ){
+            $url = Yii::$app->urlManager->createUrl([ZCommonSessionFun::urlLoginUserStr,'gourl'=>urlencode( $_SERVER['REQUEST_URI']]));
+            return $this->redirect($url);
+        }
+        return true;
+    }
     /**
      * Lists all Survey models.
      * @return mixed
@@ -254,22 +266,12 @@ str;
         }
         
        
-        if(isset($_POST['upload']) ){
+        if(isset($_POST['image']) && !empty($_POST['image'])){
             $load = true;
-//             $image = substr($_POST['upload'],0,20);
-//             $arr = explode(';', $image);
-            $fileName = '';
-            if(!empty($_POST['upload'])){
-            //文件后缀
-                preg_match('/^(data:\s*image\/(\w+);base64,)/', $_POST['upload'], $result);
-                $type = isset( $result[2] ) ? $result[2] : '';
-    //             ZCommonFun::print_r_debug($result);
-    //             exit;
-                $fileName = ZCommonFun::getFileName($type);          
-                $img = base64_decode(str_replace($result[1], '', $_POST['upload']));
-                //保存  
-                file_put_contents( UPLOAD_DIR.$fileName , $img );
-            }
+//             ZCommonFun::print_r_debug($_POST);
+//             exit;
+            $fileName = $_POST['image'];
+            
             $model_Images->image = $fileName ? $fileName : $model_Images->image;
             if(empty($model_Images->image)){
                 $model_Images->addError('image','请上传图片');
@@ -291,7 +293,7 @@ str;
                             //奇趣测试
                             case 1:
                                 //跳转到添加测试结果
-                                return $this->redirect(['step4','id'=>$model->id]);
+                                return $this->redirect(['step4_2','id'=>$model->id]);
                                 break;
                 
                                 //分数型心里测试
@@ -390,8 +392,8 @@ str;
         $model_SurveyResulte = new SurveyOperation();
   
         $url = $model_SurveyResulte->step4_2_questionSave($posts, $id,$page);
-//         ZCommonFun::print_r_debug($url);
-        if($url){
+        
+        if( $url || (isset($_POST['save']) &&$questionData['count']>0) ){
             
 //             ZCommonFun::print_r_debug($url);
 //             ZCommonFun::print_r_debug($posts);
@@ -402,9 +404,12 @@ str;
             switch ( $model->tax ){
                     //分数型心里测试
                 case 2:
-                   
-//                     return $this->redirect($url);
-                    return $this->redirect(['step4_3','id'=>$model->id]);
+                    if(isset($url[0])&&$url[0]=='step4_2_question'&&$questionData['count']<1){
+                         
+                        return $this->redirect($url);
+                    }else{
+                        return $this->redirect(['step4_3','id'=>$model->id]);
+                    }
                     break;
             
                     //跳转型心里测试
@@ -431,7 +436,7 @@ str;
     }
     
     /**
-     * 分数型心里测试 结果
+     * 测试结果保存
      */
     public function actionStep4_2($id){
         $this->layout = false;
@@ -442,18 +447,58 @@ str;
             if(!$model)
                 return $this->redirect(['my']);
         }
-        $questionData = $model->FindAllQuestionsOptions($id);
-//         ZCommonFun::print_r_debug($questionData);
-        //查询所有结果
-        $condition['s_id'] = $id;
-        $a_SurveyResulte = SurveyResulte::findAll($condition);
-        isset($a_SurveyResulte[0]) ? null : $a_SurveyResulte=[];
+        $page = Yii::$app->request->get('page',1);
         
         $model_SurveyResulte = new SurveyResulte();
-        
-        $posts = Yii::$app->request->post();
-//         ZCommonFun::print_r_debug($posts);
-        $model_SurveyResulte = new SurveyOperation();
+        $model_SurveyResulteDetail = $model_SurveyResulte->findOneSurveyResulte($id, 1, $page-1);
+        $model_SurveyResulte = $model_SurveyResulteDetail['SurveyResulte'] ? $model_SurveyResulteDetail['SurveyResulte'] : new SurveyResulte();
+//            ZCommonFun::print_r_debug($model_SurveyResulteDetail);
+//         exit;
+        //保存
+        if( isset($_POST['SurveyResulte']) ){
+           
+           $sr_id = isset($_POST['sr_id']) ? $_POST['sr_id'] : 0;
+           $model_save_SurveyResulte = new SurveyResulte();
+           
+           if( $sr_id > 0 ){
+               $model_save_SurveyResulte = $model_save_SurveyResulte->findOne($sr_id);
+               //本事当前问卷的结果
+               if($model_save_SurveyResulte&& $model_save_SurveyResulte->s_id!=$id){
+                   $model_save_SurveyResulte = null;
+               }
+           }
+           ZCommonFun::print_r_debug($_POST);
+           $model_save_SurveyResulte ? null : new SurveyResulte();
+           $model_save_SurveyResulte->s_id=$id;
+           $model_save_SurveyResulte->load($_POST);
+           //删除老的图片
+           if( !empty($model_save_SurveyResulte->oldAttributes['image']) &&$model_save_SurveyResulte->image!= $model_save_SurveyResulte->oldAttributes['image']){
+               @unlink(UPLOAD_DIR.$model_save_SurveyResulte->oldAttributes['image']);
+           }
+           //保存成功
+           $resulte = $model_save_SurveyResulte->save();    
+           
+//            ZCommonFun::print_r_debug($_POST);
+//            ZCommonFun::print_r_debug($model_save_SurveyResulte);
+//            exit;
+           if($resulte){
+               //添加下一个结果
+               if(isset($_POST['save-next'])){
+                   $url = \Yii::$app->urlManager->createUrl(['survey/step4_2','id'=>$id,'page'=>$page]);
+                   $this->redirect($url);
+               }//保存结果完成
+               else{
+                   if($model->tax==3){
+                       $url = ['step4_4','id'=>$model->id];
+                       return $this->redirect($url);
+                   }
+                   $url = \Yii::$app->urlManager->createUrl(['survey/done','id'=>$id]);
+                   $this->redirect($url);
+               }
+           }
+        }
+
+       /*  $model_SurveyResulte = new SurveyOperation();
         $url = $model_SurveyResulte->step4_2SaveResulteCondition2($posts, $condition, $id);
         if($url){
             $model->is_publish = 1;
@@ -463,15 +508,18 @@ str;
                 return $this->redirect($url);
             }
             return $this->redirect($url);
-        }
+        } */
 //         ZCommonFun::print_r_debug($a_SurveyResulte);
-// ZCommonFun::print_r_debug($questionData['question_total_score']);
-        return $this->render('step4_2',[
+// ZCommonFun::print_r_debug($model_SurveyResulteDetail);
+// exit;
+        return $this->render('step4_2survey_resulte',[
             'model_SurveyResulte'=>$model_SurveyResulte,
-            'a'=>$a_SurveyResulte,
+            'a'=>array(),
             'tax'=>$model->tax,
             'model'=>$model,
-            'question_total_score'=>$questionData['question_total_score'],//问题总分数
+            'page'=>$page,
+            'count'=>$model_SurveyResulteDetail['count'],
+            'question_total_score'=>0,//问题总分数
         ]);
     }
     
@@ -566,7 +614,8 @@ str;
                 }
                 
             }
-            $url = ['my'];
+//             $model->is_publish = 1;
+            $url = ['done','id'=>$id];
             return $this->redirect($url);
             //                 ZCommonFun::print_r_debug($row_option);
             //                 exit;
@@ -578,6 +627,26 @@ str;
             'model'=>$model,
             'models_SurveyResulte'=>$models_SurveyResulte
         ]);
+    }
+    
+    /**
+     * 创建测试完成
+     * @param integer $id
+     */
+    public function actionDone($id){
+        $this->layout = false;
+        
+        $model  = Survey::findOne($id);
+        //没有找到
+        if(!$model){
+            $model = new Survey();
+            if(!$model)
+                return $this->redirect(['my']);
+        }
+    
+        $viewData = array();
+        $viewData['model'] = $model;
+        return $this->render('done',$viewData);
     }
     
     /**
@@ -617,25 +686,26 @@ str;
         ]);
         
     }
+    
 
     /**
      * Creates a new Survey model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+//     public function actionCreate()
+//     {
         
-        $model = new Survey();
+//         $model = new Survey();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
+//         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//             return $this->redirect(['view', 'id' => $model->id]);
+//         } else {
+//             return $this->render('create', [
+//                 'model' => $model,
+//             ]);
+//         }
+//     }
 
     /**
      * Updates an existing Survey model.
@@ -643,18 +713,18 @@ str;
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
+//     public function actionUpdate($id)
+//     {
         
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
+//         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//             return $this->redirect(['view', 'id' => $model->id]);
+//         } else {
+//             return $this->render('update', [
+//                 'model' => $model,
+//             ]);
+//         }
+//     }
 
     /**
      * Deletes an existing Survey model.
@@ -662,12 +732,12 @@ str;
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
+//     public function actionDelete($id)
+//     {
+//         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
-    }
+//         return $this->redirect(['index']);
+//     }
 
     /**
      * Finds the Survey model based on its primary key value.

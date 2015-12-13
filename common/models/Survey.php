@@ -160,20 +160,30 @@ class Survey extends \yii\db\ActiveRecord
         $a_options = [];
         $question_total_count=0;
         $question_total_score=0;
+        $question_total_min_score=0;
         //没有问题就没有选项
         if(!isset($a_Question[0]))
             $a_QuestionOptions=[];
         else{
             foreach ($a_Question as $key=>&$row){
                 $question_total_count++;
+                //问题最大分数
+                $question_max_score = 0;
+                $question_min_score = null;
                 foreach ($a_QuestionOptions as $key2=>&$row2){
                     if($row->question_id==$row2->question_id){
                         $a_options[$key][] = $row2;
-                        $question_total_score+=$row2->option_score;
+                        //获取问题最大得分
+                        $question_max_score = max($row2->option_score,$question_max_score);
+                        $question_min_score =  $question_min_score==null ? 
+                        $row2->option_score : min($question_min_score,$row2->option_score);
 //                         echo $row2->option_score,'=',$question_total_score,'<br/>';
                     }
                     
                 }
+                //设置问题总分数
+                $question_total_score+=$question_max_score;
+                $question_total_min_score+=$question_min_score;
 //                 isset($a_Question[$key]['options'][0])? null :$a_Question[$key]['options']=[];
             }
         } 
@@ -181,6 +191,7 @@ class Survey extends \yii\db\ActiveRecord
         $data['options']   = $a_options;
         $data['question_total_count'] = $question_total_count;
         $data['question_total_score'] = $question_total_score;
+        $data['question_total_min_score'] = $question_total_min_score;
         return $data;
     }
     /**

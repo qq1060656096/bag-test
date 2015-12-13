@@ -15,9 +15,10 @@
 <!-- 微博登录验证 -->
 <meta property="wb:webmaster" content="27dde435d73bbec9" />
 <meta name="baidu_union_verify" content="64080f7c83282b60152e760693c08cf8">
-
+<link href="./bag-test/css/mobile-register.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="./bag-test/css/qz_home.css">
 <link rel="stylesheet" href="./bag-test/css/common.css">
+
 </head>
 <body class=" hPC" style="padding-bottom: initial;">
 	

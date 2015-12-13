@@ -1,7 +1,7 @@
 <?php
 
 namespace common\models;
-
+use common\models\Survey;
 use Yii;
 
 /**
@@ -14,6 +14,7 @@ use Yii;
  * @property integer $s_id
  * @property int $score_min
  * @property int $score_max
+ * @property string $image
  */
 class SurveyResulte extends \yii\db\ActiveRecord
 {
@@ -33,7 +34,7 @@ class SurveyResulte extends \yii\db\ActiveRecord
         return [
             [['uid', 's_id'], 'integer'],
             [['score_min', 'score_max'], 'integer'],
-            [['name', 'value'], 'string', 'max' => 255]
+            [['name', 'value','intro','image'], 'string', 'max' => 255]
         ];
     }
 
@@ -49,7 +50,8 @@ class SurveyResulte extends \yii\db\ActiveRecord
             'uid' => 'Uid',
             's_id' => '调查id',
             'score_min'=>'',
-            'scpre_max'=>''
+            'scpre_max'=>'',
+            'image'=>'图片'
         ];
     }
     
@@ -117,5 +119,32 @@ class SurveyResulte extends \yii\db\ActiveRecord
             }
         }
         return isset($models[0]) ? $models[0] : null;
+    }
+    
+    /**
+     * 分页查找测试结果
+     * @param integer $survey_id
+     * @param integer $limit
+     * @param integer $offset
+     * @return array
+     */
+    public function findOneSurveyResulte($survey_id,$limit,$offset){
+    
+        $model_SurveyResulte = new SurveyResulte();
+        $model_QuestionOptions = new QuestionOptions();
+        $condition['s_id'] = $survey_id;
+        //结果数量
+        $data['count'] = SurveyResulte::find()->where($condition)->orderBy([])->count();
+        //结果内容
+        $data['SurveyResulte'] = null;
+        //问题
+        $data['question'] = null;
+        if($data['count']>0){
+    
+            $model_SurveyResulte = $model_SurveyResulte->find()->where($condition)->limit($limit)->offset($offset)->one();
+            $data['SurveyResulte'] = $model_SurveyResulte;
+            $data['question']      = (new Survey())->FindAllQuestionsOptions($survey_id);
+        }
+        return $data;
     }
 }

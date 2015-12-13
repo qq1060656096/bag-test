@@ -2,7 +2,7 @@
     <?php 
     $url_new    = Yii::$app->urlManager->createUrl(['survey/index','sort'=>1]);
     $url_hot    = Yii::$app->urlManager->createUrl(['survey/index','sort'=>0]);
-    $url_find   = '';
+    $url_find   = Yii::$app->urlManager->createUrl(['survey/step1','sort'=>0]);
     $url_me     = Yii::$app->urlManager->createUrl(['survey/my']);
     
     echo $this->renderFile(__DIR__.'/../layouts/share.php');
@@ -17,8 +17,8 @@
                 <a class="hot" href="<?php echo $url_hot;?>">
                     <span class="fa fa-fire"><br />最热</span><br />
                 </a>
-                <a class="find">
-                    <span class="fa fa-search"><br />发现</span>
+                <a class="find" href="<?php echo $url_find;?>">
+                    <span class="fa fa-edit"><br />创建测试</span>
                 </a>
                 <a class="me" href="<?php echo $url_me; ?>">
                     <span class="fa fa-user"><br />我的</span>

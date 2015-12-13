@@ -110,8 +110,7 @@ class SurveyOperation extends Survey{
         $url='';
         $error='';
         if( isset($posts['label']['option-label'][0])){     
-//             ZCommonFun::print_r_debug($posts);
-//             exit;
+            
             //保存问题
             if( !empty($posts['label-name'] ) ){
                 $transacation = Yii::$app->db->beginTransaction();
@@ -164,7 +163,8 @@ class SurveyOperation extends Survey{
                     if($save>0){
                        
                             $transacation->commit();
-        
+//                             ZCommonFun::print_r_debug($posts);
+//                             exit;
                             if(isset($posts['save-next'])){
 //                                ZCommonFun::print_r_debug($save);
 //                                exit;

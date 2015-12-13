@@ -1,0 +1,29 @@
+<html>
+<meta charset="utf-8">
+<title>input标签选择file直接读取本地图片并显示</title>
+<body>
+<script src="jquery-1.8.2.min.js"></script>
+<script src="ZHtml5Upload.js">
+</script>
+<script>
+$(document).ready(function(){
+	$("#file").ZHtml5Upload({
+		uploadSucess: function(result,uploadz){
+			console.log( result );
+			console.log(this);
+			if( uploadz.isReaderFile ){
+
+				$("#image-wrap").append('<img src="'+uploadz.base64Data+'" />');
+			}
+			console.log( uploadz.base64Data );
+		},
+		uploadError: function(result){
+			console.log( result);
+		}
+	});
+});
+</script>
+<input type="file" id="file" />
+	<div id="image-wrap"></div>
+</body>
+</html>

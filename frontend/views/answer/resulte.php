@@ -8,6 +8,8 @@ use common\z\ZController;
 
 $test_url = $model->tax==1 ? 'answer/step1':'answer/step2-answer2';
 $test_url = Yii::$app->urlManager->createAbsoluteUrl([$test_url,'id'=>$model->id]);
+
+$create_url = Yii::$app->urlManager->createUrl(['survey/step1','id'=>$model->id]);
 ?>
 <!DOCTYPE html>
 <html>
@@ -62,6 +64,8 @@ echo $this->title,' ',$model->title;
 			<!-- btn -->
 			<div id="gameready" class="btnbox btn-ready btnactive">
 				<p onclick="javascript:location.href='<?php echo $test_url;?>';">我要测一测</p>
+			    <p onclick="javascript:location.href='<?php echo $create_url;?>';" 
+				style="margin-top: 30px;">创建我的测试</p>
 			</div>
 
 			

@@ -32,8 +32,10 @@ class LoginController extends Controller{
             exit;
 //             ZCommonFun::print_r_debug($post);
         }
+        $gourl = !empty($_GET['gourl']) ? $_GET['gourl'] : Yii::$app->urlManager->createUrl( 'survey/my' );
         return $this->render('login',[
             'model'=>$model,
+            'gourl'=>$gourl,
             
         ]);
     }
