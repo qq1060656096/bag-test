@@ -107,6 +107,14 @@ $update_url = Yii::$app->urlManager->createUrl(['survey/step2','id'=>$model->id]
 	   <button type="submit" class="btn_bg btn btn-primary btn-2" 
 	   onclick="javascript:location.href='<?php echo $update_url;?>';"
 	   name="save-next">修改次测试</button>
+	   
+	   <button type="submit" class="btn_bg btn btn-primary btn-2" 
+	   onclick="javascript:location.href='<?php echo $update_url;?>';"
+	   name="save-next">直接发布</button>
+	   
+	   <button type="submit" class="btn_bg btn btn-primary btn-2" 
+	   onclick="javascript:location.href='<?php echo $update_url;?>';"
+	   name="save-next">检查结果</button>
     </section>    
 </div>
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

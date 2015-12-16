@@ -111,8 +111,8 @@ class SurveyOperation extends Survey{
         $error='';
         if( isset($posts['label']['option-label'][0])){     
             
-            //保存问题
-            if( !empty($posts['label-name'] ) ){
+            //保存问题!empty($posts['label-name'] )
+            if( isset($posts['label-name'] ) ){
                 $transacation = Yii::$app->db->beginTransaction();
                 try {
                     $question_id = isset ($posts['qid'] ) ? $posts['qid'] : 0;
@@ -130,9 +130,13 @@ class SurveyOperation extends Survey{
                     $model_Question->table_id = $id;
                     $save = 0 ;
                     if( $model_Question->save()){
-                        
+                        $len = count($posts['label']['option-label']);
                         foreach ($posts['label']['option-label'] as $key=>$value){
-                            if(empty($value)) continue;
+                               //验证问题
+//                             if(empty($value)) continue;
+                               if( empty($value ) && $key+1 ==$len ){
+                                   continue;
+                               } 
                             
                             $qo_id = isset ($posts['label']['qo-id'][$key] ) ? $posts['label']['qo-id'][$key] : 0;
                             if($qo_id>0){

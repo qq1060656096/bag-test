@@ -64,8 +64,16 @@ $this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey
 	
 	float: right;
 }
-.s_reg .btn_bg.btn-2{
-	margin-left: 5%;
+.s_reg .btn_bg.btn-3{
+	margin-left: 3.8%;
+}
+.s_reg .btn_bg.btn-100{
+	width: 100%;
+	float: left;
+	margin-top: 10px;
+}
+.s_reg .btn_bg.btn-r{
+	float: right;
 }
 .s_reg .btn_bg.save{
 	float: right;
@@ -169,10 +177,10 @@ $(document).ready(function(){
 		    console.log(name+'==='+value);
 	  });
 	  //如果没有结果
-	  if( hasResulte<1&&question_count<1){
+	  /* if( hasResulte<1&&question_count<1){
 		  alert("至少正确填写一条问题");
 		  return false;
-	  }
+	  } */
 	  return true;
 	});
 
@@ -250,8 +258,24 @@ $(document).ready(function(){
             </div>
         </div>
          <?php }?>
-        <button type="submit" class="btn_bg btn btn-primary btn-2" name="save-next">保存/编辑下一题</button>
-        <button type="submit" class="btn_bg btn btn-primary" name="save">保存</button>
+         
+         <div class="btn_bg btn-2" >
+			<a 
+			href="<?php echo Yii::$app->urlManager->createUrl(['survey/step1_3','id'=>$model->id]);?>" 
+			id="prev-step">上一步</a> 
+		</div>
+		
+        <button type="submit" class="btn_bg btn btn-primary btn-3" name="save-next">保存/编辑下一题</button>
+        
+        <button type="submit" class="btn_bg btn btn-primary btn-r" name="save">保存</button>
+        
+        <div class="btn_bg btn-2 btn-100" >
+			<a 
+			href="<?php echo Yii::$app->urlManager->createUrl(['survey/question-delete','id'=>$model->id,'page'=>$page]);?>" 
+			id="prev-step">删除</a> 
+		</div>
+		
+		
  <?php ActiveForm::end(); ?>
 
 

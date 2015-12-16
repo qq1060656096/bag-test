@@ -35,7 +35,7 @@ class SurveyController extends ZController
             return true;
         }
         if( ZCommonSessionFun::get_user_id()<1 ){
-            $url = Yii::$app->urlManager->createUrl([ZCommonSessionFun::urlLoginUserStr,'gourl'=>urlencode( $_SERVER['REQUEST_URI']]));
+            $url = Yii::$app->urlManager->createUrl([ZCommonSessionFun::urlLoginUserStr,'gourl'=> $_SERVER['REQUEST_URI']]);
             return $this->redirect($url);
         }
         return true;
@@ -208,10 +208,12 @@ str;
         //测试不存在
         if($id>0){
             $model  = Survey::findOne($id);
-            if(!$model)
-            return $this->redirect(['my']);
+            //没找到 不是自己的测试
+            if(!$model || $model->uid != ZCommonSessionFun::get_user_id())
+                return $this->redirect(['my']);
             
             $this->view->title = $model->title;
+            $tax = $model->tax;
         }else{
             $model = new  Survey();
             $model->tax = $tax;
@@ -235,8 +237,7 @@ str;
             
             
         }
-        
-//         ZCommonFun::print_r_debug($model);
+
         return $this->render('step2', [
             'model' => $model,
             'tax'=>$tax,
@@ -265,17 +266,17 @@ str;
             $model_Images->use_count=0;
         }
         
-       
-        if(isset($_POST['image']) && !empty($_POST['image'])){
+       //&& !empty($_POST['image'])
+        if(isset($_POST['image']) ){
             $load = true;
 //             ZCommonFun::print_r_debug($_POST);
 //             exit;
             $fileName = $_POST['image'];
             
             $model_Images->image = $fileName ? $fileName : $model_Images->image;
-            if(empty($model_Images->image)){
-                $model_Images->addError('image','请上传图片');
-            }
+//             if(empty($model_Images->image)){
+//                 $model_Images->addError('image','请上传图片');
+//             }
             //设置测试封面
             //事物开始
             $transaction = Yii::$app->db->beginTransaction();
@@ -375,9 +376,9 @@ str;
         $this->layout = false;
         $model  = Survey::findOne($id);
         //没有找到
-        if(!$model){
+        if(!$model || $model->uid!=ZCommonSessionFun::get_user_id() ){
             $model = new Survey();
-            if(!$model)
+            if(!$model )
                 return $this->redirect(['my']);
         }
         $page = Yii::$app->request->get('page',1);
@@ -415,7 +416,7 @@ str;
                     //跳转型心里测试
                 case 3:
                     
-                   if(isset($url[0])&&$url[0]=='step4_2_question'){
+                   if(isset($posts['save-next'])){
                        
                         return $this->redirect($url);
                     }else{
@@ -434,7 +435,60 @@ str;
             'questionData'=>$questionData,
         ]);
     }
+    /**
+     * 删除
+     */
+    public function actionQuestionDelete($id,$page){
+        $id = intval($id);
+        $page= intval($page);
+        $this->layout = false;
+        $id >0 ? $model  = Survey::findOne($id) : $model=false;
+        //没有找到
+        if(!$model || $model->uid!=ZCommonSessionFun::get_user_id() ){
+            if(!$model )
+                return $this->redirect(['my']);
+        }
+        //查找问题
+        $questionData = $model->findOneQuestion($model->id, 1, $page-1);
+//         ZCommonFun::print_r_debug($questionData);
+//         ZCommonFun::print_r_debug($questionData['question']);
+//         ZCommonFun::print_r_debug($questionData['options']);
+        if(isset($questionData['question']->question_id)){
+            $qustion_id = $questionData['question']->question_id;
+            //删除问题
+            if($questionData['question']->delete()){
+                //删除选项
+                $model_QuestionOptions = new QuestionOptions();
+                $condition['question_id'] = $qustion_id;
+                //删除选项
+                $model_QuestionOptions->deleteAll($condition);
+            }
+        }
+        $this->redirect(['survey/step4_2_question','id'=>$id]);
+    }
     
+    /**
+     * 删除测试结果
+     */
+    public function actionResultDelete($id,$page){
+        $id = intval($id);
+        $page= intval($page);
+        $this->layout = false;
+        $id >0 ? $model  = Survey::findOne($id) : $model=false;
+        //没有找到
+        if(!$model || $model->uid!=ZCommonSessionFun::get_user_id() ){
+            if(!$model )
+                return $this->redirect(['my']);
+        }
+        $model_SurveyResulte = new SurveyResulte();
+        $model_SurveyResulteDetail = $model_SurveyResulte->findOneSurveyResulte($id, 1, $page-1);
+//         ZCommonFun::print_r_debug($model_SurveyResulteDetail);
+        //删除
+        if( isset($model_SurveyResulteDetail['SurveyResulte']->sr_id ) ){
+            $model_SurveyResulteDetail['SurveyResulte']->delete();
+        }
+        $this->redirect(['survey/step4_2','id'=>$id,'page'=>1]);
+    }
     /**
      * 测试结果保存
      */
@@ -456,7 +510,9 @@ str;
 //         exit;
         //保存
         if( isset($_POST['SurveyResulte']) ){
-           
+//             ZCommonFun::print_r_debug($_POST);
+//                        ZCommonFun::print_r_debug($model_save_SurveyResulte);
+//                        exit;
            $sr_id = isset($_POST['sr_id']) ? $_POST['sr_id'] : 0;
            $model_save_SurveyResulte = new SurveyResulte();
            
@@ -467,7 +523,8 @@ str;
                    $model_save_SurveyResulte = null;
                }
            }
-           ZCommonFun::print_r_debug($_POST);
+           
+//            ZCommonFun::print_r_debug($_POST);
            $model_save_SurveyResulte ? null : new SurveyResulte();
            $model_save_SurveyResulte->s_id=$id;
            $model_save_SurveyResulte->load($_POST);
@@ -519,7 +576,9 @@ str;
             'model'=>$model,
             'page'=>$page,
             'count'=>$model_SurveyResulteDetail['count'],
-            'question_total_score'=>0,//问题总分数
+            'model_SurveyResulteDetail'=>$model_SurveyResulteDetail,
+            'question_total_score'=>$model_SurveyResulteDetail['question']['question_total_score'],//问题最大总分数
+            'question_total_min_score'=>$model_SurveyResulteDetail['question']['question_total_min_score'],//问题最小分数
         ]);
     }
     
@@ -537,8 +596,10 @@ str;
         }
         $data = $model->FindAllQuestionsOptions($id);
         $posts = Yii::$app->request->post();
+//         ZCommonFun::print_r_debug($posts);
+//         exit;
         //post提交
-        if(isset($posts['option'])&& count($posts['option'])>0){
+        if(isset($posts['save'])){
 //             ZCommonFun::print_r_debug( $data );
             isset($data['options'][0]) ? null:$data['options']=[];
             foreach ( $data['options'] as $key=>$row ){
@@ -551,17 +612,18 @@ str;
                     }
                     
                 }
-                //跳转型心里测试
-                if($model->tax==3){
-                    $url = ['step4_3_question','id'=>$id];
-                    return $this->redirect($url);
-                }else{ 
-                    $url = ['step4_2','id'=>$id];
-                    return $this->redirect($url);
-                }
-//                 ZCommonFun::print_r_debug($row_option);
-//                 exit;
+                
             }
+            //跳转型心里测试
+            if($model->tax==3){
+                $url = ['step4_3_question','id'=>$id];
+                return $this->redirect($url);
+            }else{
+                $url = ['step4_2','id'=>$id];
+                return $this->redirect($url);
+            }
+            //                 ZCommonFun::print_r_debug($row_option);
+            //                 exit;
         }
 //         ZCommonFun::print_r_debug( $posts );
         return $this->render('step4_3',[
@@ -649,6 +711,10 @@ str;
         return $this->render('done',$viewData);
     }
     
+    
+    public function actionCheck(){
+        
+    }
     /**
      * 我的测试
      */

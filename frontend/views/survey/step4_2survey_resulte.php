@@ -9,6 +9,9 @@ global $survey_tax;
 $a_SurveyResulte = [];
 echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
 $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
+
+$question_total_score = isset($question_total_score) ? intval($question_total_score) : 0;
+$question_total_min_score = isset($question_total_min_score) ? intval($question_total_min_score) : 0;
 ?>
 <link rel="stylesheet" href="./css/edit.css">
 <style>
@@ -54,12 +57,25 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
 }
 .s_reg .btn_bg{
     float: left;
-	width: 38%;
+	width: 30%;
 	border: none;
-	margin: 1em;
+	margin: 0;
+}
+.s_reg .add-btn{
+	margin-left: 3.8%;
+}
+.s_reg .btn_bg.btn-r{
+	float: right;
 }
 .s_reg .btn_bg.save{
 	float: right;
+}
+
+.s_reg .btn_bg.btn-100{
+	width: 100%;
+	float: left;
+	margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .row>label,.options>select,.options>label{
@@ -95,6 +111,7 @@ text-align:left;
 	display: inline-block;
 
 }
+
 .field-images-image label{
 	font-size: 2em;
 	line-height: 45px;
@@ -134,6 +151,9 @@ text-align:left;
 	font-size: 1.5em;
 	color: blue;
 }  
+.BlockCon.core{
+	text-align: left;
+}
 </style>
 
 <div id="main_body">
@@ -163,6 +183,18 @@ text-align:left;
 				class="topic_input" type="text" placeholder="结果详情" ><?php echo $model_SurveyResulte->intro?></textarea>
 			</div>
 		</div>
+		<?php if($tax==2){?>
+		<div class="BlankBlock">
+		  <div class="BlockTitle">
+				<h2>选择分数范围</h2>
+				<div class="BlockCon core">
+				    <select name="SurveyResulte[score_min]" id="SurveyResulte-score_min"></select>
+				    到
+				    <select name="SurveyResulte[score_max]" id="SurveyResulte-score_max"></select>
+				</div>
+			</div>
+		</div>
+		<?php } ?>
 		<div class="form-group field-images-image">
             <label class="control-label upload-click" for="images-image">上传图片
                 <div id="BlockCon" class="">
@@ -184,10 +216,26 @@ text-align:left;
                 }
             ?>
         </div>
-         
+        
+        <div class="btn_bg btn-2" >
+            <?php 
+            $prv_url = Yii::$app->urlManager->createUrl(['survey/step4_2_question','id'=>$model->id]);
+            $model->tax == 2 ? $prv_url = Yii::$app->urlManager->createUrl( ['survey/step4_3','id'=>$model->id] ) : '';
+            ?>
+			<a 
+			href="<?php echo $prv_url;?>" 
+			id="prev-step">上一步</a> 
+		</div>
         <button type="submit" name="save-next" class="btn_bg add-btn">增加一个测试结果</button>
         
         <button type="submit" name="save" class="btn_bg btn btn-primary save">保存</button>
+        
+        
+        <div class="btn_bg btn-2 btn-100" >
+			<a 
+			href="<?php echo Yii::$app->urlManager->createUrl(['survey/result-delete','id'=>$model->id,'page'=>$page]);?>" 
+			id="prev-step">删除</a> 
+		</div>
  <?php ActiveForm::end(); ?>
         <div class="resulte">
 			
@@ -198,7 +246,33 @@ text-align:left;
 </script>
 <script type="text/javascript">
 var resulte_count = <?php echo $count;?>;
+
+function loadSelect(element,selected,start,end){
+	start = start ? start : 1;
+	end = end ? end : 5;
+	selected = selected ? selected : $(element).attr('selectedvalue');
+	var html = loadOptions(start,end,selected);
+	$(element).append(html);
+}
+function loadOptions(start,end,selected){
+	var html = '';
+	for(var i=0;start<=end;start++){
+		if(selected==start){
+			html += '<option selected="selected" value="'+start+'">'+start+'分</option>';
+	    }else{
+	    	html += '<option value="'+start+'">'+start+'分</option>';
+		}	
+	}
+	console.log(html);
+	return html;
+}
 $(document).ready(function(){
+	<?php 
+	if($tax==2){
+	?>
+	loadSelect('#SurveyResulte-score_min',<?php echo $model_SurveyResulte->score_max>0 ? $model_SurveyResulte->score_max : $question_total_min_score;?>,<?php echo $question_total_min_score;?>,<?php echo $question_total_score;?>);
+	loadSelect('#SurveyResulte-score_max',<?php echo $model_SurveyResulte->score_max>0 ? $model_SurveyResulte->score_max : $question_total_min_score;?>,<?php echo $question_total_min_score;?>,<?php echo $question_total_score;?>);
+    <?php }?>
 	$("#SurveyResulte-name,#SurveyResulte-value,#SurveyResulte-intro").keyup(function(){
 		preview();
     });

@@ -75,9 +75,14 @@ fieldset {
 
 			</div>
 			<div class="s_reg">
-			<a class="btn_bg" href="javascript:void(0);">
-    			<input type="submit" id="submit" value="保存"> 
-    		</a>
+			    <div class="btn_bg btn-2" >
+        			<a 
+        			href="<?php echo Yii::$app->urlManager->createUrl(['survey/step4_2_question','id'=>$model->id]);?>" 
+        			id="prev-step">上一步</a> 
+        		</div>
+    			<a class="btn_bg" href="javascript:void(0);" style="margin: 15px auto;">
+        			<input type="submit" id="submit" name="save" value="保存"> 
+        		</a>
     		</div>
     		<br />
     		<br />
