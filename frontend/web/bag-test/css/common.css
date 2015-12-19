@@ -19,9 +19,23 @@
 	border:none;
 }
 #id_start_ceshi,.s_reg input[type=submit],.s_reg .btn_bg,
-.input-wrap>i:before{
+.input-wrap>i:before,
+.s_reg input[type=button]{
 	background: #FE8C78;
 	color: white;
+}
+.s_reg input[type=button] {
+    height: 40px;
+    line-height: 36px;
+    color: #fff;
+    border: 0 none;
+    font-size: 130%;
+    font-weight: 700;
+    width: 90%;
+    border-radius: 5px;
+}
+.s_reg .btn_bg,.s_reg a.btn_bg{
+	display: block;
 }
 .common-color{
 	color: #FE8C78;
@@ -85,7 +99,8 @@ dt img{
 	width: 50px;
 	height: 50px;
 }
-.s_reg input[type=submit]{
+.s_reg input[type=submit],
+.s_reg input[type=button]{
 	width: 100%;
 }
 #prev-step{

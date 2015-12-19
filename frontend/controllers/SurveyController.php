@@ -405,8 +405,8 @@ str;
             switch ( $model->tax ){
                     //分数型心里测试
                 case 2:
-                    if(isset($url[0])&&$url[0]=='step4_2_question'&&$questionData['count']<1){
-                         
+                    if(isset($posts['save-next'])){
+                       
                         return $this->redirect($url);
                     }else{
                         return $this->redirect(['step4_3','id'=>$model->id]);
@@ -697,7 +697,7 @@ str;
      */
     public function actionDone($id){
         $this->layout = false;
-        
+        $viewData = array();
         $model  = Survey::findOne($id);
         //没有找到
         if(!$model){
@@ -706,7 +706,10 @@ str;
                 return $this->redirect(['my']);
         }
     
-        $viewData = array();
+        $viewData['question_all'] = $model->FindAllQuestionsOptions($id);
+        $model_SurveyResulte = new SurveyResulte();
+        //获取调查所有的结果
+        $viewData['result_all'] = $model_SurveyResulte->getAll($id) ;
         $viewData['model'] = $model;
         return $this->render('done',$viewData);
     }

@@ -231,6 +231,11 @@ text-align:left;
         <button type="submit" name="save" class="btn_bg btn btn-primary save">保存</button>
         
         
+		<a class="btn_bg" style="width: 98.5%;margin-top: 15px;"
+		href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
+	       <input type="button"  value="预览"> 
+	    </a> 
+        
         <div class="btn_bg btn-2 btn-100" >
 			<a 
 			href="<?php echo Yii::$app->urlManager->createUrl(['survey/result-delete','id'=>$model->id,'page'=>$page]);?>" 
@@ -302,14 +307,13 @@ $(document).ready(function(){
 		}
 	});
 
-	$("form").submit(function(){
-		if(resulte_count>0){
-			return true;
-		}
-		return submitValid();
-	});
-
-	preview();
+// 	$("form").submit(function(){
+// 		if(resulte_count>0){
+// 			return true;
+// 		}
+// 		return submitValid();
+// 	});
+// 	preview();
 });
 
 function preview(){

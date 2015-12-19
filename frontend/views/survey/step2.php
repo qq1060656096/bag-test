@@ -25,6 +25,7 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['1'];
 .s_reg form{
 	margin-top: 1em;
 }
+
 </style>
 <script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js1"></script>
 <div id="main_body">
@@ -49,7 +50,11 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['1'];
 			<input type="submit" id="submit" value="保存"> 
 		</div>
 		<br />
-    		
+    	
+	    <a class="btn_bg" href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
+	       <input type="button" value="预览"> 
+	    </a> 
+		
         <?php ActiveForm::end(); ?>
 
 
@@ -66,6 +71,7 @@ label, label input {
     vertical-align: middle;
     font-size: 2em;
 	line-height: 2em;
+	vertical-align:top;
 }
 </style> 
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>    

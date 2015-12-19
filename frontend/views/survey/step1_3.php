@@ -66,11 +66,14 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
 			<input type="submit" id="submit" value="保存"> 
 		</div>
 		<br />
-		<div class="btn_bg" >
-			<a 
-			href="<?php echo Yii::$app->urlManager->createUrl(['survey/step2','id'=>$model->id]);?>" 
-			id="prev-step">上一步</a> 
-		</div>
+		
+		<a class="btn_bg" 
+		href="<?php echo Yii::$app->urlManager->createUrl(['survey/step2','id'=>$model->id]);?>" 
+		id="prev-step">上一步</a> 
+		<br />
+		<a class="btn_bg" href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
+	       <input type="button" value="预览"> 
+	    </a> 
         <br />
         <div id="image-wrap">
             <?php 
