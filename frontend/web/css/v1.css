@@ -130,6 +130,8 @@ html,body{
 	display: table-header-group;
 	color: #EA6084;
 	line-height: 50px;
+	    text-align: center;
+    display: block;
 }
 .maindesc{
 	width: 100%;

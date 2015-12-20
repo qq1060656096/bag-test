@@ -4,6 +4,7 @@ use yii\grid\GridView;
 use common\z\ZCommonFun;
 use common\models\Survey;
 use common\z\ZCommonSessionFun;
+use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\SurverySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -301,20 +302,20 @@ $replace = true;
             </div>
         </div>
     </div>
-    
+    <?php $form = ActiveForm::begin()?>
 	<section class="s_moreread s_reg s_login">
 	   <p>&nbsp;</p>
 	   <p>已成功的创建了一个奇趣测试，您已是测试大师</p>
-	   <button type="submit" class="btn_bg btn btn-primary btn-100" 
+	   <button type="button" class="btn_bg btn btn-primary btn-100" 
 	   onclick="javascript:location.href='<?php echo $pre_url;?>';"
 	   name="save-next">上一步</button>
-	   <button type="submit" class="btn_bg btn btn-primary btn-l" 
+	   <button type="button" class="btn_bg btn btn-primary btn-l" 
 	   onclick="javascript:location.href='<?php echo $test_url;?>';"
 	   name="save-next">我要试用</button>
-	   <button type="submit" class="btn_bg btn btn-primary btn-2" 
+	   <button type="button" class="btn_bg btn btn-primary btn-2" 
 	   onclick="javascript:location.href='<?php echo $create_url;?>';"
 	   name="save-next">在创建一个</button>
-	   <button type="submit" class="btn_bg btn btn-primary btn-r" 
+	   <button type="button" class="btn_bg btn btn-primary btn-r" 
 	   onclick="javascript:location.href='<?php echo $update_url;?>';"
 	   name="save-next">修改次测试</button>
 	   
@@ -323,6 +324,7 @@ $replace = true;
 	   name="save" id="submit">直接发布</button>
 	   
     </section>    
+    <?php ActiveForm::end(); ?>
 </div>  
 <script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
