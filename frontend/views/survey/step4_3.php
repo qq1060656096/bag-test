@@ -84,7 +84,7 @@ fieldset {
         			<input type="submit" id="submit" name="save" value="保存"> 
         		</a>
         		
-        		<a class="btn_bg" style="margin: 0 auto;"
+        		<a class="btn_bg" style="margin: 0 auto; "
 		href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
 	       <input type="button"  value="预览"> 
 	    </a> 

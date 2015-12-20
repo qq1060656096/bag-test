@@ -233,6 +233,8 @@ str;
         if( $is_post && $model->save()){
 //             ZCommonFun::print_r_debug($model->attributes);
 //             exit;
+            $model->is_publish=0;
+            $model->save();
             return $this->redirect(['step1_3','id'=>$model->id]);
             
             
@@ -281,7 +283,7 @@ str;
             //事物开始
             $transaction = Yii::$app->db->beginTransaction();
             try {
-                
+                $model->is_publish=0;
                 //图片保存
                 $model_Images->use_count++;
                 if(count($model_Images->errors)<1&& $model_Images->save() ){
@@ -401,7 +403,8 @@ str;
 //             ZCommonFun::print_r_debug($model);
 //             exit;
    
-            
+            $model->is_publish=0;
+            $model->save();
             switch ( $model->tax ){
                     //分数型心里测试
                 case 2:
@@ -464,6 +467,8 @@ str;
                 $model_QuestionOptions->deleteAll($condition);
             }
         }
+        $model->is_publish=0;
+        $model->save();
         $this->redirect(['survey/step4_2_question','id'=>$id]);
     }
     
@@ -487,6 +492,8 @@ str;
         if( isset($model_SurveyResulteDetail['SurveyResulte']->sr_id ) ){
             $model_SurveyResulteDetail['SurveyResulte']->delete();
         }
+        $model->is_publish=0;
+        $model->save();
         $this->redirect(['survey/step4_2','id'=>$id,'page'=>1]);
     }
     /**
@@ -539,6 +546,8 @@ str;
 //            ZCommonFun::print_r_debug($model_save_SurveyResulte);
 //            exit;
            if($resulte){
+               $model->is_publish=0;
+               $model->save();
                //添加下一个结果
                if(isset($_POST['save-next'])){
                    $url = \Yii::$app->urlManager->createUrl(['survey/step4_2','id'=>$id,'page'=>$page]);
@@ -600,6 +609,8 @@ str;
 //         exit;
         //post提交
         if(isset($posts['save'])){
+            $model->is_publish=0;
+            $model->save();
 //             ZCommonFun::print_r_debug( $data );
             isset($data['options'][0]) ? null:$data['options']=[];
             foreach ( $data['options'] as $key=>$row ){
@@ -705,7 +716,11 @@ str;
             if(!$model)
                 return $this->redirect(['my']);
         }
-    
+        if(isset($_POST['save'])){
+            $model->is_publish=1;
+            $model->save();
+            
+        }
         $viewData['question_all'] = $model->FindAllQuestionsOptions($id);
         $model_SurveyResulte = new SurveyResulte();
         //获取调查所有的结果

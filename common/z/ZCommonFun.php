@@ -3,6 +3,39 @@ namespace common\z;
 use yii;
 class ZCommonFun{
     /**
+     * 替换敏感词
+     * @param string $str
+     */
+    public static function replace_filter_words($str,$replace_prefix='',$replace_self=false,$replace_suffix='',$replace=false,&$replace_count=0){
+        
+        //不替换
+        if(!$replace){
+            return  $str;
+        }
+        $file_name = str_replace('\\', '/', __DIR__);
+        $find_str = file_get_contents($file_name.'/file/FilterSt.txt');
+        
+        $arr_str = explode('|', $find_str);
+        $arr_str = count($arr_str)>0 ? $arr_str : array();
+       
+        foreach ($arr_str as $key=>$row){
+            $count= 0;
+            if (empty($row)) continue;
+            
+            if(strstr($str, $row)){
+                
+                $replace = '';
+                if($replace_self)
+                    $replace = str_pad('', mb_strlen($row) ,$replace_self);
+                else $replace=$row;
+                $replace = $replace_prefix.$replace.$replace_suffix;
+                $str = str_replace($row, $replace, $str,$count);
+                $replace_count+=$count;
+            }
+        }
+        return $str;
+    }
+    /**
      *生成订单号
      */
     public static function get_order_no($uid){

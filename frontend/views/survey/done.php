@@ -161,13 +161,20 @@ $update_url = Yii::$app->urlManager->createUrl(['survey/step2','id'=>$model->id]
 isset($question_all['questions'][0]) ? null:$question_all['questions']=[];
 isset($question_all['options'][0]) ? null:$question_all['options']=[];
 isset($result_all[0]) ? null:$result_all=[];
+
+$replace_prefix = '<b class="replace_word" style="color: blue;">';
+$replace_self = false;
+$replace_suffix = '</b>';
+$replace = true;
 ?>
 <div id="main_body">
 	<?php echo $this->renderFile(__DIR__.'/../layouts/head-top.php');?>
 	<div id="page-content">
         <div id="img-content" class="rich_media_area_primary">
             <h2 class="rich_media_title" id="activity-name">
-                <?php echo $model->title;?> 
+                <?php 
+                echo ZCommonFun::replace_filter_words($model->title, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
+                ?> 
             </h2>                              
             
             <div class="rich_media_content " id="js_content">
@@ -177,7 +184,9 @@ isset($result_all[0]) ? null:$result_all=[];
                         <section class="layout">
                             <section data-bcless="lighten">
                                 <p style="text-align: left;">
-                                    <?php echo $model->intro;?>
+                                    <?php   
+                                    echo ZCommonFun::replace_filter_words($model->intro, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
+                                    ?>
                                 </p>
                             </section>
                         </section>
@@ -187,9 +196,12 @@ isset($result_all[0]) ? null:$result_all=[];
                     <p><br></p>
                     <?php 
                     $index=0;
+                    
                     foreach ($question_all['questions'] as $key=>$question){
                         $index++;
                         $label = $question->label;
+                        $replace_count = 0;
+                        $label = ZCommonFun::replace_filter_words($label, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
                         $error = !empty($label) ? '' : '问题不能为空';
                     ?>
                     <p>
@@ -197,10 +209,20 @@ isset($result_all[0]) ? null:$result_all=[];
                         <span class="question-label"><?php echo $label;?></span>
                         <span class="red"><?php echo $error ;?></span>
                     </p>
-                        <?php
+                        <?php 
                         isset($question_all['options'][$key]) ? null : $question_all['options'][$key]=[];
+                        if(count($question_all['options'][$key])<1){
+                        ?>
+                        <p>
+                            <span class="option_label"></span>
+                            <span class="red"><?php echo '问题',$index,'至少包含一个选项';?></span>
+                        </p>
+                        <?php }?>
+                        <?php
+                        
                         foreach ($question_all['options'][$key] as $key2=>$question_option){
                             $option_label = $question_option->option_label;
+                            $option_label =  ZCommonFun::replace_filter_words($option_label, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
                             $error_option_label = !empty($option_label) ? '':'选项不能为空';
                             $speparator = $question_option->skip_question>0 || $question_option->skip_resulte>0 ? '——' :'';
                             $skip_text = '';
@@ -226,10 +248,13 @@ isset($result_all[0]) ? null:$result_all=[];
                  foreach ($result_all as $key=>$result){
                      $index++;
                      $name          = $result->name;
+                     $name =  ZCommonFun::replace_filter_words($name, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
                      $error_name    = !empty($name) ? '' : '姓名之前不能为空';
                      $value         = $result->value;
+                     $value =  ZCommonFun::replace_filter_words($value, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
                      $error_value   = !empty($value) ? '' : '姓名之后不能为空';
                      $intro         = $result->intro;
+                     $intro =  ZCommonFun::replace_filter_words($intro, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
                      $error_intro   = !empty($intro) ? '' : '结果详情不能为空';
                      $image         = $result->image;
                      $error_image   = !empty($image) ? '' : '图片不能为空';
@@ -264,6 +289,15 @@ isset($result_all[0]) ? null:$result_all=[];
                     </section>
                  </section>
                  <?php }?>
+                 <?php 
+                 if($index<1){
+                 ?>
+                 <section class="layout">
+                    <section data-bcless="lighten">
+                        <h2 class="red">最少包含一个测试结果</h2>
+                    </section>
+                 </section>   
+                 <?php } ?>
             </div>
         </div>
     </div>
@@ -285,9 +319,32 @@ isset($result_all[0]) ? null:$result_all=[];
 	   name="save-next">修改次测试</button>
 	   
 	   <button type="submit" class="btn_bg btn btn-primary btn-100" 
-	   onclick="javascript:location.href='<?php echo $update_url;?>';"
-	   name="save-next">直接发布</button>
+	  
+	   name="save" id="submit">直接发布</button>
 	   
     </section>    
-</div>
+</div>  
+<script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#submit").click(function(){
+	    var len = $(".replace_word").length;
+	    if(len>0){
+		    alert("包含"+len+"组敏感词，不能发布");
+	        return false;
+		}
+		var len2 = 0;
+		$("span.red").each(function(){
+		    var value = $(this).text();
+		    if(value){
+		    	len2++;
+			}
+		});
+		if( len2 ){
+			alert("有"+len2+"必填项未填写，不能发布");
+	        return false;
+		}
+	});
+});
+</script>
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>
