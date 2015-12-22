@@ -35,9 +35,17 @@ use common\z\ZCommonSessionFun;
  * @property double $reward_average
  * @property integer $reward_count
  * @property integer $front_img
+ * @property string $arithmetic
  */
 class Survey extends \yii\db\ActiveRecord
 {
+    public static $arithmeticList = [
+        '0'=>'笔画','1'=>'星座',
+        '2'=>'周易八卦','3'=>'紫薇星象',
+        '4'=>'属性','5'=>'塔罗牌',
+        '6'=>'生辰八字','7'=>'婆罗门教法',
+        '8'=>"泰式神婆法",'手机位置',
+    ];
     /**
      * @inheritdoc
      */
@@ -57,7 +65,7 @@ class Survey extends \yii\db\ActiveRecord
             [['created', 'start_date', 'end_date'], 'safe'],
             [['reward_total', 'reward_average'], 'number'],
     
-            [['title', 'intro', 'pass'], 'string', 'max' => 255]
+            [['title', 'intro', 'pass','arithmetic'], 'string', 'max' => 255]
         ];
     }
 
@@ -93,6 +101,7 @@ class Survey extends \yii\db\ActiveRecord
             'reward_average' => '平均打赏',
             'reward_count' => '打赏次数',
             'front_img'=>'封面图片',
+            'arithmetic'=>'算法'
         ];
     }
     /*

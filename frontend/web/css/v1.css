@@ -127,19 +127,19 @@ html,body{
 }
 .maintitle{
 	width: 100%;
-	display: table-header-group;
+
 	color: #EA6084;
 	line-height: 50px;
-	    text-align: center;
+	text-align: center;
     display: block;
 }
 .maindesc{
-	width: 100%;
+
 	font-size: 14px;
 	text-align: left;
 	text-indent: 2em;
 	color: #EA6084;
-	display: table-cell;
+
 	vertical-align: middle;
 	padding: 0px 10px 20px 10px;
 	line-height: 24px;

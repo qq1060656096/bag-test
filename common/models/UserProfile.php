@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 
+
 /**
  * This is the model class for table "user_profile".
  *
@@ -19,6 +20,8 @@ use Yii;
  * @property string $address
  * @property string $qq
  * @property string $school
+ * @property integer $test_count
+ * @property integer $testing_count
  */
 class UserProfile extends \yii\db\ActiveRecord
 {
@@ -41,7 +44,7 @@ class UserProfile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uid', 'sex'], 'integer'],
+            [['uid', 'sex','test_count','testing_count'], 'integer'],
             [['money', 'friend_money'], 'number'],
             [['intro'], 'string'],
             [['birthday'], 'safe'],
@@ -68,6 +71,56 @@ class UserProfile extends \yii\db\ActiveRecord
             'address' => '地址',
             'qq' => 'QQ',
             'school' => '学校',
+            'test_count'=>'测试次数',
+            'testing_count'=>'被测试次数'
         ];
+    }
+    /**
+     * 设置测试次数
+     * @param integer $uid
+     */
+    public function setTestCount($uid){
+        $condition['uid'] = $uid;
+        $count = Survey::find()->where($condition)->count();
+        $testing_count = Survey::find()->where($condition)->sum('answer_count');
+        $model_UserProfile = UserProfile::findOne($uid);
+        $model_UserProfile ? null : $model_UserProfile=new UserProfile();
+        $model_UserProfile->uid = $uid;
+        $model_UserProfile->test_count = $count;
+        $model_UserProfile->testing_count = $testing_count;
+        return $model_UserProfile->save();
+    }
+    /**
+     * 获取昵称
+     * @return string
+     */
+    public function getNickname0(){
+        $nickname = !empty($this->nickname) ? $this->nickname : 'NO.'.$this->uid;
+        return $nickname;
+    }
+    /**
+     * 获取简介
+     * @return string
+     */
+    public function getIntro0(){
+        $return = !empty($this->intro) ? $this->intro : '暂无简介';
+        return $return;
+    }
+    /**
+     * 获取头像
+     */
+    public function getHeadImage0(){
+        $image = !empty($this->head_image) ? $this->head_image : './images/head_image.png';
+        return $image;
+    }
+    
+    /**
+     * 获取准确率
+     * @return float;
+     */
+    public static function getRate0(){
+        $return = rand(95, 99);
+        $return = '99.'.$return.'%';
+        return $return;
     }
 }

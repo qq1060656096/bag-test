@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\z\ZController;
+use common\models\UserProfile;
 /* @var $model common\models\Survey */
 ?>
 <!DOCTYPE html>
@@ -22,6 +23,21 @@ $create_url = Yii::$app->urlManager->createUrl(['survey/step1','id'=>$model->id]
 ?>
 </title>
 <link rel="stylesheet" href="./css/v1.css">
+<style type="text/css">
+.user-info{
+    width: 91.5%;
+    margin: 0 auto;	
+	background: #f5f5f5;
+    border: 2px solid #ddd;
+}
+.user-info table{
+	width: 100%;
+	margin: 20px;
+}
+.red{
+	color: red;
+}
+</style>
 </head>
 <body>
 	<div id="mainbox" class="main">
@@ -142,6 +158,33 @@ $create_url = Yii::$app->urlManager->createUrl(['survey/step1','id'=>$model->id]
 				<p >更多测试</p>
 			</div>
 		</div>
+		
+		<div class="user-info">
+		    <div>
+		      <table>
+		          <tr>
+		              <td align="right">
+		                  <img src="<?php echo $model_UsersProfile->getHeadImage0();?>" />
+		              </td>
+		              <td align="left">
+		                  
+		                  <label>创建测试者：
+		                      <b><?php echo $model_UsersProfile->getNickname0();?></b>
+		                  </label>
+		                  <div class="user-intro">
+		                      <?php echo $model_UsersProfile->getIntro0();?>
+		                  </div>
+		                  <div class="user-test-info">
+		                                                  创建了<span class="red"><?php echo isset($model_UsersProfile->test_count) ? $model_UsersProfile->test_count:0;?></span>个测试，
+		                                                  被测试过<span class="red"><?php echo $model->answer_count;?></span>次，
+		                                                  准确率<span class="red"><?php echo UserProfile::getRate0(); ?></span>。
+		                  </div>
+		              </td>
+		          </tr>
+		      </table>
+		   </div>
+		</div>
+		
 	</div>
 	
     <script type="text/javascript" src="./js/jquery.js"></script>

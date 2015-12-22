@@ -16,6 +16,8 @@ use common\models\AnswerUser;
 use common\models\AnswerOperation;
 use common\z\ZCommonSessionFun;
 use common\models;
+use common\models\User;
+use common\models\UserProfile;
 class AnswerController extends Controller{
     /**
      * 随机皮肤
@@ -65,15 +67,27 @@ class AnswerController extends Controller{
         
         $model ? null : $model = new Survey();
         $model_SurveyResulte = SurveyResulte::findOne( $model_AnswerUser->table_id );
-        
+        //没找到结果
         if( !$model_SurveyResulte )
             $model_SurveyResulte = new SurveyResulte();
         
+        $model_Users = null;
+        $model_UsersProfile = null;
+        if( $model->uid ){
+            $model_Users = User::findOne( $model->uid );
+            $model_UsersProfile = UserProfile::findOne( $model->uid );
+        }
+        !$model_Users ? $model_Users = new User() : '';
+        !$model_UsersProfile ? $model_UsersProfile = new UserProfile() : '';
+//         ZCommonFun::print_r_debug($model_UsersProfile->n);
+//         exit;
         return $this->render('resulte',array(
             'model'=>$model,
             'model_AnswerUser'=>$model_AnswerUser,
             'model_SurveyResulte'=>$model_SurveyResulte,
             'image'=>Survey::getImageUrl($model),
+            'model_Users'=>$model_Users,
+            'model_UsersProfile'=>$model_UsersProfile,
         ));
     }
     /**
@@ -125,6 +139,7 @@ class AnswerController extends Controller{
             $result = $model_SurveyResulte->getStep1Result($id, $name, $birth);
             $model->answer_count = $model->randCount($model->answer_count);
             if($result){
+                
                 $model_AnswerUser = new AnswerUser();
                 $model_AnswerUser->uid = ZCommonSessionFun::get_user_id();
                 $model_AnswerUser->sid = $id;
@@ -137,13 +152,22 @@ class AnswerController extends Controller{
                 }
                 $model_AnswerUser->ip = self::getUserIP();
                 if( $model_AnswerUser->save() ){
+                    $model_UserProfile = new UserProfile();
+                    $model_UserProfile->setTestCount($model_AnswerUser->uid);
                    return  $this->redirect(['resulte','au_id'=>$model_AnswerUser->au_id]);
                 }
             }
             
              
         }
-       
+        $model_Users = null;
+        $model_UsersProfile = null;
+        if( $model->uid ){
+            $model_Users = User::findOne( $model->uid );
+            $model_UsersProfile = UserProfile::findOne( $model->uid );
+        }
+        !$model_Users ? $model_Users = new User() : '';
+        !$model_UsersProfile ? $model_UsersProfile = new UserProfile() : '';
         
         return $this->render('answer',[
             'data'=>$data,
@@ -151,6 +175,8 @@ class AnswerController extends Controller{
             'result'=>$result,
             'posts'=>$posts,
             'image'=>Survey::getImageUrl($model),
+            'model_Users'=>$model_Users,
+            'model_UsersProfile'=>$model_UsersProfile,
         ]);
     }
     
@@ -286,6 +312,8 @@ class AnswerController extends Controller{
                         //                             $transaction->commit();
                         //设置测试数量
                         $model->setAnswerCount($id);
+                        $model_UserProfile = new UserProfile();
+                        $model_UserProfile->setTestCount($model_AnswerUser->uid);
                         return $this->redirect(['resulte','au_id'=>$model_AnswerUser->au_id]);
                     }else{
                         $error = '没有选项';
@@ -301,6 +329,14 @@ class AnswerController extends Controller{
             
             
         }
+        $model_Users = null;
+        $model_UsersProfile = null;
+        if( $model->uid ){
+            $model_Users = User::findOne( $model->uid );
+            $model_UsersProfile = UserProfile::findOne( $model->uid );
+        }
+        !$model_Users ? null : $model_Users = new User() ;
+        !$model_UsersProfile ? $model_UsersProfile = new UserProfile() : '';
 //         echo $error;
 //         exit;
 //         ZCommonFun::print_r_debug($result);
@@ -309,7 +345,9 @@ class AnswerController extends Controller{
             'model'=>$model,
             'error'=>$error,
             'posts'=>$posts,
-            'image'=>Survey::getImageUrl($model)
+            'image'=>Survey::getImageUrl($model),
+            'model_Users'=>$model_Users,
+            'model_UsersProfile'=>$model_UsersProfile,
         ]);
     }
    

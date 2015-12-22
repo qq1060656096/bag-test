@@ -112,7 +112,7 @@ class SurveyController extends ZController
         }else{
             $queryParams['SurverySearch']['is_publish'] = 1;
         }
-        
+        $queryParams['SurverySearch']['is_publish'] = 1;
         $this->layout = false;
         $searchModel = new SurverySearch();
         
@@ -235,9 +235,9 @@ str;
 //             exit;
             $model->is_publish=0;
             $model->save();
-            return $this->redirect(['step1_3','id'=>$model->id]);
+//             return $this->redirect(['step1_3','id'=>$model->id]);
             
-            
+            return $this->redirect(['step-airthmetic','id'=>$model->id]);
         }
 
         return $this->render('step2', [
@@ -245,6 +245,35 @@ str;
             'tax'=>$tax,
         ]);
         
+    }
+    
+    /**
+     * 设置算法
+     * @return \yii\web\Response|\yii\base\string
+     */
+    public function actionStepAirthmetic()
+    {
+        $this->layout = false;
+        $tax = Yii::$app->request->get('tax');
+        $id = Yii::$app->request->get('id');
+        //测试不存在
+        if($id>0){
+            $model  = Survey::findOne($id);
+            //没找到 不是自己的测试
+            if(!$model || $model->uid != ZCommonSessionFun::get_user_id())
+                return $this->redirect(['my']);
+        
+            $this->view->title = $model->title;
+            $tax = $model->tax;
+        }
+        if(isset($_POST['Survey']['arithmetic'])){
+            //Survey[arithmetic]
+            $model->arithmetic = $_POST['Survey']['arithmetic'];
+            $model->save();
+            return $this->redirect(['step1_3','id'=>$model->id]);
+        }
+        $viewDdata['model'] = $model;
+        return $this->render('step-airthmetic',$viewDdata);
     }
     /**
      * 测试封面图片
