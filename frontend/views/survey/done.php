@@ -153,6 +153,19 @@ line-height: 25.6000003814697px; font-family: 微软雅黑;
 $test_url = $model->tax==1 ? Yii::$app->urlManager->createUrl(['answer/step1','id'=>$model->id])
 : Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$model->id]);
 $pre_url    = Yii::$app->urlManager->createUrl(['survey/step4_2','id'=>$model->id]);
+switch ($model->tax){
+    case 3:
+        $pre_url    = Yii::$app->urlManager->createUrl(['survey/step4_4','id'=>$model->id]);
+        break;
+    case 2:
+        $pre_url    = Yii::$app->urlManager->createUrl(['survey/step4_2','id'=>$model->id]);
+        break;
+    default:
+        $pre_url    = Yii::$app->urlManager->createUrl(['survey/step-airthmetic','id'=>$model->id]);
+        break;
+}
+
+
 $create_url = Yii::$app->urlManager->createUrl(['survey/step1','id'=>$model->id]);
 $update_url = Yii::$app->urlManager->createUrl(['survey/step2','id'=>$model->id]);
 

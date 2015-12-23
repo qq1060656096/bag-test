@@ -235,9 +235,9 @@ str;
 //             exit;
             $model->is_publish=0;
             $model->save();
-//             return $this->redirect(['step1_3','id'=>$model->id]);
+            return $this->redirect(['step1_3','id'=>$model->id]);
             
-            return $this->redirect(['step-airthmetic','id'=>$model->id]);
+//             return $this->redirect(['step-airthmetic','id'=>$model->id]);//跳转到算法
         }
 
         return $this->render('step2', [
@@ -270,7 +270,8 @@ str;
             //Survey[arithmetic]
             $model->arithmetic = $_POST['Survey']['arithmetic'];
             $model->save();
-            return $this->redirect(['step1_3','id'=>$model->id]);
+            $url = ['done','id'=>$id];//跳转到预览
+            return $this->redirect($url);
         }
         $viewDdata['model'] = $model;
         return $this->render('step-airthmetic',$viewDdata);
@@ -440,7 +441,9 @@ str;
                     if(isset($posts['save-next'])){
                        
                         return $this->redirect($url);
-                    }else{
+                    }
+                    else{
+                        
                         return $this->redirect(['step4_3','id'=>$model->id]);
                     }
                     break;
@@ -451,7 +454,8 @@ str;
                    if(isset($posts['save-next'])){
                        
                         return $this->redirect($url);
-                    }else{
+                    }
+                    else{
                           return $this->redirect(['step4_2','id'=>$model->id]);
                     } 
                     break;
@@ -587,7 +591,11 @@ str;
                        $url = ['step4_4','id'=>$model->id];
                        return $this->redirect($url);
                    }
-                   $url = \Yii::$app->urlManager->createUrl(['survey/done','id'=>$id]);
+                   if($model->tax==1){
+                       $url = \Yii::$app->urlManager->createUrl(['survey/step-airthmetic','id'=>$id]);//跳转算法
+                       $this->redirect($url);
+                   }
+                   $url = \Yii::$app->urlManager->createUrl(['survey/done','id'=>$id]);//跳转预览              
                    $this->redirect($url);
                }
            }
@@ -717,7 +725,8 @@ str;
                 
             }
 //             $model->is_publish = 1;
-            $url = ['done','id'=>$id];
+            $url = ['done','id'=>$id];//跳转到预览
+//                 $url = ['step-airthmetic','id'=>$id];//选择算法
             return $this->redirect($url);
             //                 ZCommonFun::print_r_debug($row_option);
             //                 exit;

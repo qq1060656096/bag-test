@@ -27,9 +27,11 @@ echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
 	margin-top: 1em;
 }
 .arithmetic-button{
+	padding: 0;
+	margin: 0;
 	width: 40%;
-	height: 60px;
-	line-height: 60px;
+	height: 50px;
+	line-height: 50px;
 	border: 3px solid #E46C0A;
 	    border-radius: 15px;
 	color: #E46C0A;
@@ -57,7 +59,7 @@ echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
         <?php $form = ActiveForm::begin(['id'=>'form1']); ?>
     
         <?php 
-        echo $model->arithmetic;
+//         echo $model->arithmetic;
         ?>
         <p>
             请选择测试算法。大家使用您的测试时，系统将采用您选择的算法，为大家测出最佳结果 
@@ -78,6 +80,15 @@ echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
        <?php }?>
      
        </div>
+       <br/>
+       <?php 
+       $test_url = $model->tax==1 ? Yii::$app->urlManager->createUrl(['answer/step1','id'=>$model->id])
+       : Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$model->id]);
+       $pre_url    = Yii::$app->urlManager->createUrl(['survey/step4_2','id'=>$model->id]);
+       ?>
+       <a class="btn_bg" href="<?php echo $pre_url;?>">
+	       <input type="button" value="上一步"> 
+	    </a> 
        <br />
         <div class="btn_bg" >
 			<input type="submit" id="submit" value="保存"> 
@@ -87,6 +98,7 @@ echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
 	    <a class="btn_bg" href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
 	       <input type="button" value="预览"> 
 	    </a> 
+		
 		
         <?php ActiveForm::end(); ?>
 
@@ -108,9 +120,11 @@ label, label input {
 }
 .arithmetic-button-1{
 	float: left;
+	margin-left: 5%;
 }
 .arithmetic-button-0{
 	float: right;
+	margin-right: 5%;
 }
 </style> 
 <script type="text/javascript">
