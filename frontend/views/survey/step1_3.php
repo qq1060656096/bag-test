@@ -47,7 +47,7 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
         <h1 class="po_title common-color"><?php echo $model->title;?></h1>
         <p class="intro"><?php echo $model->intro;?></p>
         <div class="form-group field-images-image">
-            <label class="control-label upload-click" for="images-image">上传图片
+            <label class="control-label upload-click" for="images-image">上传封面图
                 <div id="BlockCon" class="">
                     <i class="QaddImg " >
                         
@@ -63,18 +63,22 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
         
         
         <div class="btn_bg" >
-			<input type="submit" id="submit" value="保存"> 
+			<input type="submit" id="submit" value="保存/下一步"> 
 		</div>
 		<br />
-		
+		<?php /*
 		<a class="btn_bg" 
 		href="<?php echo Yii::$app->urlManager->createUrl(['survey/step2','id'=>$model->id]);?>" 
 		id="prev-step">上一步</a> 
 		<br />
+		
 		<a class="btn_bg" href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
 	       <input type="button" value="预览"> 
 	    </a> 
         <br />
+        */
+        ?>
+        
         <div id="image-wrap">
             <?php 
                 if(isset($model->images->image) && !empty($model->images->image)){

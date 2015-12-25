@@ -9,7 +9,7 @@ global $survey_tax;
 $a_SurveyResulte = [];
 echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
 $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
-
+$this->title = "第{$page}测试结果";
 $question_total_score = isset($question_total_score) ? intval($question_total_score) : 0;
 $question_total_min_score = isset($question_total_min_score) ? intval($question_total_min_score) : 0;
 ?>
@@ -97,6 +97,9 @@ $question_total_min_score = isset($question_total_min_score) ? intval($question_
     width: 100%;
     margin: 0;
     padding: 0;
+	/* height: 4.5em;*/
+}
+.BlankBlock .BlockCon textarea.last{
 	height: 4.5em;
 }
 .QaddImg,.field-images-image label{
@@ -163,24 +166,24 @@ text-align:left;
     <?php $form = ActiveForm::begin(['id'=>'form1','action'=>['survey/step4_2','id'=>$model->id,'page'=>$page+1]]); ?>
         <div class="BlankBlock">
 			<div class="BlockCon InputBor_pr0">
-				<textarea name="SurveyResulte[name]" id="SurveyResulte-name" 
-				class="topic_input" type="text" placeholder="请输入姓名之前的内容"><?php echo $model_SurveyResulte->name;?></textarea>
+				<textarea name="SurveyResulte[name]" id="SurveyResulte-name"  maxlength="15"
+				class="topic_input" type="text" placeholder="请输入姓名之前的内容，限15个字"><?php echo $model_SurveyResulte->name;?></textarea>
 			</div>
 			<div class="BlockTitle">
 				<h2>姓名</h2>
 			</div>
 			<div class="BlockCon InputBor_pr0">
-				<textarea name="SurveyResulte[value]" id="SurveyResulte-value" 
-				class="topic_input" type="text" placeholder="请输入姓名之后的内容" ><?php echo $model_SurveyResulte->value;?></textarea>
+				<textarea name="SurveyResulte[value]" id="SurveyResulte-value"  maxlength="15"
+				class="topic_input" type="text" placeholder="请输入姓名之后的内容，限15个字" ><?php echo $model_SurveyResulte->value;?></textarea>
 			</div>
 		</div>
 		<div class="BlankBlock">
 		    <div class="BlockTitle">
-				<h2>结果详情</h2>
+				<h2>测试结果详情</h2>
 			</div>
 			<div class="BlockCon InputBor_pr0">
 				<textarea  name="SurveyResulte[intro]" id="SurveyResulte-intro"  
-				class="topic_input" type="text" placeholder="结果详情" ><?php echo $model_SurveyResulte->intro?></textarea>
+				class="topic_input last" type="text" placeholder="测试结果详情" ><?php echo $model_SurveyResulte->intro?></textarea>
 			</div>
 		</div>
 		<?php if($tax==2){?>
@@ -205,6 +208,7 @@ text-align:left;
             <input id="upload" type="file" name="file">
             <input type="hidden"  name="sr_id" value="<?php echo $model_SurveyResulte->sr_id;?>" >
             <input type="hidden" id="SurveyResulte-image" 
+            
             class="form-control " name="SurveyResulte[image]" value="<?php echo $model_SurveyResulte->image;?>">
             
             <div class="help-block"></div>
@@ -226,9 +230,9 @@ text-align:left;
 			href="<?php echo $prv_url;?>" 
 			id="prev-step">上一步</a> 
 		</div>
-        <button type="submit" name="save-next" class="btn_bg add-btn">增加一个测试结果</button>
+        <button type="submit" name="save-next" class="btn_bg add-btn">保存/增加</button>
         
-        <button type="submit" name="save" class="btn_bg btn btn-primary save">保存</button>
+        <button type="submit" name="save" class="btn_bg btn btn-primary save">保存/完成</button>
         
         
 		<a class="btn_bg" style="width: 98.5%;margin-top: 15px;"

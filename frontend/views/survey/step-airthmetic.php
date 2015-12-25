@@ -91,7 +91,7 @@ echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
 	    </a> 
        <br />
         <div class="btn_bg" >
-			<input type="submit" id="submit" value="保存"> 
+			<input type="submit" id="submit" value="保存/完成"> 
 		</div>
 		<br />
     	

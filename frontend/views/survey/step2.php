@@ -41,20 +41,22 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['1'];
     
         <?= $form->field($model, 'tax')->hiddenInput()->label(false); ?>
 
-        <?= $form->field($model, 'title')->textInput(['placeholder'=>'测试标题']); ?>
+        <?= $form->field($model, 'title')->textInput(['placeholder'=>'请输入测试名称，限15个字','maxlength'=>15]); ?>
     
-        <?php  echo $form->field($model, 'intro')->textarea(['placeholder'=>'测试简介']) ?>
+        <?php  echo $form->field($model, 'intro')->textarea(['placeholder'=>'请输入测试简介，限70个字','maxlength'=>70]) ?>
     
         
         <div class="btn_bg" >
 			<input type="submit" id="submit" value="保存"> 
 		</div>
 		<br />
-    	
+    	<?php 
+    	/*
 	    <a class="btn_bg" href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
 	       <input type="button" value="预览"> 
 	    </a> 
-		
+	    */
+		?>
         <?php ActiveForm::end(); ?>
 
 

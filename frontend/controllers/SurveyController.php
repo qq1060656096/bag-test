@@ -591,12 +591,14 @@ str;
                        $url = ['step4_4','id'=>$model->id];
                        return $this->redirect($url);
                    }
+                   
                    if($model->tax==1){
                        $url = \Yii::$app->urlManager->createUrl(['survey/step-airthmetic','id'=>$id]);//跳转算法
-                       $this->redirect($url);
+                       return $this->redirect($url);
                    }
                    $url = \Yii::$app->urlManager->createUrl(['survey/done','id'=>$id]);//跳转预览              
-                   $this->redirect($url);
+                   return $this->redirect($url);
+                   
                }
            }
         }

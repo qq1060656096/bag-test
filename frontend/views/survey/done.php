@@ -148,6 +148,21 @@ line-height: 25.6000003814697px; font-family: 微软雅黑;
 	padding-left: 5px;
 	color: red; 
 }
+.arithmetic-button{
+
+	margin: 0;
+	padding: 0 10px;
+	height: 50px;
+	line-height: 50px;
+	border: 3px solid #E46C0A;
+	    border-radius: 15px;
+	color: #E46C0A;
+	font-weight:bold;
+	font-size: 25px;
+	margin-bottom: 10px;
+	background: #fff;
+	
+}
 </style>
 <?php 
 $test_url = $model->tax==1 ? Yii::$app->urlManager->createUrl(['answer/step1','id'=>$model->id])
@@ -257,6 +272,25 @@ $replace = true;
                     <?php }?>
                  
                  </section>
+                 <section class="layout">
+                    <section data-bcless="lighten">
+                        <h2>选择算法</h2>
+                        <p style="text-align: left;">
+                        <?php 
+                        $arr = $model->arithmetic!='' ? explode(',', $model->arithmetic):null;
+                        $arr?null:$arr=[];
+                        $arithmetic_arr =[];
+                        foreach (Survey::$arithmeticList as $key=>$value){
+                            $active = '';
+                            if(in_array($key, $arr)){
+                                $arithmetic_arr[] = $value;
+                            }
+                         } 
+                         echo implode('，', $arithmetic_arr );
+                         ?>
+                        </p>
+                    </section>
+                 </section>        
                  <?php 
                  $index=0;
                  foreach ($result_all as $key=>$result){
