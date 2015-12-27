@@ -93,13 +93,16 @@ echo $this->title,' ',$model->title;
 		</div>
 		
 		<div class="user-info">
+		  <div style="height: 3.5em;overflow: hidden;">
+		  <?php echo $this->renderFile(__DIR__.'/../layouts/share.php'); ?>
+		  </div>
 		    <div>
 		      <table>
 		          <tr>
 		              <td align="right">
 		                  <img src="<?php echo $model_UsersProfile->getHeadImage0();?>" />
 		              </td>
-		              <td align="left">
+		              <td align="left" style="vertical-align: top">
 		                  
 		                  <label>创建测试者：
 		                      <b><?php echo $model_UsersProfile->getNickname0();?></b>
@@ -116,6 +119,7 @@ echo $this->title,' ',$model->title;
 		   </div>
 		</div>
 		<!-- comment start -->
+		
 		<?php 
         echo $this->renderFile(__DIR__ . '/../comment/static-list.php',['model'=>$model_SurveyResulte]);
         
@@ -125,6 +129,7 @@ echo $this->title,' ',$model->title;
 	<?php 
         echo $this->renderFile(__DIR__ . '/../layouts/foot-comment.php',['model'=>$model_SurveyResulte]);
         ?>
+    
     <script type="text/javascript" src="./js/jquery.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function(){

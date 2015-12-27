@@ -118,6 +118,9 @@ $create_url = Yii::$app->urlManager->createUrl(['survey/step1','id'=>$model->id]
 		</div>
 		
 		<div class="user-info">
+		      <div style="height: 3.5em;overflow: hidden;">
+		      <?php echo $this->renderFile(__DIR__.'/../layouts/share.php'); ?>
+		      </div>
 		    <div>
 		      <table>
 		          <tr>
