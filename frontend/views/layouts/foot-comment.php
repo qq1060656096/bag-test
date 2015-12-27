@@ -6,7 +6,7 @@
 		<section class="card-combine">
 			<a href="" node-type="recommend" class="line-bottom"
 				reporttype=""><span>回复</span></a><a href="javascript:;"
-				node-type="reportPL" reporttype=""><span>举报</span></a> <a
+				node-type="reportPL" reporttype="" style="display: none;"><span>举报</span></a> <a
 				class="close line-top" href="javascript:;"><span>取消</span></a>
 		</section>
 	</div>
@@ -64,12 +64,13 @@ echo $this->renderFile(__DIR__ . '/../comment/static-comment-message.php');
 <script type="text/javascript">
 $(document).ready(function(){
     //点击显示评论
-    $(".card-list").on('click','.line-bottom',function(){
+    $(".card-list .line-bottom").live('click',function(){
+        
         var url = $(this).attr('comment-url');
         $("#box-comment").attr('url',url);
     	$(".ux-popmenu2").show();
     });
-    $(".comment-button").on('click',function(){
+    $(".comment-button").live('click',function(){
         var url = $(this).attr('url');
         $("#box-comment").attr('url',url);
     	$(".ux-popmenu2").show();
@@ -117,7 +118,12 @@ $(".ux-popmenu1 .module-topbar a.disable1").click(function(){
 function comment(url){
 	$.get(url,function(json){
     	if(json.message){
-        	alert(json.message);
+        	//没登录就跳到登录页
+        	if(json.status==-1){
+            	location.href="<?php echo Yii::$app->urlManager->createUrl(['login/login']) ;?>";
+             }else{
+          	   alert(json.message);
+             }
         }else{
             alert("出错了");
         }

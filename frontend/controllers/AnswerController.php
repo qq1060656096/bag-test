@@ -18,6 +18,7 @@ use common\z\ZCommonSessionFun;
 use common\models;
 use common\models\User;
 use common\models\UserProfile;
+use common\models\AnswerSurveyResulte;
 class AnswerController extends Controller{
     /**
      * 随机皮肤
@@ -66,11 +67,14 @@ class AnswerController extends Controller{
         }
         
         $model ? null : $model = new Survey();
-        $model_SurveyResulte = SurveyResulte::findOne( $model_AnswerUser->table_id );
+        $model_AnswerSurveyResulte = AnswerSurveyResulte::findOne( $model_AnswerUser->table_id );
         //没找到结果
-        if( !$model_SurveyResulte )
-            $model_SurveyResulte = new SurveyResulte();
-        
+        if( !$model_AnswerSurveyResulte )
+            $model_AnswerSurveyResulte = new AnswerSurveyResulte();
+        else{
+            $model_AnswerSurveyResulte->setvisit_count($model_AnswerUser->table_id);
+        }
+        $model_AnswerSurveyResulte->visit_count++;
         $model_Users = null;
         $model_UsersProfile = null;
         if( $model->uid ){
@@ -84,7 +88,7 @@ class AnswerController extends Controller{
         return $this->render('resulte',array(
             'model'=>$model,
             'model_AnswerUser'=>$model_AnswerUser,
-            'model_SurveyResulte'=>$model_SurveyResulte,
+            'model_SurveyResulte'=>$model_AnswerSurveyResulte,
             'image'=>Survey::getImageUrl($model),
             'model_Users'=>$model_Users,
             'model_UsersProfile'=>$model_UsersProfile,
@@ -147,8 +151,12 @@ class AnswerController extends Controller{
                 $model_AnswerUser->answer_age = $birth;
                 //直接跳转答案
                 if($result){
-                    $model_AnswerUser->table = 'survey_resulte';
-                    $model_AnswerUser->table_id = $result->sr_id;
+                    //保存回答者结果,防止用户更改数据导致结果丢失
+                    $mode_AnswerSurveyResulte = new AnswerSurveyResulte();
+                    $mode_AnswerSurveyResulte->attributes = $result->attributes;
+                    $mode_AnswerSurveyResulte->save();
+                    $model_AnswerUser->table = 'answer_survey_resulte';
+                    $model_AnswerUser->table_id = $mode_AnswerSurveyResulte->answer_sr_id;
                 }
                 $model_AnswerUser->ip = self::getUserIP();
                 if( $model_AnswerUser->save() ){
@@ -183,7 +191,7 @@ class AnswerController extends Controller{
     /**
      * 分数型回答
      */
-    public function actionStep2($id){
+    /* public function actionStep2($id){
         $model = Survey::findOne($id);
         if(!$model){//没找到
             $model = new Survey();
@@ -207,7 +215,7 @@ class AnswerController extends Controller{
             'posts'=>$posts,
         ]);
     }
-    
+     */
    
     
     
@@ -294,22 +302,22 @@ class AnswerController extends Controller{
                         //如果直接选择了答案
                         if($model_AnswerUser->table == 'survey_resulte' && $model_AnswerUser->table_id>0){
                             $result = $res_model_SurveyResulte;
-//                             ZCommonFun::print_r_debug($posts);
-//                             ZCommonFun::print_r_debug($model_AnswerUser);
-//                             print_r($res_model_SurveyResulte);
-//                             ZCommonFun::print_r_debug($data['options']);
-//                             print_r($result);
-//                             exit;
+//                             
                         }else{
                             $result = $model_SurveyResulte->getStep2Result($id, $model_AnswerUser->answer_score);
-                            if($result&& !$res_model_SurveyResulte){
-                                $model_AnswerUser->table == 'survey_resulte';
-                                $model_AnswerUser->table_id = $result->sr_id;      
-                            }
-                            $model_AnswerUser->save();
+                            
                         }
-                        
-                        //                             $transaction->commit();
+                        if($result&& !$res_model_SurveyResulte){
+                            //保存回答者结果,防止用户更改数据导致结果丢失
+                            $mode_AnswerSurveyResulte = new AnswerSurveyResulte();
+                            $mode_AnswerSurveyResulte->attributes = $result->attributes;
+                            $mode_AnswerSurveyResulte->save();
+                            $model_AnswerUser->table == 'answer_survey_resulte';
+                            
+                            $model_AnswerUser->table_id = $mode_AnswerSurveyResulte->answer_sr_id;
+                        }
+                        $model_AnswerUser->save();
+                        $transaction->commit();
                         //设置测试数量
                         $model->setAnswerCount($id);
                         $model_UserProfile = new UserProfile();

@@ -7,10 +7,10 @@ use common\z\ZCommonFun;
 use common\z\ZCommonSessionFun;
 use common\models\Message;
 use yii\data\Pagination;
-
+use common\models\AnswerSurveyResulte;
 class CommentController extends Controller
 {
-    static $messageTable = 'survey';
+    static $messageTable = 'answer_survey_resulte';
     public function actionIndex()
     {
         echo 2;
@@ -99,7 +99,7 @@ str;
             ZCommonFun::output_json(null, 2, '评论内容不能为空');
         
         if ($uid < 1)
-            ZCommonFun::output_json(null, 1, '请登录');
+            ZCommonFun::output_json(null, -1, '请登录');
         
         $model_Message = new Message();
         $model_Message->from_uid = $uid;
@@ -114,6 +114,8 @@ str;
         $model_Message->status = 0;
         // save success
         if ($model_Message->save()) {
+            $model_AnswerSurveyResulte = new AnswerSurveyResulte();
+            $model_AnswerSurveyResulte->setcomment_count($model_Message->table_id);
             ZCommonFun::output_json(null, 0, '评论成功');
         }  // save failed
         else {

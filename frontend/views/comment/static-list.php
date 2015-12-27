@@ -3,16 +3,16 @@
 	<div class="info-bar txt-l">
 		<div class="layout-box line-bottom">
 			<div class="box-col">
-				<span class="info-txt" data-node="repost">转发&nbsp;<em>209</em><i
+				<span class="info-txt" data-node="repost">浏览次数&nbsp;<em><?php echo $model->visit_count;?></em><i
 					class="arrow-up line-top"><i class="arrow-up-in line-top"></i></i></span><span
 					class="line-right"></span><span class="info-txt current"
-					data-node="comment">评论&nbsp;<em>66</em><i
+					data-node="comment">评论&nbsp;<em><?php echo $model->comment_count;?></em><i
 					class="arrow-up line-top"><i class="arrow-up-in line-top"></i>
 					</i></span>
-					<button class="comment-button" url="<?php echo Yii::$app->urlManager->createUrl(['comment/add','id'=>$model->id,'tid'=>$model->uid,'content'=>'#content#']); ?>">评论</button>
+					<button class="comment-button" url="<?php echo Yii::$app->urlManager->createUrl(['comment/add','id'=>$model->answer_sr_id,'tid'=>$model->uid,'content'=>'#content#']); ?>">评论</button>
 			</div>
 			<div class="plus">
-				<span class="info-txt" data-node="like">赞&nbsp;<em>417</em><i
+				<span class="info-txt" data-node="like">&nbsp;<em></em><i
 					class="arrow-up line-top"><i class="arrow-up-in line-top"></i></i></span>
 			</div>
 		</div>
@@ -325,7 +325,7 @@ function ajaxLoad2(){
     $(".load_more2").click(function(){
         var now =$(this);
         commentPage++;
-        var url = "<?php echo Yii::$app->urlManager->createUrl(['comment/list','id'=>$model->id,'page'=>'#page#','sort'=>'sort']);?>";
+        var url = "<?php echo Yii::$app->urlManager->createUrl(['comment/list','id'=>$model->answer_sr_id,'page'=>'#page#','sort'=>'sort']);?>";
         url = url.replace('%23page%23',commentPage);
         console.log(url);
         //有没有执行ajax就执行ajax,在执行，等执行后在加载
@@ -335,7 +335,7 @@ function ajaxLoad2(){
             $.get(url,function(html){
             	now.text('加载更多');
             	isAjaxLoad2 = false;
-                console.log(html);
+//                 console.log(html);
                 //没有找到
                 if(html==''){
                 	isAjaxLoad2 = true;

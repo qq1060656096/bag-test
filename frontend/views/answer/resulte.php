@@ -28,6 +28,7 @@ echo empty(ZController::$site_name) ? '':ZController::$site_name.' - ';
 echo $this->title,' ',$model->title;
 ?>
 </title>
+<script type="text/javascript" src="./js/jquery.js"></script>
 <link rel="stylesheet" href="./css/v1.css">
 <style type="text/css">
 .user-info{
@@ -114,9 +115,16 @@ echo $this->title,' ',$model->title;
 		      </table>
 		   </div>
 		</div>
-		
+		<!-- comment start -->
+		<?php 
+        echo $this->renderFile(__DIR__ . '/../comment/static-list.php',['model'=>$model_SurveyResulte]);
+        
+        ?>
+		<!-- comment end -->
 	</div>
-	
+	<?php 
+        echo $this->renderFile(__DIR__ . '/../layouts/foot-comment.php',['model'=>$model_SurveyResulte]);
+        ?>
     <script type="text/javascript" src="./js/jquery.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function(){
