@@ -50,6 +50,31 @@ class AnswerController extends Controller{
         return $user_IP;
     }
     /**
+     * 随机显示测试
+     * @return Ambigous <multitype:, mixed>
+     */
+    public function getRandSurvey(){
+        $queryParams['SurverySearch']['is_publish'] = 1;
+        $searchModel = new \common\models\SurverySearch();
+        $query = $searchModel->query( $queryParams );
+        $query->offset(0);
+        $query->limit(20);
+        $a_models = $query->all();
+        $len = count($a_models);
+        $len<1 ? $a_models=[]:null;
+        $rand_arr = [];
+        if($len>4){
+            $rand_arr = array_rand($a_models,4);
+        }
+        $temp = [];
+        foreach ($rand_arr as $key=>$value){
+            $temp[$value] = $a_models[$value];
+        }
+
+    
+        return $temp;
+    }
+    /**
      * 测试结果
      */
     public function actionResulte(){
@@ -92,6 +117,7 @@ class AnswerController extends Controller{
             'image'=>Survey::getImageUrl($model),
             'model_Users'=>$model_Users,
             'model_UsersProfile'=>$model_UsersProfile,
+            'randSurvey'=>$this->getRandSurvey(),//随机测试
         ));
     }
     /**

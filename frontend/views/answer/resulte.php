@@ -36,6 +36,7 @@ echo $this->title,' ',$model->title;
     margin: 0 auto;	
 	background: #f5f5f5;
     border: 2px solid #ddd;
+	    overflow: hidden;
 }
 .user-info table{
 	width: 100%;
@@ -43,6 +44,15 @@ echo $this->title,' ',$model->title;
 }
 .red{
 	color: red;
+}
+.list-a{
+	float: left;
+	width: 50%;
+	text-decoration: none;
+}
+.list-a img{
+	height: 120px;
+	width: 100%;
 }
 </style>
 </head>
@@ -118,6 +128,27 @@ echo $this->title,' ',$model->title;
 		      </table>
 		   </div>
 		</div>
+		
+		<div class="user-info">
+		  <div style="height: 3.5em;line-height: 3.5em;overflow: hidden;    font-size: 1.5em;">
+		  下面这些测试页不错，你想试一下嘛
+		  </div>
+		   <?php 
+		   foreach ($randSurvey as $key=>$row){
+		       if($row->tax==1){
+		           $url = Yii::$app->urlManager->createUrl(['answer/step1','id'=>$row->id]);
+		       }else{
+		           $url = Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$row->id]);
+		       }
+		       $image = isset( $row->images->image ) ? UPLOAD_DIR.$row->images->image : DEFAULT_IMAGE;
+		   ?>
+	       <a class="list-a" href="<?php echo $url;?>">
+	           <img src="<?php echo $image;?>" />
+	           <h5><?php echo $row->title;?></h5>
+	       </a>
+	       <?php }?>
+		</div>
+		
 		<!-- comment start -->
 		
 		<?php 
