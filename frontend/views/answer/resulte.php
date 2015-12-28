@@ -47,8 +47,17 @@ echo $this->title,' ',$model->title;
 }
 .list-a{
 	float: left;
-	width: 50%;
+	width: 48%;
 	text-decoration: none;
+	margin-bottom: 10px;
+}
+.list-a-1{
+	float: left;
+	
+}
+.list-a-0{
+	float: right;
+	
 }
 .list-a img{
 	height: 120px;
@@ -135,6 +144,7 @@ echo $this->title,' ',$model->title;
 		  </div>
 		   <?php 
 		   foreach ($randSurvey as $key=>$row){
+		       $key_index = $key+1;
 		       if($row->tax==1){
 		           $url = Yii::$app->urlManager->createUrl(['answer/step1','id'=>$row->id]);
 		       }else{
@@ -142,7 +152,7 @@ echo $this->title,' ',$model->title;
 		       }
 		       $image = isset( $row->images->image ) ? UPLOAD_DIR.$row->images->image : DEFAULT_IMAGE;
 		   ?>
-	       <a class="list-a" href="<?php echo $url;?>">
+	       <a class="list-a list-a-<?php echo $key_index%2;?>" href="<?php echo $url;?>">
 	           <img src="<?php echo $image;?>" />
 	           <h5><?php echo $row->title;?></h5>
 	       </a>
