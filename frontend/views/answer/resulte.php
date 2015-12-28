@@ -51,6 +51,15 @@ echo $this->title,' ',$model->title;
 	text-decoration: none;
 	margin-bottom: 10px;
 }
+.list-a h5 {
+  width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  -o-text-overflow:ellipsis;
+  -webkit-text-overflow:ellipsis;
+  -moz-text-overflow:ellipsis;
+  white-space:nowrap;
+}
 .list-a-1{
 	float: left;
 	
