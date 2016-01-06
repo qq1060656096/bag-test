@@ -80,7 +80,7 @@ $create_url = Yii::$app->urlManager->createUrl(['survey/step1','id'=>$model->id]
     				    <input type="text" id="name" name="name" value="" size="15">   
     				</span>
     				
-    				<span id="tia" vel="a" num="你的年龄" class="span next-false" >
+    				<span id="tia" vel="a" num="你的生日" class="span next-false" >
     				    <input type="text" id="age" name="age" value="" size="15">   
     				</span>
     			</div>

@@ -3,8 +3,14 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\models\User;
 use common\z\ZCommonSessionFun;
+use common\z\oauth\qq\QQ;
 /* @var $model common\models\User */
 $this->title = '登录';
+
+// $qq = new QQ();
+// $qq_login = $qq->qq_login();
+
+$qq_login = Yii::$app->urlManager->createUrl(['api/login-qq']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -58,7 +64,7 @@ $this->title = '登录';
     			<input type="submit" id="submit" value="登录">
     		</div>
     		
-    		<div class="link_btn">
+    		<div class="link_btn" style="display:none;">
     	    	<a href="http://m.xinli001.com/account/forget/" class="a_forget">忘记密码?</a>
     			<a href="http://m.xinli001.com/account/register/?next=http://m.xinli001.com/" class="a_reg">注册帐号</a>
     		</div>
@@ -69,7 +75,7 @@ $this->title = '登录';
     <div class="qita">
     	<ul>
     		<li class="">
-    			<a href="<?php echo Yii::$app->urlManager->createUrl(['api/login-qq']); ?>"><img src="./bag-test/logo/logo-qq.jpg" />使用QQ账号登录</a>
+    			<a href="<?php echo $qq_login; ?>"><img src="./bag-test/logo/logo-qq.jpg" />使用QQ账号登录</a>
     		</li>
     		<li class="">
     			<a href="<?php echo Yii::$app->urlManager->createUrl(['api/login-weibo']); ?>"><img src="./bag-test/logo/logo-weibo.jpg" />使用新浪微博登录</a>

@@ -1,4 +1,5 @@
 <?php
+use common\z\ZCommonFun;
 /* PHP SDK
  * @version 2.0.0
  * @author connect@qq.com
@@ -8,14 +9,23 @@
 require_once(CLASS_PATH."Recorder.class.php");
 require_once(CLASS_PATH."URL.class.php");
 require_once(CLASS_PATH."ErrorCase.class.php");
+function CheckSubstrs($substrs,$text){
+    foreach($substrs as $substr)
+        if(false!==strpos($text,$substr)){
+        return true;
+    }
+    return false;
+}
 
 class Oauth{
-
+    public $is_mobile = false;
     const VERSION = "2.0";
     const GET_AUTH_CODE_URL = "https://graph.qq.com/oauth2.0/authorize";
+    const GET_WAP_AUTH_CODE_URL = 'https://graph.z.qq.com/moc2/authorize';
     const GET_ACCESS_TOKEN_URL = "https://graph.qq.com/oauth2.0/token";
+    const GET_WAP_ACCESS_TOKEN_URL = 'https://graph.z.qq.com/moc2/token';
     const GET_OPENID_URL = "https://graph.qq.com/oauth2.0/me";
-
+    const GET_WAP_OPENID_URL = 'https://graph.z.qq.com/moc2/me';
     protected $recorder;
     public $urlUtils;
     protected $error;
@@ -44,16 +54,22 @@ class Oauth{
             "client_id" => $appid,
             "redirect_uri" => $callback,
             "state" => $state,
-            "scope" => $scope
+            "scope" => $scope,
         );
-        $login_url =  $this->urlUtils->combineURL(self::GET_AUTH_CODE_URL, $keysArr);
-        
-     
-        header("Location:$login_url");
-        
+//         isMobile22() ? $keysArr['g_ut']=1:null;
+//         $oauth_url = isMobile22() ? self::GET_WAP_AUTH_CODE_URL : self::GET_AUTH_CODE_URL;
+//         die($oauth_url);
+        $oauth_url = self::GET_AUTH_CODE_URL;
+        $login_url =  $this->urlUtils->combineURL($oauth_url, $keysArr);
+//         echo $callback;
+//         ZCommonFun::print_r_debug($login_url);
+//         exit;
+        header("Location: $login_url");
+//         return $login_url;
     }
 
     public function qq_callback(){
+ 
         $state = $this->recorder->read("state");
 
         //--------验证state防止CSRF攻击
@@ -69,11 +85,19 @@ class Oauth{
             "client_secret" => $this->recorder->readInc("appkey"),
             "code" => $_GET['code']
         );
-
+//         echo '<pre>';
+//         print_r($_SERVER);
+//         exit;
         //------构造请求access_token的url
-        $token_url = $this->urlUtils->combineURL(self::GET_ACCESS_TOKEN_URL, $keysArr);
+        $url = $this->is_mobile ? self::GET_WAP_ACCESS_TOKEN_URL : self::GET_ACCESS_TOKEN_URL;
+        $url = self::GET_ACCESS_TOKEN_URL;
+        $token_url = $this->urlUtils->combineURL($url, $keysArr);
+//         ZCommonFun::print_r_debug($token_url);
+//         ZCommonFun::print_r_debug($keysArr);
+//         exit;
         $response = $this->urlUtils->get_contents($token_url);
-
+//         ZCommonFun::print_r_debug($response);
+//         exit;
         if(strpos($response, "callback") !== false){
 
             $lpos = strpos($response, "(");
@@ -82,13 +106,20 @@ class Oauth{
             $msg = json_decode($response);
 
             if(isset($msg->error)){
+                header('content-type:text/html;charset=utf-8;');
+                die('qq登陆授权错误，错误码:'.$msg->error.',请联系管理员');
                 $this->error->showError($msg->error, $msg->error_description);
             }
         }
 
         $params = array();
         parse_str($response, $params);
-
+        if(isset($params['error'])){
+            die('qq登陆授权错误，错误码:'.$params['error'].',请联系管理员');
+            exit;
+        }
+//         ZCommonFun::print_r_debug($params);
+//         exit;
         $this->recorder->write("access_token", $params["access_token"]);
         return $params["access_token"];
 
@@ -100,8 +131,9 @@ class Oauth{
         $keysArr = array(
             "access_token" => $this->recorder->read("access_token")
         );
-
-        $graph_url = $this->urlUtils->combineURL(self::GET_OPENID_URL, $keysArr);
+        $url = $this->is_mobile ? self::GET_WAP_OPENID_URL :self::GET_OPENID_URL;
+        $url = self::GET_OPENID_URL;
+        $graph_url = $this->urlUtils->combineURL($url, $keysArr);
         $response = $this->urlUtils->get_contents($graph_url);
 
         //--------检测错误是否发生

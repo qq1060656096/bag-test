@@ -11,6 +11,7 @@ use common\models\Survey;
 $this->params['breadcrumbs'][] = $this->title;
 
 echo $this->renderFile(__DIR__.'/../layouts/head.php');
+
 ?>
 <script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js"></script>
 <div id="main_body">

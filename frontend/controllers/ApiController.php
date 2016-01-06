@@ -35,6 +35,8 @@ class ApiController extends Controller{
     public function actionCallbackQq(){
         $qq = new QQ();
         $access_token = $qq->qq_callback();
+//         ZCommonSessionFun::set_user_session($access_token);
+//         exit;
         $openid = $qq->get_openid();
         $qq = new QQ($access_token,$openid);
         $user_info = $qq->get_user_info();
@@ -50,7 +52,7 @@ class ApiController extends Controller{
             return $this->redirect([ZCommonSessionFun::urlMyStr]);
         }
        
-//         ZCommonFun::print_r_debug( $model_User->operationData );
+        ZCommonFun::print_r_debug( $model_User->operationData );
         
         exit;
     }
@@ -78,7 +80,7 @@ class ApiController extends Controller{
             $keys['redirect_uri'] = WB_CALLBACK_URL;
             try {
                 $token = $weibo->getAccessToken( 'code', $keys ) ;
-            } catch (OAuthException $e) {
+            } catch (\OAuthException $e) {
             }
         }
         
@@ -89,6 +91,9 @@ class ApiController extends Controller{
         $uid_get = $weibo->get_uid();
 //         ZCommonFun::print_r_debug($uid_get);
 //         exit;
+        if(isset($uid_get['error_code'])){
+            die('微博授权登陆错误，错误码：'.$uid_get['error_code'].',请联系管理员');
+        }
         $openid = $uid = $uid_get['uid'];
 //         echo $uid;
         
@@ -109,7 +114,7 @@ class ApiController extends Controller{
                 return $this->redirect([ZCommonSessionFun::urlMyStr]);
             }
         }
-        echo $return;
+//         echo $return;
         ZCommonFun::print_r_debug( $model_User->operationData );
 
         ZCommonFun::print_r_debug($user_message);

@@ -10,6 +10,7 @@ use yii\filters\VerbFilter;
 use yii\data\Pagination;
 use common\z\ZCommonFun;
 use common\models\Images;
+use common\models\User;
 use common\models\SurveyResulte;
 use yii\caching\Cache;
 use common\z\ZController;
@@ -19,9 +20,10 @@ use yii\db\Transaction;
 use frontend\models\SurveyOperation;
 use frontend\models\frontend\models;
 use common\z\ZCommonSessionFun;
+use common\z\oauth\qq\QQ;
 use common;
 use yii\base\Model;
-
+use common\models\OauthBind;
 /**
  * SurveyController implements the CRUD actions for Survey model.
  */
@@ -47,7 +49,31 @@ class SurveyController extends ZController
     public function actionIndex()
     {
         $this->view->title = '最新';
-        
+        if(isset($_GET['code'])){
+            $qq = new QQ();
+            $qq->is_mobile = true;
+            $access_token = $qq->qq_callback();
+//                     ZCommonFun::print_r_debug($access_token);
+//                     exit;
+            $openid = $qq->get_openid();
+            $qq = new QQ($access_token,$openid);
+            $user_info = $qq->get_user_info();
+            $model_User = new User();
+            $return = $model_User->userBind('', '', '', $openid, OauthBind::typeQQ, $user_info['nickname'], $user_info['figureurl'],true);
+            //绑定成功或者已经绑定
+            if($return===0 || $return===1){
+                $user = $model_User->operationData['user']->attributes;
+                $user['nickname'] = $model_User->operationData['user_profile']->nickname;
+                $user['head_image'] = $model_User->operationData['user_profile']->head_image;
+                $user['openid'] = $openid;
+                ZCommonSessionFun::set_user_session($user);
+                return $this->redirect([ZCommonSessionFun::urlMyStr]);
+            }
+             
+            ZCommonFun::print_r_debug( $model_User->operationData );
+            
+            exit;
+        }
         $sort = Yii::$app->request->get('sort',1);
         $this->view->title = $sort > 0 ?'最新' : '最热';
         $this->layout = false;

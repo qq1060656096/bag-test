@@ -121,18 +121,19 @@ class User extends \yii\db\ActiveRecord
      * @return number
      */
     public function userBind($user,$pass,$uid,$openid,$type,$nickname,$head_image,$is_register=false){
+        $model_OauthBind = new OauthBind();
+        $condition['openid'] = $openid;
+        $condition['type'] = $type;
+        $model_OauthBind=$model_OauthBind->findOne($condition);
+        if($model_OauthBind && $model_OauthBind->uid>0&& $model_User = User::findOne($model_OauthBind->uid)){
+            $is_register=false;
+        }
+//         ZCommonFun::print_r_debug($model_User);
+//         ZCommonFun::print_r_debug($model_OauthBind);
+//         exit;
         //已存在用户
         if(!$is_register){
-            //如果有用户
-            if( $uid>0 || !empty($user) ){
-                $model_User = new User();
-                $uid>0 ? $condition['uid'] = $uid : $condition['user'] = $user;
-                $model_User = $model_User->findOne($condition);
-                //用户不存
-                if(!$model_User){
-                    return -2;
-                }
-            }
+            
         }//注册用户
         else{
             $model_User = new User();
