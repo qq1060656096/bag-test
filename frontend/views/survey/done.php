@@ -5,6 +5,7 @@ use common\z\ZCommonFun;
 use common\models\Survey;
 use common\z\ZCommonSessionFun;
 use yii\widgets\ActiveForm;
+use common\models\SurveyResulte;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\SurverySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -306,7 +307,7 @@ $replace = true;
                      $error_intro   = !empty($intro) ? '' : '结果详情不能为空';
                      $image         = $result->image;
                      $error_image   = !empty($image) ? '' : '图片不能为空';
-                     
+                     $image = SurveyResulte::getImageUrl($result);
                      $score_text='';
                      if($model->tax==2){
                          $score_text=''.$result->score_min.'分~~'.$result->score_max.'分';
@@ -328,7 +329,7 @@ $replace = true;
                             <span class="red"><?php echo $error_intro;?></span>
                         </p>
                         <p style="text-align: left;">
-                            <?php echo $image;?>
+                            <img alt="" src="<?php echo $image;?>">
                             <span class="red"><?php echo $error_image;?></span>
                         </p>
                         <p style="text-align: left;">
@@ -376,6 +377,11 @@ $replace = true;
 <script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	<?php 
+	if($message){
+	    echo 'alert("',$message,'");';
+	}
+	?>
 	$("#submit").click(function(){
 	    var len = $(".replace_word").length;
 	    if(len>0){

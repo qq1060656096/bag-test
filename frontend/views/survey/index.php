@@ -13,6 +13,13 @@ $this->params['breadcrumbs'][] = $this->title;
 echo $this->renderFile(__DIR__.'/../layouts/head.php');
 
 ?>
+<style>
+<!--
+dd.list-user{
+	text-align: left;
+}
+-->
+</style>
 <script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js"></script>
 <div id="main_body">
     <header class="s_header">
@@ -45,6 +52,7 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 					</dd>
 					<dd><?php echo $row->intro;?></dd>
 					<dd>
+					   <span style="float: left;display: inline-block;padding-left: 10px;">由<?php echo $row->getNickname1();?>创建</span>
 						<span>测试过：<?php echo $row->answer_count;?></span>
 					</dd>
 				</a>

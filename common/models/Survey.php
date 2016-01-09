@@ -203,6 +203,8 @@ class Survey extends \yii\db\ActiveRecord
         $data['question_total_min_score'] = $question_total_min_score;
         return $data;
     }
+    
+    
     /**
      * 设置回答数量
      * @param unknown $id
@@ -219,9 +221,20 @@ class Survey extends \yii\db\ActiveRecord
         $rand<=8?$count++:$count+=10;
         return $count;
     }
-    
+    public  function getNickname1(){
+        $nickname = !empty($this->userProfile->nickname) ? $this->userProfile->nickname : 'NO.'.$this->uid;
+        return $nickname;
+    }
     public function  getImages(){
         return $this->hasOne(Images::className(),  ['id'=>'front_img']);
+    }
+    
+    public function getUser(){
+        return $this->hasOne(User::className(), ['uid'=>'uid']);
+    }
+    
+    public function getUserProfile(){
+        return $this->hasOne(UserProfile::className(), ['uid'=>'uid']);
     }
     /**
      * 获取我创建测得测试数量
@@ -243,7 +256,7 @@ class Survey extends \yii\db\ActiveRecord
      */
     public static function getImageUrl($model){
         $image = isset( $model->images->image ) ? UPLOAD_DIR.$model->images->image : DEFAULT_IMAGE;
-        $image = Yii::$app->request->hostInfo.Yii::$app->request->baseUrl.'/'.$image;
+        $image = Yii::$app->request->hostInfo.Yii::$app->request->baseUrl.$image;
         return $image;
     }
 }

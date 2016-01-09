@@ -10,7 +10,7 @@ Yii::setAlias('console', dirname(dirname(__DIR__)) . '/console');
  * 上传文件夹
  * @var string
  */
-define('UPLOAD_DIR', './common/php-html5-uploadz/uploads/');
+define('UPLOAD_DIR', '/common/php-html5-uploadz/uploads/');
 /**
  * 默认图片
  * @var string

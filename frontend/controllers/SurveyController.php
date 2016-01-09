@@ -196,8 +196,10 @@ class SurveyController extends ZController
 		</dd>
 		<dd>{$row->intro}</dd>
 		<dd>
+		<span style="float: left;display: inline-block;padding-left: 10px;">由{$row->getNickname1()}创建</span>
 			<span>测试过：{$row->answer_count}</span>
 		</dd>
+	   
 	</a>
 </dl>                    
 str;
@@ -782,16 +784,18 @@ str;
             if(!$model)
                 return $this->redirect(['my']);
         }
+        $message = '';
         if(isset($_POST['save'])){
             $model->is_publish=1;
-            $model->save();
-            
+            $model->save() ? $message='发布成功' :'发布失败';
+ 
         }
         $viewData['question_all'] = $model->FindAllQuestionsOptions($id);
         $model_SurveyResulte = new SurveyResulte();
         //获取调查所有的结果
         $viewData['result_all'] = $model_SurveyResulte->getAll($id) ;
         $viewData['model'] = $model;
+        $viewData['message'] = $message;
         return $this->render('done',$viewData);
     }
     

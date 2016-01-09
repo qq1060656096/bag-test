@@ -98,6 +98,8 @@ class UserProfile extends \yii\db\ActiveRecord
         $nickname = !empty($this->nickname) ? $this->nickname : 'NO.'.$this->uid;
         return $nickname;
     }
+    
+    
     /**
      * 获取简介
      * @return string

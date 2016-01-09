@@ -147,4 +147,10 @@ class SurveyResulte extends \yii\db\ActiveRecord
         }
         return $data;
     }
+    
+    public static function getImageUrl($model){
+        $image = isset( $model->image ) ? UPLOAD_DIR.$model->image : DEFAULT_IMAGE;
+        $image = Yii::$app->request->hostInfo.Yii::$app->request->baseUrl.$image;
+        return $image;
+    }
 }

@@ -167,7 +167,7 @@ class AnswerController extends Controller{
             $model_SurveyResulte = new SurveyResulte();
             //计算测试结果
             $result = $model_SurveyResulte->getStep1Result($id, $name, $birth);
-            $model->answer_count = $model->randCount($model->answer_count);
+           // $model->answer_count = $model->randCount($model->answer_count);
             if($result){
                 
                 $model_AnswerUser = new AnswerUser();
@@ -186,6 +186,9 @@ class AnswerController extends Controller{
                 }
                 $model_AnswerUser->ip = self::getUserIP();
                 if( $model_AnswerUser->save() ){
+                    //设置测试数量
+                    $model->setAnswerCount($id);
+                     
                     $model_UserProfile = new UserProfile();
                     $model_UserProfile->setTestCount($model_AnswerUser->uid);
                    return  $this->redirect(['resulte','au_id'=>$model_AnswerUser->au_id]);
