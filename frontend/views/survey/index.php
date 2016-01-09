@@ -45,10 +45,10 @@ dd.list-user{
 				<a href="<?php echo $url;?>">
 					<dt>
 						<img src="<?php echo $image;?>"
-							alt="你有多怕谈恋爱：恋爱恐怖程度自评">
+							alt="">
 					</dt>
 					<dd>
-						<h3><?php echo $row->id,$row->title;?></h3>
+						<h3><?php echo $row->title;?></h3>
 					</dd>
 					<dd><?php echo $row->intro;?></dd>
 					<dd>

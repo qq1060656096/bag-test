@@ -96,7 +96,7 @@ echo $this->title,' ',$model->title;
 				        echo '<img class="image" src= "',$image,'" title="',$model->title,'"/>';
 				    ?>
 				    
-				    <?php echo $model->intro;?>
+				    <?php echo $model_SurveyResulte->intro;?>
 				</div>
 			</div>
 			

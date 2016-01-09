@@ -108,7 +108,7 @@ class AnswerController extends Controller{
         }
         !$model_Users ? $model_Users = new User() : '';
         !$model_UsersProfile ? $model_UsersProfile = new UserProfile() : '';
-//         ZCommonFun::print_r_debug($model_UsersProfile->n);
+//         ZCommonFun::print_r_debug($model_AnswerSurveyResulte);
 //         exit;
         return $this->render('resulte',array(
             'model'=>$model,
@@ -120,6 +120,23 @@ class AnswerController extends Controller{
             'randSurvey'=>$this->getRandSurvey(),//随机测试
         ));
     }
+    public function popupMessage($message){
+        $url = Yii::$app->urlManager->createUrl(['survey/index']);
+        echo <<<str
+        <html>
+        <meta charset="utf-8"/>
+<body>
+
+
+        <script language="javascript" type="text/javascript">
+           alert('{$message}');
+           window.location.href="{$url}"; 
+    </script>
+        </body>
+</html>
+str;
+        
+    }
     /**
      * 奇趣测试回答
      */
@@ -129,7 +146,10 @@ class AnswerController extends Controller{
         if(!$model){//没找到
             $model = new Survey();
         }
-       
+        if($model->is_publish<1){
+            $this->popupMessage($model->title.'未发布，不能测试');
+            exit;
+        }
         $data = $model->FindAllQuestionsOptions($id);
         
         $q = new Question();
@@ -258,6 +278,10 @@ class AnswerController extends Controller{
         $model = Survey::findOne($id);
         if(!$model){//没找到
             $model = new Survey();
+        }
+        if($model->is_publish<1){
+            $this->popupMessage($model->title.'未发布，不能测试');
+            exit;
         }
         $data = $model->FindAllQuestionsOptions($id);
 //                 ZCommonFun::print_r_debug($_POST);

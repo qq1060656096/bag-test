@@ -192,7 +192,7 @@ class SurveyController extends ZController
 				alt="你有多怕谈恋爱：恋爱恐怖程度自评">
 		</dt>
 		<dd>
-			<h3>{$row->id}{$row->title}</h3>
+			<h3>{$row->title}</h3>
 		</dd>
 		<dd>{$row->intro}</dd>
 		<dd>
