@@ -204,7 +204,9 @@ $replace = true;
             <h2 class="rich_media_title" id="activity-name">
                 <?php 
                 echo ZCommonFun::replace_filter_words($model->title, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
+                $error_title = empty($model->title) ? '标题不能为空':'';
                 ?> 
+                <span class="red"><?php echo $error_title;?></span>
             </h2>                              
             
             <div class="rich_media_content " id="js_content">
@@ -216,7 +218,10 @@ $replace = true;
                                 <p style="text-align: left;">
                                     <?php   
                                     echo ZCommonFun::replace_filter_words($model->intro, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
-                                    ?>
+                                  
+                                    $error_intro = empty($model->intro) ? '简介不能为空':'';
+                                    ?> 
+                                    <span class="red"><?php echo $error_intro;?></span>
                                 </p>
                             </section>
                         </section>

@@ -785,24 +785,34 @@ str;
                 return $this->redirect(['my']);
         }
         $message = '';
-        if(isset($_POST['save'])){
-            $model->is_publish=1;
-            $model->save() ? $message='发布成功' :'发布失败';
- 
-        }
         $viewData['question_all'] = $model->FindAllQuestionsOptions($id);
         $model_SurveyResulte = new SurveyResulte();
         //获取调查所有的结果
         $viewData['result_all'] = $model_SurveyResulte->getAll($id) ;
         $viewData['model'] = $model;
+        if(isset($_POST['save'])){
+            //检测是否能发布
+            $check_arr = $this->checkPublish($viewData['question_all'], $model, $viewData['result_all']);
+            $message .= isset($check_arr[0]) && $check_arr[0]>0 ? '包含'.$check_arr[0].'组敏感词,':'';
+            $message .= $message==''&& isset($check_arr[1]) && $check_arr[1]>0 ? '包含'.$check_arr[1].'项未填写,':'';
+            $message .= $message==''&& isset($check_arr['message']) && !empty($check_arr['message']) ? $check_arr['message']:'';
+            $message ? $message.='不能发布。':null;
+//             ZCommonFun::print_r_debug($check_arr);
+//             exit;
+            if($message==''){
+                $model->is_publish=1;
+                $model->save() ? $message='发布成功' :'发布失败';
+            }
+            
+ 
+        }
+        
         $viewData['message'] = $message;
         return $this->render('done',$viewData);
     }
     
     
-    public function actionCheck(){
-        
-    }
+  
     /**
      * 我的测试
      */
@@ -907,5 +917,93 @@ str;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    /**
+     * 检测发布
+     */
+    public function checkPublish($question_all,$model,$result_all){
+        $message = '';
+        isset($question_all['questions'][0]) ? null:$question_all['questions']=[];
+        !isset($question_all['questions'][0]) ?$message='至少包含一个问题,':null;
+        isset($question_all['options'][0]) ? null:$question_all['options']=[];
+        isset($result_all[0]) ? null:$result_all=[];
+        
+        $replace_prefix = '<b class="replace_word" style="color: blue;">';
+        $replace_self = false;
+        $replace_suffix = '</b>';
+        $replace = true;
+        
+        $all_count = 0;//敏感词数量
+        $all_count_empty = 0;//未填写项
+        $all_question_empty = 0; //空问题数量
+        $all_question_option_empty = 0;//空选项数量
+        ZCommonFun::replace_filter_words($model->title, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
+        $all_count+=$replace_count;
+        ZCommonFun::replace_filter_words($model->intro, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
+        $all_count+=$replace_count;
+        empty($model->title)?$all_count_empty++:null;
+        empty($model->intro)?$all_count_empty++:null;
+        //问题
+        $index=0;
+        
+        foreach ($question_all['questions'] as $key=>$question){
+            $index++;
+            $label = $question->label;
+            $replace_count = 0;
+            $label = ZCommonFun::replace_filter_words($label, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
+            $all_count+=$replace_count;
+            $error = !empty($label) ? '' : '问题不能为空';
+            $error ? $all_count_empty++:null;
+            isset($question_all['options'][$key]) ? null : $question_all['options'][$key]=[];
+            if(count($question_all['options'][$key])<1){
+                $all_count_empty++;
+            }
+            foreach ($question_all['options'][$key] as $key2=>$question_option){
+                $option_label = $question_option->option_label;
+                $option_label =  ZCommonFun::replace_filter_words($option_label, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
+                $all_count+=$replace_count;
+                $error_option_label = !empty($option_label) ? '':'选项不能为空';
+                $error_option_label ? $all_count_empty++:null;
+                $speparator = $question_option->skip_question>0 || $question_option->skip_resulte>0 ? '——' :'';
+                $skip_text = '';
+            
+                $question_option->skip_question>0 ? $skip_text="转{$question_option->skip_question}题":'';
+                $question_option->skip_resulte>0 ? $skip_text="转{$question_option->skip_question}结果":'';
+                $score_text='';
+                if($model->tax==2){
+                    $score_text='—('.$question_option->option_score.'分)';
+                }
+            }
+        }
+        $index = 0;
+        !isset($result_all[0])?$message.='至少包含一个测试结果':'';
+        foreach ($result_all as $key=>$result){
+            $index++;
+            $name          = $result->name;
+            $name =  ZCommonFun::replace_filter_words($name, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
+            $all_count+=$replace_count;
+            $error_name    = !empty($name) ? '' : '姓名之前不能为空';
+            $error_name    ? $all_count_empty++:null;
+            $value         = $result->value;
+            $value =  ZCommonFun::replace_filter_words($value, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
+            $all_count+=$replace_count;
+            $error_value   = !empty($value) ? '' : '姓名之后不能为空';
+            $error_value   ? $all_count_empty++:null;
+            $intro         = $result->intro;
+            $intro =  ZCommonFun::replace_filter_words($intro, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
+            $all_count+=$replace_count;
+            $error_intro   = !empty($intro) ? '' : '结果详情不能为空';
+            $error_intro   ? $all_count_empty++:null;
+            $image         = $result->image;
+            $error_image   = !empty($image) ? '' : '图片不能为空';
+            $error_image   ? $all_count_empty++:null;
+            $image = SurveyResulte::getImageUrl($result);
+            $score_text='';
+            if($model->tax==2){
+                $score_text=''.$result->score_min.'分~~'.$result->score_max.'分';
+            }
+        }
+        
+        return [$all_count,$all_count_empty,'message'=>$message];
     }
 }
