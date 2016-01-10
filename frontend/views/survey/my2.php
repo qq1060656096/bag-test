@@ -41,7 +41,7 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
                     }
                     $row_ur_done   = Yii::$app->urlManager->createUrl(['survey/done','id'=>$row->id]);
                     //发布  
-                    $row_ur_done_publish   = Yii::$app->urlManager->createUrl(['survey/done','id'=>$row->id,'is_ajax'=>'1']);
+                    $row_ur_done_publish   = Yii::$app->urlManager->createUrl(['survey/done','is_ajax'=>1,'id'=>$row->id]);
                     $row_ur_change = Yii::$app->urlManager->createUrl(['survey/step2','id'=>$row->id]); 
                     $image = isset( $row->images->image ) ? UPLOAD_DIR.$row->images->image : DEFAULT_IMAGE;         
                 ?>
@@ -74,17 +74,34 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
       
  </div>
  <script type="text/javascript">
+ ajaxLoad();
 $(document).ready(function(){
 	$(".list_box").on('click',".ajax-publish",function(){
-		var url = $(this).attr('href');
-		$.post(url,{save:1},function(json){
-			alert(json.message);
-		    console.log(json);
+
+		var element = $(this);
+		var url = element.attr('href');
+		element.text('发布中...');
+// 		alert(url);
+// 		$.post(url,{save:1},function(json){
+// 			element.text('发布');
+// 			alert(json.message);
+// 		    console.log(json);
+// 		});
+		$.ajax({
+			type:"POST",
+			dataType:"json",
+			data:{"save":1},
+			url: url+"",
+			success:function(json) {
+				element.text('发布');
+				alert(json.message);
+			}
 		});
+
 		return false;
    });
 });
-ajaxLoad();
+
 /**
  * ajax加载分页
  */

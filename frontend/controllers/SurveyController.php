@@ -807,8 +807,9 @@ str;
             if(isset($_GET['is_ajax']) && $_GET['is_ajax'] ){
                 $this->layout = false;
                 $json['message'] = $message; 
-                header('content-type:application/json');
+                header('Content-type: application/json');
                 echo json_encode($json);
+//                 ZCommonFun::print_r_debug($json);
                 exit;
             }
  
