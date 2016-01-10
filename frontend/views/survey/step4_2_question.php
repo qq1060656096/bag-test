@@ -269,7 +269,7 @@ $(document).ready(function(){
         
         <button type="submit" class="btn_bg btn btn-primary btn-r" name="save">保存</button>
         
-        <a class="btn_bg" style="width: 98.5%;margin-top: 15px;"
+        <a class="btn_bg" style="display:none;width: 98.5%;margin-top: 15px;"
 		href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
 	       <input type="button"  value="预览"> 
 	    </a> 

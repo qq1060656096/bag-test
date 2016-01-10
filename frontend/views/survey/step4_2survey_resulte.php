@@ -235,7 +235,7 @@ text-align:left;
         <button type="submit" name="save" class="btn_bg btn btn-primary save">保存/完成</button>
         
         
-		<a class="btn_bg" style="width: 98.5%;margin-top: 15px;"
+		<a class="btn_bg" style="display:none;width: 98.5%;margin-top: 15px;"
 		href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
 	       <input type="button"  value="预览"> 
 	    </a> 

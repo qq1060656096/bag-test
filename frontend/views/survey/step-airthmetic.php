@@ -95,7 +95,7 @@ echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
 		</div>
 		<br />
     	
-	    <a class="btn_bg" href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
+	    <a style="display:none;" class="btn_bg" href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
 	       <input type="button" value="预览"> 
 	    </a> 
 		

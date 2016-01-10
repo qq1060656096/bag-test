@@ -803,7 +803,14 @@ str;
                 $model->is_publish=1;
                 $model->save() ? $message='发布成功' :'发布失败';
             }
-            
+            //ajax发布
+            if(isset($_GET['is_ajax']) && $_GET['is_ajax'] ){
+                $this->layout = false;
+                $json['message'] = $message; 
+                header('content-type:application/json');
+                echo json_encode($json);
+                exit;
+            }
  
         }
         
@@ -924,7 +931,9 @@ str;
     public function checkPublish($question_all,$model,$result_all){
         $message = '';
         isset($question_all['questions'][0]) ? null:$question_all['questions']=[];
-        !isset($question_all['questions'][0]) ?$message='至少包含一个问题,':null;
+        if($model->tax>1){
+            !isset($question_all['questions'][0]) ?$message='至少包含一个问题,':null;
+        }
         isset($question_all['options'][0]) ? null:$question_all['options']=[];
         isset($result_all[0]) ? null:$result_all=[];
         

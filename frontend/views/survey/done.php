@@ -164,6 +164,16 @@ line-height: 25.6000003814697px; font-family: 微软雅黑;
 	background: #fff;
 	
 }
+
+.change-btn{
+	  background: #FE8C78;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 2px 8px 4px 8px;
+    cursor: pointer;
+    display: inline-block;
+}
 </style>
 <?php 
 $test_url = $model->tax==1 ? Yii::$app->urlManager->createUrl(['answer/step1','id'=>$model->id])
@@ -233,7 +243,9 @@ $replace = true;
                     $index=0;
                     
                     foreach ($question_all['questions'] as $key=>$question){
+                        
                         $index++;
+                        $row_change_question_url = Yii::$app->urlManager->createUrl(['survey/step4_2_question','id'=>$model->id,'page'=>$index]);
                         $label = $question->label;
                         $replace_count = 0;
                         $label = ZCommonFun::replace_filter_words($label, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
@@ -243,6 +255,9 @@ $replace = true;
                         <?php echo $index;?>
                         <span class="question-label"><?php echo $label;?></span>
                         <span class="red"><?php echo $error ;?></span>
+                    
+                        
+                        <a class="change-btn" href="<?php echo $row_change_question_url;?>" >修改此问题</a>
                     </p>
                         <?php 
                         isset($question_all['options'][$key]) ? null : $question_all['options'][$key]=[];
@@ -278,12 +293,16 @@ $replace = true;
                     <?php }?>
                  
                  </section>
+                 <?php 
+                 $arr = $model->arithmetic!='' ? explode(',', $model->arithmetic):null;
+                 if(count($arr)>0 || $model->tax==1){
+                 ?>
                  <section class="layout">
                     <section data-bcless="lighten">
                         <h2>选择算法</h2>
                         <p style="text-align: left;">
                         <?php 
-                        $arr = $model->arithmetic!='' ? explode(',', $model->arithmetic):null;
+                        
                         $arr?null:$arr=[];
                         $arithmetic_arr =[];
                         foreach (Survey::$arithmeticList as $key=>$value){
@@ -296,11 +315,13 @@ $replace = true;
                          ?>
                         </p>
                     </section>
-                 </section>        
+                 </section>   
+                 <?php } ?>     
                  <?php 
                  $index=0;
                  foreach ($result_all as $key=>$result){
                      $index++;
+                     $row_change_result_url = Yii::$app->urlManager->createUrl(['survey/step4_2','id'=>$model->id,'page'=>$index]);
                      $name          = $result->name;
                      $name =  ZCommonFun::replace_filter_words($name, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
                      $error_name    = !empty($name) ? '' : '姓名之前不能为空';
@@ -321,6 +342,7 @@ $replace = true;
                  <section class="layout">
                     <section data-bcless="lighten">
                         <h2><?php echo '结果',$index;?></h2>
+                        <a class="change-btn" href="<?php echo $row_change_result_url;?>" >修改此结果</a>
                         <p style="text-align: left;">
                             <?php echo $name;?>
                             <span class="red"><?php echo $error_name;?></span>
@@ -367,10 +389,10 @@ $replace = true;
 	   name="save-next">我要试用</button>
 	   <button type="button" class="btn_bg btn btn-primary btn-2" 
 	   onclick="javascript:location.href='<?php echo $create_url;?>';"
-	   name="save-next">在创建一个</button>
+	   name="save-next">再创建一个</button>
 	   <button type="button" class="btn_bg btn btn-primary btn-r" 
 	   onclick="javascript:location.href='<?php echo $update_url;?>';"
-	   name="save-next">修改次测试</button>
+	   name="save-next">修改此测试</button>
 	   
 	   <button type="submit" class="btn_bg btn btn-primary btn-100" 
 	  

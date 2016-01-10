@@ -39,7 +39,9 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
                             break;
                         default: $row_url='';break;
                     }
-                    
+                    $row_ur_done   = Yii::$app->urlManager->createUrl(['survey/done','id'=>$row->id]);
+                    //发布  
+                    $row_ur_done_publish   = Yii::$app->urlManager->createUrl(['survey/done','id'=>$row->id,'is_ajax'=>'1']);
                     $row_ur_change = Yii::$app->urlManager->createUrl(['survey/step2','id'=>$row->id]); 
                     $image = isset( $row->images->image ) ? UPLOAD_DIR.$row->images->image : DEFAULT_IMAGE;         
                 ?>
@@ -54,6 +56,10 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 						</dd>
 						<dd><?php echo $row->intro;?></dd>
 						<dd>
+						      <a class="btn_bg" href="<?php echo $row_ur_done;?>">预览</a>
+						      &nbsp; &nbsp;
+						      <a class="btn_bg ajax-publish" href="<?php echo $row_ur_done_publish;?>">发布</a>
+						      &nbsp;&nbsp;
 						    <a class="btn_bg" href="<?php echo $row_ur_change;?>">修改</a>
 							<span>测试过：<?php echo $row->answer_count;?></span>
 						</dd>
@@ -68,6 +74,16 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
       
  </div>
  <script type="text/javascript">
+$(document).ready(function(){
+	$(".list_box").on('click',".ajax-publish",function(){
+		var url = $(this).attr('href');
+		$.post(url,{save:1},function(json){
+			alert(json.message);
+		    console.log(json);
+		});
+		return false;
+   });
+});
 ajaxLoad();
 /**
  * ajax加载分页
