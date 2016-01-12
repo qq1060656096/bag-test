@@ -109,8 +109,10 @@ class SurveyOperation extends Survey{
     public function step4_2_questionSave($posts,$id,$page){
         $url='';
         $error='';
+        
         if( isset($posts['label']['option-label'][0])){     
-            
+//             ZCommonFun::print_r_debug($posts);
+//             exit;
             //保存问题!empty($posts['label-name'] )
             if( isset($posts['label-name'] ) ){
                 $transacation = Yii::$app->db->beginTransaction();
@@ -132,13 +134,23 @@ class SurveyOperation extends Survey{
                     if( $model_Question->save()){
                         $len = count($posts['label']['option-label']);
                         foreach ($posts['label']['option-label'] as $key=>$value){
+                               $qo_id = isset ($posts['label']['qo-id'][$key] ) ? $posts['label']['qo-id'][$key] : 0;
                                //验证问题
 //                             if(empty($value)) continue;
-                               if( empty($value ) && $key+1 ==$len ){
+                               if( empty($value ) && ($key+1 ==$len || $posts['label']['option-score'][$key] <2) ){
+                                   //删除空选项
+                                   $model_QuestionOptions = QuestionOptions::findOne($qo_id);
+                                   //不是当前测试的选项
+                                   if($model_QuestionOptions->table_id!=$id){
+                                       continue;
+                                   }else{
+                                       $model_QuestionOptions->delete();
+                                   }
+                                   
                                    continue;
                                } 
                             
-                            $qo_id = isset ($posts['label']['qo-id'][$key] ) ? $posts['label']['qo-id'][$key] : 0;
+                            
                             if($qo_id>0){
                                 $model_QuestionOptions = QuestionOptions::findOne($qo_id);
                                 //不是当前测试的选项
@@ -148,6 +160,7 @@ class SurveyOperation extends Survey{
                                 $save++;
                             }else{                       
                                 $model_QuestionOptions = new QuestionOptions();
+                                
                             }
                             $model_QuestionOptions->question_id = $model_Question->question_id;
                             $model_QuestionOptions->table_id = $id;

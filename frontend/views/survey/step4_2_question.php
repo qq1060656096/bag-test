@@ -68,7 +68,7 @@ $this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey
 	margin-left: 3.8%;
 }
 .s_reg .btn_bg.btn-100{
-	width: 100%;
+	width: 98.5%;
 	float: left;
 	margin-top: 10px;
 }
@@ -156,7 +156,7 @@ $(document).ready(function(){
 		var html = '<li>'
 			      +'    <div class="option-warp">'
 			      +'          <input class="option-label Q_Sytle_input " placeholder="请输入选项名称" oid="" value=""  name="label[option-label][]">'
-			      +'          <select class="option-score" name="label[option-score][]">'+loadOptions(1,6,1)+'</select>'
+			      +'          <select class="option-score" name="label[option-score][]">'+loadOptions(1,5,1)+'</select>'
 			      +'     </div>'
 		          +'   </li>';
 	    $(this).closest('.Q_Style_con').find('.unstyled').append(html);
@@ -203,7 +203,7 @@ $(document).ready(function(){
         <div class="row">
             <div class="BlankBlock">
                 <div class="BlockTitle">
-                    <h2>题目标题</h2>
+                    <h2>第<?php echo $page;?>题&nbsp;题目标题</h2>
                 </div>
                 <div class="BlockCon InputBor">
                     <input type="hidden" name="qid" value="<?php echo $questionData['question']->question_id;?>"/>
@@ -241,7 +241,7 @@ $(document).ready(function(){
          <div class="row">
             <div class="BlankBlock">
                 <div class="BlockTitle">
-                    <h2>题目标题</h2>
+                    <h2>第<?php echo $page;?>题&nbsp;题目标题</h2>
                 </div>
                 <div class="BlockCon InputBor">
                     <input class="topic_input" type="text" placeholder="请输入题目名称" name="label-name" id="question_title">

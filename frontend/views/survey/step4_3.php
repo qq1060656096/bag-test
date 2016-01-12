@@ -96,4 +96,15 @@ fieldset {
     		<br />
         <?php ActiveForm::end(); ?>
 </section>    
+<script type="text/javascript">
+$(document).ready(function(){
+	$("select").on('click change',function(){
+		var now = $(this);
+		var value = now.val();
+		//获取当前选中值
+	    $("select option[value='"+value+"']").hide();
+	    $("select option[value='"+value+"']:selected").show();
+	});
+});
+</script>
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>
