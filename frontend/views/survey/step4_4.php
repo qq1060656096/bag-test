@@ -112,6 +112,19 @@ fieldset {
         <?php ActiveForm::end(); ?>
 </section>    
 <script type="text/javascript">
+Array.prototype.unique2 = function()
+{
+	var n = {},r=[]; //n为hash表，r为临时数组
+	for(var i = 0; i < this.length; i++) //遍历当前数组
+	{
+		if (!n[this[i]]) //如果hash表中没有当前项
+		{
+			n[this[i]] = true; //存入hash表
+			r.push(this[i]); //把当前数组的当前项push到临时数组里面
+		}
+	}
+	return r;
+}                            
 $(document).ready(function(){
 	//点击问题
 	$("label").on('click','.select-question',function(){
@@ -140,6 +153,45 @@ $(document).ready(function(){
 		}
 	});
 	$(".select-question,.select-resulte").click();
+
+	
+	$("select.select-question").on('change',function(){
+		var now = $(this);
+		//获取当前选中值
+		var value = now.val();
+		if(value){
+			now.attr('valueid',value);
+		}else{
+			now.removeAttr('valueid');
+		}
+		
+		var arr_select = new Array();
+		//当前值被选中就显示，没被选中就隐藏
+	    $("select.select-question[valueid]").each(function(){
+		    var row = $(this);		    
+		    var row_value = row.attr('valueid');
+		    arr_select.push(row_value);
+		    $("select.select-question option[value='"+row_value+"']:not(:selected)").hide();
+		    $("select.select-question option[value='"+row_value+"']:selected").show();
+		});  
+	    arr_select = arr_select.unique2();
+// 		console.log(arr_select);
+		$("select.select-question:not([valueid]) option").each(function(){
+			var row = $(this);	
+			var row_value = row.attr('value');
+			var op = false;
+		    for(var i in arr_select){
+			    if(arr_select[i]==row_value){
+			    	row.hide();
+			    	op = true;
+			    	break;
+				}
+			}
+// 			console.log(op,row_value);
+		    op? null : row.show();
+		}); 
+	});
+
 });
 </script>
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

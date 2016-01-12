@@ -58,6 +58,8 @@ fieldset {
 							<?php 
                             isset($data['options'][$key]) ? null : $data['options'][$key]=[];
                             foreach ($data['options'][$key] as $key2=>$option){
+                                if( $model->tax ==2 )
+                                    break;
                             ?>	
 							<label for="option-id-<?php echo $option->qo_id;?>" >
 						
@@ -97,7 +99,7 @@ fieldset {
         <?php ActiveForm::end(); ?>
 </section>    
 <script type="text/javascript">
-$(document).ready(function(){
+/* $(document).ready(function(){
 	$("select").on('click change',function(){
 		var now = $(this);
 		var value = now.val();
@@ -105,6 +107,7 @@ $(document).ready(function(){
 	    $("select option[value='"+value+"']").hide();
 	    $("select option[value='"+value+"']:selected").show();
 	});
-});
+	$("select").click();
+}); */
 </script>
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>
