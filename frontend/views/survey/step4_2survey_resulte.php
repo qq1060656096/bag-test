@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\z\ZCommonFun;
+use common\models\SurveyResulte;
 global $survey_tax;
 // ZCommonFun::print_r_debug($survey_tax);
 
@@ -72,7 +73,7 @@ $question_total_min_score = isset($question_total_min_score) ? intval($question_
 }
 
 .s_reg .btn_bg.btn-100{
-	width: 100%;
+	width: 98.5%;
 	float: left;
 	margin-top: 20px;
     margin-bottom: 20px;
@@ -215,16 +216,19 @@ text-align:left;
         </div>
 		<div id="image-wrap">
             <?php 
+                
                 if(isset($model_SurveyResulte->image) && !empty($model_SurveyResulte->image)){
-                    echo '<img src="',UPLOAD_DIR,$model_SurveyResulte->image,'"/>';
+                    echo '<img src="',$image = SurveyResulte::getImageUrl($model_SurveyResulte),'"/>';
                 }
             ?>
         </div>
-        
+        <br/>
         <div class="btn_bg btn-2" >
             <?php 
             $prv_url = Yii::$app->urlManager->createUrl(['survey/step4_2_question','id'=>$model->id]);
             $model->tax == 2 ? $prv_url = Yii::$app->urlManager->createUrl( ['survey/step4_3','id'=>$model->id] ) : '';
+            $model->tax == 1 ? $prv_url = Yii::$app->urlManager->createUrl( ['survey/step1_3','id'=>$model->id] ) : '';
+            $model->tax == 3 ? $prv_url = Yii::$app->urlManager->createUrl( ['survey/step4_2_question','id'=>$model->id] ) : '';
             ?>
 			<a 
 			href="<?php echo $prv_url;?>" 

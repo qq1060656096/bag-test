@@ -20,7 +20,7 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['1'];
 }
 .form-group{
 	text-align: left;
-	font-weight: bold;
+	font-weight: 100;
 }
 .s_reg form{
 	margin-top: 1em;
