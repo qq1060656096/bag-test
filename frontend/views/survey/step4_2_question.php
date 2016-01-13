@@ -265,9 +265,9 @@ $(document).ready(function(){
 			id="prev-step">上一步</a> 
 		</div>
 		
-        <button type="submit" class="btn_bg btn btn-primary btn-3" name="save-next">保存/编辑下一题</button>
+        <button type="submit" class="btn_bg btn btn-primary btn-3" name="save-next">保存/增加</button>
         
-        <button type="submit" class="btn_bg btn btn-primary btn-r" name="save">保存</button>
+        <button type="submit" class="btn_bg btn btn-primary btn-r" name="save">保存/完成</button>
         
         <a class="btn_bg" style="display:none;width: 98.5%;margin-top: 15px;"
 		href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">

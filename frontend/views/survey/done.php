@@ -206,6 +206,10 @@ $replace_prefix = '<b class="replace_word" style="color: blue;">';
 $replace_self = false;
 $replace_suffix = '</b>';
 $replace = true;
+$arr_result_index = [];
+foreach ($result_all as $key0=>$result0){
+    $arr_result_index[$result0->sr_id] = $key0+1;
+}
 ?>
 <div id="main_body">
 	<?php echo $this->renderFile(__DIR__.'/../layouts/head-top.php');?>
@@ -278,7 +282,7 @@ $replace = true;
                             $skip_text = '';
                             
                             $question_option->skip_question>0 ? $skip_text="转{$question_option->skip_question}题":'';
-                            $question_option->skip_resulte>0 ? $skip_text="转{$question_option->skip_question}结果":'';
+                            $question_option->skip_resulte>0 && isset($arr_result_index[$question_option->skip_resulte]) ? $skip_text="转{$arr_result_index[$question_option->skip_resulte]}结果":'';
                             $score_text=''; 
                             if($model->tax==2){
                                 $score_text='—('.$question_option->option_score.'分)';

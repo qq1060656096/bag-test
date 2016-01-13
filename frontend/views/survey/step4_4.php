@@ -55,6 +55,10 @@ $this->title="跳转设置--跳转型测试";
 }
 .s_reg .btn_bg{
 	display: block;
+	width: 98.5%;
+}
+.s_reg{
+	margin-bottom: 30px;
 }
 fieldset {
 	border:none;
@@ -99,10 +103,17 @@ fieldset {
                 <?php } ?>
 
 			</div>
+			
 			<div class="s_reg">
-			<a class="btn_bg" href="javascript:void(0);">
-    			<input type="submit" id="submit" value="保存"> 
-    		</a>
+    			<a class="btn_bg" href="<?php echo Yii::$app->urlManager->createUrl(['survey/step4_2','id'=>$model->id]);?>">
+        			<input type="button" id="submit" value="上一步"> 
+        		</a>
+    		</div>
+    		
+			<div class="s_reg">
+    			<a class="btn_bg" href="javascript:void(0);">
+        			<input type="submit" id="submit" value="保存"> 
+        		</a>
     		</div>
     		<br />
     		<br />
@@ -191,7 +202,7 @@ $(document).ready(function(){
 		    op? null : row.show();
 		}); 
 	});
-
+	$("select.select-question").change();
 });
 </script>
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>
