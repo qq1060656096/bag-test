@@ -576,6 +576,21 @@ str;
         $model_SurveyResulte = $model_SurveyResulteDetail['SurveyResulte'] ? $model_SurveyResulteDetail['SurveyResulte'] : new SurveyResulte();
 //            ZCommonFun::print_r_debug($model_SurveyResulteDetail);
 //         exit;
+        $limit_score_start = 0;
+        $limit_score_end   = 0;
+    
+        if($model->tax==2){
+            //获取所有测试结果
+            $model_SurveyResulte_all = new SurveyResulte();
+            $model_SurveyResulte_all = $model_SurveyResulte_all->findOneSurveyResulte($id, $page-1, 0,false,true);
+//             ZCommonFun::print_r_debug($model_SurveyResulte_all);
+//             exit;
+            
+            foreach ($model_SurveyResulte_all['SurveyResulte'] as $key=>$row){
+                $limit_score_start = $row->score_min;
+                $limit_score_end = $row->score_max;
+            }
+        }
         //保存
         if( isset($_POST['SurveyResulte']) ){
 //             ZCommonFun::print_r_debug($_POST);
@@ -631,6 +646,7 @@ str;
            }
         }
 
+        
        /*  $model_SurveyResulte = new SurveyOperation();
         $url = $model_SurveyResulte->step4_2SaveResulteCondition2($posts, $condition, $id);
         if($url){
@@ -645,6 +661,15 @@ str;
 //         ZCommonFun::print_r_debug($a_SurveyResulte);
 // ZCommonFun::print_r_debug($model_SurveyResulteDetail);
 // exit;
+        //可选最大总分数
+        $question_total_score       = $model_SurveyResulteDetail['question']['question_total_score'];
+        ////可选最小分数
+        $question_total_min_score   = $limit_score_end;
+        //如果已经设置分数限制，
+        $limit_score_end> 0 ? $question_total_min_score+=1 : $question_total_min_score = $model_SurveyResulteDetail['question']['question_total_min_score'];
+//         echo $limit_score_start,'-',$limit_score_end,'<br/>';
+//         echo $question_total_min_score,'-',$question_total_score,'<br/>';
+//         exit;
         return $this->render('step4_2survey_resulte',[
             'model_SurveyResulte'=>$model_SurveyResulte,
             'a'=>array(),
@@ -653,8 +678,9 @@ str;
             'page'=>$page,
             'count'=>$model_SurveyResulteDetail['count'],
             'model_SurveyResulteDetail'=>$model_SurveyResulteDetail,
-            'question_total_score'=>$model_SurveyResulteDetail['question']['question_total_score'],//问题最大总分数
-            'question_total_min_score'=>$model_SurveyResulteDetail['question']['question_total_min_score'],//问题最小分数
+            'question_total_score'=>$question_total_score,
+            'question_total_min_score'=>$question_total_min_score,//可选最小分数
+            
         ]);
     }
     

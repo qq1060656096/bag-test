@@ -126,9 +126,11 @@ class SurveyResulte extends \yii\db\ActiveRecord
      * @param integer $survey_id
      * @param integer $limit
      * @param integer $offset
+     * @param boolean $question 是否查找问题,默认true
+     * @param boolean $SurveyResulte_lis_multi 是否多条
      * @return array
      */
-    public function findOneSurveyResulte($survey_id,$limit,$offset){
+    public function findOneSurveyResulte($survey_id,$limit,$offset,$question = true,$SurveyResulte_lis_multi=false){
     
         $model_SurveyResulte = new SurveyResulte();
         $model_QuestionOptions = new QuestionOptions();
@@ -136,14 +138,15 @@ class SurveyResulte extends \yii\db\ActiveRecord
         //结果数量
         $data['count'] = SurveyResulte::find()->where($condition)->orderBy([])->count();
         //结果内容
-        $data['SurveyResulte'] = null;
+        $data['SurveyResulte'] = [];
         //问题
-        $data['question'] = null;
+        $data['question'] = [];
         if($data['count']>0){
-    
-            $model_SurveyResulte = $model_SurveyResulte->find()->where($condition)->limit($limit)->offset($offset)->one();
+            
+            $query = $model_SurveyResulte->find()->where($condition)->limit($limit)->offset($offset);
+            $model_SurveyResulte = $SurveyResulte_lis_multi ? $query->all() : $query->one();
             $data['SurveyResulte'] = $model_SurveyResulte;
-            $data['question']      = (new Survey())->FindAllQuestionsOptions($survey_id);
+            $data['question']      = $question ?  (new Survey())->FindAllQuestionsOptions($survey_id) : [];
         }
         return $data;
     }

@@ -192,9 +192,17 @@ text-align:left;
 		  <div class="BlockTitle">
 				<h2>选择分数范围</h2>
 				<div class="BlockCon core">
-				    <select name="SurveyResulte[score_min]" id="SurveyResulte-score_min"></select>
+				    <select name="SurveyResulte[score_min]" id="SurveyResulte-score_min">
+				        <?php 
+				        echo $question_total_min_score>$question_total_score ? '<option value="">分数区间已经选择完了</option>' : '';
+				        ?>
+				    </select>
 				    到
-				    <select name="SurveyResulte[score_max]" id="SurveyResulte-score_max"></select>
+				    <select name="SurveyResulte[score_max]" id="SurveyResulte-score_max">
+				        <?php 
+				        echo $question_total_min_score>$question_total_score ? '<option value="">分数区间已经选择完了</option>' : '';
+				        ?>
+				    </select>
 				</div>
 			</div>
 		</div>
@@ -281,9 +289,9 @@ function loadOptions(start,end,selected){
 }
 $(document).ready(function(){
 	<?php 
-	if($tax==2){
+	if($tax==2 && $question_total_min_score<=$question_total_score){
 	?>
-	loadSelect('#SurveyResulte-score_min',<?php echo $model_SurveyResulte->score_max>0 ? $model_SurveyResulte->score_max : $question_total_min_score;?>,<?php echo $question_total_min_score;?>,<?php echo $question_total_score;?>);
+	loadSelect('#SurveyResulte-score_min',<?php echo $model_SurveyResulte->score_min>0 ? $model_SurveyResulte->score_min : $question_total_min_score;?>,<?php echo $question_total_min_score;?>,<?php echo $question_total_min_score;?>);
 	loadSelect('#SurveyResulte-score_max',<?php echo $model_SurveyResulte->score_max>0 ? $model_SurveyResulte->score_max : $question_total_min_score;?>,<?php echo $question_total_min_score;?>,<?php echo $question_total_score;?>);
     <?php }?>
 	$("#SurveyResulte-name,#SurveyResulte-value,#SurveyResulte-intro").keyup(function(){

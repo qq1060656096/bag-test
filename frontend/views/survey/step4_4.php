@@ -165,7 +165,7 @@ $(document).ready(function(){
 	});
 	$(".select-question,.select-resulte").click();
 
-	
+	/*
 	$("select.select-question").on('change',function(){
 		var now = $(this);
 		//获取当前选中值
@@ -203,6 +203,7 @@ $(document).ready(function(){
 		}); 
 	});
 	$("select.select-question").change();
+	*/
 });
 </script>
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>
