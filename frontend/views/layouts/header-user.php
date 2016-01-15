@@ -49,8 +49,10 @@
 </style>
 <?php 
 use common\z\ZCommonSessionFun;
+use common\z\ZCommonFun;
 $model_SurveyTotal = new common\models\Survey();
 $sessionUser = ZCommonSessionFun::get_user_session();
+
 ?>
 <div class="user-info">
 	<table>

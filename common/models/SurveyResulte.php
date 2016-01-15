@@ -146,8 +146,9 @@ class SurveyResulte extends \yii\db\ActiveRecord
             $query = $model_SurveyResulte->find()->where($condition)->limit($limit)->offset($offset);
             $model_SurveyResulte = $SurveyResulte_lis_multi ? $query->all() : $query->one();
             $data['SurveyResulte'] = $model_SurveyResulte;
-            $data['question']      = $question ?  (new Survey())->FindAllQuestionsOptions($survey_id) : [];
+            
         }
+        $data['question']      = $question ?  (new Survey())->FindAllQuestionsOptions($survey_id) : [];
         return $data;
     }
     

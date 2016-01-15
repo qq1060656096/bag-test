@@ -329,7 +329,7 @@ $(document).ready(function(){
 // 		}
 // 		return submitValid();
 // 	});
-// 	preview();
+	preview();
 });
 
 function preview(){

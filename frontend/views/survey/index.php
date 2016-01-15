@@ -39,7 +39,7 @@ dd.list-user{
                 }else{
                     $url = Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$row->id]);
                 }
-                $image = isset( $row->images->image ) ? UPLOAD_DIR.$row->images->image : DEFAULT_IMAGE;
+                $image = common\models\Survey::getImageUrl($row);
             ?>
 			<dl>
 				<a href="<?php echo $url;?>">

@@ -3,6 +3,7 @@ namespace common\z;
 use yii\web\Controller;
 use yii;
 use yii\caching\FileCache;
+use common\models\UserProfile;
 class ZController extends Controller{
     /**
      * 站点名
@@ -21,6 +22,20 @@ class ZController extends Controller{
      */
     public function init(){
         parent::init();
+        
+        $sessionUser = ZCommonSessionFun::get_user_session();
+        //没有设置用户信息
+        if(ZCommonSessionFun::get_user_id()>0&&!isset($sessionUser['is_set_profile'])){
+            $sessionUser['is_set_profile'] = true;
+            $model_UserProfile = new UserProfile();
+            $condition['uid']  = ZCommonSessionFun::get_user_id();
+            if($model_UserProfile = $model_UserProfile->findOne($condition)){
+                $sessionUser['head_image']  = $model_UserProfile->getHeadImage0();
+                $sessionUser['nickname']    = $model_UserProfile->getNickname0();
+                $sessionUser['intro']       = $model_UserProfile->getIntro0();
+                ZCommonSessionFun::set_user_session($sessionUser);
+            }
+        }
     }
     
     /**

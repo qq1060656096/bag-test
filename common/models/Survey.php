@@ -256,7 +256,7 @@ class Survey extends \yii\db\ActiveRecord
      */
     public static function getImageUrl($model){
         $image = isset( $model->images->image ) ? UPLOAD_DIR.$model->images->image : DEFAULT_IMAGE;
-        $image = Yii::$app->request->hostInfo.Yii::$app->request->baseUrl.$image;
+        $image = Yii::$app->request->baseUrl.$image;
         return $image;
     }
 }

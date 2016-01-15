@@ -43,7 +43,7 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
                     //发布  
                     $row_ur_done_publish   = Yii::$app->urlManager->createUrl(['survey/done','is_ajax'=>1,'id'=>$row->id]);
                     $row_ur_change = Yii::$app->urlManager->createUrl(['survey/step2','id'=>$row->id]); 
-                    $image = isset( $row->images->image ) ? UPLOAD_DIR.$row->images->image : DEFAULT_IMAGE;         
+                    $image = common\models\Survey::getImageUrl($row);         
                 ?>
 				<dl>
 					<a href="<?php echo $row_url;?>">

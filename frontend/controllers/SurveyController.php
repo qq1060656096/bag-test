@@ -183,7 +183,7 @@ class SurveyController extends ZController
                         $url = Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$row->id]);
                     }
                
-                   $image = isset( $row->images->image ) ? UPLOAD_DIR.$row->images->image : DEFAULT_IMAGE;
+                   $image = common\models\Survey::getImageUrl($row);
                    echo <<<str
 <dl>
 	<a href="{$url}">
@@ -247,6 +247,7 @@ str;
             $model->tax = $tax;
             $model->type=0;
             $this->view->title = isset( $survey_tax[$tax] ) ? $survey_tax[$tax] : '';
+            $model->created = date('Y-m-d H:i:s');
         }
 //         echo $tax;
         //post提交
