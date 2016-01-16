@@ -8,7 +8,8 @@
  * License: http://www.plupload.com/license
  * Contributing: http://www.plupload.com/contributing
  */
-
+use PHPImageWorkshop\ImageWorkshop as ImageWorkshop;
+require_once(__DIR__.'/ImageWorkshop-2.0.6/tests/autoload.php');
 #!! 注意
 #!! 此文件只是个示例，不要用于真正的产品之中。
 #!! 不保证代码安全性。
@@ -56,7 +57,7 @@ if ( !empty($_REQUEST[ 'debug' ]) ) {
 // Settings
 // $targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
 
-$targetFile = './uploads/';
+$new_dir = $targetFile = './uploads/';
 
 $cleanupTargetDir = true; // Remove old files
 $maxFileAge = 5 * 3600; // Temp file age in seconds
@@ -71,6 +72,20 @@ if(!empty($_POST['file'])){
         $filename_new = $targetFile.$filename_new.".{$type}";
         if (file_put_contents($filename_new, base64_decode(str_replace($result[1], '', $base64_image_content)))){
 //             echo '新文件保存成功：', $new_file;
+            $newfile = microtime(true).'-'.rand(1,20).'.'.$type;
+            $filename_new_2 = $new_dir.$newfile;
+            $text = '大神蒜';
+            //设置水印文字
+            $color = '000000';
+            $textLayer = ImageWorkshop::initTextLayer($text, __DIR__.'/ImageWorkshop-2.0.6/tests/Resources/fonts/yahei.ttf', 13, $color, 0);
+            $pinguLayer = ImageWorkshop::initFromPath($filename_new);
+//             $pinguLayer->resizeInPixel(400, 400, true, 0, 0, 'MM'); 
+            $pinguLayer->resize(null,400, 400,true);
+            $pinguLayer->addLayerOnTop($textLayer, 12, 12, "LB");
+            $color = 'ffffff';
+            $pinguLayer->save($new_dir,$newfile,true,$color,95); // We chose to show a JPG with a quality of 95%
+            @unlink($filename_new);
+            $filename_new = $filename_new_2;
             $message['status']=1;
             $message['message'] = '文件上传成功';
             $message['filename'] = pathinfo($filename_new,PATHINFO_BASENAME);
@@ -108,8 +123,11 @@ if (!empty($_FILES) ) {
     $targetFile = $targetFile . $filename_new;
     if (in_array($fileParts,$fileTypes)) {
         if( move_uploaded_file($tempFile,$targetFile) ){
+//             $newfile = microtime(true).'-'.rand(1,20);
+//             $filename_new_2 = $new_dir.$newfile.'.'.$fileParts;
+//             watermark('',$filename_new, $new_dir, $newfile.'.'.$fileParts);
             $message['status'] = 1;
-            $message['filename'] = $filename_new;
+            $message['filename'] = $filename_new_2;
             $message['message'] = '文件上传成功';
             $message['targetFile']=$targetFile;
         }else{
@@ -168,4 +186,21 @@ function file_ext($filename){
     }
     
     return $fileType;
+}
+
+function watermark($text = '大神蒜',$file,$newdir,$newfile){
+//   error_reporting(1); 
+    empty($text) ? $text : $text = '大神蒜';
+    //设置水印文字
+    $textLayer = ImageWorkshop::initTextLayer($text, __DIR__.'/ImageWorkshop-2.0.6/tests/Resources/fonts/yahei.ttf', 13, 'ffffff', 0);
+    $pinguLayer = ImageWorkshop::initFromPath($file);
+    $pinguLayer->resizeInPixel(400, 400, true, 0, 0, 'MM'); 
+    $pinguLayer->addLayerOnTop($textLayer, 12, 12, "LB");
+    $pinguLayer->save($newdir,$newfile,true,'000000',95); // We chose to show a JPG with a quality of 95%
+    @unlink($file);
+}
+
+function get_extension($file)
+{
+    substr(strrchr($file, '.'), 1);
 }

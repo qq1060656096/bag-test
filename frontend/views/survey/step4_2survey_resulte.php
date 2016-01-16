@@ -313,7 +313,8 @@ $(document).ready(function(){
 			//console.log(this);
 			if( uploadz.isReaderFile ){
 				$("#image-wrap").empty();
-				$("#image-wrap").append('<img src="'+uploadz.base64Data+'" />');
+// 				$("#image-wrap").append('<img src="'+uploadz.base64Data+'" />');
+				$("#image-wrap").append('<img src="<?php echo Yii::$app->request->baseUrl,UPLOAD_DIR;?>'+json.id+'" />');
 				preview();
 			}
 			console.log( uploadz.base64Data );
