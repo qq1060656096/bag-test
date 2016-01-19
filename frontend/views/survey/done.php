@@ -347,14 +347,17 @@ foreach ($result_all as $key0=>$result0){
                     <section data-bcless="lighten">
                         <h2><?php echo '结果',$index;?></h2>
                         <a class="change-btn" href="<?php echo $row_change_result_url;?>" >修改此结果</a>
-                        <p style="text-align: left;">
+                        <p style="text-align: left;"></p>
+                        <p style="float:left;text-align: left;display: inline-block;">
                             <?php echo $name;?>
                             <span class="red"><?php echo $error_name;?></span>
                         </p>
-                        <p style="text-align: left;">
+                        <p style="float:left;text-align: left;color:#FE8C78;display: inline-block;">姓名<span></span></p>
+                        <p style="float:left;text-align: left;display: inline-block;">
                             <?php echo $value;?>
                             <span class="red"><?php echo $error_value;?></span>
                         </p>
+                        <p style="clear:both;text-align: left;"></p>
                         <p style="text-align: left;">
                             <?php echo $intro;?>
                             <span class="red"><?php echo $error_intro;?></span>

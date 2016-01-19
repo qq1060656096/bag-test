@@ -699,8 +699,7 @@ str;
         }
         $data = $model->FindAllQuestionsOptions($id);
         $posts = Yii::$app->request->post();
-//         ZCommonFun::print_r_debug($posts);
-//         exit;
+        
         //post提交
         if(isset($posts['save'])){
             $model->is_publish=0;
@@ -758,7 +757,7 @@ str;
         $data = $model->FindAllQuestionsOptions($id);
         $posts = Yii::$app->request->post();
         //post提交
-        if(isset($posts['option'])&& count($posts['option'])>0){
+        if( isset($posts['option'])|| isset($posts['resulte']) ){
 //             ZCommonFun::print_r_debug( $data );
 //             ZCommonFun::print_r_debug($posts);
 //             exit;

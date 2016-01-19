@@ -55,6 +55,9 @@ $this->title="跳转设置--跳转型测试";
 }
 .s_reg .btn_bg{
 	display: block;
+	width: 100%;
+	padding: 0;
+}.s_reg input[type=button]{
 	width: 98.5%;
 }
 .s_reg{
