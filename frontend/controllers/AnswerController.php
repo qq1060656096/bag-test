@@ -226,6 +226,17 @@ str;
         !$model_Users ? $model_Users = new User() : '';
         !$model_UsersProfile ? $model_UsersProfile = new UserProfile() : '';
         
+        return $this->render('answer2',[
+            'data'=>$data,
+            'model'=>$model,
+            'result'=>$result,
+            'posts'=>$posts,
+            'image'=>Survey::getImageUrl($model),
+            'model_Users'=>$model_Users,
+            'model_UsersProfile'=>$model_UsersProfile,
+            'randSurvey'=>$this->getRandSurvey(),//随机测试
+        ]);
+        
         return $this->render('answer',[
             'data'=>$data,
             'model'=>$model,

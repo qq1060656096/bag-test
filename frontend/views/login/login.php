@@ -89,12 +89,10 @@ $qq_login = Yii::$app->urlManager->createUrl(['api/login-qq']);
 	<footer class="footer">
     	<div>
     		<p>
-    			<a href="http://m.xinli001.com/feedback/">留言</a>
-    			|<span id="userspan2"></span>
-    			<a href="http://m.xinli001.com/mapp/">客户端下载</a>
+    			联系人： dashensuan@qq.com
     		</p>
     		<p>
-    			粤ICP备12051153号<span>m.xinli001.com</span>
+    			京ICP备09042499号-10<span><a href="http://dashensuan.com" >dashensuan.com</a></span>
     		</p>
     	</div>
     </footer>
