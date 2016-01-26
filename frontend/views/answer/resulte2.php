@@ -43,12 +43,13 @@ $create_url = Yii::$app->urlManager->createAbsoluteUrl([
 <link rel="stylesheet" href="./css/answer2/index.css">
 <link href="./css/answer2/jquery.mmenu.all.css" rel="stylesheet">
 <script src="./css/answer2/hm.js"></script>
-<script src="./css/answer2/jquery.min.js"></script>
+<script src="qq./css/answer2/jquery.min.js"></script>
 <script src="./css/answer2/bootstrap.min.js"></script>
 <script src="./css/answer2/hammer.min.js"></script>
 <script src="./css/answer2/jquery.mmenu.min.all.js"></script>
 <script type="text/javascript" src="./css/answer2/jweixin-1.0.0.js"></script>
 <link href="./js/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="./js/jquery.js"></script>
 <script src="./js/jquery-ui.min.js"></script>
 <script type="text/javascript">
 var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->request->hostInfo,$image;?>',

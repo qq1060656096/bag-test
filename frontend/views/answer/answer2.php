@@ -28,7 +28,7 @@ $create_url = Yii::$app->urlManager->createAbsoluteUrl([
 <link rel="stylesheet" href="./css/answer2/index.css">
 <link href="./css/answer2/jquery.mmenu.all.css" rel="stylesheet">
 <script src="./css/answer2/hm.js"></script>
-<script src="./css/answer2/jquery.min.js"></script>
+<script type="text/javascript" src="./js/jquery.js"></script>
 <script src="./css/answer2/bootstrap.min.js"></script>
 <script src="./css/answer2/hammer.min.js"></script>
 <script src="./css/answer2/jquery.mmenu.min.all.js"></script>
