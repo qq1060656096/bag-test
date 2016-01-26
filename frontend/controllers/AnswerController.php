@@ -110,6 +110,16 @@ class AnswerController extends Controller{
         !$model_UsersProfile ? $model_UsersProfile = new UserProfile() : '';
 //         ZCommonFun::print_r_debug($model_AnswerSurveyResulte);
 //         exit;
+        return $this->render('resulte2',array(
+            'model'=>$model,
+            'model_AnswerUser'=>$model_AnswerUser,
+            'model_SurveyResulte'=>$model_AnswerSurveyResulte,
+            'image'=>Survey::getImageUrl($model),
+            'model_Users'=>$model_Users,
+            'model_UsersProfile'=>$model_UsersProfile,
+            'randSurvey'=>$this->getRandSurvey(),//随机测试
+        ));
+        
         return $this->render('resulte',array(
             'model'=>$model,
             'model_AnswerUser'=>$model_AnswerUser,
@@ -248,34 +258,7 @@ str;
         ]);
     }
     
-    /**
-     * 分数型回答
-     */
-    /* public function actionStep2($id){
-        $model = Survey::findOne($id);
-        if(!$model){//没找到
-            $model = new Survey();
-        }
-        
-//         $data = $model->FindAllQuestionsOptions($id);
-        $count = $model->getQuestionCount($id);
-//         echo $count;
-        $q = new Question();
-        $posts = Yii::$app->request->post();
-        
-        
-        if(isset($posts['save'])){
-        
-        }
-//         ZCommonFun::print_r_debug($data);
-        return $this->render('step2',[
-//             'data'=>$data,
-            'model'=>$model,
-            'count'=>$count,
-            'posts'=>$posts,
-        ]);
-    }
-     */
+ 
    
     
     
@@ -412,6 +395,17 @@ str;
 //         echo $error;
 //         exit;
 //         ZCommonFun::print_r_debug($result);
+        return $this->render('step2answer3',[
+            'data'=>$data,
+            'model'=>$model,
+            'error'=>$error,
+            'posts'=>$posts,
+            'image'=>Survey::getImageUrl($model),
+            'model_Users'=>$model_Users,
+            'model_UsersProfile'=>$model_UsersProfile,
+            'randSurvey'=>$this->getRandSurvey(),//随机测试
+        ]);
+        
         return $this->render('step2answer',[
             'data'=>$data,
             'model'=>$model,
