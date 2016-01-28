@@ -35,6 +35,7 @@ $create_url = Yii::$app->urlManager->createAbsoluteUrl([
 <script type="text/javascript" src="./css/answer2/jweixin-1.0.0.js"></script>
 <link href="./js/jquery-ui.css" rel="stylesheet" type="text/css"/>  
 <script src="./js/jquery-ui.min.js"></script> 
+<link rel="stylesheet" href="./bag-test/css/common.css">
 <script type="text/javascript">
 var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->request->hostInfo,$image;?>',
 		desc: '<?php echo $model->intro;?>',
@@ -53,13 +54,14 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 		<div class="container newcontent">
 			<a id="top"></a>
 			<div class="title header-title">
+			    <h2><?php echo $model->title;?></h2>
 				<div>
 					<?php
                     if ($image)
                         echo '<img class="image" style="width:100%;" src= "', $image, '" title="', $model->title, '"/>';
                     ?>
 				</div>
-				<h2><?php echo $model->title;?></h2>
+				
 				<div class="title-sub">
 					<div>
 						<span class="newmiaoshu">简介:<?php echo $model->intro;?></span>
@@ -96,11 +98,24 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 								</p> </span>
 						</div>
 						<ul class="js_group">
-							<li class="list-xuan list-xuan-text" ><input placeholder="你的姓名"
+							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;"><input placeholder="你的姓名"
 								id="name" name="name" type="text" class="" value=""></li>
-							<li class="list-xuan list-xuan-text"><input placeholder="你的生日"
-								type="text" id="age" name="age" class="" value=""></li>
+							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">
+							     生日<select id="age" name="age birth_year" class="" onchange="adjustAstro();"></select>
+							     <select id="birth_month" name="birth[month]" onchange="adjustAstro();"></select>
+							     <select id="birth_day" name="birth[day]" onchange="adjustAstro();"></select>
+							 
+							</li>
+							
+							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">
+							 <SELECT id=astro disabled name=astro runat="server" style="width: 100%;border:none;-webkit-appearance: none;"> 
+                                <OPTION selected>处女座</OPTION>
+                            </SELECT>
+							</li>
 						</ul>
+						<input type="hidden" id="birth_year" name="birth[year]" value=""/>
+						
+						
 						<a class="btn btn-lg btn-success submit-test" style="width: 100%"
 								>提交测试</a>
 					<!-- question end  -->
@@ -119,23 +134,28 @@ document.getElementById('hideADbtn').style.display='none';
 document.getElementById('spn').style.display='none';
 }
 </script>
+<script type="text/javascript" src="js/date-select.js"></script>	
 <script>
+birthday = false;
 $(document).ready(function(){
 	$.datepicker.regional["zh-CN"] = { closeText: "关闭", prevText: "&#x3c;上月", nextText: "下月&#x3e;", currentText: "今天", monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"], monthNamesShort: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"], dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"], dayNamesShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"], dayNamesMin: ["日", "一", "二", "三", "四", "五", "六"], weekHeader: "周", dateFormat: "yy-mm-dd", firstDay: 1, isRTL: !1, showMonthAfterYear: !0, yearSuffix: "年" };
     //设置默认语言
     $.datepicker.setDefaults($.datepicker.regional["zh-CN"]);
     //日期插件
-    $( "#age" ).datepicker({
-    	changeMonth: true,
-    	changeYear: true,
-    	yearRange: '-60'
-	});
+//     $( "#age" ).datepicker({
+//     	changeMonth: true,
+//     	changeYear: true,
+//     	yearRange: '-60'
+// 	});
     $(".btn.btn-lg.start-test").click(function(){
     	$("#panel1").hide();
         $("#panel2").show();
         return false;
     });
-
+    $('#age').change(function(){
+    	birthday = true;
+        $("#birth_year").val($(this).val());
+    });
     $(".submit-test").click(function(){
     	var name = $('#name');
 		if( name && name.val()=="" ){
@@ -143,10 +163,11 @@ $(document).ready(function(){
 		    return true;
 	    }
 		var age = $('#age');
-		if( age && age.val()=="" ){
-			alert("请输入年龄");
+		if( age && age.val()=="" || !birthday){
+			alert("请选择生日");
 		    return true;
 	    }
+		$("#birth_year").val($(this).val());
 	    $("form").submit();
     });
 });
@@ -457,5 +478,8 @@ a:not (.flat ):after, button:not (.flat ):after {
 			</div>
 		</div>
 	</div>
+	<?php 
+    echo $this->renderFile(__DIR__ . '/../layouts/foot-menu.php');
+    ?>
 </body>
 </html>

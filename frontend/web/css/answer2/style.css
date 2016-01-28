@@ -352,10 +352,14 @@ body{
 .list-xuan-text{
 	padding: 1;
 }
-.list-xuan-text>input[type="text"]{
+.list-xuan-text>input[type="text"],select{
 	display: inline-block;
 	width: 100%;
 	line-height: 32px;
+	height: 32px;
+}
+select{
+	width: 25%;
 }
 .list-xuan img{
   display: block;

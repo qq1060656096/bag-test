@@ -23,6 +23,7 @@ echo $this->title,' ',$model->title;
 ?>
 </title>
 <link rel="stylesheet" href="./css/v1.css">
+
 </head>
 <body>
 	<div id="mainbox" class="main">

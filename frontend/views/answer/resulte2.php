@@ -51,6 +51,7 @@ $create_url = Yii::$app->urlManager->createAbsoluteUrl([
 <link href="./js/jquery-ui.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="./js/jquery.js"></script>
 <script src="./js/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="./bag-test/css/common.css">
 <script type="text/javascript">
 var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->request->hostInfo,$image;?>',
 		desc: '<?php echo $model->intro;?>',
@@ -70,10 +71,10 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 			<a id="top"></a>
 			<div class="title header-title">
 				
-				<h2><?php echo $model->title;?></h2>
+				<h2 style="display: none;"><?php //echo $model->title;?></h2>
 				<div class="title-sub">
 					<div>
-						<span class="newmiaoshu">简介:<?php echo $model->intro;?></span>
+						<span class="newmiaoshu" style="display: none;" >简介:<?php //echo $model->intro;?></span>
 						<p>
 							已有<span><?php echo $model->answer_count;?></span>人参与测试
 						</p>
@@ -87,7 +88,14 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 					<hr>
 					<div id="test_content">
 						<div class="progre">
-							<span class="value"><span class="current">我的测试结果</span></span>
+							<span class="value"  style="display: none;"><span class="current">我的测试结果</span></span>
+							<p>
+							<?php 
+    				        echo $model_SurveyResulte->name;
+    				        echo $model_AnswerUser->answer_name ? '<span class="answer-name">'.$model_AnswerUser->answer_name.'</span>' : '';
+    				        echo $model_SurveyResulte->value;
+    				        ?>
+				        </p>
 						</div>
 
 					</div>
@@ -98,12 +106,10 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 						<dd style="" id="details">
 							<p></p>
 							<p>
-							<?php 
-    				        echo $model_SurveyResulte->name;
-    				        echo $model_AnswerUser->answer_name ? '<span class="answer-name">'.$model_AnswerUser->answer_name.'</span>' : '';
-    				        echo $model_SurveyResulte->value;
-    				        ?>
-				        </p>
+    							<?php     				     
+        				        echo $model_SurveyResulte->intro;
+        				        ?>
+				            </p>
 							<p></p>
 						</dd>
 					</dl>
@@ -481,5 +487,9 @@ a:not (.flat ):after, button:not (.flat ):after {
 			</div>
 		</div>
 	</div>
+	
+	<?php 
+    echo $this->renderFile(__DIR__ . '/../layouts/foot-menu.php');
+    ?>
 </body>
 </html>
