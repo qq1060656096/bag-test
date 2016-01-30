@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\z\ZCommonFun;
 use common\models\SurveyResulte;
+use frontend\controllers\SurveyController;
 global $survey_tax;
 // ZCommonFun::print_r_debug($survey_tax);
 
@@ -10,7 +11,31 @@ global $survey_tax;
 $a_SurveyResulte = [];
 echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
 $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
-$this->title = "第{$page}测试结果";
+
+$submitAddText = '';
+$submitNexText = '';
+switch ($model->tax):
+    case 1:
+        $this->title .= '-步骤3/'.SurveyController::stepCount($tax).'.添加结果';
+        
+        $submitAddText = '保存/增加';
+        $submitNexText = '保存/下一步选择算法';
+    break;
+    case 2:
+        $this->title .= '-步骤5/'.SurveyController::stepCount($tax).'.添加结果';
+        
+        $submitAddText = '保存/增加';
+        $submitNexText = '保存/最后一步 预览';
+        break;
+    case 3:
+        $this->title .= '-步骤4/'.SurveyController::stepCount($tax).'.添加结果';
+        
+        $submitAddText = '保存/增加';
+        $submitNexText = '保存/下一步设置跳转';
+        break;
+endswitch;
+    
+
 $question_total_score = isset($question_total_score) ? intval($question_total_score) : 0;
 $question_total_min_score = isset($question_total_min_score) ? intval($question_total_min_score) : 0;
 ?>
@@ -166,6 +191,10 @@ text-align:left;
     <section class="s_moreread s_reg s_login">
     <?php $form = ActiveForm::begin(['id'=>'form1','action'=>['survey/step4_2','id'=>$model->id,'page'=>$page+1]]); ?>
         <div class="BlankBlock">
+                                
+             <div class="BlockTitle">
+				<h2 class="text-red">第<?php echo $page;?>测试结果</h2>
+			</div>
 			<div class="BlockCon InputBor_pr0">
 				<textarea name="SurveyResulte[name]" id="SurveyResulte-name"  maxlength="15"
 				class="topic_input" type="text" placeholder="请输入姓名之前的内容，限15个字"><?php echo $model_SurveyResulte->name;?></textarea>
@@ -242,9 +271,9 @@ text-align:left;
 			href="<?php echo $prv_url;?>" 
 			id="prev-step">上一步</a> 
 		</div>
-        <button type="submit" name="save-next" class="btn_bg add-btn">保存/增加</button>
+        <button type="submit" name="save-next" class="btn_bg add-btn"><?php echo $submitAddText;?></button>
         
-        <button type="submit" name="save" class="btn_bg btn btn-primary save">保存/完成</button>
+        <button type="submit" name="save" class="btn_bg btn btn-primary save"><?php echo $submitNexText;?></button>
         
         
 		<a class="btn_bg" style="display:none;width: 98.5%;margin-top: 15px;"

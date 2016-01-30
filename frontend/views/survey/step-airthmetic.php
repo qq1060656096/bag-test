@@ -3,14 +3,14 @@ global $survey_tax;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\models\Survey;
-
+use frontend\controllers\SurveyController;
 /* @var $this yii\web\View */
 /* @var $model common\models\Survey */
 /* @var $form yii\widgets\ActiveForm */
 echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
 
 
-
+$this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.选择算法';
 ?>
 <style>
 .s_login div,.s_reg div{
@@ -91,7 +91,7 @@ echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
 	    </a> 
        <br />
         <div class="btn_bg" >
-			<input type="submit" id="submit" value="保存/完成"> 
+			<input type="submit" id="submit" value="完成/最后一步 预览"> 
 		</div>
 		<br />
     	

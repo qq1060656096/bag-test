@@ -3,7 +3,28 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\z\ZCommonFun;
 use common\z\ZController;
+use frontend\controllers\SurveyController;
 global $survey_tax;
+
+$this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey_tax['0'];
+$submitAddText = '';
+$submitNexText = '';
+
+switch ($model->tax):
+    case 1:
+    
+        break;
+    case 2:
+        $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.预览题目分数区间';
+        $submitAddText = '保存/增加';
+        $submitNexText = '保存/下一步预览分数区间';
+        break;
+    case 3:
+        $this->title .= '-步骤3/'.SurveyController::stepCount($model->tax).'.添加题目';
+        $submitAddText = '保存/增加';
+        $submitNexText = '保存/下一步添加结果';
+        break;
+endswitch;
 // ZCommonFun::print_r_debug($survey_tax);
 
 /* @var $form yii\widgets\ActiveForm */
@@ -24,7 +45,7 @@ function selectShow($name,$start,$end,$select=''){
     echo '</select>';
 }
 // $this->title=$model->title."--跳转型测试";
-$this->title=$model->title;
+
 $question_count = count($data['questions']);
 // ZCommonFun::print_r_debug($data);
 ?>
@@ -87,13 +108,13 @@ fieldset {
         			id="prev-step">上一步</a> 
         		</div>
     			<a class="btn_bg" href="javascript:void(0);" style="margin: 15px auto;">
-        			<input type="submit" id="submit" name="save" value="保存"> 
+        			<input type="submit" id="submit" name="save" value="保存/下一步添加结果"> 
         		</a>
-        		
+        		<!-- 
         		<a class="btn_bg" style="margin: 0 auto; "
 		href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
 	       <input type="button"  value="预览"> 
-	    </a> 
+	    </a>  -->
     		</div>
     		<br />
     		<br />

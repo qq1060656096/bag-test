@@ -10,7 +10,23 @@ use common\models\SurveyResulte;
 /* @var $searchModel common\models\SurverySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $model common\models\Survey */
-$this->title = '测试预览';
+use frontend\controllers\SurveyController;
+global $survey_tax;
+$this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey_tax['0'];
+switch ($model->tax):
+    case 1:
+        $this->title .= '-步骤5/'.SurveyController::stepCount($model->tax).'.测试预览';
+    
+    $submitAddText = '保存/增加';
+    $submitNexText = '保存/下一步选择算法';
+    break;
+    case 2:
+    
+    case 3:
+        $this->title .= '-步骤6/'.SurveyController::stepCount($model->tax).'.测试预览';
+        $submitText = '保存/下一步添加题目';
+        break;
+endswitch;
 $this->params['breadcrumbs'][] = $this->title;
 
 echo $this->renderFile(__DIR__.'/../layouts/head.php');

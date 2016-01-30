@@ -78,3 +78,28 @@ function z_shutdown_function(){
         exit;
     }
 }
+
+/**
+ * html转义,安全的html
+ * @param array &$array
+ */
+function str_safe_html(&$array){
+    if (is_array($array))
+    {
+        foreach ($array as $key => $value)
+        {
+            if (!is_array($value))
+            {
+                $array[$key]         = htmlspecialchars($value,ENT_QUOTES);   //&,",',> ,< 转为html实体 &amp;,&quot;&#039;,&gt;,&lt;
+
+            }
+            else
+            {
+                str_safe_html($array[$key]);
+            }
+        }
+    }
+    else{
+        $array = htmlspecialchars($array,ENT_QUOTES);
+    }
+}

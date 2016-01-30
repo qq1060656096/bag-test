@@ -13,6 +13,7 @@ $config = yii\helpers\ArrayHelper::merge(
     require(__DIR__ . '/../config/main.php'),
     require(__DIR__ . '/../config/main-local.php')
 );
-
+str_safe_html($_POST);
+str_safe_html($_GET);
 $application = new yii\web\Application($config);
 $application->run();

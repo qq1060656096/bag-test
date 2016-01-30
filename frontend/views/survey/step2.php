@@ -2,14 +2,18 @@
 global $survey_tax;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use frontend\controllers\SurveyController;
 /* @var $this yii\web\View */
 /* @var $model common\models\Survey */
 /* @var $form yii\widgets\ActiveForm */
 echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
 $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['1'];
 
-
+$this->title .= '-步骤1/'.SurveyController::stepCount($tax);
+// if($model->title):
+//     $this->title .='.'.$model->title;
+// endif;
+$this->title .='.标题介绍';
 ?>
 <style>
 .s_login div,.s_reg div{
@@ -47,7 +51,7 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['1'];
     
         
         <div class="btn_bg" >
-			<input type="submit" id="submit" value="保存"> 
+			<input type="submit" id="submit" value="保存/下一步封面图片"> 
 		</div>
 		<br />
     	<?php 

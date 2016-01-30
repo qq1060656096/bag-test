@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\z\ZCommonFun;
+use frontend\controllers\SurveyController;
 global $survey_tax;
 // ZCommonFun::print_r_debug($survey_tax);
 
@@ -9,7 +10,23 @@ global $survey_tax;
 $a_SurveyResulte = [];
 echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
 $this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey_tax['0'];
-
+$submitAddText = '';
+$submitNexText = '';
+switch ($model->tax):
+    case 1:
+        
+    break;
+    case 2:
+        $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.预览题目分数区间';
+        $submitAddText = '保存/增加';
+        $submitNexText = '保存/下一步预览分数区间';
+        break;
+    case 3:
+        $this->title .= '-步骤3/'.SurveyController::stepCount($model->tax).'.添加题目';   
+        $submitAddText = '保存/增加';
+        $submitNexText = '保存/下一步添加结果';
+        break;
+endswitch;
 // ZCommonFun::print_r_debug($questionData);
 ?>
 <link rel="stylesheet" href="./css/edit.css">
@@ -203,7 +220,7 @@ $(document).ready(function(){
         <div class="row">
             <div class="BlankBlock">
                 <div class="BlockTitle">
-                    <h2>第<?php echo $page;?>题&nbsp;题目标题</h2>
+                    <h2 class="text-red">第<?php echo $page;?>题&nbsp;题目与选项</h2>
                 </div>
                 <div class="BlockCon InputBor">
                     <input type="hidden" name="qid" value="<?php echo $questionData['question']->question_id;?>"/>
@@ -265,9 +282,9 @@ $(document).ready(function(){
 			id="prev-step">上一步</a> 
 		</div>
 		
-        <button type="submit" class="btn_bg btn btn-primary btn-3" name="save-next">保存/增加</button>
+        <button type="submit" class="btn_bg btn btn-primary btn-3" name="save-next"><?php echo $submitAddText;?></button>
         
-        <button type="submit" class="btn_bg btn btn-primary btn-r" name="save">保存/完成</button>
+        <button type="submit" class="btn_bg btn btn-primary btn-r" name="save"><?php echo $submitNexText;?></button>
         
         <a class="btn_bg" style="display:none;width: 98.5%;margin-top: 15px;"
 		href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">

@@ -827,7 +827,12 @@ str;
 //             exit;
             if($message==''){
                 $model->is_publish=1;
-                $model->save() ? $message='发布成功' :'发布失败';
+                if($model->save()){
+                    $message='发布成功';
+                    return $this->redirect(['survey/index','sort'=>1]);
+                }else{
+                   $message='发布失败';
+                } 
             }
             //ajax发布
             if(isset($_GET['is_ajax']) && $_GET['is_ajax'] ){
@@ -1041,5 +1046,21 @@ str;
         }
         
         return [$all_count,$all_count_empty,'message'=>$message];
+    }
+    /**
+     * 获取步数量
+     * @param integer $tax
+     * @return number
+     */
+    public static function stepCount($tax){
+        static $data;
+        if(!$data):
+            $data['1']['step'] = 5;
+            $data['2']['step'] = 6;
+            $data['3']['step'] = 6;
+        endif;
+        
+        $return = isset($data[$tax]['step']) ?  $data[$tax]['step'] : 0;
+        return $return;
     }
 }

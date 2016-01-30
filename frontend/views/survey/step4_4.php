@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\z\ZCommonFun;
+use frontend\controllers\SurveyController;
 global $survey_tax;
 // ZCommonFun::print_r_debug($survey_tax);
 
@@ -10,6 +11,26 @@ global $survey_tax;
 // echo $this->renderFile(__DIR__.'/../layouts/head.php');
 // echo $this->renderFile(__DIR__.'/../layouts/head-answer.php',['model'=>$model]);
 echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
+
+
+$this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey_tax['0'];
+$submitAddText = '';
+$submitNexText = '';
+switch ($model->tax):
+    case 1:
+    
+        break;
+    case 2:
+    
+    case 3:
+        $this->title .= '-步骤5/'.SurveyController::stepCount($model->tax).'.设置跳转';
+        $submitAddText = '保存/增加';
+        $submitNexText = '保存/下一步添加结果';
+        break;
+endswitch;
+
+
+
 /**
  * 显示跳转到多少题
  * @param unknown $name
@@ -46,7 +67,7 @@ function selectShowResulte($models_SurveyResulte,$selected_id,$name=''){
 }
 
 
-$this->title="跳转设置--跳转型测试";
+
 ?>
 <style>
 .s_login div,.s_reg div{
@@ -115,7 +136,7 @@ fieldset {
     		
 			<div class="s_reg">
     			<a class="btn_bg" href="javascript:void(0);">
-        			<input type="submit" id="submit" value="保存"> 
+        			<input type="submit" id="submit" value="保存/最后一步 预览"> 
         		</a>
     		</div>
     		<br />

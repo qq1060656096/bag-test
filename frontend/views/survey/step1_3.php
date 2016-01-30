@@ -3,12 +3,17 @@ global $survey_tax;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\models\Survey;
+use frontend\controllers\SurveyController;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Survey */
 /* @var $form yii\widgets\ActiveForm */
 echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
 $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
+$this->title .= '-步骤2/'.SurveyController::stepCount($tax);
+
+$this->title .='.封面图';
+
 ?>
 <style>
 .s_login div,.s_reg div{
@@ -60,10 +65,25 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
             <div class="help-block"></div>
         </div>
         
-        
-        
+        <div class="btn_bg btn-2 btn-100">
+			<a href="<?php echo Yii::$app->urlManager->createUrl(['survey/step2','id'=>$model->id]);?>" id="prev-step">上一步</a> 
+		</div>
+		<br/>
+        <?php 
+            $submitText = '';
+            switch ($model->tax):
+                case 1:
+                    $submitText = '保存/下一步添加结果';
+                    break;
+                case 2:
+                    
+                case 3:
+                    $submitText = '保存/下一步添加题目';
+                    break;
+            endswitch;
+       ?>
         <div class="btn_bg" >
-			<input type="submit" id="submit" value="保存/下一步"> 
+			<input type="submit" id="submit" value="<?php echo $submitText;?>"> 
 		</div>
 		<br />
 		<?php /*
