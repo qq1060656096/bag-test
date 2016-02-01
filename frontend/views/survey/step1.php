@@ -12,6 +12,19 @@ $this->title="创建测试";
 .s_reg .btn_bg{
 	display: block;
 }
+.btn-up{
+	border-radius: 5px 5px 0px 0px !important;
+	border: 1px solid #FE8C78;
+	line-height: 36px;
+}
+.btn-down{
+	border-radius:  0px 0px 5px 5px !important;
+	background: none !important;
+    color: #999 !important;
+    border: 1px solid #FE8C78;
+    border-top: none;
+	line-height: 36px;
+}
 </style>
 <script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js1"></script>
 <div id="main_body">
@@ -28,10 +41,24 @@ $this->title="创建测试";
 //             if($id>=3){
 //                 break;
 //             }
+            switch ($id):
+            case 1: 
+                $note = '无需做题，通过算法，直接得出测试结果。';
+                break;
+            case 2:
+                $note = '做选择题，通过分数，的粗测试结果。';
+                break;
+            case 3: 
+                $note = '做选择题，通过跳转到题目和结果，得出测试结果。';
+                break;
+            endswitch;
         ?>
     
-            <a class="btn_bg" href="<?php echo $url;?>">
+            <a class="btn_bg btn-up" href="<?php echo $url;?>">
     			<input type="submit" id="submit" value="<?php echo $name;?>"> 
+    		</a>
+    		<a class="btn_bg btn-down" href="<?php echo $url;?>">
+    		  <?php echo $note;?>
     		</a>
     		<br />
         <?php }?>

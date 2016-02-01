@@ -114,7 +114,7 @@ fieldset {
 							<label for="option-id-<?php echo $option->qo_id;?>" >
 						
 									<input type="radio" id="option-id-<?php echo $option->qo_id;?>" name="options[<?php echo $question->question_id; ?>][]" value="<?php echo $option->qo_id;?>">
-									<span ><?php echo $option->option_label;?></span>
+									<span ><?php echo '选项'.$key2.'.'.$option->option_label;?></span>
 								    <?php echo selectShow("option[{$option->qo_id}]", $key+2, $question_count,$option->skip_question);?>
 								    <?php echo selectShowResulte($models_SurveyResulte, $option->skip_resulte,"resulte[{$option->qo_id}]");?>
 							</label><br/>

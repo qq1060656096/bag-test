@@ -109,6 +109,12 @@ class SurveyController extends ZController
         
 //         echo $pageCount,'=',$page+1;
 //         ZCommonFun::print_r_debug($pagination);
+        return $this->render('index2', [
+            'searchModel' => $searchModel,
+            'a_models' => $a_models,
+            'pagination'=>$pagination,
+            'sort'=>$sort,
+        ]);
         
         return $this->render('index', [
             'searchModel' => $searchModel,

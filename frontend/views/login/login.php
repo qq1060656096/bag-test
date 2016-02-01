@@ -156,5 +156,5 @@ $('#form1').submit(function(){
 
 
 
-</body></html>
+<?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>
  
