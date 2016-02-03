@@ -11,20 +11,23 @@ use common\models\Survey;
 $this->params['breadcrumbs'][] = $this->title;
 
 echo $this->renderFile(__DIR__ . '/../layouts/head.php');
-
+/*
+<link rel="stylesheet" type="text/css"
+	href="./css/index/swiper.min.css">
+<link rel="stylesheet" type="text/css"
+	href="./css/index/app.min.css">
+<script src="./css/index/zepto.min.js"></script>
+<script src="./css/index/swiper.min.js"
+	type="text/javascript" charset="utf-8"></script>
+	*/
 ?>
 
 <link href="http://www.weceshi.com/favicon.ico" type="image/x-icon"
 	rel="shortcut icon">
 <link href="./css/index/mui.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css"
-	href="./css/index/swiper.min.css">
-<link rel="stylesheet" type="text/css"
 	href="./css/index/app.min.css">
-<meta property="wb:webmaster" content="c41cd18eb37d09a1">
-<script src="./css/index/zepto.min.js"></script>
-<script src="./css/index/swiper.min.js"
-	type="text/javascript" charset="utf-8"></script>
+
 <div class="mui-inner-wrap">
 <style>
 .diy-tab-item{
@@ -46,32 +49,23 @@ section#all-game {
 }
 </style>
 	<!-- 主页面标题 -->
-	<header class="mui-bar mui-bar-nav">
-		<div class="game-fl diy-nav-bar ">
-			<a class="diy-control-item mui-active"
-				href="http://www.weceshi.com/index.php?s=/wetest/index/index">首页</a>
-			<a class="diy-control-item"
-				href="http://www.weceshi.com/index.php?s=/wetest/index/category">分类</a>
-			<a class="diy-control-item"
-				href="http://www.weceshi.com/index.php?s=/wetest/index/played">我测的</a>
-		</div>
-		<a href="http://www.weceshi.com/index.php?s=/wetest/index/usercenter"
-			title="用户中心" class="nav-user"> <i
-			class="mui-icon iconfont icon-contact"> <span class="user-nologin"></span>
-		</i>
-		</a>
-	</header>
+	<header class="s_header">
+    		<nav>
 
-	<div class="mui-content">
+    			<span style="font-size: 1.4rem"><?php echo $this->title;?></span>
+    		</nav>
+    	</header>
+
+	<div class="mui-content" style="position:relative;">
 		<section class="diy-content-space-small"></section>
 		<!--search form-->
 		<section class="container search diy-content-space-small">
 			<form
-				action="http://www.weceshi.com/index.php?s=/wetest/index/search/q/"
+				action="<?php echo Yii::$app->urlManager->createUrl(['survey/index','sort'=>$sort]);?>"
 				class="form" method="post" data-ui="static" id="search-form">
 				<div data-role="input">
 					<input placeholder="大家都在搜：史上最坑手机测试" type="text" autocomplete="off"
-						autocorrect="off" maxlength="64" name="q" id="search"> <i
+						autocorrect="off" value="<?php echo $search ? $search : ''; ?>" maxlength="64" name="SurverySearch[title]" id="search"> <i
 						class="iconfont icon-search"></i> <i class="iconfont icon-close"></i>
 				</div>
 				<button class="ui-btn" data-ui="danger small" type="button"
@@ -82,84 +76,31 @@ section#all-game {
 		<!-- end slider -->
 		<section class="main-content" id="hash-rcmd">
 			<h5 class="diy-content-padded">
-				精品测试 <a class="diy-more"
-					href="http://www.weceshi.com/index.php?s=/wetest/index/gettestgame/limit/0">
+				精品测试 <a class="diy-more"  style="display: none;"
+					href="">
 					更多<i class="iconfont icon-right"></i>
 				</a>
 			</h5>
 			<ul class="mui-table-view mui-grid-view mui-grid-9">
+			    <?php 
+			    foreach ($models_SurveyOperation as $key => $row):
+    			    if($row->tax==1){
+    			        $url = Yii::$app->urlManager->createUrl(['answer/step1','id'=>$row->id]);
+    			    }else{
+    			        $url = Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$row->id]);
+    			    }
+    			    $image = common\models\Survey::getImageUrl($row);
+			    ?>
 				<li class="mui-table-view-cell mui-media mui-col-xs-3"><a
-					href="http://www.weceshi.com/index.php?s=/wetest/entry/index/id/2283"
+					href="<?php echo $url;?>"
 					target="_blank">
 						<figure class="cover">
-							<img src="./css/index/1450663570xZQ5h.jpg"
+							<img src="<?php echo $image;?>"
 								class="tuijian-img">
 						</figure>
-						<div class="mui-media-body tuijian-title">你会成为《芈月传》里面的谁？</div>
+						<div class="mui-media-body tuijian-title"><?php echo $row->title;?></div>
 				</a></li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-3"><a
-					href="http://www.weceshi.com/index.php?s=/wetest/entry/index/id/2494"
-					target="_blank">
-						<figure class="cover">
-							<img src="./css/index/1452667218Lexq0.png"
-								class="tuijian-img">
-						</figure>
-						<div class="mui-media-body tuijian-title">你是否患有忧郁症？</div>
-				</a></li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-3"><a
-					href="http://www.weceshi.com/index.php?s=/wetest/entry/index/id/2338"
-					target="_blank">
-						<figure class="cover">
-							<img src="./css/index/1450926628me70h.png"
-								class="tuijian-img">
-						</figure>
-						<div class="mui-media-body tuijian-title">你在后宫能活几天？</div>
-				</a></li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-3"><a
-					href="http://www.weceshi.com/index.php?s=/wetest/entry/index/id/1960"
-					target="_blank">
-						<figure class="cover">
-							<img src="./css/index/1447331550offtO.png"
-								class="tuijian-img">
-						</figure>
-						<div class="mui-media-body tuijian-title">全国人格分裂等级认证</div>
-				</a></li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-3"><a
-					href="http://www.weceshi.com/index.php?s=/wetest/entry/index/id/560"
-					target="_blank">
-						<figure class="cover">
-							<img src="./css/index/1431097411790.jpg"
-								class="tuijian-img">
-						</figure>
-						<div class="mui-media-body tuijian-title">你会在哪里结束单身？</div>
-				</a></li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-3"><a
-					href="http://www.weceshi.com/index.php?s=/wetest/entry/index/id/2477"
-					target="_blank">
-						<figure class="cover">
-							<img src="./css/index/1452566611XILEa.png"
-								class="tuijian-img">
-						</figure>
-						<div class="mui-media-body tuijian-title">回到后宫你能居何位？</div>
-				</a></li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-3"><a
-					href="http://www.weceshi.com/index.php?s=/wetest/entry/index/id/2414"
-					target="_blank">
-						<figure class="cover">
-							<img src="./css/index/1451965010arKEJ.png"
-								class="tuijian-img">
-						</figure>
-						<div class="mui-media-body tuijian-title">你的感性和理性各占多少？</div>
-				</a></li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-3"><a
-					href="http://www.weceshi.com/index.php?s=/wetest/entry/index/id/2307"
-					target="_blank">
-						<figure class="cover">
-							<img src="./css/index/1450495315vqryM.png"
-								class="tuijian-img">
-						</figure>
-						<div class="mui-media-body tuijian-title">你还剩多少女人味？</div>
-				</a></li>
+				<?php endforeach;?>
 			</ul>
 		</section>
 
@@ -169,40 +110,61 @@ section#all-game {
 		<!-- all list  -->
 		<section id="all-game" class="main-content">
 			<h5 class="diy-content-padded">
-				全部测试<a class="diy-more"
-					href="http://www.weceshi.com/index.php?s=/wetest/index/morehighquality"></a>
+				<?php echo $op_name;?>测试<a class="diy-more"
+					href="javascript: return false;"></a>
 			</h5>
 			<div class="diy-tab diy-space-big">
-				<a class="diy-tab-item mui-active"
-					url="/index.php?s=/wetest/index/getpagedata/order/utime/pageIndex/">最新</a>
+				<a class="diy-tab-item mui-active" style="display: none;"
+					url="">最新</a>
+					<!-- 
 				<a class="diy-tab-item"
 					url="/index.php?s=/wetest/index/getpagedata/order/view/pageIndex/">最火</a>
 				<a class="diy-tab-item "
-					url="/index.php?s=/wetest/index/getpagedata/order/top/rcmd/1/pageIndex/">推荐</a>
+					url="/index.php?s=/wetest/index/getpagedata/order/top/rcmd/1/pageIndex/">推荐</a> -->
 			</div>
-			<ul class="list " id="jingp">
+			<?php 
+			if($search!==false):
+			     $new_url = Yii::$app->urlManager->createUrl(['survey/index-ajax','page'=>'#page#','sort'=>'1','SurverySearch[title]'=>$search]);
+			else: 
+			     $new_url = Yii::$app->urlManager->createUrl(['survey/index-ajax','page'=>'#page#','sort'=>'1']);
+			endif;
+			?>
+			<ul class="list " id="new" page="1" url="<?php echo $new_url;?>">
+			    <?php 
+			    foreach ($a_models as $key => $row):
+    			    if($row->tax==1){
+    			        $url = Yii::$app->urlManager->createUrl(['answer/step1','id'=>$row->id]);
+    			    }else{
+    			        $url = Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$row->id]);
+    			    }
+    			    $image = common\models\Survey::getImageUrl($row);
+			    ?>
 				<li class="diy-item" date-id="2626"><a
-					href="http://www.weceshi.com/index.php?s=/wetest/entry/brief/id/2626"
+					href="<?php echo $url;?>"
 					target="_blank">
 						<figure class="cover">
 							<img class=""
-								src="./css/index/14539484533fPSr.png">
+								src="<?php echo $image;?>">
 						</figure>
 						<div class="diy-meta">
-							<div class="title mui-ellipsis">你的嫉妒心超标了吗</div>
+							<div class="title mui-ellipsis"><?php echo $row->title;?></div>
 							<span class="iconfont icon-start-filled5"></span> <span
-								class="count">0.3 万人在测</span>
-							<div class="desc mui-ellipsis">嫉妒是这样一种情绪——没有它，你会活在一个没有刺激感的世界，自己也会越来越麻木；被它控制，你会活得越来越辛苦，心理也随之越来越扭曲。看看你的嫉妒荷尔蒙是否超标了呢？</div>
+								class="count"><?php echo $row->answer_count;?>人在测</span>
+							<div class="desc mui-ellipsis"><?php echo $row->intro;?></div>
 						</div>
 				</a> <a
-					href="http://www.weceshi.com/index.php?s=/wetest/entry/brief/id/2626"
+					href="<?php echo $url;?>"
 					class="play" data-ui="danger small icon-right"> 去测<i
 						class="iconfont icon-right"></i>
 				</a></li>
-	
-				
-				
+	            <?php endforeach;?>
 			</ul>
+			<!-- 
+			<ul class="list " id="hot" page="0" url="<?php echo Yii::$app->urlManager->createUrl(['survey/index-ajax','page'=>'#page#','sort'=>'0']);?>">
+			</ul>
+			<ul class="list " id="recommend" page="0" url="<?php echo Yii::$app->urlManager->createUrl(['survey/index-ajax','page'=>'#page#','sort'=>'2']);?>">
+			</ul>
+			 -->
 		</section>
         <div class="refresh-tip main-content">
     		<span><img src="./css/index/loading.gif"></span>正在加载
@@ -210,118 +172,127 @@ section#all-game {
 	
 	</div>
 	
-	<a
-		href="http://www.weceshi.com/index.php?s=/wetest/index/index/from/tl#">
-		<img id="goTop" src="./css/index/gotop.png"
-		style="display: none;">
-	</a>
+
 </div>
 
-<textarea id="game-item" style="display: none;">            &lt;li class="diy-item"&gt;
-                &lt;a href="/index.php?s=/wetest/entry/brief/id/##id##" target="_blank"&gt;
-                	&lt;figure class="cover"&gt;
-                		 &lt;img class="" src="http://7xlmq3.com1.z0.glb.clouddn.com/##img##?imageView2/1/w/100/h/100"&gt;
-                	&lt;/figure&gt;                   
-		            &lt;div class="diy-meta"&gt;
-		                 &lt;div class="title mui-ellipsis"&gt;##title##&lt;/div&gt;
-		                 &lt;span class="iconfont icon-start-filled5"&gt;&lt;/span&gt;
-		                 &lt;span class="count"&gt;##view## 万人在测&lt;/span&gt;
-		                 &lt;div class="desc mui-ellipsis"&gt;##desc##&lt;/div&gt;
-		             &lt;/div&gt;
-                &lt;/a&gt;
-				&lt;a href="/index.php?s=/wetest/entry/brief/id/##id##" class="play" data-ui="danger small icon-right"&gt;
-					去测&lt;i class="iconfont icon-right"&gt;&lt;/i&gt;
-				&lt;/a&gt;                                
-            &lt;/li&gt;
-	</textarea>
 
-<script>
-		var pageIndex = 2;
-		var serverUrl = "/index.php?s=/wetest/index/getpagedata/order/utime/pageIndex/";
-    </script>
-<script src="./css/index/common.js"
-	type="text/javascript" charset="utf-8"></script>
+
 <script src="./css/index/app.js" type="text/javascript"
 	charset="utf-8"></script>
-<!--common share for game platform-->
-<script src="./css/index/jweixin-1.0.0.js"> </script>
+
+<script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js"></script>
 <script>
-	var conf_data = {
-		appId: 'wxa2c107575b8a6fa1',
-		timestamp: 1454334099,
-		nonceStr: 'wetest',
-		signature: '85349f168d43eb571b441026fe5e68c51f4733e9' 
-	}
-var shareData = {
-	trigger: function(res) {
-		wx.onMenuShareAppMessage(shareData);
-		wx.onMenuShareTimeline(shareData);
-	},
-};
-wx.config({
-	debug: false,
-	appId: conf_data.appId,
-	timestamp: conf_data.timestamp,
-	nonceStr: conf_data.nonceStr,
-	signature: conf_data.signature,
-	jsApiList: ['checkJsApi', 'onMenuShareAppMessage', 'onMenuShareTimeline','closeWindow']
-});
-wx.ready(function() {
-	wx.onMenuShareAppMessage(shareData);
-	wx.onMenuShareTimeline(shareData);
-});
-wx.error(function(res) {  
+$(document).ready(function(){
+
+	$("#search-btn").click(function(){
+		var value = $("#search").val();
+		if(value){
+			$("form").submit();
+	    }
+	    
+	});    
+    $("#all-game .diy-tab-item").click(function(){
+        
+    	var now_element = $(this);
+    	$("#all-game .diy-tab-item").removeClass('mui-active');
+    	now_element.addClass('mui-active');
+    	var index = $("#all-game .diy-tab-item").index(now_element);
+    	console.log('index',index);
+    	$('#all-game ul.list').hide();
+    	$('#all-game ul.list').eq(index).show();
+    	var selector = '';
+    	switch(index){
+ 	       case 2:
+  	    	  selector="#recommend";
+	    	    break;
+     	   case 1:
+      		  selector="#hot";
+      		    break;
+      	   default: 
+        		 selector="#new";
+            	break;
+    	}
+    	ajaxLoad(selector);
+    });
 
 });
-wx.checkJsApi({
-	jsApiList: ['onMenuShareTimeline'],
-	success: function(res) {
 
-	} 
-});
 
-function ajaxGet(url,callback){
-	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.open("GET",url,true);
-	xmlHttp.onreadystatechange= function(){
-		if (xmlHttp.readyState==4 && xmlHttp.status==200){
-			callback&&callback(xmlHttp.responseText);
-		}
-	}
-	xmlHttp.send();
+pulldownRefreshEvent();
+function pulldownRefreshEvent(){
+	window.onscroll = function(){
+	    var top = document.documentElement.scrollTop || document.body.scrollTop;
+	    if(top +document.body.clientHeight>=document.body.scrollHeight - 40){
+	    	console.log( window.pulldownrefreshEvent);
+		    if(typeof( window.pulldownrefreshEvent)=='undefined'){
+		    	window.pulldownrefreshEvent = 1;
+			}
+			//开始事件
+	        if(window.pulldownrefreshEvent == 1){
+		        //防止重复执行事件
+	        	window.pulldownrefreshEvent = 2;
+	        	var index = $("#all-game .diy-tab-item").index($("#all-game .diy-tab-item.mui-active"));
+	        	console.log(index);
+	        	
+	        	var selector = '';
+	        	switch(index){
+	     	       case 2:
+	      	    	  selector="#recommend";
+	    	    	    break;
+	         	   case 1:
+	          		  selector="#hot";
+	          		    break;
+	          	   default: 
+	            		 selector="#new";
+	                	break;
+	        	}
+	        	ajaxLoad(selector);
+		    }
+	    }
+
+	}	
 }
 
-function shareCallBack(){
-	setTimeout(attention_wx,500);
+function ajaxLoad(selector){
+	is_ajax_style();
+	if($(selector).attr('emptydata')=='1'){
+		is_ajax_done_no_data();
+		return false;
 	}
-function attention_wx() {
-	alert("《微测试》 - 每天发布最萌、逗、炫、酷的小测试！无需下载，点开即测！每日更新！\n----点击确认，立即去关注----");
-	location.href='http://mp.weixin.qq.com/s?__biz=MzA4OTY4ODUyOA==&mid=201224433&idx=1&sn=854e678b07926f3e37cab8afbeb58312#rd';
+	var url = $(selector).attr('url');
+    
+	var page = $(selector).attr('page');
+	page++;
+	$(selector).attr('page',page);
+	url = url.replace('%23page%23',page);
+	var data = {};
+	$.getJSON(url,data,function(json){
+		window.pulldownrefreshEvent = 1;
+		if(json.status==0){
+			if(json.data==""){
+				$(selector).attr('emptydata',1);
+				is_ajax_done_no_data();
+			}else{
+				is_ajax_done();
+				$(selector).append(json.data);
+		    }
+			
+	    }
+		
+	});
 }
-
-var _host = "http://" + window.location.host;
-var share_url = _host + "/index.php?s=/wetest/index/index/from/tl";
-shareData = {
-	title : '每天发布最萌、逗、炫、酷的小测试！无需下载，点开即测！每日更新！',
-	desc   : '来自--【微测试】',
-	link  : share_url,
-	imgUrl   : "http://7xlmq1.com1.z0.glb.clouddn.com/index/img/share-icon.png",
-	trigger: shareData.trigger,
-	success: function (res) {
-		shareCallBack();
-	}
-};
+//开始ajax样式
+function is_ajax_style(){
+	$(".refresh-tip").show().empty().append("<span><img src=\"./css/index/loading.gif\"></span>正在加载");
+}
+function is_ajax_done(){
+	$(".refresh-tip").hide(1000);
+}
+function is_ajax_done_no_data(){
+	$(".refresh-tip").empty().append("已经没有了");
+}
 </script>
 
 
-<div style="display: none">
-	<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256625807'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256625807' type='text/javascript'%3E%3C/script%3E"));</script>
-	<span id="cnzz_stat_icon_1256625807"><a
-		href="http://www.cnzz.com/stat/website.php?web_id=1256625807"
-		target="_blank" title="站长统计">站长统计</a></span>
-	<script src="./css/index/stat.php"
-		type="text/javascript"></script>
-	<script src="./css/index/core.php" charset="utf-8"
-		type="text/javascript"></script>
-</div>
+
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

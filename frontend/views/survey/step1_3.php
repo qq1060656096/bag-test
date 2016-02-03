@@ -9,7 +9,8 @@ use frontend\controllers\SurveyController;
 /* @var $model common\models\Survey */
 /* @var $form yii\widgets\ActiveForm */
 echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
-$this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
+$this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : '';
+$this->title= empty($this->title) && isset($survey_tax[$model->tax]) ? $survey_tax[$model->tax] : $this->title;
 $this->title .= '-步骤2/'.SurveyController::stepCount($tax);
 
 $this->title .='.封面图';

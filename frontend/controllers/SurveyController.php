@@ -42,6 +42,7 @@ class SurveyController extends ZController
         }
         return true;
     }
+    
     /**
      * Lists all Survey models.
      * @return mixed
@@ -80,6 +81,16 @@ class SurveyController extends ZController
         $searchModel = new SurverySearch();
         $queryParams = Yii::$app->request->queryParams;
         $queryParams['SurverySearch']['is_publish'] = 1;
+//         ZCommonFun::print_r_debug($queryParams);
+//         ZCommonFun::print_r_debug(Yii::$app->request->queryParams);
+//         ZCommonFun::print_r_debug($_POST);
+        if(isset($_POST['SurverySearch']['title'])){
+            $queryParams['SurverySearch']['title'] = $_POST['SurverySearch']['title'];
+        }
+        $search = false;
+        if(isset($queryParams['SurverySearch']['title'])){
+           $search = $queryParams['SurverySearch']['title'];
+        }
         $query = $searchModel->query( $queryParams );
         
         $count = $query->count();
@@ -94,11 +105,14 @@ class SurveyController extends ZController
         $limit = $pagination->getLimit();
         $query->offset($offset);
         $query->limit($limit);
+        $op_name = '';
         //最新
         if($sort>0){
             $query->orderBy(['created'=>SORT_DESC]);
+            $op_name = '最新';
         }//最热
         else{
+            $op_name = '最热';
             $query->orderBy(['answer_count'=>SORT_DESC]);
         }
         $a_models = $query->all();
@@ -106,14 +120,18 @@ class SurveyController extends ZController
         $pageCount = $pagination->getPageCount();
         $page = Yii::$app->request->get('page',0);
 
-        
+        $model_SurveyOperation = new SurveyOperation();
+        $models_SurveyOperation = $model_SurveyOperation->getIsTop();
 //         echo $pageCount,'=',$page+1;
 //         ZCommonFun::print_r_debug($pagination);
         return $this->render('index2', [
+            'models_SurveyOperation'=>$models_SurveyOperation,
             'searchModel' => $searchModel,
             'a_models' => $a_models,
             'pagination'=>$pagination,
             'sort'=>$sort,
+            'op_name'=>$op_name,
+            'search'=>$search,
         ]);
         
         return $this->render('index', [
@@ -175,12 +193,17 @@ class SurveyController extends ZController
         
         $pageCount = $pagination->getPageCount();
         $page = Yii::$app->request->get('page',0);
+        $data='';
         //有数据,从第1页开始到最后一页
         if($pageCount>0 && $page>0 ){
 //             echo $page,$pageCount;
             //超过最后一页
             if($page>$pageCount){
-                return '';
+                $tempData['data'] = $data;
+                $tempData['status'] = 0;
+                $tempData['message'] = '';
+                echo json_encode($tempData);
+                exit;
             }
                 foreach ($a_models as $key=>$row){
                     if($row->tax==1){
@@ -190,28 +213,54 @@ class SurveyController extends ZController
                     }
                
                    $image = common\models\Survey::getImageUrl($row);
-                   echo <<<str
-<dl>
-	<a href="{$url}">
-		<dt>
-			<img src="{$image}"
-				alt="你有多怕谈恋爱：恋爱恐怖程度自评">
-		</dt>
-		<dd>
-			<h3>{$row->title}</h3>
-		</dd>
-		<dd>{$row->intro}</dd>
-		<dd>
-		<span style="float: left;display: inline-block;padding-left: 10px;">由{$row->getNickname1()}创建</span>
-			<span>测试过：{$row->answer_count}</span>
-		</dd>
-	   
-	</a>
-</dl>                    
+                   /*
+                   <dl>
+                   <a href="{$url}">
+                   <dt>
+                   <img src="{$image}"
+                   alt="你有多怕谈恋爱：恋爱恐怖程度自评">
+                   </dt>
+                   <dd>
+                   <h3>{$row->title}</h3>
+                   </dd>
+                   <dd>{$row->intro}</dd>
+                   <dd>
+                   <span style="float: left;display: inline-block;padding-left: 10px;">由{$row->getNickname1()}创建</span>
+                   <span>测试过：{$row->answer_count}</span>
+                   </dd>
+                   
+                   </a>
+                   </dl>*/
+                   $data.= <<<str
+       
+
+			    <li class="diy-item" date-id="2626"><a
+					href="{$url}"
+					target="_blank">
+						<figure class="cover">
+							<img class=""
+								src="{$image}">
+						</figure>
+						<div class="diy-meta">
+							<div class="title mui-ellipsis">{$row->title}</div>
+							<span class="iconfont icon-start-filled5"></span> <span
+								class="count">{$row->answer_count}人在测</span>
+							<div class="desc mui-ellipsis">{$row->intro}</div>
+						</div>
+				</a> <a
+					href="{$url}"
+					class="play" data-ui="danger small icon-right"> 去测<i
+						class="iconfont icon-right"></i>
+				</a></li>
 str;
                 }    
-               exit;       
+                      
         }
+        $tempData['data'] = $data;
+        $tempData['status'] = 0;
+        $tempData['message'] = '';
+        echo json_encode($tempData);
+        exit;
     }
     /**
      * 选择测试分类 1
@@ -622,6 +671,7 @@ str;
            if( !empty($model_save_SurveyResulte->oldAttributes['image']) &&$model_save_SurveyResulte->image!= $model_save_SurveyResulte->oldAttributes['image']){
                @unlink(UPLOAD_DIR.$model_save_SurveyResulte->oldAttributes['image']);
            }
+           $model_save_SurveyResulte->uid = ZCommonSessionFun::get_user_id();
            //保存成功
            $resulte = $model_save_SurveyResulte->save();    
            

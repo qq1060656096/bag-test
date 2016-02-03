@@ -7,6 +7,7 @@ use common\models\Question;
 use common\models\QuestionOptions;
 use common\z\ZCommonFun;
 use common\z\ZCommonSessionFun;
+use common\models\SurverySearch;
 /**
  * 问卷
  * @author drupal
@@ -15,7 +16,17 @@ use common\z\ZCommonSessionFun;
 class SurveyOperation extends Survey{
     public $errorResulte = '';
     
-   
+    /**
+     * 获取置顶测试
+     * @return array common\models\Survey
+     */
+    public function getIsTop($limit=8){
+        $searchModel = new SurverySearch();
+        $condition['is_publish'] = 1;
+        $models = $searchModel->find()->where($condition)->orderBy(['is_top'=>SORT_DESC,'answer_count'=>SORT_DESC,])->limit($limit)->all();
+        isset($models[0]) ? null : $models=[];
+        return $models;
+    }
     /**
      * 奇趣测试保存条件
      * @param unknown $post
@@ -130,6 +141,7 @@ class SurveyOperation extends Survey{
                     
                     $model_Question->label = $posts['label-name'];
                     $model_Question->table_id = $id;
+                    $model_Question->uid = ZCommonSessionFun::get_user_id();
                     $save = 0 ;
                     if( $model_Question->save()){
                         $len = count($posts['label']['option-label']);
