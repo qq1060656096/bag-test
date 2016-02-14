@@ -21,33 +21,18 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 	<section class="s_reg s_login">
     	<div class="notice" title="太好了，完成最后一步吧^o^~">&nbsp;</div>
     	<?php $form = ActiveForm::begin(); ?>
-    	
-    		<input type="button"  onclick="javascript:location.href='<?php echo Yii::$app->urlManager->createUrl(['user-profile/change-pass']);?>';" value="修改密码">
-    		<br/>
-    		<br/>
-    		<div class="input-wrap">
-    			<?= $form->field($model, 'nickname')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'昵称']) ?>
-    		</div>
-    	
-    		<div class="input-wrap">
-    			<?= $form->field($model, 'sex')->dropDownList(UserProfile::$sexData,['maxlength' => true,'class'=>'','placeholder'=>'性别']) ?>
-    		</div>
-    		<div class="input-wrap">
-    			<?= $form->field($model, 'birthday')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'生日']) ?>
-    		</div>
-    		<div class="input-wrap">
-    			<?= $form->field($model, 'address')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'地址']) ?>
-    		</div>
-    		<div class="input-wrap">
-    			<?= $form->field($model, 'intro')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'简介']) ?>
-    		</div>
-    		<div class="input-wrap">
-    			<?= $form->field($model, 'qq')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'QQ']) ?>
+    	   <div class="input-wrap">
+    			<?= $form->field($model, 'user')->textInput(['disabled'=>'disabled']) ?>
     		</div>
     		
     		<div class="input-wrap">
-    			<?= $form->field($model, 'school')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'学校']) ?>
+    			<?= $form->field($model, 'pass')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'新密码']) ?>
     		</div>
+    	
+    		<div class="input-wrap">
+    			<?= $form->field($model, 'flag')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'再次输入新密码'])->label('重复密码') ?>
+    		</div>
+    		
     		<input type="submit" id="submit" value="完 成">
     	<?php ActiveForm::end(); ?>
     </section>
@@ -114,7 +99,11 @@ $(document).ready(function(){
     	    console.log(ev.date);
      });
 });
-   
+<?php 
+if($message):
+    echo 'alert("',$message,'");';
+endif;
+?>
 </script> 
 
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

@@ -1,3 +1,6 @@
+<?php 
+use common\z\ZController;
+?>
 <!DOCTYPE html>
 <!-- saved from url=(0028)http://m.xinli001.com/ceshi/ -->
 <html>
@@ -7,6 +10,9 @@
 <meta
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
 	name="viewport">
+<meta name="keywords" content="<?php echo ZController::$keywords;?>" />
+<meta name="description" content="<?php echo ZController::$description;?>">
+	
 <meta content="yes" name="apple-mobile-web-app-capable">
 <meta content="black" name="apple-mobile-web-app-status-bar-style">
 <meta content="telephone=no" name="format-detection">

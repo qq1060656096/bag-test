@@ -26,7 +26,8 @@ $create_url = Yii::$app->urlManager->createUrl([
 <meta name="format-detection" content="telephone=no">
 <meta name="viewport"
 	content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes">
-<meta name="description" content="">
+<meta name="keywords" content="<?php echo ZController::$keywords;?>" />
+<meta name="description" content="<?php echo ZController::$description;?>">
 <title>
 <?php
 echo empty(ZController::$site_name) ? '' : ZController::$site_name . ' - ';
@@ -35,6 +36,10 @@ echo $this->title, ' ', $model->title;
 $create_url = Yii::$app->urlManager->createAbsoluteUrl([
     'survey/step1',
     'id' => $model->id
+]);
+$create_test_url = Yii::$app->urlManager->createAbsoluteUrl([
+    'survey/step1',
+
 ]);
 ?>
 </title>
@@ -69,7 +74,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 
 		<div class="container newcontent">
 			<a id="top"></a>
-			<div class="title header-title">
+			<div class="title header-title" style="display: none;">
 				
 				<h2 style="display: none;"><?php //echo $model->title;?></h2>
 				<div class="title-sub">
@@ -85,7 +90,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 			<div id="bd" class="panel">
 
 				<div id="panel3" class="panel-body js_result trueresult">
-					<hr>
+					<hr  style="display: none;">
 					<div id="test_content">
 						<div class="progre">
 							<span class="value"  style="display: none;"><span class="current">我的测试结果</span></span>
@@ -95,12 +100,19 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
     				        echo $model_AnswerUser->answer_name ? '<span class="answer-name">'.$model_AnswerUser->answer_name.'</span>' : '';
     				        echo $model_SurveyResulte->value;
     				        ?>
-				        </p>
+				            </p>
+				            <div>
+            			    <?php
+                            if(isset($model_SurveyResulte->image) && !empty($model_SurveyResulte->image)){
+                                echo '<img style="width: 100%;" src="',$image = SurveyResulte::getImageUrl($model_SurveyResulte),'"/>';
+                            }
+                            ?>
+            				</div>
+            				
 						</div>
 
 					</div>
-
-					<hr>
+					
 					<dl>
 						<dt>详细分析:</dt>
 						<dd style="" id="details">
@@ -113,21 +125,29 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 							<p></p>
 						</dd>
 					</dl>
+					<hr>
+                    <div class="title header-title">
+        				<div class="title-sub">
+        					<div style="text-align: center;">
+        						<p>
+        							已有<span><?php echo $model->answer_count;?></span>人参与测试
+        						</p>
+        					</div>
+        				</div>
+    				</div>
+					<hr>
+					
 					<!-- 分享按钮区 -->
 					<div class="share">
 						<div></div>
 					</div>
 					<!-- 按钮层 -->
-					<div class="buttons">
-						<a href="<?php echo $test_url;?>" class="btn btn-lg btn-success" style="width: 100%">重新测试</a>
+					<div class="buttons"   style="float:left;width: 45%;">
+						<a href="<?php echo $test_url;?>" class="btn btn-lg btn-success" style="width: 100%;">重新测试</a>
 					</div>
-                    <div>
-    			    <?php
-                    if(isset($model_SurveyResulte->image) && !empty($model_SurveyResulte->image)){
-                        echo '<img style="width: 100%;" src="',$image = SurveyResulte::getImageUrl($model_SurveyResulte),'"/>';
-                    }
-                    ?>
-    				</div>
+                    <div class="buttons" style="float:right;width: 45%;" >
+						<a href="<?php echo $create_test_url;?>" class="btn btn-lg btn-success" style="width: 100%;" >创建测试</a>
+					</div>
 				</div>
 
 			</div>

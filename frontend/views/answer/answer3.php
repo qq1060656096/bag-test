@@ -14,7 +14,7 @@ use common\models\UserProfile;
 <meta name="viewport"
 	content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes">
 <meta name="description"
-	content="【绝密】大学汉语八级全真卷，学渣和歪果仁都被逼疯了 简直hold不住啊 快来试试吧！">
+	content="<?php echo ZController::$description;?>">
 <title>【绝密】大学汉语八级全真卷，学渣和歪果仁都被逼疯了</title>
 <link rel="stylesheet"
 	href="./【绝密】大学汉语八级全真卷，学渣和歪果仁都被逼疯了_files/bootstrap.min.css">

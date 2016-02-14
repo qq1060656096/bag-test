@@ -255,4 +255,9 @@ class ZCommonFun{
             }
         }
     }
+    
+    public static function getPass($str){
+        $prefix = 'dss';
+        return sha1($prefix.$str);
+    }
 }

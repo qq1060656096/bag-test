@@ -28,6 +28,7 @@ class User extends \yii\db\ActiveRecord
         $this->operationMessage = null;
         $this->operationData = null;
     }
+    
     /**
      * @inheritdoc
      */
@@ -82,7 +83,7 @@ class User extends \yii\db\ActiveRecord
             $this->operationError = 1;
             $this->operationMessage = '用户没有找到';
         }
-        else if( $model->pass!= $pass ){
+        else if( $model->pass!= ZCommonFun::getPass($pass) ){
             $this->operationError = 2;
             $this->operationMessage = '密码错误';
         }else{

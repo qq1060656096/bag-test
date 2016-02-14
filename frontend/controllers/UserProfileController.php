@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\z\ZCommonSessionFun;
+use common\models\User;
+use common\z\ZCommonFun;
 
 /**
  * UserProfileController implements the CRUD actions for UserProfile model.
@@ -40,13 +42,60 @@ class UserProfileController extends Controller
         }
         $model->uid = ZCommonSessionFun::get_user_id();
         $model->birthday = $model->birthday ? date('Y-m-d',strtotime($model->birthday)):'';
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $load = $model->load(Yii::$app->request->post());
+       
+        if ( $load && $model->save()) {
             return $this->redirect(['bind']);
         } else {
             return $this->render('_form', [
                 'model' => $model,
             ]);
         }
+    }
+    /**
+     * 修改密码
+     */
+    public function actionChangePass(){
+        if( ZCommonSessionFun::get_user_id()<1 ){
+            $url = Yii::$app->urlManager->createUrl([ZCommonSessionFun::urlLoginUserStr]);
+            return $this->redirect($url);
+        }
+        $this->view->title='修改密码';
+        $this->layout = false;
+        $condition['uid']  = ZCommonSessionFun::get_user_id();
+        $model_old = User::findOne($condition);
+        if(!$model_old){
+            
+            $url = Yii::$app->urlManager->createUrl([ZCommonSessionFun::urlLoginUserStr]);
+            return $this->redirect($url);
+        }
+        $model = new User();
+        $model->user = $model_old->user;
+        $load = $model->load(Yii::$app->request->post());
+        $message = '';
+        if($load){
+            if(empty($model->pass)){
+                $model->addError('pass','密码不能为空');
+            }
+            if(empty($model->flag)){
+                $model->addError('flag','重复密码不能为空');
+            }else if($model->pass!=$model->flag){
+                $model->addError('flag','两次密码不一致');
+            }
+            
+            if( !$model->hasErrors() ){
+                $model_old->pass = ZCommonFun::getPass($model->pass);
+                if( $model_old->save()){
+                    $model->pass = '';
+                    $model->flag = '';
+                    $message = '修改密码成功';
+                }
+            }
+        }
+        return $this->render('change-pass', [
+            'model' => $model,
+            'message'=>$message,
+        ]);
     }
 
   

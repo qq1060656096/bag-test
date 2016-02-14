@@ -11,7 +11,8 @@ use common\models\UserProfile;
 <meta name="format-detection" content="telephone=no">
 <meta name="viewport"
 	content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes">
-<meta name="description" content="">
+<meta name="keywords" content="<?php echo ZController::$keywords;?>" />
+<meta name="description" content="<?php echo ZController::$description;?>">
 <title>
 <?php
 echo empty(ZController::$site_name) ? '' : ZController::$site_name . ' - ';

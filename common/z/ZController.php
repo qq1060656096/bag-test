@@ -11,6 +11,16 @@ class ZController extends Controller{
      */
     public static $site_name = '大神蒜';
     /**
+     * 关键词
+     * @var string
+     */
+    public static $keywords  = '大神蒜 | 大神算,最强大的心理测试网站';
+    /**
+     * 网站描述
+     * @var string
+     */
+    public static $description = '大神蒜,大神算,让你[认识自己、确幸未来].只要你精通星座,神学,心理学,就可以在大神蒜创建自己的测试.[大神蒜],强!准!全!全球众多大师入驻,现已进入中国!';
+    /**
      * 缓存文件名
      * @var FileCache
      */
