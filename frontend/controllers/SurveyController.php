@@ -236,7 +236,12 @@ class SurveyController extends ZController
 str;
 			
        				endif;
-                   /*
+                   if($self>0){
+                       $row_ur_done   = Yii::$app->urlManager->createUrl(['survey/done','id'=>$row->id]);
+                       //发布
+                       $row_ur_done_publish   = Yii::$app->urlManager->createUrl(['survey/done','is_ajax'=>1,'id'=>$row->id]);
+                       $row_ur_change = Yii::$app->urlManager->createUrl(['survey/step2','id'=>$row->id]);
+                   $data.=<<<str
                    <dl>
                    <a href="{$url}">
                    <dt>
@@ -248,13 +253,20 @@ str;
                    </dd>
                    <dd>{$row->intro}</dd>
                    <dd>
-                   <span style="float: left;display: inline-block;padding-left: 10px;">由{$row->getNickname1()}创建</span>
-                   <span>测试过：{$row->answer_count}</span>
+                       <a class="btn_bg" href="{$row_ur_done}">预览</a>
+    				      &nbsp; &nbsp;
+    				      <a class="btn_bg ajax-publish" href="{$row_ur_done_publish}">发布</a>
+    				      &nbsp;&nbsp;
+    				    <a class="btn_bg" href="{$row_ur_change}">修改</a>
+    					<span>测试过：{$row->answer_count}</span>
                    </dd>
                    
                    </a>
-                   </dl>*/
-                   $data.= <<<str
+                   </dl>
+str;
+                   
+                   }else{
+                    $data.= <<<str
        
 
 			    <li class="diy-item" date-id="2626"><a
@@ -278,14 +290,17 @@ str;
 						class="iconfont icon-right"></i>
 				</a></li>
 str;
+                   }
                 }    
                       
         }
+        
         $tempData['data'] = $data;
         $tempData['status'] = 0;
         $tempData['message'] = '';
         echo json_encode($tempData);
         exit;
+        
     }
     /**
      * 选择测试分类 1

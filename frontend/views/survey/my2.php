@@ -118,17 +118,17 @@ function ajaxLoad(){
         if(!isAjaxLoad){
         	isAjaxLoad = true;
         	now.text('加载中');
-            $.get(url,function(html){
+            $.getJSON(url,function(html){
             	now.text('加载更多');
             	isAjaxLoad = false;
                 console.log(html);
                 //没有找到
-                if(html==''){
+                if(html.data==''){
                 	isAjaxLoad = true;
                 	now.text('已经没有了');
                 	console.log('已经没有了');
                 }
-                $(".list_box").append( html );
+                $(".list_box").append( html.data );
             });
         }
     });
