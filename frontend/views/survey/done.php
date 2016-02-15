@@ -452,4 +452,5 @@ $(document).ready(function(){
 	});
 });
 </script>
+ <?php echo $this->renderFile(__DIR__.'/../layouts/group-add.php');?>
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

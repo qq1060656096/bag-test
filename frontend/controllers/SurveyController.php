@@ -29,7 +29,7 @@ use common\models\OauthBind;
  */
 class SurveyController extends ZController
 {
-    public $pageSize = 10;
+    public $pageSize = 5;
     public function beforeAction($action){
         $no_login_actions = ['index','index-ajax'];
         $action_id = strtolower($action->id);
@@ -190,7 +190,7 @@ class SurveyController extends ZController
             $query->orderBy(['answer_count'=>SORT_DESC]);
         }
         $a_models = $query->all();
-        
+        $role = ZCommonSessionFun::get_role();
         $pageCount = $pagination->getPageCount();
         $page = Yii::$app->request->get('page',0);
         $data='';
@@ -213,6 +213,29 @@ class SurveyController extends ZController
                     }
                
                    $image = common\models\Survey::getImageUrl($row);
+                   $is_top_text = '';
+                   $is_top_url = '';
+                   $op0 = Yii::$app->urlManager->createUrl(['survey/recommend','id'=>$row->id,'op'=>0]);
+                   $op1 = Yii::$app->urlManager->createUrl(['survey/recommend','id'=>$row->id,'op'=>1]);
+                   $is_top = 0;
+                   if( $row->is_top > 0 ):
+                       $is_top_text = '取消推荐';
+                       $is_top = 0;
+                   else:
+                       $is_top_text = '推荐';
+                       $is_top = 1;
+                   endif;
+                   $str_recommend = '';
+                   if( $role == 1 ):
+       				$str_recommend = <<<str
+       				<a
+       					is_top="{$is_top}" op0="{$op0}" op1="{$op1}"
+       					class="play recommend" data-ui="danger small icon-right" style="right: 75px;"> {$is_top_text}<i
+       						class="iconfont icon-right"></i>
+       				</a>
+str;
+			
+       				endif;
                    /*
                    <dl>
                    <a href="{$url}">
@@ -247,7 +270,9 @@ class SurveyController extends ZController
 								class="count">{$row->answer_count}人在测</span>
 							<div class="desc mui-ellipsis">{$row->intro}</div>
 						</div>
-				</a> <a
+				</a> 
+                   {$str_recommend}
+				<a
 					href="{$url}"
 					class="play" data-ui="danger small icon-right"> 去测<i
 						class="iconfont icon-right"></i>
@@ -1102,6 +1127,31 @@ str;
         }
         
         return [$all_count,$all_count_empty,'message'=>$message];
+    }
+    /**
+     * 推荐
+     * @return \yii\web\Response
+     */
+    public function actionRecommend($id,$op){
+        $this->layout = false;
+        $model  = Survey::findOne($id);
+        if(ZCommonSessionFun::get_user_id()<1){
+            ZCommonFun::output_json(null, -1, '请登录');
+        }
+        if(ZCommonSessionFun::get_role()!=1){
+            ZCommonFun::output_json(null, 2, '管理员才能操作');
+        }
+        //没有找到
+        if(!$model){
+            ZCommonFun::output_json(null, 1, '测试不存在');
+            $model = new Survey();
+        }
+        //推荐
+        $model->is_top = $op==1 ? $_SERVER['REQUEST_TIME'] : 0;
+        if($model->save()){
+            ZCommonFun::output_json(null, 0, '操作成功');
+        }
+        ZCommonFun::output_json(null, -2, '操作失败');
     }
     /**
      * 获取步数量

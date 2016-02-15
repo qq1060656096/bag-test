@@ -12,6 +12,8 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use common\z\ZCommonSessionFun;
+use common\z\ZCommonFun;
 
 /**
  * Site controller
@@ -72,6 +74,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $info = ZCommonSessionFun::get_user_session();
+        ZCommonFun::print_r_debug($info);
+        exit;
         return $this->render('index');
     }
 

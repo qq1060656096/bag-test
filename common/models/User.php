@@ -13,6 +13,7 @@ use common\z\ZCommonFun;
  * @property string $user
  * @property string $pass
  * @property integer $flag
+ * @property integer $role
  * @property string $created
  */
 class User extends \yii\db\ActiveRecord
@@ -43,7 +44,7 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['flag'], 'integer'],
+            [['flag','role'], 'integer'],
             [['created'], 'safe'],
             [['user'], 'string', 'max' => 128],
             [['pass'], 'string', 'max' => 255],
@@ -63,6 +64,7 @@ class User extends \yii\db\ActiveRecord
             'user' => '账号',
             'pass' => '密码',
             'flag' => '标记',
+            'role' => '角色',
             'created' => '注册时间',
         ];
     }
@@ -89,7 +91,7 @@ class User extends \yii\db\ActiveRecord
         }else{
          $this->operationError =0;
          $userInfo = $model->attributes;
-         $userInfo['role'] = 0; //角色
+         isset($userInfo['role'])?null:$userInfo['role'] = 0; //角色
          $userInfo['openidInfo'] = null;//第三方登录信息
          ZCommonSessionFun::set_user_session($userInfo);
         }

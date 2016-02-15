@@ -143,5 +143,5 @@ function answer(){
 <?php 
 echo $this->renderFile(__DIR__ . '/../layouts/foot-comment.php');
 ?>
-
+<?php echo $this->renderFile(__DIR__.'/../layouts/group-add.php');?>
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

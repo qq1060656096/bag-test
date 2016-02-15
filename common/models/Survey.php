@@ -36,6 +36,7 @@ use common\z\ZCommonSessionFun;
  * @property integer $reward_count
  * @property integer $front_img
  * @property string $arithmetic
+ * @property integer $is_top
  */
 class Survey extends \yii\db\ActiveRecord
 {
@@ -61,7 +62,7 @@ class Survey extends \yii\db\ActiveRecord
     {
         return [
             [['type'], 'required'],
-            [['front_img','type','tax', 'uid', 'theme', 'theme_mobile', 'is_publish', 'answer_count', 'visit_count', 'is_public', 'is_statistics_public', 'max_answer_count', 'is_share_template', 'answer_total_time', 'answer_average_time', 'answer_limit_time', 'reward_count'], 'integer'],
+            [['front_img','type','tax', 'uid', 'theme', 'theme_mobile', 'is_publish', 'answer_count', 'visit_count', 'is_public', 'is_statistics_public', 'max_answer_count', 'is_share_template', 'answer_total_time', 'answer_average_time', 'answer_limit_time', 'reward_count','is_top'], 'integer'],
             [['created', 'start_date', 'end_date'], 'safe'],
             [['reward_total', 'reward_average'], 'number'],
     
@@ -101,7 +102,8 @@ class Survey extends \yii\db\ActiveRecord
             'reward_average' => '平均打赏',
             'reward_count' => '打赏次数',
             'front_img'=>'封面图片',
-            'arithmetic'=>'算法'
+            'arithmetic'=>'算法',
+            'is_top'=>'置顶',
         ];
     }
     /*

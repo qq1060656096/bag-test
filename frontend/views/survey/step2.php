@@ -80,4 +80,5 @@ label, label input {
 	vertical-align:top;
 }
 </style> 
+ <?php echo $this->renderFile(__DIR__.'/../layouts/group-add.php');?>
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>    

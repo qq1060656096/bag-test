@@ -5,7 +5,7 @@ $url_hot    = Yii::$app->urlManager->createUrl(['survey/index','sort'=>0]);
 $url_find   = Yii::$app->urlManager->createUrl(['survey/step1','sort'=>0]);
 $url_me     = Yii::$app->urlManager->createUrl(['survey/my']);
 //测试结果页面才有分享
-if(in_array(strtolower($this->context->action->id), ['step1','step2-answer2'])){
+if(in_array(strtolower($this->context->action->id), ['step2-answer2'])){
     echo $this->renderFile(__DIR__.'/../layouts/share.php');
 }
 ?>

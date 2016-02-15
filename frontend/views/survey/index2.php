@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use common\z\ZCommonFun;
 use common\models\Survey;
+use common\z\ZCommonSessionFun;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\SurverySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -83,6 +84,8 @@ section#all-game {
 			</h5>
 			<ul class="mui-table-view mui-grid-view mui-grid-9">
 			    <?php 
+			    
+			    
 			    foreach ($models_SurveyOperation as $key => $row):
     			    if($row->tax==1){
     			        $url = Yii::$app->urlManager->createUrl(['answer/step1','id'=>$row->id]);
@@ -90,6 +93,7 @@ section#all-game {
     			        $url = Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$row->id]);
     			    }
     			    $image = common\models\Survey::getImageUrl($row);
+    			    
 			    ?>
 				<li class="mui-table-view-cell mui-media mui-col-xs-3"><a
 					href="<?php echo $url;?>"
@@ -131,6 +135,7 @@ section#all-game {
 			?>
 			<ul class="list " id="new" page="1" url="<?php echo $new_url;?>">
 			    <?php 
+			    $role = ZCommonSessionFun::get_role();
 			    foreach ($a_models as $key => $row):
     			    if($row->tax==1){
     			        $url = Yii::$app->urlManager->createUrl(['answer/step1','id'=>$row->id]);
@@ -138,25 +143,47 @@ section#all-game {
     			        $url = Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$row->id]);
     			    }
     			    $image = common\models\Survey::getImageUrl($row);
+    			    $is_top_text = '';
+    			    $is_top_url = '';
+    			    $op0 = Yii::$app->urlManager->createUrl(['survey/recommend','id'=>$row->id,'op'=>0]);
+    			    $op1 = Yii::$app->urlManager->createUrl(['survey/recommend','id'=>$row->id,'op'=>1]);
+    			    $is_top = 0;
+    			    if( $row->is_top > 0 ):
+    			         $is_top_text = '取消推荐';
+    			         $is_top = 0;
+    			    else:
+    			         $is_top_text = '推荐';
+    			         $is_top = 1;
+    			    endif;
 			    ?>
-				<li class="diy-item" date-id="2626"><a
-					href="<?php echo $url;?>"
-					target="_blank">
-						<figure class="cover">
-							<img class=""
-								src="<?php echo $image;?>">
-						</figure>
-						<div class="diy-meta">
-							<div class="title mui-ellipsis"><?php echo $row->title;?></div>
-							<span class="iconfont icon-start-filled5"></span> <span
-								class="count"><?php echo $row->answer_count;?>人在测</span>
-							<div class="desc mui-ellipsis"><?php echo $row->intro;?></div>
-						</div>
-				</a> <a
-					href="<?php echo $url;?>"
-					class="play" data-ui="danger small icon-right"> 去测<i
-						class="iconfont icon-right"></i>
-				</a></li>
+				<li class="diy-item" date-id="2626">
+    				<a
+    					href="<?php echo $url;?>"
+    					target="_blank">
+    						<figure class="cover">
+    							<img class=""
+    								src="<?php echo $image;?>">
+    						</figure>
+    						<div class="diy-meta">
+    							<div class="title mui-ellipsis"><?php echo $row->title;?></div>
+    							<span class="iconfont icon-start-filled5"></span> <span
+    								class="count"><?php echo $row->answer_count;?>人在测</span>
+    							<div class="desc mui-ellipsis"><?php echo $row->intro;?></div>
+    						</div>
+    				</a> 
+    				<?php if( $role == 1 ):?>
+    				<a
+    					is_top="<?php echo $is_top;?>" op0="<?php echo $op0?>" op1="<?php echo $op1;?>"
+    					class="play recommend" data-ui="danger small icon-right" style="right: 75px;"> <?php echo $is_top_text;?><i
+    						class="iconfont icon-right"></i>
+    				</a>
+    				<?php endif;?>
+    				<a
+    					href="<?php echo $url;?>"
+    					class="play" data-ui="danger small icon-right"> 去测<i
+    						class="iconfont icon-right"></i>
+    				</a>
+				</li>
 	            <?php endforeach;?>
 			</ul>
 			<!-- 
@@ -190,7 +217,28 @@ $(document).ready(function(){
 			$("form").submit();
 	    }
 	    
-	});    
+	});  
+	//推荐
+    $("#all-game").on('click','a.recommend',function(){
+    	var now_element = $(this);
+    	var is_top = now_element.attr('is_top');
+    	var op = is_top=='1' ? 'op1':'op0';
+    	var url = now_element.attr(op);
+    	var data = {};
+    	console.log(url);
+    	$.getJSON(url,data,function(json){
+    		if(json.status==0){
+    			now_element.attr('is_top',is_top==1 ? '0':'1');
+    			now_element.html(is_top==1 ? '取消推荐':'推荐');
+ 			   alert("推荐成功");
+    	    }else{
+        	    console.log(json);
+    	        alert("操作失败");
+        	}
+    		
+    	});
+    });  
+    
     $("#all-game .diy-tab-item").click(function(){
         
     	var now_element = $(this);
