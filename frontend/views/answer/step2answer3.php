@@ -48,6 +48,11 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 	charset="utf-8"></script>
 <script src="http://tajs.qq.com/qc.php?dm=" type="text/javascript"
 	charset="utf-8"></script>
+	<style type="text/css">
+.list-xuan.list-xuan-text{
+	text-align: center;
+}
+</style>	
 </head>
 <body>
 	<div id="content">
@@ -66,7 +71,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 				<div class="title-sub">
 					<div>
 						<span class="newmiaoshu">简介:<?php echo $model->intro;?></span>
-						<p>
+						<p class="testing-count">
 							已有<span><?php echo $model->answer_count;?></span>人参与测试
 						</p>
 					</div>
@@ -100,18 +105,31 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 								</p> </span>
 						</div>
 						<ul class="js_group">
-							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;"><input placeholder="你的姓名"
-								id="name" name="name" type="text" class="" value=""></li>
+							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">填入姓名<input size="30" placeholder="你的姓名"
+								id="name" name="name" type="text" class="" value="" style="width:auto;"></li>
 							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">
-							     生日<select id="age" name="age birth_year" class="" onchange="adjustAstro();"></select>
-							     <select id="birth_month" name="birth[month]" onchange="adjustAstro();"></select>
-							     <select id="birth_day" name="birth[day]" onchange="adjustAstro();"></select>
+							     出生年份<select id="age" name="age birth_year" class=""  onchange="adjustAstro();"></select>
+							     <select id="birth_month" name="birth[month]" style="display:none;" onchange="adjustAstro();"></select>
+							     <select id="birth_day" name="birth[day]" style="display:none;" onchange="adjustAstro();"></select>
 							 
 							</li>
 							
 							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">
-							 <SELECT id=astro disabled name=astro runat="server" style="width: 100%;border:none;-webkit-appearance: none;"> 
-                                <OPTION selected>处女座</OPTION>
+							 星&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;座&nbsp;<SELECT id="constellation" name="constellation" style=""> 
+							 <OPTION value="">请选择星座</OPTION>
+                                <OPTION value="1">水瓶座1.20~2.18</OPTION>
+                                <OPTION value="2">双鱼座2.10~3.20</OPTION>
+                                <OPTION value="3">白羊座3.21~4.19</OPTION>
+                                <OPTION value="4">金牛座4.20~5.20</OPTION>
+                                <OPTION value="5">双子座5.21~6.21</OPTION>
+                                <OPTION value="6">巨蟹座6.22~7.22</OPTION>
+                                <OPTION value="7">狮子座7.23~8.23</OPTION>
+                                <OPTION value="8">处女座8.23~9.23</OPTION>
+                                <OPTION value="9">天秤座9.24~10.21</OPTION>
+                                <OPTION value="10">天蝎座10.22~11.22</OPTION>
+                                <OPTION value="11">射手座11.23~12.24</OPTION>
+                                <OPTION value="12">摩羯座12.25~1.19</OPTION>
+                                                                                                                        
                             </SELECT>
 							</li>
 						</ul>
@@ -180,6 +198,10 @@ document.getElementById('spn').style.display='none';
 <script>
 birthday = false;
 $(document).ready(function(){
+	$("#name").css('width',$("#constellation").css('width'));
+	$(window).resize(function(){
+		$("#name").css('width',$("#constellation").css('width'));
+	});
 	$.datepicker.regional["zh-CN"] = { closeText: "关闭", prevText: "&#x3c;上月", nextText: "下月&#x3e;", currentText: "今天", monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"], monthNamesShort: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"], dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"], dayNamesShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"], dayNamesMin: ["日", "一", "二", "三", "四", "五", "六"], weekHeader: "周", dateFormat: "yy-mm-dd", firstDay: 1, isRTL: !1, showMonthAfterYear: !0, yearSuffix: "年" };
     //设置默认语言
 //     $.datepicker.setDefaults($.datepicker.regional["zh-CN"]);
@@ -191,10 +213,17 @@ $(document).ready(function(){
 // 	});
     $(".btn.btn-lg.start-test").click(function(){
     	$("#panel1").hide();
+    	$(".testing-count").hide();
         $("#panel2").show();
+        $('#age').click();
         return false;
     });
     $('#age').change(function(){
+    	birthday = true;
+        $("#birth_year").val($(this).val());
+    });
+    $('#age').val('1990');
+    $('#age').click(function(){
     	birthday = true;
         $("#birth_year").val($(this).val());
     });
@@ -204,9 +233,17 @@ $(document).ready(function(){
 			alert("请输入姓名");
 		    return true;
 	    }
+		
+		
 		var age = $('#age');
 		if( age && age.val()=="" || !birthday ){
 			alert("请选择生日");
+		    return true;
+	    }
+
+		var constellation = $('#constellation');
+		if( constellation && constellation.val()=="" ){
+			alert("请选择星座");
 		    return true;
 	    }
 		$("#panel2").hide();
