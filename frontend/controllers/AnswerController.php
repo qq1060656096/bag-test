@@ -200,8 +200,10 @@ str;
             $year = isset($posts['birth']['year']) ? $posts['birth']['year'] : 2015;
             $month = isset($posts['birth']['month']) ? $posts['birth']['month'] : '01';
             $day = isset($posts['birth']['day']) ? $posts['birth']['day'] : '01';
+            $constellation = isset($posts['constellation']) ? intval($posts['constellation']) : 0;
+            $constellation = $constellation>0&&$constellation<13?$constellation:0;
             
-            $birth = $year.$month.$day;
+            $birth = $year.'-'.$month.'-'.$day;
             $birth = date('Y-m-d',strtotime($birth));
             $model_SurveyResulte = new SurveyResulte();
             //计算测试结果
@@ -214,6 +216,7 @@ str;
                 $model_AnswerUser->sid = $id;
                 $model_AnswerUser->answer_name = $name;
                 $model_AnswerUser->answer_age = $birth;
+                $model_AnswerUser->constellation = $constellation;
                 //直接跳转答案
                 if($result){
                     //保存回答者结果,防止用户更改数据导致结果丢失
@@ -288,6 +291,7 @@ str;
         }
         $data = $model->FindAllQuestionsOptions($id);
 //                 ZCommonFun::print_r_debug($_POST);
+//                 exit;
         $posts = Yii::$app->request->post();
     
         
@@ -315,8 +319,11 @@ str;
                 $year = isset($posts['birth']['year']) ? $posts['birth']['year'] : 2015;
                 $month = isset($posts['birth']['month']) ? $posts['birth']['month'] : '01';
                 $day = isset($posts['birth']['day']) ? $posts['birth']['day'] : '01';
+                $constellation = isset($posts['constellation']) ? intval($posts['constellation']) : 0;
+                $constellation = $constellation>0&&$constellation<13?$constellation:0;
                 
-                $birth = $year.$month.$day;
+                $birth = $year.'-'.$month.'-'.$day;
+                
                 $birth = date('Y-m-d',strtotime($birth));
                 
                 $model_AnswerUser = new AnswerUser();   
@@ -325,6 +332,7 @@ str;
                 $res_model_SurveyResulte ? $model_AnswerUser->table_id = $res_model_SurveyResulte->sr_id : null;
                 $model_AnswerUser->answer_name = $name;
                 $model_AnswerUser->answer_age  = $birth;
+                $model_AnswerUser->constellation = $constellation;
                
                 
                 $model_AnswerUser->ip = self::getUserIP();

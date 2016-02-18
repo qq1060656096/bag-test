@@ -10,8 +10,8 @@ function date_select_init(year_id,month_id,day_id)
    
    var now_date = new Date();
    var nowYear = +now_date.getFullYear();
-   //select_year_option = new Option('请选择年份', '');
-   //select_year.options.add(select_year_option);
+   select_year_option = new Option('请选择出生年份', '');
+   select_year.options.add(select_year_option);
   //将年份选项初始化，从1980到2000
   for(var i = 1900; i <= nowYear; i++)
   {

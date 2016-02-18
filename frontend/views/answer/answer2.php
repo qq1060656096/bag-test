@@ -97,7 +97,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 						<div id="test_content">
 							<div class="progre">
 								<span class="value"><span class="current">开始测试</span>/<span
-									class="question-length">请输入你的姓名和年龄</span></span>
+									class="question-length">请输入你的姓名和出生年份、星座</span></span>
 							</div>
 							<span><p>
 									<br>
@@ -105,17 +105,17 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 						</div>
 						<ul class="js_group">
 							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">
-							填入姓名<input  size="30" placeholder="你的姓名"
+							<input  size="30" placeholder="填入你的姓名"
 								id="name" name="name" type="text" class="" value=""  style="width:auto;"></li>
 							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">
-							     出生年份<select id="age" name="age birth_year" class="" onchange="adjustAstro();"></select>
+							     <select style="width: 100%;" id="age" name="age birth_year" class="" onchange="adjustAstro();"></select>
 							     <select id="birth_month" name="birth[month]" style="display:none;" onchange="adjustAstro();"></select>
 							     <select id="birth_day" name="birth[day]" style="display:none;" onchange="adjustAstro();"></select>
 							 
 							</li>
 							
 							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">
-							 星&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;座&nbsp;<SELECT id="constellation" name="constellation" style=""> 
+							 <SELECT style="width: 100%;" id="constellation" name="constellation"> 
 							 <OPTION  value="">请选择星座</OPTION>
                                 <OPTION value="1">水瓶座1.20~2.18</OPTION>
                                 <OPTION value="2">双鱼座2.10~3.20</OPTION>
@@ -157,6 +157,7 @@ document.getElementById('spn').style.display='none';
 <script type="text/javascript" src="js/date-select.js"></script>	
 <script>
 birthday = false;
+var is_submit = false;
 $(document).ready(function(){
 	$("#name").css('width',$("#constellation").css('width'));
 	$(window).resize(function(){
@@ -204,7 +205,10 @@ $(document).ready(function(){
 			alert("请选择星座");
 		    return true;
 	    }
-	    $("form").submit();
+		if(!is_submit){
+	    	is_submit = true;
+	    	$("form").submit();
+		}
     });
 });
 </script>

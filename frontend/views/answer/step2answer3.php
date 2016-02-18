@@ -83,7 +83,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 				
 						<div class="buttons">
 							<a class="btn btn-lg btn-success start-test" style="width: 100%"
-								href="#">开始测试</a>
+								href="#">答题</a>
 							<!--<a href="/index.php?g=member&m=index&a=index" class="btn btn-lg btn-success" style="width:100%">登录开始</a>-->
 							<div class="share-box">
 								
@@ -98,24 +98,24 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 						<div id="test_content">
 							<div class="progre">
 								<span class="value"><span class="current">开始测试</span>/<span
-									class="question-length">请输入你的姓名和年龄</span></span>
+									class="question-length">请输入你的姓名和出生年份、星座</span></span>
 							</div>
 							<span><p>
 									<br>
 								</p> </span>
 						</div>
 						<ul class="js_group">
-							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">填入姓名<input size="30" placeholder="你的姓名"
+							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;"><input size="30" placeholder="填入你的姓名"
 								id="name" name="name" type="text" class="" value="" style="width:auto;"></li>
 							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">
-							     出生年份<select id="age" name="age birth_year" class=""  onchange="adjustAstro();"></select>
+							    <select style="width: 100%;" id="age" name="age birth_year" class=""  onchange="adjustAstro();"></select>
 							     <select id="birth_month" name="birth[month]" style="display:none;" onchange="adjustAstro();"></select>
 							     <select id="birth_day" name="birth[day]" style="display:none;" onchange="adjustAstro();"></select>
 							 
 							</li>
 							
 							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">
-							 星&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;座&nbsp;<SELECT id="constellation" name="constellation" style=""> 
+							 <SELECT style="width: 100%;" id="constellation" name="constellation" > 
 							 <OPTION value="">请选择星座</OPTION>
                                 <OPTION value="1">水瓶座1.20~2.18</OPTION>
                                 <OPTION value="2">双鱼座2.10~3.20</OPTION>
@@ -135,7 +135,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 						</ul>
 						<input type="hidden" id="birth_year" name="birth[year]" value=""/>
 						<a class="btn btn-lg btn-success submit-test" style="width: 100%"
-								>答题</a>
+								>提交测试</a>
 					<!-- question end  -->
         			
 				
@@ -197,6 +197,7 @@ document.getElementById('spn').style.display='none';
 <script type="text/javascript" src="js/date-select.js"></script>		
 <script>
 birthday = false;
+var is_submit = false;
 $(document).ready(function(){
 	$("#name").css('width',$("#constellation").css('width'));
 	$(window).resize(function(){
@@ -212,10 +213,15 @@ $(document).ready(function(){
 //     	yearRange: '-60'
 // 	});
     $(".btn.btn-lg.start-test").click(function(){
-    	$("#panel1").hide();
+    	$('#age').click();
+    	$("#panel1").show();
+    	$("#panel3").show();
+    	$(".start-test").hide();
     	$(".testing-count").hide();
-        $("#panel2").show();
-        $('#age').click();
+        $("#panel2").hide();
+
+        
+
         return false;
     });
     $('#age').change(function(){
@@ -225,9 +231,11 @@ $(document).ready(function(){
     $('#age').val('1990');
     $('#age').click(function(){
     	birthday = true;
+//     	alert($(this).val());
         $("#birth_year").val($(this).val());
     });
     $(".submit-test").click(function(){
+    	$('#age').click();
     	var name = $('#name');
 		if( name && name.val()=="" ){
 			alert("请输入姓名");
@@ -246,8 +254,12 @@ $(document).ready(function(){
 			alert("请选择星座");
 		    return true;
 	    }
-		$("#panel2").hide();
-        $("#panel3").show();
+	    if(!is_submit){
+	    	is_submit = true;
+	    	$("form").submit();
+		}
+// 		$("#panel2").hide();
+//         $("#panel3").show();
     });
 
     var index = 0; 
@@ -261,7 +273,12 @@ $(document).ready(function(){
 		  //提交
 	    if($(this).hasClass('options') &&  res ){
 	        $("#res").val(res);
-	    	$("form").submit();
+	        $(".question-row").hide();
+	        $("#panel1").show();
+			$("#panel2").show();
+			
+			$(".header-title").hide();
+// 	    	$("form").submit();
 		    return true;
 		}
 		  //index当前元素索引 
@@ -283,7 +300,12 @@ $(document).ready(function(){
 		if(question_row_len<=show_index){
 // 			alert("已经是最后一题");
 			$("#birth_year").val($(this).val());
-			$("form").submit();
+			$(".question-row").hide();
+			$("#panel1").show();
+			$("#panel2").show();
+
+			$(".header-title").hide();
+// 			$("form").submit();
 		    return true;
 	    }
 		  //zhao end 屏蔽 name和age元素动画	

@@ -29,7 +29,7 @@ use common\models\OauthBind;
  */
 class SurveyController extends ZController
 {
-    public $pageSize = 5;
+    public $pageSize = 10;
     public function beforeAction($action){
         $no_login_actions = ['index','index-ajax'];
         $action_id = strtolower($action->id);

@@ -22,6 +22,7 @@ use Yii;
  * @property integer $sid 调查id
  * @property string $answer_name
  * @property string $answer_age
+ * @property integer $constellation
  */
 class AnswerUser extends \yii\db\ActiveRecord
 {
@@ -40,7 +41,7 @@ class AnswerUser extends \yii\db\ActiveRecord
     {
         return [
             [['star_time', 'end_time'], 'safe'],
-            [['uid', 'table_id','sid'], 'integer'],
+            [['uid', 'table_id','sid','constellation'], 'integer'],
             [['data'], 'string'],
             [['ip'], 'string', 'max' => 24],
             [['address','answer_name', 'url'], 'string', 'max' => 255],
@@ -71,6 +72,7 @@ class AnswerUser extends \yii\db\ActiveRecord
             'sid'=>'调查id',
             'answer_name'=>'回答姓名',
             'answer_age'=>'回答年龄',
+            'constellation'=>'星座'
         ];
     }
 }

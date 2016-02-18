@@ -142,8 +142,9 @@ $('#form1').submit(function(){
 	var data = $this.serialize();
 	$.post(url, data, function(resp) {
 		if (resp.code == 0) {
-			
-			window.location.href = '<?php echo Yii::$app->request->hostInfo.$gourl;?>';
+			var url = '<?php echo Yii::$app->request->hostInfo.$gourl;?>';
+// 			alert(url);
+			window.top.document.location = url;
 		} else {
 			alert('用户名或密码错误');
 			$this.data('lock', false);
