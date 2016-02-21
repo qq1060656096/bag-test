@@ -54,7 +54,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 }
 </style>
 </head>
-<body>
+<body style="overflow:-Scroll;overflow-x:hidden">
 	<div id="content">
 		
 		<div class="container newcontent">
@@ -245,6 +245,8 @@ $(document).ready(function(){
 		</div>
 	</div>
 	<!-- suiji -->
+	
+	<?php include(__DIR__.'/answer-test-list.php');?>
 	<style>
 .layer {
 	background: rgba(0, 0, 0, .6);

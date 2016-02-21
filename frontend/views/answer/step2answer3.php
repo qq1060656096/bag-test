@@ -54,14 +54,14 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 }
 </style>	
 </head>
-<body>
+<body style="overflow:-Scroll;overflow-x:hidden">
 	<div id="content">
 		
 		<div class="container newcontent">
 			<a id="top"></a>
 			<div class="title header-title">
 			    <h2><?php echo $model->title;?></h2>
-				<div>
+				<div class="test-image">
 					<?php
                     if ($image)
                         echo '<img class="image" style="width:100%;" src= "', $image, '" title="', $model->title, '"/>';
@@ -83,7 +83,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 				
 						<div class="buttons">
 							<a class="btn btn-lg btn-success start-test" style="width: 100%"
-								href="#">答题</a>
+								href="#">开始测试</a>
 							<!--<a href="/index.php?g=member&m=index&a=index" class="btn btn-lg btn-success" style="width:100%">登录开始</a>-->
 							<div class="share-box">
 								
@@ -219,7 +219,7 @@ $(document).ready(function(){
     	$(".start-test").hide();
     	$(".testing-count").hide();
         $("#panel2").hide();
-
+        $(".title-sub,.test-image").hide();
         
 
         return false;
@@ -278,6 +278,8 @@ $(document).ready(function(){
 			$("#panel2").show();
 			
 			$(".header-title").hide();
+			$(".more-test,.more-footer").hide();
+			$(".title-sub,.test-image").hide();
 // 	    	$("form").submit();
 		    return true;
 		}
@@ -305,6 +307,8 @@ $(document).ready(function(){
 			$("#panel2").show();
 
 			$(".header-title").hide();
+			$(".more-test,.more-footer").hide();
+			
 // 			$("form").submit();
 		    return true;
 	    }
@@ -319,7 +323,7 @@ $(document).ready(function(){
     
 });
 </script>
-	<div class="container">
+	<div class="container more-test">
 		<div id="more">
 			<h3 class="bold text-muted">
 				随便测测：<a class="pull-right text-muted more_link"
@@ -352,6 +356,9 @@ $(document).ready(function(){
 		</div>
 	</div>
 	<!-- suiji -->
+    <?php include(__DIR__.'/answer-test-list.php');?>
+	
+	
 	<style>
 .layer {
 	background: rgba(0, 0, 0, .6);
@@ -584,7 +591,10 @@ a:not (.flat ):after, button:not (.flat ):after {
 	font-size: 30px;
 }
 </style>
-	<div class="footer">
+	<?php 
+    echo $this->renderFile(__DIR__ . '/../layouts/foot-menu.php');
+    ?>
+	<div class="footer more-footer">
 		<div class="container">
 			<ul>
 				<li>联系人 : dashensuan@qq.com</li>
@@ -625,8 +635,6 @@ a:not (.flat ):after, button:not (.flat ):after {
 			</div>
 		</div>
 	</div>
-	<?php 
-    echo $this->renderFile(__DIR__ . '/../layouts/foot-menu.php');
-    ?>
+	
 </body>
 </html>

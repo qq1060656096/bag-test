@@ -113,6 +113,9 @@ section#all-game {
 		
 		<!-- all list  -->
 		<section id="all-game" class="main-content">
+		    <h5 class="diy-content-padded">
+				
+			</h5>
 			<h5 class="diy-content-padded">
 				<?php echo $op_name;?>测试<a class="diy-more"
 					href="javascript: return false;"></a>
@@ -193,7 +196,7 @@ section#all-game {
 			</ul>
 			 -->
 		</section>
-        <div class="refresh-tip main-content">
+        <div class="refresh-tip main-content" style="display: none;text-align: center;">
     		<span><img src="./css/index/loading.gif"></span>正在加载
     	</div>
 	

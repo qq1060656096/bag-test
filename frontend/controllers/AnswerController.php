@@ -19,6 +19,7 @@ use common\models;
 use common\models\User;
 use common\models\UserProfile;
 use common\models\AnswerSurveyResulte;
+use frontend\models\SurveyOperation;
 class AnswerController extends Controller{
     /**
      * 随机皮肤
@@ -248,7 +249,11 @@ str;
         !$model_Users ? $model_Users = new User() : '';
         !$model_UsersProfile ? $model_UsersProfile = new UserProfile() : '';
         
+        $model_SurveyOperation = new SurveyOperation();
+        $models_SurveyOperation = $model_SurveyOperation->getIsTop();
+        
         return $this->render('answer2',[
+            'models_SurveyOperation'=>$models_SurveyOperation,
             'data'=>$data,
             'model'=>$model,
             'result'=>$result,
@@ -412,7 +417,11 @@ str;
 //         echo $error;
 //         exit;
 //         ZCommonFun::print_r_debug($result);
+
+        $model_SurveyOperation = new SurveyOperation();
+        $models_SurveyOperation = $model_SurveyOperation->getIsTop();
         return $this->render('step2answer3',[
+            'models_SurveyOperation'=>$models_SurveyOperation,
             'data'=>$data,
             'model'=>$model,
             'error'=>$error,
