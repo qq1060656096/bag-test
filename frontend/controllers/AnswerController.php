@@ -111,7 +111,10 @@ class AnswerController extends Controller{
         !$model_UsersProfile ? $model_UsersProfile = new UserProfile() : '';
 //         ZCommonFun::print_r_debug($model_AnswerSurveyResulte);
 //         exit;
+        $model_SurveyOperation = new SurveyOperation();
+        $models_SurveyOperation = $model_SurveyOperation->getIsTop();
         return $this->render('resulte22',array(
+            'models_SurveyOperation'=>$models_SurveyOperation,
             'model'=>$model,
             'model_AnswerUser'=>$model_AnswerUser,
             'model_SurveyResulte'=>$model_AnswerSurveyResulte,

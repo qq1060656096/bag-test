@@ -158,7 +158,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 			<!-- E bd -->
 		</div>
 		<!-- E container -->
-
+        
 	</div>
 	<script>function closeADFunc() {
 document.getElementById('hideADbtn').style.display='none';
@@ -234,6 +234,8 @@ $(document).ready(function(){
 		</div>
 	</div>
 	<!-- suiji -->
+	
+	<?php include(__DIR__.'/answer-test-list.php');?>
 	<style>
 .answer-name{
 color: #fd7400;	

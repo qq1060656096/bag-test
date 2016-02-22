@@ -211,6 +211,8 @@ $(document).ready(function(){
 		</div>
 	</div>
 	<!-- suiji -->
+	
+	<?php include(__DIR__.'/answer-test-list.php');?>
 	<style>
 .layer {
 	background: rgba(0, 0, 0, .6);
