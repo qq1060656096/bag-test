@@ -44,16 +44,20 @@ class LoginController extends Controller{
      * 注册
      */
     public function actionRegister(){
+        $this->layout = false;
         $model = new User();
         $post = Yii::$app->request->post();
-         
+        $success = '';
         if(isset($post['User'])){
             $model->load($post);
-            $error = $model->register();
+            $success = $model->register();
+            $url = Yii::$app->urlManager->createUrl(['survey/my']);
+            return $this->redirect($url);
             //             ZCommonFun::print_r_debug($post);
         }
         return $this->render('register',[
             'model'=>$model,
+            'success'=>$success,
         ]);
     }
 }

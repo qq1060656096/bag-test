@@ -4,6 +4,7 @@ use yii\widgets\ActiveForm;
 use common\models\User;
 use common\z\ZCommonSessionFun;
 use common\z\oauth\qq\QQ;
+use common\z\ZController;
 /* @var $model common\models\User */
 $this->title = '登录';
 
@@ -26,6 +27,22 @@ $qq_login = Yii::$app->urlManager->createUrl(['api/login-qq']);
 
 <link rel="stylesheet" href="./bag-test/css/Font-Awesome-master/css/font-awesome.min.css">
 <style>
+h1{
+	text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 15px;
+	color: #999;
+	display: block;
+}
+.btn_bg{
+	width:39% !important;
+	float: left;
+	
+}
+.btn_bg2{
+	float: right;
+}
 .footer-nav .fa{
 	display: inline-block;
 	vertical-align: middle; 
@@ -50,41 +67,51 @@ $qq_login = Yii::$app->urlManager->createUrl(['api/login-qq']);
     	
     </div>
 
- 
-
     
-    <section class="s_reg s_login">
+    <section  class="s_reg s_login" style="margin-top: 100px;margin-bottom: 0;">
+        
+        <div class="qita">
+        	<ul>
+        		<li class="">
+        			<a href="<?php echo $qq_login; ?>"><img src="./bag-test/logo/logo-qq.jpg" />使用QQ账号登录</a>
+        		</li>
+        		<li class="">
+        			<a href="<?php echo Yii::$app->urlManager->createUrl(['api/login-weibo']); ?>"><img src="./bag-test/logo/logo-weibo.jpg" />使用新浪微博登录</a>
+        		</li>
+        		<li class="">
+        			<a href="<?php echo Yii::$app->urlManager->createUrl(['api/login-wei-xin']); ?>"><img src="./bag-test/logo/logo-weixin.jpg" />使用微信登录</a>
+        		</li>
+        	</ul>
+        </div>
+    </section>
+    <h1>
+        <?php echo ZController::$site_name;?>账号登录
+    </h1>
+    <section class="s_reg s_login" style="margin-top:-25px;">
     	<div></div>
     	<form action="<?php echo Yii::$app->urlManager->createUrl([ZCommonSessionFun::urlLoginUserStr]);?>" id="form1" onsubmit="return false">
     		<input type="text" id="username" name="username" placeholder="邮箱/手机号码">
     		<p class="wrong_tip" id="username_tip"></p>
     		<input type="password" id="password" name="password" placeholder="密码">
     		<p class="wrong_tip" id="password_tip"></p>
+    		
     		<div class="btn_bg">
+    			<input type="button" id="submit" value="注册" onclick="javascript:window.top.document.location='<?php echo Yii::$app->urlManager->createUrl(['login/register'])?>' ">
+    		</div>
+    		
+    		<div class="btn_bg btn_bg2">
     			<input type="submit" id="submit" value="登录">
     		</div>
     		
     		<div class="link_btn" style="display:none;">
-    	    	<a href="http://m.xinli001.com/account/forget/" class="a_forget">忘记密码?</a>
-    			<a href="http://m.xinli001.com/account/register/?next=http://m.xinli001.com/" class="a_reg">注册帐号</a>
+    	    	<a href="" class="a_forget">忘记密码?</a>
+    			<a href="" class="a_reg">注册帐号</a>
     		</div>
     	</form>
     </section>
     
 
-    <div class="qita">
-    	<ul>
-    		<li class="">
-    			<a href="<?php echo $qq_login; ?>"><img src="./bag-test/logo/logo-qq.jpg" />使用QQ账号登录</a>
-    		</li>
-    		<li class="">
-    			<a href="<?php echo Yii::$app->urlManager->createUrl(['api/login-weibo']); ?>"><img src="./bag-test/logo/logo-weibo.jpg" />使用新浪微博登录</a>
-    		</li>
-    		<li class="">
-    			<a href="<?php echo Yii::$app->urlManager->createUrl(['api/login-wei-xin']); ?>"><img src="./bag-test/logo/logo-weixin.jpg" />使用微信登录</a>
-    		</li>
-    	</ul>
-    </div>
+    
 
 	<footer class="footer">
     	<div>

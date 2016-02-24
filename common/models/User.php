@@ -104,7 +104,16 @@ class User extends \yii\db\ActiveRecord
         $this->created = NOW_TIME_YmdHis;
         $this->flag = NOW_TIME_STAMP;
         if( $this->validate() ){
+           $post_pass = $this->pass;
            if( $this->save() ){
+               $this->pass = ZCommonFun::getPass($post_pass) ;
+               $this->save();
+               $userInfo = $this->attributes;
+               isset($userInfo['role'])?null:$userInfo['role'] = 0; //角色
+               $userInfo['openidInfo'] = null;//第三方登录信息
+               ZCommonSessionFun::set_user_session($userInfo);
+//                ZCommonFun::print_r_debug($this);
+//                exit;
                return true;
            }
            return false;
