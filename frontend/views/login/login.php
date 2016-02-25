@@ -92,7 +92,7 @@ h1{
     	<form action="<?php echo Yii::$app->urlManager->createUrl([ZCommonSessionFun::urlLoginUserStr]);?>" id="form1" onsubmit="return false">
     		<input type="text" id="username" name="username" placeholder="邮箱/手机号码">
     		<p class="wrong_tip" id="username_tip"></p>
-    		<input type="password" id="password" name="password" placeholder="密码">
+    		<input type="text" id="password" name="password" placeholder="密码">
     		<p class="wrong_tip" id="password_tip"></p>
     		
     		<div class="btn_bg">
