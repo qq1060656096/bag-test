@@ -46,6 +46,15 @@
 .space{
 	height: 1.2em;
 }
+.a-left,.a-right{
+	padding: 0px 5px;
+    float: left;
+    border: 1px solid #ddd;
+	display: inline-block;
+}
+.td-3>div>a.a-right{
+	margin-left: 20px;
+}
 </style>
 <?php 
 use common\z\ZCommonSessionFun;
@@ -53,6 +62,12 @@ use common\z\ZCommonFun;
 $model_SurveyTotal = new common\models\Survey();
 $sessionUser = ZCommonSessionFun::get_user_session();
 
+$url_my_test = Yii::$app->urlManager->createUrl(['survey/my']);
+$url_create_test = Yii::$app->urlManager->createUrl(['survey/step1']);
+$url_withdraw = '';
+$url_user_setting = Yii::$app->urlManager->createUrl(['user-profile/bind']);
+
+$url_logout = Yii::$app->urlManager->createUrl(['login/logout']);
 ?>
 <div class="user-info">
 	<table>
@@ -61,36 +76,37 @@ $sessionUser = ZCommonSessionFun::get_user_session();
 			     <?php echo isset($sessionUser['head_image']) ? '<img width="48" height="48" src="'.$sessionUser['head_image'].'"/>': '<i class="fa fa-user user-image  common-color"></i>'?>
 			</td>
 			<td class="td-2">
-				<h3 class="common-color"><?php echo isset($sessionUser['nickname']) ? $sessionUser['nickname']: '暂无昵称'?></h3>
+				<h3 class="common-color"><?php echo isset($sessionUser['nickname']) ? '<label style="color: #333;">昵称</label>'.$sessionUser['nickname']: '暂无昵称'?></h3>
 				<div>
 					创建了<sapn class="common-color">
 					<?php echo $model_SurveyTotal->getMySurveyCount();?>
 					</sapn>个测试
 				</div>
 				<div>
-					收到打赏<sapn class="common-color">0.00</sapn>元
+					关注<sapn class="common-color">0</sapn>人
 				</div>
 			</td>
 			<td class="td-3">
+			     <div>
+					<a class="a-left" href="<?php echo $url_logout;?>">退出</a>
+					<a class="a-right" href="<?php echo $url_user_setting;?>">设置</a>
+				</div>
 				<div>
 					测过<sapn class="common-color">0</sapn>次
 				</div>
 				<div>
-					给朋友打赏<sapn class="common-color">0.00</sapn>元
+					粉丝<sapn class="common-color">0</sapn>次
 				</div>
 			</td>
 		</tr>
 	</table>
 </div>
 <?php 
-$url_my_test = Yii::$app->urlManager->createUrl(['survey/my']);
-$url_create_test = Yii::$app->urlManager->createUrl(['survey/step1']);
-$url_withdraw = '';
-$url_user_setting = Yii::$app->urlManager->createUrl(['user-profile/bind']);
+
 ?>
 <nav class="user-menu">
 	<a href="<?php echo $url_my_test;?>">我创建的测试<span class="vertical-line"></span></a> 
-	<a href="<?php echo $url_create_test;?>">创建测试<span class="vertical-line"></span></a> 
+	<a href="<?php echo $url_create_test;?>">我测试的<span class="vertical-line"></span></a> 
 	<a href="<?php echo $url_withdraw;?>">余额提现<span class="vertical-line"></span></a>
 	<a href="<?php echo $url_user_setting;?>">修改设置 </a>
 </nav>

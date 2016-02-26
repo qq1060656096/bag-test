@@ -131,7 +131,7 @@ $('form').submit(function(){
 	if(password.length<6 && check2) {
 		$('.field-user-pass .help-block').html('密码不能小于6位');
 		check2 = false;
-	} else if(check2){
+	} else if(check2 ){
 		$('.field-user-pass .help-block').html('');
 		check2 = true;
 	}

@@ -5,6 +5,7 @@ use yii\web\Controller;
 use common\models\User;
 use common\z\ZCommonFun;
 use yii\helpers\Json;
+use common\z\ZCommonSessionFun;
 /**
  * 登录
  * @author pc
@@ -59,5 +60,12 @@ class LoginController extends Controller{
             'model'=>$model,
             'success'=>$success,
         ]);
+    }
+    /**
+     * 退出
+     */
+    public function actionLogout(){
+        ZCommonSessionFun::set_user_session(null);
+        return $this->redirect(['survey/index']);
     }
 }

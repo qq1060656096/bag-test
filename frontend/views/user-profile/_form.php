@@ -3,57 +3,18 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\models\UserProfile;
+use common\z\ZCommonSessionFun;
+use common\z\ZCommonFun;
+use common\z\ZController;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\UserProfile */
 /* @var $form yii\widgets\ActiveForm */
 
 echo $this->renderFile(__DIR__.'/../layouts/head.php');
+
+$sessionUser = ZCommonSessionFun::get_user_session();
 ?>
-<div id="main_body">
-    <header class="s_header">
-		<nav>
-
-
-			 <span style="font-size: 1.4rem"><?php echo $this->title;?></span>
-		</nav>
-	</header>
-	<section class="s_reg s_login">
-    	<div class="notice" title="太好了，完成最后一步吧^o^~">&nbsp;</div>
-    	<?php $form = ActiveForm::begin(); ?>
-    	
-    		<input type="button"  onclick="javascript:location.href='<?php echo Yii::$app->urlManager->createUrl(['user-profile/change-pass']);?>';" value="修改密码">
-    		<br/>
-    		<br/>
-    		<div class="input-wrap">
-    			<?= $form->field($model, 'nickname')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'昵称']) ?>
-    		</div>
-    	
-    		<div class="input-wrap">
-    			<?= $form->field($model, 'sex')->dropDownList(UserProfile::$sexData,['maxlength' => true,'class'=>'','placeholder'=>'性别']) ?>
-    		</div>
-    		<div class="input-wrap">
-    			<?= $form->field($model, 'birthday')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'生日']) ?>
-    		</div>
-    		<div class="input-wrap">
-    			<?= $form->field($model, 'address')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'地址']) ?>
-    		</div>
-    		<div class="input-wrap">
-    			<?= $form->field($model, 'intro')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'简介']) ?>
-    		</div>
-    		<div class="input-wrap">
-    			<?= $form->field($model, 'qq')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'QQ']) ?>
-    		</div>
-    		
-    		<div class="input-wrap">
-    			<?= $form->field($model, 'school')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'学校']) ?>
-    		</div>
-    		<input type="submit" id="submit" value="完 成">
-    	<?php ActiveForm::end(); ?>
-    </section>
-
-</div>
-
 
 <link href="./bag-test/bootstrap/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="./bag-test/bootstrap/datetimepicker.css" rel="stylesheet" media="screen">
@@ -81,7 +42,128 @@ label, label input {
     border-radius: 5px;
     width: 220px;
 }
+
+.a-left,.a-right{
+	padding: 0px 5px;
+    float: left;
+    border: 1px solid #ddd;
+	display: inline-block;
+}
+.user-info{
+	border-bottom: 1px solid #ddd;
+	margin-top: 15px;
+}
+.user-info table{
+	width: 100%;
+}
+.user-info td{
+	width: 50%;
+	text-align: center;
+}
+.user-info td.td-r{
+	text-align: left;
+	padding-bottom: 5px;
+}
+.user-info2{
+	text-align: center;
+	padding-bottom: 5px;
+}
+.user-info2>input{
+	width: 80%;
+	display: inline-block;
+	border: 1px solid #ddd;
+	background: #FE8C78;
+	padding: 5px;
+	margin: auto;
+}
+.user-info2>input.btn-z-bind{
+	margin-top: 12px;
+	margin-bottom: 12px;
+	
+}
 </style>
+<div id="main_body">
+    <header class="s_header">
+		<nav>
+
+
+			 <span style="font-size: 1.4rem"><?php echo $this->title;?></span>
+		</nav>
+	</header>
+	
+	<div class="user-info">
+    	<table>
+    		<tr>
+    			<td class="td-l">
+    			     头像
+    			</td>
+    			<td class="td-r">
+    			    <?php echo isset($sessionUser['head_image']) ? '<img width="48" height="48" src="'.$sessionUser['head_image'].'"/>': '<i class="fa fa-user user-image  common-color"></i>'?>
+    				
+    			</td>
+    		</tr>
+    		<tr>
+    			<td class="td-l">
+    			     昵称
+    			</td>
+    			<td class="td-r">
+    			    <a class="a-left">
+    			         <?php echo isset($sessionUser['nickname']) ? $sessionUser['nickname']: '暂无昵称'?>
+    			    </a>
+    			</td>
+    		</tr>
+    	</table>
+    </div>
+    
+    <div class="user-info user-info2">
+        
+        
+        <input type="button"  class="btn-z-change"
+            onclick="javascript:location.href='<?php echo Yii::$app->urlManager->createUrl(['user-profile/change-pass']);?>';" 
+            value="修改<?php echo ZController::$site_name;?>密码" />
+        
+        <input type="button"  class="btn-z-bind"   
+            onclick="javascript:location.href='<?php echo Yii::$app->urlManager->createUrl(['user-profile/change-pass']);?>';" 
+            value="绑定QQ、微信、微博、账号" />
+        
+    </div>		
+    
+	<section class="s_reg s_login">
+    	<div class="notice" title="太好了，完成最后一步吧^o^~">&nbsp;</div>
+    	<?php $form = ActiveForm::begin(); ?>
+    	
+    		
+    		<div class="input-wrap">
+    			<?= $form->field($model, 'nickname')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'昵称']) ?>
+    		</div>
+    	
+    		<div class="input-wrap">
+    			<?= $form->field($model, 'sex')->dropDownList(UserProfile::$sexData,['maxlength' => true,'class'=>'','placeholder'=>'性别']) ?>
+    		</div>
+    		<div class="input-wrap">
+    			<?= $form->field($model, 'birthday')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'生日']) ?>
+    		</div>
+    		<div class="input-wrap">
+    			<?= $form->field($model, 'address')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'地址']) ?>
+    		</div>
+    		<div class="input-wrap">
+    			<?= $form->field($model, 'intro')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'限20个字'])->label('签名') ?>
+    		</div>
+    		<div class="input-wrap">
+    			<?= $form->field($model, 'qq')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'QQ']) ?>
+    		</div>
+    		
+    		<div class="input-wrap">
+    			<?= $form->field($model, 'school')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'学校']) ?>
+    		</div>
+    		<input type="submit" id="submit" value="完 成">
+    	<?php ActiveForm::end(); ?>
+    </section>
+
+</div>
+
+
+
 <script type="text/javascript" src="./bag-test/bootstrap/jquery.min.js"></script>    
 
 <script src="./bag-test/bootstrap/bootstrap.min.js"></script>

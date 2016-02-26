@@ -96,7 +96,7 @@ h1{
     		<p class="wrong_tip" id="password_tip"></p>
     		
     		<div class="btn_bg">
-    			<input type="button" id="submit" value="注册" onclick="javascript:window.top.document.location='<?php echo Yii::$app->urlManager->createUrl(['login/register'])?>' ">
+    			<input type="button"  value="注册" onclick="javascript:window.top.document.location='<?php echo Yii::$app->urlManager->createUrl(['login/register'])?>' ">
     		</div>
     		
     		<div class="btn_bg btn_bg2">
