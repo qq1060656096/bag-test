@@ -63,6 +63,7 @@ $model_SurveyTotal = new common\models\Survey();
 $sessionUser = ZCommonSessionFun::get_user_session();
 
 $url_my_test = Yii::$app->urlManager->createUrl(['survey/my']);
+$url_me_test = Yii::$app->urlManager->createUrl(['my/me-test']);
 $url_create_test = Yii::$app->urlManager->createUrl(['survey/step1']);
 $url_withdraw = '';
 $url_user_setting = Yii::$app->urlManager->createUrl(['user-profile/bind']);
@@ -106,7 +107,7 @@ $url_logout = Yii::$app->urlManager->createUrl(['login/logout']);
 ?>
 <nav class="user-menu">
 	<a href="<?php echo $url_my_test;?>">我创建的测试<span class="vertical-line"></span></a> 
-	<a href="<?php echo $url_create_test;?>">我测试的<span class="vertical-line"></span></a> 
+	<a href="<?php echo $url_me_test;?>">我测试的<span class="vertical-line"></span></a> 
 	<a href="<?php echo $url_withdraw;?>">余额提现<span class="vertical-line"></span></a>
 	<a href="<?php echo $url_user_setting;?>">修改设置 </a>
 </nav>

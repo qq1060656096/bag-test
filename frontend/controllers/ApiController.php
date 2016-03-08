@@ -18,6 +18,7 @@ use common\z\oauth\weixin\WeiXin;
 class ApiController extends Controller{
     
     public $enableCsrfValidation = false;
+    public $bind_url = ['user-profile/bind-list'];
     
     /**
      * qq登录
@@ -72,6 +73,8 @@ class ApiController extends Controller{
      * 微博回调地址
      */
     public function actionCallbackWeibo(){
+        $zhao_uid = ZCommonSessionFun::get_user_id();
+        $zhao_uid =  $zhao_uid>0 ? $zhao_uid : '';
         $weibo = new WeiBo(WB_AKEY , WB_SKEY);
         
         if (isset($_REQUEST['code'])) {
@@ -100,7 +103,7 @@ class ApiController extends Controller{
         $user_message = $weibo->show_user_by_id($openid);//根据ID获取用户等基本信息
         if( isset( $user_message['name'] ) && count($user_message)>0){
             $model_User = new User();
-            $return = $model_User->userBind('', '', '', $openid, OauthBind::typeWeiBo, $user_message['name'], $user_message['profile_image_url'],true);
+            $return = $model_User->userBind('', '', $zhao_uid, $openid, OauthBind::typeWeiBo, $user_message['name'], $user_message['profile_image_url'],true);
             //绑定成功或者已经绑定
             if($return===0 || $return===1){
                 $user = $model_User->operationData['user']->attributes;
@@ -111,6 +114,11 @@ class ApiController extends Controller{
 //                 ZCommonFun::print_r_debug($user_message);
 //                 ZCommonFun::print_r_debug( $model_User->operationData );
 //                 exit;
+                //微博登录类型
+                if(intval($zhao_uid)<1){
+                    ZCommonSessionFun::set_login_type(OauthBind::typeWeiBo);
+                    return $this->redirect($this->bind_url);
+                }
                 return $this->redirect([ZCommonSessionFun::urlMyStr]);
             }
         }
@@ -146,6 +154,8 @@ class ApiController extends Controller{
      * 授权回调地址
      */
     public function actionWeiXinCallback(){
+        $zhao_uid = ZCommonSessionFun::get_user_id();
+        $zhao_uid =  $zhao_uid>0 ? $zhao_uid : '';
         $o_WeiXin = new WeiXin();
 //         echo '<pre>';
         if( isset($_GET['code'])){
@@ -174,7 +184,7 @@ class ApiController extends Controller{
                         $openid = $data->openid;
                         
                         $model_User = new User();
-                        $return = $model_User->userBind('', '', '', $openid, OauthBind::typeWeiXin, $user_info->nickname , $user_info->headimgurl ,true);
+                        $return = $model_User->userBind('', '', $zhao_uid, $openid, OauthBind::typeWeiXin, $user_info->nickname , $user_info->headimgurl ,true);
                         //绑定成功或者已经绑定
                         if($return===0 || $return===1){
                             $user = $model_User->operationData['user']->attributes;
@@ -185,6 +195,11 @@ class ApiController extends Controller{
 //                                             ZCommonFun::print_r_debug($user);
 //                                             ZCommonFun::print_r_debug( $model_User->operationData );
 //                                             exit;
+                            //微信登陆类型
+                            if(intval($zhao_uid)<1){
+                                ZCommonSessionFun::set_login_type(OauthBind::typeWeiXin);
+                                return $this->redirect($this->bind_url);
+                            }
                             return $this->redirect([ZCommonSessionFun::urlMyStr]);
                         }
                         

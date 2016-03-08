@@ -46,6 +46,7 @@ class User extends \yii\db\ActiveRecord
         return [
             [['flag','role'], 'integer'],
             [['created'], 'safe'],
+            [['register_type'], 'string', 'max' => 12],
             [['user'], 'string', 'max' => 128],
             [['pass'], 'string', 'max' => 255],
             [['user'], 'unique','message'=>'{attribute}已经存在'],
@@ -66,6 +67,7 @@ class User extends \yii\db\ActiveRecord
             'flag' => '标记',
             'role' => '角色',
             'created' => '注册时间',
+            'register_type'=>'注册类型',
         ];
     }
     
@@ -155,6 +157,7 @@ class User extends \yii\db\ActiveRecord
             $model_User->user = $max_uid.'';
             $model_User->pass = $model_User->user;
             $model_User->created = NOW_TIME_YmdHis;
+            $model_User->
             $model_User->save();
         }
         

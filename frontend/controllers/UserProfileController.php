@@ -97,6 +97,27 @@ class UserProfileController extends Controller
             'message'=>$message,
         ]);
     }
+    
+  /**
+   * 第三方绑定列表
+   */
+  public function actionBindList(){
+      if( ZCommonSessionFun::get_user_id()<1 ){
+          $url = Yii::$app->urlManager->createUrl([ZCommonSessionFun::urlLoginUserStr]);
+          return $this->redirect($url);
+      }
+      $this->layout = false;
+//       header("Cache-Control: post-check=0, pre-check=0", false);
+//       Yii::$app->request->headers->set('Cache-Control','no-store, no-cache, must-revalidate');
+//       Yii::$app->request->headers->set('Pragma','no-cache');
+//       Yii::$app->request->headers->set('Expires','Mon, 28 Feb 1990 22:22:04 GMT');
+      $condition['uid']  = ZCommonSessionFun::get_user_id();
+      $model = $model = UserProfile::findOne($condition);
+      if(!$model){
+          $model = new UserProfile();
+      }
+      return $this->render('bind-list',['model'=>$model]);
+  }
 
   
 

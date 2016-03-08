@@ -7,6 +7,9 @@ use common\z\ZController;
 <head>
 <?php echo $this->renderFile(__DIR__.'/../layouts/title.php');?>
 <!--<meta name="apple-itunes-app" content="app-id=591341152">-->
+<meta HTTP-EQUIV="pragma" CONTENT="no-cache">
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+<meta HTTP-EQUIV="expires" CONTENT="0">
 <meta
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
 	name="viewport">

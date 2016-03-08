@@ -1,6 +1,7 @@
 <?php
 namespace common\z;
 use yii;
+use common\models\OauthBind;
 
 class ZCommonSessionFun
 {
@@ -95,6 +96,31 @@ class ZCommonSessionFun
             return $user['role'] != 0 ?  $user['role'] : 0;
         }
         return 0;
+    }
+    /**
+     * 获取登录类型账号登陆还是第三方登录
+     */
+    public static function get_login_type(){
+        $user = self::get_user_session();
+        $user['login_type'] = isset($user['login_type']) ? $user['login_type'] : '';
+        $user['login_type_text'] = isset($user['login_type_text']) ? $user['login_type_text'] : '';
+        self::set_user_session($user);
+        return $user;
+    }
+    /**
+     * 设置账号登录还是第三方登录
+     * @param string $type OauthBind::constBindList() 返回数组键
+     * @return boolean
+     */
+    public static function set_login_type($type){
+        $user = self::get_user_session();
+        $bindList = OauthBind::constBindList();
+        if( isset($bindList[$type]) ){
+            $user['login_type'] = $type;
+            $user['login_type_text'] = $bindList[$type];
+            return true;
+        }
+        return false;
     }
      
     /**

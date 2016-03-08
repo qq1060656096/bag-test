@@ -7,7 +7,8 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Survey;
 use common\z\ZCommonFun;
-
+use yii\data\Pagination;
+use yii\db\Query;
 /**
  * SurverySearch represents the model behind the search form about `common\models\Survey`.
  */
@@ -133,5 +134,64 @@ class SurverySearch extends Survey
         ->andFilterWhere(['like', 'pass', $this->pass]);
     
         return $query;
+    }
+    
+    public function getMyTest($uid ,$where ,$page,$page_size){
+        if($uid<0){
+            return [];
+        }
+        $queryParams['SurverySearch']['is_publish'] = 1;
+
+        $searchModel = new SurverySearch();
+
+        $query = $searchModel->query( $queryParams );
+        $query->join('inner join', 'answer_user','answer_user.sid=survey.id');
+        $query->where('answer_user.uid='.$uid);
+        $query->andWhere('is_publish=1');
+        $query2 = clone $query;
+//         $query2->groupBy= [
+//             'survey.id'
+//         ];
+
+        $query->select('survey.*');
+        $query = $query->orderBy(['au_id'=>SORT_DESC]);
+        $sql = $query->createCommand()->getRawSql();
+        $query3 = (new Query())->from(" ($sql) as tt ");
+        $query3->groupBy(['id']);
+    
+        //查询总条数
+        $query_count = clone $query3;
+        $sql_count = $query_count->createCommand()->getRawSql();
+        $count = (new Query())->from(" ($sql_count) as tt_count ")->count();
+//      echo $count,'<br/>',$sql_count;
+//         exit;
+        
+        //分页
+        $pagination = new Pagination();
+        isset($page) && intval($page)>0 ? $pagination->page = $page : null;
+        
+        
+        //每页现实数量
+        $pagination->pageSize = $page_size;
+        //总数量
+        $pagination->totalCount = $count;
+        $offset = $pagination->getOffset();
+        $limit = $pagination->getLimit();
+        $query3->offset($offset);
+        $query3->limit($limit);
+        
+//          echo $pagination->page,$pagination->pageCount;
+        //查询所有
+        $models = ( new SurverySearch())->findBySql($query3->createCommand()->getRawSql())->all();
+        
+        isset($models[0]) ? null : $models = [];
+        $temp_data['models'] = $models;  
+        $temp_data['pagination'] = $pagination;
+       
+//         echo '<pre>';
+//         echo $query3->createCommand()->getRawSql();
+//         print_r($models);
+//         exit;
+        return $temp_data;
     }
 }

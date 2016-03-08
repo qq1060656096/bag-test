@@ -8,7 +8,7 @@ use common\z\ZCommonSessionFun;
 /* @var $searchModel common\models\SurverySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $row common\models\Survey */
-$this->title = '个人中心';
+$this->title = '我创建的测试';
 $this->params['breadcrumbs'][] = $this->title;
 
 echo $this->renderFile(__DIR__.'/../layouts/head.php');

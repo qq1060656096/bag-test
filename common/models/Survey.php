@@ -241,8 +241,8 @@ class Survey extends \yii\db\ActiveRecord
     /**
      * 获取我创建测得测试数量
      */
-     public function getMySurveyCount(){
-         $uid = ZCommonSessionFun::get_user_id();
+     public function getMySurveyCount($uid=0){
+         $uid =  $uid > 0 ? $uid : ZCommonSessionFun::get_user_id();
          if($uid<1){
              return 0;
          }

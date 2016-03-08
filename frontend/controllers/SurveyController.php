@@ -51,6 +51,8 @@ class SurveyController extends ZController
     {
         $this->view->title = '最新';
         if(isset($_GET['code'])){
+            $zhao_uid = ZCommonSessionFun::get_user_id();
+            $zhao_uid =  $zhao_uid>0 ? $zhao_uid : '';
             $qq = new QQ();
             $qq->is_mobile = true;
             $access_token = $qq->qq_callback();
@@ -60,7 +62,7 @@ class SurveyController extends ZController
             $qq = new QQ($access_token,$openid);
             $user_info = $qq->get_user_info();
             $model_User = new User();
-            $return = $model_User->userBind('', '', '', $openid, OauthBind::typeQQ, $user_info['nickname'], $user_info['figureurl'],true);
+            $return = $model_User->userBind('', '', $zhao_uid, $openid, OauthBind::typeQQ, $user_info['nickname'], $user_info['figureurl'],true);
             //绑定成功或者已经绑定
             if($return===0 || $return===1){
                 $user = $model_User->operationData['user']->attributes;
@@ -68,6 +70,12 @@ class SurveyController extends ZController
                 $user['head_image'] = $model_User->operationData['user_profile']->head_image;
                 $user['openid'] = $openid;
                 ZCommonSessionFun::set_user_session($user);
+                //qq登录类型
+                if(intval($zhao_uid)<1){
+                    ZCommonSessionFun::set_login_type(OauthBind::typeQQ);
+                    $bind_url = ['user-profile/bind-list'];
+                    return $this->redirect($bind_url);
+                }
                 return $this->redirect([ZCommonSessionFun::urlMyStr]);
             }
              

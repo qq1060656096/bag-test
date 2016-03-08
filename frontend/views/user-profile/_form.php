@@ -52,6 +52,7 @@ label, label input {
 .user-info{
 	border-bottom: 1px solid #ddd;
 	margin-top: 15px;
+	
 }
 .user-info table{
 	width: 100%;
@@ -75,6 +76,7 @@ label, label input {
 	background: #FE8C78;
 	padding: 5px;
 	margin: auto;
+	color: #fff;
 }
 .user-info2>input.btn-z-bind{
 	margin-top: 12px;
@@ -123,7 +125,7 @@ label, label input {
             value="修改<?php echo ZController::$site_name;?>密码" />
         
         <input type="button"  class="btn-z-bind"   
-            onclick="javascript:location.href='<?php echo Yii::$app->urlManager->createUrl(['user-profile/change-pass']);?>';" 
+            onclick="javascript:location.href='<?php echo Yii::$app->urlManager->createUrl(['user-profile/bind-list']);?>';" 
             value="绑定QQ、微信、微博、账号" />
         
     </div>		

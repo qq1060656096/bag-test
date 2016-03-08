@@ -27,6 +27,10 @@ class LoginController extends Controller{
             $model->pass = isset($post['password']) ? $post['password']: '';
             
             $error = $model->login($model->user, $model->pass);
+            if($error==0){
+                //账号登陆类型
+                ZCommonSessionFun::set_login_type('user');
+            }
             $data['code'] = $model->operationError;
             header('content-type:text/json;charset=utf-8;');
             echo Json::encode($data);
