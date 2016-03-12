@@ -139,7 +139,7 @@ class User extends \yii\db\ActiveRecord
         $condition['openid'] = $openid;
         $condition['type'] = $type;
         $model_OauthBind=$model_OauthBind->findOne($condition);
-        if($model_OauthBind && $model_OauthBind->uid>0&& $model_User = User::findOne($model_OauthBind->uid)){
+        if($model_OauthBind && $model_OauthBind->uid>0&& $model_User = User::findOne($uid)){
             $is_register=false;
         }
 //         ZCommonFun::print_r_debug($model_User);
@@ -157,15 +157,17 @@ class User extends \yii\db\ActiveRecord
             $model_User->user = $max_uid.'';
             $model_User->pass = $model_User->user;
             $model_User->created = NOW_TIME_YmdHis;
-            $model_User->
+        
             $model_User->save();
         }
         
         
         $model_OauthBind = new OauthBind();
+        
         $condition['openid'] = $openid;
         $condition['type'] = $type;
         $model_OauthBind=$model_OauthBind->findOne($condition);
+       
         //已经绑定了
         if( $model_OauthBind ){
             $this->operationData['user'] = $model_User;
@@ -182,7 +184,11 @@ class User extends \yii\db\ActiveRecord
 //                 ZCommonFun::print_r_debug($model_UserProfile);
 //                 exit;
             }
-            
+            $model_OauthBind->uid = $model_User->uid;
+            $model_OauthBind->save();
+//             ZCommonFun::print_r_debug($model_User->uid);
+//             ZCommonFun::print_r_debug($model_OauthBind);
+//             exit;
             $this->operationData['oauth_bind'] = $model_OauthBind;
             $this->operationData['user_profile'] = $model_UserProfile ;
             return 1;

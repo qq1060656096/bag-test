@@ -59,6 +59,9 @@
 <?php 
 use common\z\ZCommonSessionFun;
 use common\z\ZCommonFun;
+use common\models\UsersFriends;
+use yii\base\Model;
+use tests\codeception\common\fixtures\UserFixture;
 $model_SurveyTotal = new common\models\Survey();
 $sessionUser = ZCommonSessionFun::get_user_session();
 
@@ -70,7 +73,19 @@ $url_user_setting = Yii::$app->urlManager->createUrl(['user-profile/bind']);
 $url_logout = Yii::$app->urlManager->createUrl(['login/logout']);
 $url_ta_me_test = Yii::$app->urlManager->createUrl(['my/personal-page','uid'=>$uid]);
 $url_ta_test = Yii::$app->urlManager->createUrl(['my/my-test','uid'=>$uid]);
+
+$login_uid = ZCommonSessionFun::get_user_id();
+$concern_status = 0;
+if($login_uid<1){
+    $concern_status = 0;
+}else{
+    $model_UsersFriends = new UsersFriends();
+    $concern_status = $model_UsersFriends->get_user_each_concern($login_uid, $uid);
+}
 ?>
+<link rel="stylesheet" href="./bag-test/css/common.css">
+<script src="./js/concern.js">
+</script>
 <div class="user-info">
 	<table>
 		<tr>
@@ -89,7 +104,26 @@ $url_ta_test = Yii::$app->urlManager->createUrl(['my/my-test','uid'=>$uid]);
 			</td>
 			<td class="td-3">
 			     <div>
-					<a href="">关注</a>
+			        <?php 
+			        $url = '';
+			        $concer_text = '';
+			  
+			        switch ($concern_status){
+			            case 1:
+			                $url = Yii::$app->urlManager->createUrl(['my/concern','fuid'=>$uid]);
+			                $concer_text = '已相互关注';
+			                break;
+			            case 2:
+			                $url = '';
+			                $concer_text = '已关注';
+			                break;
+			            default:
+			                $url = Yii::$app->urlManager->createUrl(['my/concern','fuid'=>$uid]);
+			                $concer_text = '关注';
+			                break;
+			        }
+			        ?>
+					<a url="<?php echo $url; ?>" class="concern" onclick="concern(this)"><?php echo $concer_text; ?></a>
 				</div>
 				
 			</td>
@@ -107,8 +141,8 @@ $url_ta_test = Yii::$app->urlManager->createUrl(['my/my-test','uid'=>$uid]);
 					</sapn>个测试
 				</div>
 				
-				<div>
-					关注<sapn class="common-color">0</sapn>人
+				<div class="">
+					关注<sapn class="common-color"><?php echo UsersFriends::get_concern_count($uid,true);?></sapn>人
 				</div>
 			</td>
 			<td class="td-3">
@@ -117,7 +151,7 @@ $url_ta_test = Yii::$app->urlManager->createUrl(['my/my-test','uid'=>$uid]);
 					测过<sapn class="common-color">0</sapn>次
 				</div>
 				<div>
-					粉丝<sapn class="common-color">0</sapn>次
+					粉丝<sapn class="common-color"><?php echo UsersFriends::get_concern_count($uid);?></sapn>次
 				</div>
 			</td>
 		</tr>
@@ -127,8 +161,8 @@ $url_ta_test = Yii::$app->urlManager->createUrl(['my/my-test','uid'=>$uid]);
 
 ?>
 <nav class="user-menu">
-	<a href="<?php echo $url_ta_me_test;?>">TA创建的<span class="vertical-line"></span></a> 
-	<a href="<?php echo $url_ta_test;?>">Ta测过的<span class="vertical-line"></span></a> 
+	<a href="<?php echo $url_ta_me_test;?>">TA创建的<span class="vertical-line" style="font-size:100%;border-right:1px dashed #ddd;"></span></a> 
+	<a href="<?php echo $url_ta_test;?>">Ta测过的<span class="vertical-line" style="font-size:100%;border-right:1px dashed #ddd;"></span></a> 
 	<a href="<?php echo $url_withdraw;?>">给Ta的私信<span class="vertical-line"></span></a>
 </nav>
 

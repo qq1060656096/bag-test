@@ -20,6 +20,9 @@ $const_BindList = OauthBind::constBindList();
 $model_OauthBind = new OauthBind();
 $uid = ZCommonSessionFun::get_user_id();
 $user_BindList = $model_OauthBind->getUserBindList($uid);
+// ZCommonFun::print_r_debug($user_BindList);
+// $user_BindList = ZCommonFun::listData($user_BindList, 'id', 'type');
+// ZCommonFun::print_r_debug($user_BindList);
 ?>
 
 <link href="./bag-test/bootstrap/bootstrap.min.css" rel="stylesheet"
@@ -158,7 +161,7 @@ label, label input {
     				<?php 
     				else:
     				?>
-    				    <a class="bind-row">未注册</a>	
+    				    <a class="bind-row" href="<?php echo Yii::$app->urlManager->createUrl(['api/login-qq']);?>">未注册</a>	
     				<?php endif;?>
     			</div>
     		</div>
@@ -166,7 +169,7 @@ label, label input {
     	    foreach ($const_BindList as $key=>$row):
     	       if($key=='user')
     	           continue;
-    	       $url = '';
+    	       $url = '#';
     	       switch ($key){
     	           case OauthBind::typeQQ:
     	               $url = Yii::$app->urlManager->createUrl(['api/login-qq']);
@@ -185,6 +188,7 @@ label, label input {
     			     
     				<label class="control-label" for="userprofile-nickname"><?php echo $row;?></label> 
     				<?php 
+    				
     				if(OauthBind::bindTypeIsBind($key, $user_BindList)):   
     				?>
     				    <a herf="#" class="bind-row bind-exists">已绑定</a>	

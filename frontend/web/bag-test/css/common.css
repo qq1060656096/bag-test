@@ -122,3 +122,12 @@ display: block;
 .span-wrap{
 	color: #FE8C78;
 }
+
+.concern,.concern:hover{
+	border: 1px solid #FE8C78;
+	padding: 3px 5px;
+	color: #FE8C78;
+}
+.concern:hover{
+	color: #999;
+}

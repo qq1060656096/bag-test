@@ -3,6 +3,9 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\z\ZController;
 use common\models\UserProfile;
+use common\z\ZCommonSessionFun;
+use common\z\ZCommonFun;
+use common\models\UsersFriends;
 /* @var $model common\models\Survey */
 ?>
 <html>
@@ -102,6 +105,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 							<span><p>
 									<br>
 								</p> </span>
+						    
 						</div>
 						<ul class="js_group">
 							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">
@@ -142,7 +146,10 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
         			<?php ActiveForm::end(); ?>
 				
 				</div>
-				
+			
+				<?php 
+				include __DIR__.'/anser-user.php';
+				?>
 			</div>
 			<!-- E bd -->
 		</div>

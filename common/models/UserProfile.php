@@ -109,6 +109,14 @@ class UserProfile extends \yii\db\ActiveRecord
         return $return;
     }
     /**
+     * 获取简介
+     * @return string
+     */
+    public function getIntro1(){
+        $return = !empty($this->intro) ? $this->intro : '他什么都没说';
+        return $return;
+    }
+    /**
      * 获取头像
      */
     public function getHeadImage0(){

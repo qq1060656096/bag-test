@@ -185,6 +185,9 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 				
 			</div>
 			<!-- E bd -->
+			<?php 
+				include __DIR__.'/anser-user.php';
+				?>
 		</div>
 		<!-- E container -->
 

@@ -11,7 +11,7 @@ use yii\filters\VerbFilter;
 use common\z\ZCommonSessionFun;
 use common\models\User;
 use common\z\ZCommonFun;
-
+use common\models\OauthBind;
 /**
  * UserProfileController implements the CRUD actions for UserProfile model.
  */
@@ -117,6 +117,79 @@ class UserProfileController extends Controller
           $model = new UserProfile();
       }
       return $this->render('bind-list',['model'=>$model]);
+  }
+  
+  /**
+   * 绑定账号
+   */
+  public function actionBindAccount(){
+      $this->layout = false;
+      $old_login_uid = ZCommonSessionFun::get_user_id();
+      if( ZCommonSessionFun::get_user_id()<1 ){
+          $url = Yii::$app->urlManager->createUrl([ZCommonSessionFun::urlLoginUserStr]);
+          return $this->redirect($url);
+      }
+      $model = new User();
+      
+      if(isset($_POST['User']['username']) && isset($_POST['op'])){
+          $post = $_POST['User'];
+          $user = isset($post['username']) ? $post['username']: '';
+          $pass = isset($post['password']) ? $post['password']: '';
+          $post = $_POST['User'];
+          //已有账户绑定
+          if($_POST['op']!=1){
+              $condition['user'] = $user;
+              $model_find = $this->find()->where($condition)->one();
+           
+              if(!$model_find){
+                  $model->addError('user','用户没有找到');
+              }
+              else if( $model_find->pass!= ZCommonFun::getPass($pass) ){
+                  $model->addError('pass','密码错误');
+              }else{
+                    $connection = Yii::$app->db;
+                    $transaction = $connection->beginTransaction();
+                    try {
+                        $model_Oauth = new OauthBind();
+                        
+                        $model_Oauth_condition['uid'] = $old_login_uid;
+                        $model_Oauth_attributes['uid'] = $model_find->uid;
+                        $model_Oauth->updateAll($model_Oauth_attributes,$model_Oauth_condition);
+                        $transaction->commit();
+                        ZCommonSessionFun::set_user_session($model_find->attributes);
+                        $url = Yii::$app->urlManager->createUrl(['user-profile/bind-list']);
+                        return $this->redirect($url);
+                    } catch (\Exception $e) {
+                        $transaction->rollBack();
+                        $model->addError('user','绑定失败');
+                    }
+                  
+              }
+          }//绑定新账户
+          else{
+              
+              $model->pass = ZCommonFun::getPass($model->pass);
+              $model = $model->findOne(ZCommonSessionFun::get_user_id());
+              if( $model ){
+                  $model->user = $user;
+                  $model->pass = ZCommonFun::getPass( $pass );
+                  if( $model->save() ){
+                      $url = Yii::$app->urlManager->createUrl(['user-profile/bind-list']);
+                      return $this->redirect($url);
+                  }
+              }else{
+                  $model = new User();
+                  $model->user = $user;
+                  $model->pass = $pass;
+              
+                  $model->addError('user','用户已被删除');
+              }
+          }
+          
+            
+
+        }
+      return $this->render('bind-account', [ 'model'=>$model ] );
   }
 
   
