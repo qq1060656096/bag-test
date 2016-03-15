@@ -34,15 +34,19 @@ class ApiController extends Controller{
      * qq回调地址
      */
     public function actionCallbackQq(){
+        
+        
         $qq = new QQ();
         $access_token = $qq->qq_callback();
+        $zhao_uid = ZCommonSessionFun::get_user_id();
+        $zhao_uid =  $zhao_uid>0 ? $zhao_uid : '';
 //         ZCommonSessionFun::set_user_session($access_token);
 //         exit;
         $openid = $qq->get_openid();
         $qq = new QQ($access_token,$openid);
         $user_info = $qq->get_user_info();
         $model_User = new User();
-        $return = $model_User->userBind('', '', '', $openid, OauthBind::typeQQ, $user_info['nickname'], $user_info['figureurl'],true);
+        $return = $model_User->userBind('', '', $zhao_uid, $openid, OauthBind::typeQQ, $user_info['nickname'], $user_info['figureurl'],true);
         //绑定成功或者已经绑定
         if($return===0 || $return===1){
             $user = $model_User->operationData['user']->attributes;
@@ -50,6 +54,13 @@ class ApiController extends Controller{
             $user['head_image'] = $model_User->operationData['user_profile']->head_image;
             $user['openid'] = $openid;
             ZCommonSessionFun::set_user_session($user);
+            //qq登录类型
+            if(intval($zhao_uid)>0){          
+                $bind_url = ['user-profile/bind-list'];
+                return $this->redirect($bind_url);
+            }else{
+                ZCommonSessionFun::set_login_type(OauthBind::typeQQ);
+            }
             return $this->redirect([ZCommonSessionFun::urlMyStr]);
         }
        
@@ -115,9 +126,11 @@ class ApiController extends Controller{
 //                 ZCommonFun::print_r_debug( $model_User->operationData );
 //                 exit;
                 //微博登录类型
-                if(intval($zhao_uid)<1){
-                    ZCommonSessionFun::set_login_type(OauthBind::typeWeiBo);
+                if(intval($zhao_uid)>0){
+                    
                     return $this->redirect($this->bind_url);
+                }else{
+                    ZCommonSessionFun::set_login_type(OauthBind::typeWeiBo);
                 }
                 return $this->redirect([ZCommonSessionFun::urlMyStr]);
             }
@@ -144,7 +157,7 @@ class ApiController extends Controller{
     public function actionLoginWeiXin(){
         $redirect_uri = Yii::$app->urlManager->createAbsoluteUrl(['api/wei-xin-callback']);
         $o_WeiXin = new WeiXin();
-        $url = $o_WeiXin->oauth2_url($o_WeiXin->APPID, $redirect_uri);
+        $url = $o_WeiXin->oauth2_url($o_WeiXin->APPID, $redirect_uri,true);
 //         echo $url;
 //         exit;
         header('Location: '.$url);
@@ -196,9 +209,11 @@ class ApiController extends Controller{
 //                                             ZCommonFun::print_r_debug( $model_User->operationData );
 //                                             exit;
                             //微信登陆类型
-                            if(intval($zhao_uid)<1){
-                                ZCommonSessionFun::set_login_type(OauthBind::typeWeiXin);
+                            if(intval($zhao_uid)>0){
+                                
                                 return $this->redirect($this->bind_url);
+                            }else{
+                                ZCommonSessionFun::set_login_type(OauthBind::typeWeiXin);
                             }
                             return $this->redirect([ZCommonSessionFun::urlMyStr]);
                         }

@@ -3,7 +3,7 @@
 namespace common\models;
 
 use Yii;
-
+use yii\data\Pagination;
 /**
  * This is the model class for table "{{%message}}".
  *
@@ -14,6 +14,7 @@ use Yii;
  * @property string $content
  * @property string $add_time
  * @property string $last_update
+ * @property string $group_id
  * @property integer $is_read
  * @property string $parent_id
  * @property integer $status
@@ -38,7 +39,7 @@ class Message extends \yii\db\ActiveRecord
         return [
             [['from_uid', 'to_uid', 'last_update', 'is_read', 'parent_id', 'status', 'table_id'], 'integer'],
             [['content'], 'string'],
-            [['title'], 'string', 'max' => 100],
+            [['title','group_id'], 'string', 'max' => 100],
             [['table'], 'string', 'max' => 64],
             [['add_time'],'safe'],
         ];
@@ -57,11 +58,85 @@ class Message extends \yii\db\ActiveRecord
             'content' => 'Content',
             'add_time' => 'Add Time',
             'last_update' => 'Last Update',
+            'group_id'=>'分组id',
             'is_read' => 'Is Read',
             'parent_id' => 'Parent ID',
             'status' => 'Status',
             'table' => 'Table',
             'table_id' => 'Table ID',
         ];
+    }
+    /**
+     * 获取列表数据
+     * @param integer $uid
+     * @param string $table
+     * @param integer $pageSize
+     * @param mixed $where
+     * @param mixed $sort
+     * @return []
+     */
+    public function getList($uid,$table,$pageSize,$where,$sort = ['add_time'=>SORT_DESC]){
+        $model_Message = new Message();
+  
+        $query = $model_Message->find()->where('`table`=:table and (from_uid=:from_uid or to_uid=:to_uid)',
+            [':table'=>$table,':from_uid'=>$uid,'to_uid'=>$uid])
+        ;
+        
+        if($where){
+            $query->andWhere($where);
+        }
+        if($sort){
+            $query->orderBy($sort);
+        }
+        
+        $pagination = new Pagination();
+        $pagination->totalCount = $query->count();
+
+        $offset = $pagination->getOffset();
+        $limit = $pagination->getLimit();
+        $query->offset($offset);
+        $query->limit($limit);
+//         echo $query->createCommand()->getRawSql();
+        $a_models = $query->all();
+        if( isset($_GET[$pagination->pageParam])&& $pagination->pageCount < $_GET[$pagination->pageParam]  ){
+            $a_models = [];
+        }
+        
+        $temp_data['models'] = $a_models;
+        $temp_data['pagination'] = $pagination;
+        return $temp_data;
+    }
+    
+    /**
+     * 添加关注日志
+     * @param integer $from_uid 发送者uid
+     * @param integer $to_uid   接受者uid
+     * @param boolean $is_concern true关注,false取消关注
+     * @return boolean
+     */
+    public static function addConcernLog($from_uid,$to_uid,$is_concern=true,$table_id=0){
+        $model = new Message();
+        $model->from_uid = $from_uid;
+        $model->to_uid = $to_uid;
+        if($is_concern){
+            $model->title = '关注';
+            $model->content = '关注成功';
+        }else{
+            $model->title = '取消关注';
+            $model->content = '取消关注';
+        }
+        $model->group_id = '';
+        $model->table = 'users_friends';
+        $model->table_id = $table_id;
+        $model->add_time = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);
+        return $model->save();
+    } 
+    
+    public function getFromUser(){
+        return $this->hasOne(User::className(), ['uid'=>'from_uid']);
+    }
+    
+    public function getToUser(){
+        return $this->hasOne(User::className(), ['uid'=>'to_uid']);
     }
 }

@@ -185,6 +185,10 @@ class SurverySearch extends Survey
         $models = ( new SurverySearch())->findBySql($query3->createCommand()->getRawSql())->all();
         
         isset($models[0]) ? null : $models = [];
+        if( isset($_GET[$pagination->pageParam]) && $pagination->pageCount < $_GET[$pagination->pageParam]   ){
+            $models = [];
+        }
+//         echo $pagination->page,'-',$pagination->page ;
         $temp_data['models'] = $models;  
         $temp_data['pagination'] = $pagination;
        

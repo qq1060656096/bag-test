@@ -51,11 +51,13 @@ class SurveyController extends ZController
     {
         $this->view->title = '最新';
         if(isset($_GET['code'])){
-            $zhao_uid = ZCommonSessionFun::get_user_id();
-            $zhao_uid =  $zhao_uid>0 ? $zhao_uid : '';
+            
             $qq = new QQ();
             $qq->is_mobile = true;
             $access_token = $qq->qq_callback();
+            $zhao_uid = ZCommonSessionFun::get_user_id();
+            $zhao_uid =  $zhao_uid>0 ? $zhao_uid : '';
+//             echo $zhao_uid;
 //                     ZCommonFun::print_r_debug($access_token);
 //                     exit;
             $openid = $qq->get_openid();
@@ -71,10 +73,12 @@ class SurveyController extends ZController
                 $user['openid'] = $openid;
                 ZCommonSessionFun::set_user_session($user);
                 //qq登录类型
-                if(intval($zhao_uid)<1){
-                    ZCommonSessionFun::set_login_type(OauthBind::typeQQ);
+                if(intval($zhao_uid)>0){
+       
                     $bind_url = ['user-profile/bind-list'];
                     return $this->redirect($bind_url);
+                }else{
+                    ZCommonSessionFun::set_login_type(OauthBind::typeQQ);
                 }
                 return $this->redirect([ZCommonSessionFun::urlMyStr]);
             }

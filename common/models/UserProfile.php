@@ -91,6 +91,23 @@ class UserProfile extends \yii\db\ActiveRecord
         return $model_UserProfile->save();
     }
     /**
+     * 获取我测试的过的数量
+     * @param unknown $uid
+     */
+    public static function getTestingCount($uid){
+        static $testing_count = null;
+        if($testing_count!==null){
+            return $testing_count;
+        }
+        $model_UserProfile = UserProfile::findOne($uid);
+        
+        if($model_UserProfile){
+            $testing_count = $model_UserProfile->testing_count;
+            $testing_count = $testing_count ? intval($testing_count) : 0;
+        }
+        return $testing_count;
+    }
+    /**
      * 获取昵称
      * @return string
      */
@@ -121,6 +138,7 @@ class UserProfile extends \yii\db\ActiveRecord
      */
     public function getHeadImage0(){
         $image = !empty($this->head_image) ? $this->head_image : './images/head_image.png';
+        
         return $image;
     }
     

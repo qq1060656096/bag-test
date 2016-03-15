@@ -3,15 +3,16 @@
 	
 	<div id="boxId_1447072618335_3"></div>
 	<header class="module-topbar" id="boxId_1447165659499_1" >
-		<a class="fl txt-link cancel1" href=""  title="取消" >取消</a> 
-		<a class="fr txt-link disable1" href=""  title="发送" >发送</a>
+		<a class="fl txt-link cancel1"  title="取消" >取消</a> 
+		<a class="fr txt-link disable1"  title="发送" >发送</a>
 		<div class="title-group">
-			<h1 class="title txt-cut">回复评论</h1>
+			<h1 class="title txt-cut">发私信</h1>
 		</div>
 	</header>
 	<article class="module-publisher" >
 		<div class="txt-publisher-wrapper">
-			<textarea id="txt-publisher" name="content" class="J-textarea txt-publisher" placeholder=""></textarea>
+		    <input type="text" id="txt-to_uid" uid="" name="content" class="" placeholder="@Ta"/>
+			<textarea id="txt-publisher" name="content" class="J-textarea txt-publisher" placeholder="内容"></textarea>
 		</div>
 		<div class="wrapper-info-publisher">
 			<div class="info-publisher selfclear">
@@ -170,5 +171,10 @@
     left: 0;
     opacity: 0;
     vertical-align: middle;
+}
+#txt-to_uid{
+	width: 100%;
+	height: auto;
+	padding: 0 14px 0 14px;
 }
 </style>

@@ -130,26 +130,33 @@ class UserProfileController extends Controller
           return $this->redirect($url);
       }
       $model = new User();
-      
-      if(isset($_POST['User']['username']) && isset($_POST['op'])){
+ 
+      if(isset($_POST['User']['user']) && isset($_POST['op'])){
+         
           $post = $_POST['User'];
-          $user = isset($post['username']) ? $post['username']: '';
-          $pass = isset($post['password']) ? $post['password']: '';
+          $user = isset($post['user']) ? $post['user']: '';
+          $pass = isset($post['pass']) ? $post['pass']: '';
           $post = $_POST['User'];
           //已有账户绑定
-          if($_POST['op']!=1){
+          if($_POST['op']==1){
               $condition['user'] = $user;
-              $model_find = $this->find()->where($condition)->one();
+              $model_find = new User();
+              
+              $model_find = $model_find->find()->where($condition)->one();
            
               if(!$model_find){
                   $model->addError('user','用户没有找到');
               }
               else if( $model_find->pass!= ZCommonFun::getPass($pass) ){
                   $model->addError('pass','密码错误');
+              }else if($model_find->is_bind_user==1){
+                  $model->addError('user','账户已被绑定过');
               }else{
                     $connection = Yii::$app->db;
                     $transaction = $connection->beginTransaction();
                     try {
+                        $model_find->is_bind_user = 1;
+                        $model_find->save();
                         $model_Oauth = new OauthBind();
                         
                         $model_Oauth_condition['uid'] = $old_login_uid;
@@ -173,7 +180,9 @@ class UserProfileController extends Controller
               if( $model ){
                   $model->user = $user;
                   $model->pass = ZCommonFun::getPass( $pass );
+                  $model->is_bind_user = 1;
                   if( $model->save() ){
+                      ZCommonSessionFun::set_user_session($model->attributes);
                       $url = Yii::$app->urlManager->createUrl(['user-profile/bind-list']);
                       return $this->redirect($url);
                   }

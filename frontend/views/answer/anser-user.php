@@ -81,6 +81,8 @@ if($login_uid<1){
 $concer_url = '';
 $concer_text = '';
 	
+
+	
 switch ($concern_status){
     case 1:
         $concer_url = Yii::$app->urlManager->createUrl(['my/concern','fuid'=>$model_Users->uid]);

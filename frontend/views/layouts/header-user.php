@@ -24,7 +24,7 @@
 	border-top:1px dashed #ddd;
 	border-bottom: 1px solid #ddd;
 	color: #888;
-	width: 25%;
+	width: 33.33%;
 	display: block;
 	float: left;
 	text-align: center;
@@ -59,6 +59,8 @@
 <?php 
 use common\z\ZCommonSessionFun;
 use common\z\ZCommonFun;
+use common\models\UsersFriends;
+use common\models\UserProfile;
 $model_SurveyTotal = new common\models\Survey();
 $sessionUser = ZCommonSessionFun::get_user_session();
 
@@ -84,7 +86,7 @@ $url_logout = Yii::$app->urlManager->createUrl(['login/logout']);
 					</sapn>个测试
 				</div>
 				<div>
-					关注<sapn class="common-color">0</sapn>人
+					关注<sapn class="common-color"><?php echo UsersFriends::get_concern_count(ZCommonSessionFun::get_user_id(),true);?></sapn>人
 				</div>
 			</td>
 			<td class="td-3">
@@ -93,10 +95,10 @@ $url_logout = Yii::$app->urlManager->createUrl(['login/logout']);
 					<a class="a-right" href="<?php echo $url_user_setting;?>">设置</a>
 				</div>
 				<div>
-					测过<sapn class="common-color">0</sapn>次
+					测过<sapn class="common-color"><?php echo UserProfile::getTestingCount(ZCommonSessionFun::get_user_id());?></sapn>次
 				</div>
 				<div>
-					粉丝<sapn class="common-color">0</sapn>次
+					粉丝<sapn class="common-color"><?php echo UsersFriends::get_concern_count(ZCommonSessionFun::get_user_id());?></sapn>次
 				</div>
 			</td>
 		</tr>
@@ -106,10 +108,10 @@ $url_logout = Yii::$app->urlManager->createUrl(['login/logout']);
 
 ?>
 <nav class="user-menu">
-	<a href="<?php echo $url_my_test;?>">我创建的测试<span class="vertical-line"></span></a> 
+	<a href="<?php echo $url_my_test;?>">我创建的<span class="vertical-line"></span></a> 
 	<a href="<?php echo $url_me_test;?>">我测试的<span class="vertical-line"></span></a> 
-	<a href="<?php echo $url_withdraw;?>">余额提现<span class="vertical-line"></span></a>
-	<a href="<?php echo $url_user_setting;?>">修改设置 </a>
+	<a href="<?php echo $url_withdraw;?>">我的私信<span class="vertical-line"></span></a>
+	<!-- <a href="<?php echo $url_user_setting;?>">修改设置 </a> -->
 </nav>
 
 

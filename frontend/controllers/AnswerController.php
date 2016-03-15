@@ -249,6 +249,7 @@ str;
             $model_Users = User::findOne( $model->uid );
             $model_UsersProfile = UserProfile::findOne( $model->uid );
         }
+        
         !$model_Users ? $model_Users = new User() : '';
         !$model_UsersProfile ? $model_UsersProfile = new UserProfile() : '';
         
@@ -415,7 +416,8 @@ str;
             $model_Users = User::findOne( $model->uid );
             $model_UsersProfile = UserProfile::findOne( $model->uid );
         }
-        !$model_Users ? null : $model_Users = new User() ;
+        
+        !$model_Users ? $model_Users = new User() : '';
         !$model_UsersProfile ? $model_UsersProfile = new UserProfile() : '';
 //         echo $error;
 //         exit;

@@ -1,3 +1,6 @@
+<?php 
+use common\models\User;
+?>
 
 
 <div class="ux-popmenu ux-popmenu2"
@@ -5,7 +8,7 @@
 	<div class="content show" style="bottom: 0px; position: fixed;">
 		<section class="card-combine">
 			<a href="" node-type="recommend" class="line-bottom"
-				reporttype=""><span>回复</span></a><a href="javascript:;"
+				reporttype=""><span>发私信</span></a><a href="javascript:;"
 				node-type="reportPL" reporttype="" style="display: none;"><span>举报</span></a> <a
 				class="close line-top" href="javascript:;"><span>取消</span></a>
 		</section>
@@ -56,24 +59,62 @@
     display: block;
     background: #f8f8f8;
 }
+#ui-id-1{
+	z-index: 9999;
+}
 </style>
 
+
+<script type="text/javascript" src="<?php echo Yii::$app->urlManager->baseUrl; ?>/js/jquery.autocomplete.js">
+</script>
+<style>
+.autocomplete-suggestions { border: 1px solid #999; background: #FFF; cursor: default; overflow: auto; -webkit-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); -moz-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); }
+.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+.autocomplete-no-suggestion { padding: 2px 5px;}
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: bold; color: #000; }
+.autocomplete-group { padding: 2px 5px; }
+.autocomplete-group strong { font-weight: bold; font-size: 16px; color: #000; display: block; border-bottom: 1px solid #000; }
+
+</style>
 <?php 
 echo $this->renderFile(__DIR__ . '/../comment/static-comment-message.php');
 ?>
 <script type="text/javascript">
+
 $(document).ready(function(){
+	var availableTags = ['张三','李四','哈哈'];
+	$( "#txt-to_uid" ).bind('change').autocomplete({
+		minChars: $( "#txt-to_uid").val() ? $( "#txt-to_uid").val().length : 1,
+        noCache:true,
+		serviceUrl: function(){
+		    var url = '<?php echo Yii::$app->urlManager->createUrl( ['my/users-list','search'=>'#search#'] ); ?>';
+		    url = url.replace('%23search%23',$('#txt-to_uid').val());
+		    console.log(url);
+		    return url;
+		},
+	    onSelect: function (suggestion) {
+	        console.log(suggestion);
+	        $( "#txt-to_uid" ).attr('uid',suggestion.uid);
+	    }
+
+	});
     //点击显示评论
-    $(".card-list .line-bottom").live('click',function(){
+    $(".card-list ").on('click','.line-bottom',function(){
         
         var url = $(this).attr('comment-url');
         $("#box-comment").attr('url',url);
     	$(".ux-popmenu2").show();
+
+    	$( "#txt-to_uid").val($(this).find(".item-main").text());
+  	    $( "#txt-to_uid").attr('uid',$(this).attr('uid'));
     });
-    $(".comment-button").live('click',function(){
+    $(".comment-button").on('click',function(){
         var url = $(this).attr('url');
         $("#box-comment").attr('url',url);
     	$(".ux-popmenu2").show();
+ 	    $( "#txt-to_uid").val('<?php echo User::getUidShowName($uid);?>');
+  	    $( "#txt-to_uid").attr('uid','<?php echo $uid;?>')
     	return false;
     });
 });
@@ -89,14 +130,15 @@ $(".ux-popmenu2 .line-bottom").click(function(){
 });
 
 //隐藏评论框
-// $("#box-comment a.fr.disable").click(function(){
-// 	alert(1);
-// 	$(this).closest(".ux-popmenu").hide();
-// 	return false;
-// });
+$("#box-comment a.fr.disable").click(function(){
+
+	$(this).closest(".ux-popmenu").hide();
+	return false;
+});
 
 //隐藏评论框
 $(".ux-popmenu1 .module-topbar a.cancel1").click(function(){
+
 	$(".ux-popmenu1").hide();   
 	return false;
 });
@@ -108,6 +150,7 @@ $(".ux-popmenu1 .module-topbar a.disable1").click(function(){
 		alert('请输入评论内容');
 	}
 	var url = $(this).closest('#box-comment').attr('url');
+	url = url.replace('%23tid%23', $('#txt-to_uid').val() );
 	url = url.replace('%23content%23',content);
 
 	comment(url);

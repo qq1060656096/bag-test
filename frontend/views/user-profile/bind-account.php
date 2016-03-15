@@ -71,7 +71,9 @@ use common\z\ZController;
     	</header>
     	
     </div>
-    
+    <?php 
+//     ZCommonFun::print_r_debug($model);
+    ?>
     <section class="survey-form ">
     
         <?php $form = ActiveForm::begin(); ?>
@@ -169,7 +171,7 @@ $('form').submit(function(){
 	}else{
 		is_submit = true;
     	$('.'+submit_class_name).html('提交中...');
- 	   return false;
+ 	   return true;
 	}
 	
 });

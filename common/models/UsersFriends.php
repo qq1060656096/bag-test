@@ -105,9 +105,9 @@ class UsersFriends extends \yii\db\ActiveRecord
     public static function get_concern_count($uid,$is_fans = false){
         $model = new UsersFriends();
         if(!$is_fans){
-            $condition['uid'] = $uid;
-        }else{
             $condition['fuid'] = $uid;
+        }else{
+            $condition['uid'] = $uid;
         }
         $count = $model->find()->where($condition)->count();
 //         echo $model->find()->where($condition)->createCommand()->getRawSql();

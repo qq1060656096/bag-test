@@ -18,12 +18,14 @@ use common\models\SurverySearch;
 use common\z\ZCommonSessionFun;
 use common\z\ZCommonFun;
 use common\models\UsersFriends;
+use common\models\Message;
+use common\models\User;
 /**
  * Site controller
  */
 class MyController extends Controller
 {
-    public $pageSize= 10;
+    public $pageSize= 3;
     /**
      * 我测试过的，有权限
      */
@@ -94,6 +96,7 @@ class MyController extends Controller
         $pagination->pageSize = $this->pageSize;
         //总数量
         $pagination->totalCount = $count;
+        $old_page = $pagination->page;
         $offset = $pagination->getOffset();
         $limit = $pagination->getLimit();
         $query->offset($offset);
@@ -102,6 +105,12 @@ class MyController extends Controller
         $a_models = $query->all();
       
         if( isset($_GET['ajax']) ){
+            
+            if( isset($_GET[$pagination->pageParam])&& $pagination->pageCount < $_GET[$pagination->pageParam]  ){
+                $a_models = [];
+            }
+//             echo $pagination->pageCount,'-',$pagination->page,'$old_page',$_GET[$pagination->pageParam] ;
+//             exit;
             return $this->render('my-test-list',[ 'a_models'=>$a_models,'pagination' =>$pagination]);
         }
         
@@ -138,6 +147,7 @@ class MyController extends Controller
         $model_UsersFriends0 = $model_UsersFriends->get_user_friend($uid, $fuid);
         if( $model_UsersFriends0 ){
             if( $model_UsersFriends0->delete() ){
+                Message::addConcernLog($uid, $fuid,false);
                 ZCommonFun::output_json('关注', 0, '取消关注成功');
             }else{
                 ZCommonFun::output_json(null, -2, '取消关注失败');
@@ -150,8 +160,50 @@ class MyController extends Controller
         $model_UsersFriends->created = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);
         //关注成功
         if($model_UsersFriends->save()){
+            Message::addConcernLog($uid, $fuid,true);
             ZCommonFun::output_json('已关注', 0, '关注成功');
         }
+       
         ZCommonFun::output_json(null, -2, '关注失败' );
+    }
+    
+    /**
+     * Ta的私信
+     */
+    public function actionMessage($uid){
+        $this->layout = false;
+        $this->view->title = 'Ta的私信';
+        $model = new Message();
+        $a_models = $model->getList($uid, 'users_friends', $this->pageSize, null);
+        return $this->render('message',[
+            'a_models' => $a_models,
+            'uid'=>$uid,
+            'ajax_url'=>Yii::$app->urlManager->createUrl(['comment/list','page'=>'#page#','sort'=>1,'self'=>1,'ajax'=>1,'uid'=>$uid]),
+        ]);
+    }
+    /**
+     * 搜索用户
+     */
+    public function actionUsersList($search=''){
+        $this->layout = false;
+        $json['status'] = 0;
+        $json['data'] = [];
+        $model = new User();
+        $query = $model->find();
+        $query->join('inner join', 'user_profile','t.uid=user_profile.uid');
+        $condition= "`user_profile`.`nickname` like :search or `user` like :search ";
+        $query->where($condition,[':search'=>$search.'%']);
+        $query->limit(100);
+        echo $query->createCommand()->getRawSql();
+        $a_models = $query->all();
+        isset($a_models[0]) ? null  : $json['suggestions']=[];
+        foreach ( $a_models as $key=> $row ){
+            $temp_row['uid'] = $row->uid;
+            $temp_row['data'] = $row->user;
+            $temp_row['value'] = $row->user;
+            $json['suggestions'][] = $temp_row;
+        } 
+        echo json_encode($json);
+        exit;
     }
 }

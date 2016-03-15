@@ -155,13 +155,13 @@ label, label input {
     				<label class="control-label" for="userprofile-nickname">账号</label> 
     				<?php
     				$user_info2 = ZCommonSessionFun::get_login_type();
-    				if($user_info2['register_type']=='user'):   
+    				if( $user_info2['is_bind_user']==1):   
     				?>
     				    <a class="bind-row bind-exists">已注册</a>	
     				<?php 
     				else:
     				?>
-    				    <a class="bind-row" href="<?php echo Yii::$app->urlManager->createUrl(['api/login-qq']);?>">未注册</a>	
+    				    <a class="bind-row" href="<?php echo Yii::$app->urlManager->createUrl(['user-profile/bind-account']);?>">未注册</a>	
     				<?php endif;?>
     			</div>
     		</div>

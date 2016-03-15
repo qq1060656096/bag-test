@@ -16,14 +16,14 @@ class WeiXin {
 	 * appid
 	 * @var string
 	 */
-	public $APPID = "wx1ebfaefb5cf5edc5";
+	public $APPID = "wx389a3d914a54f385";
 	//wx1ebfaefb5cf5edc5
 	//116db9d5c7a1469b97e65be1b93d622d
 	/**
 	 * appsecrets
 	 * @var string
 	 */
-	public $SECRETS = "116db9d5c7a1469b97e65be1b93d622d";
+	public $SECRETS = "78d58f632ed51cca2c7e740fb4728eb2";
 	/**
 	 * 凭证接口认证 地址
 	 * @var string

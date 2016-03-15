@@ -15,6 +15,8 @@ use common\z\ZCommonFun;
  * @property integer $flag
  * @property integer $role
  * @property string $created
+ * @property integer $register_type
+ * @property integer $is_bind_user
  */
 class User extends \yii\db\ActiveRecord
 {
@@ -44,7 +46,7 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['flag','role'], 'integer'],
+            [['flag','role','is_bind_user'], 'integer'],
             [['created'], 'safe'],
             [['register_type'], 'string', 'max' => 12],
             [['user'], 'string', 'max' => 128],
@@ -68,6 +70,7 @@ class User extends \yii\db\ActiveRecord
             'role' => '角色',
             'created' => '注册时间',
             'register_type'=>'注册类型',
+            'is_bind_user'=>'账号绑定'
         ];
     }
     
@@ -107,6 +110,7 @@ class User extends \yii\db\ActiveRecord
         $this->flag = NOW_TIME_STAMP;
         if( $this->validate() ){
            $post_pass = $this->pass;
+           $this->is_bind_user = 1;
            if( $this->save() ){
                $this->pass = ZCommonFun::getPass($post_pass) ;
                $this->save();
@@ -139,12 +143,16 @@ class User extends \yii\db\ActiveRecord
         $condition['openid'] = $openid;
         $condition['type'] = $type;
         $model_OauthBind=$model_OauthBind->findOne($condition);
-        if($model_OauthBind && $model_OauthBind->uid>0&& $model_User = User::findOne($uid)){
+        if($model_OauthBind && $model_OauthBind->uid>0){
             $is_register=false;
+            if($uid>0){
+                $model_User = User::findOne($uid);
+            }else{
+                $model_User = User::findOne($model_OauthBind->uid);
+            }
+            
         }
-//         ZCommonFun::print_r_debug($model_User);
-//         ZCommonFun::print_r_debug($model_OauthBind);
-//         exit;
+        
         //已存在用户
         if(!$is_register){
             
@@ -160,7 +168,10 @@ class User extends \yii\db\ActiveRecord
         
             $model_User->save();
         }
-        
+//         echo $uid;
+//         ZCommonFun::print_r_debug($model_User->attributes);
+//         ZCommonFun::print_r_debug($model_OauthBind->attributes);
+//         exit;
         
         $model_OauthBind = new OauthBind();
         
@@ -220,4 +231,31 @@ class User extends \yii\db\ActiveRecord
         
         return -1;
     }
+    
+    public function getUserProfile(){
+        return $this->hasOne(UserProfile::className(), ['uid'=>'uid']);
+    }
+    
+    public function getShowName(){
+        if( $this->userProfile && !empty($this->userProfile->nickname) ){
+            return $this->userProfile->nickname;
+        }else{
+            return $this->user;
+        }
+        
+    }
+    /**
+     * 根据uid获取显示账户信息
+     * @param unknown $uid
+     * @return string
+     */
+    public static function getUidShowName($uid){
+        $model = new User();
+        $model = $model->findOne($uid);
+        if($model){
+            return $model->getShowName();
+        }
+        return '';
+    }
+    
 }
