@@ -150,7 +150,7 @@ $(".ux-popmenu1 .module-topbar a.disable1").click(function(){
 		alert('请输入评论内容');
 	}
 	var url = $(this).closest('#box-comment').attr('url');
-	url = url.replace('%23tid%23', $('#txt-to_uid').val() );
+	url = url.replace('%23tid%23', $('#txt-to_uid').attr('uid'));
 	url = url.replace('%23content%23',content);
 
 	comment(url);
@@ -166,6 +166,7 @@ function comment(url){
             	location.href="<?php echo Yii::$app->urlManager->createUrl(['login/login']) ;?>";
              }else{
           	   alert(json.message);
+            	 location.reload();
              }
         }else{
             alert("出错了");

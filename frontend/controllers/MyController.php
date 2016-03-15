@@ -190,11 +190,11 @@ class MyController extends Controller
         $json['data'] = [];
         $model = new User();
         $query = $model->find();
-        $query->join('inner join', 'user_profile','t.uid=user_profile.uid');
+        $query->join('inner join', 'user_profile','user.uid=user_profile.uid');
         $condition= "`user_profile`.`nickname` like :search or `user` like :search ";
         $query->where($condition,[':search'=>$search.'%']);
         $query->limit(100);
-        echo $query->createCommand()->getRawSql();
+//         echo $query->createCommand()->getRawSql();
         $a_models = $query->all();
         isset($a_models[0]) ? null  : $json['suggestions']=[];
         foreach ( $a_models as $key=> $row ){
