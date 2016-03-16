@@ -258,4 +258,42 @@ class User extends \yii\db\ActiveRecord
         return '';
     }
     
+    public static function getTaUidShowName($uid){
+        $model = new User();
+        $model = $model->findOne($uid);
+        if($model){
+            return $model->getTaShowName();
+        }
+        return '';
+    }
+    
+    public function getTaShowName(){
+        if( $this->userProfile && !empty($this->userProfile->nickname) ){
+            return $this->userProfile->nickname;
+        }else{
+            return 'Ta暂无昵称';
+        }
+    
+    }
+    /**
+     * 显示他的签名
+     * @param unknown $uid
+     * @return string
+     */
+    public static function getTaUidShowIntro($uid){
+        $model = new User();
+        $model1 = $model->findOne($uid);
+        if($model){
+            return $model->getTaShowIntro();
+        }
+        return '';
+    } 
+    public function getTaShowIntro(){
+        if( $this->userProfile && !empty($this->userProfile->nickname) ){
+            return $this->userProfile->intro;
+        }else{
+            return 'Ta什么都没留下';
+        }
+    }
+    
 }

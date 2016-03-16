@@ -3,10 +3,10 @@
 	<div class="info-bar txt-l">
 		<div class="layout-box line-bottom">
 			<div class="box-col">
-				<span class="info-txt" data-node="repost">私信数&nbsp;<em>233</em><i
+				<span style="display:none;" class="info-txt" data-node="repost">私信数&nbsp;<em>233</em><i
 					class="arrow-up line-top"><i class="arrow-up-in line-top"></i></i></span><span
-					class="line-right"></span><span class="info-txt current"
-					data-node="comment">未读条数&nbsp;<em>10</em><i
+					class="line-right"></span><span  style="color: #fff;" class="info-txt current"
+					data-node="comment">&nbsp;<em></em><i
 					class="arrow-up line-top"><i class="arrow-up-in line-top"></i>
 					</i></span>
 					<button class="comment-button" url="<?php echo Yii::$app->urlManager->createUrl(['comment/add','tid'=>'#tid#','content'=>'#content#']); ?>">发送私信</button>
@@ -328,6 +328,10 @@ $(document).ready(function(){
     	$(".ux-popmenu1").show();
     	$(".ux-popmenu2").hide();
     });
+   $(".card-list").on('click','.ta-page',function(){
+	   window.top.document.location = $(this).attr('href');
+	    return false;
+   });
    
 });
 //ajaxLoad2();

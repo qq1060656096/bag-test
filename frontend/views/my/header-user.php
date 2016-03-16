@@ -63,6 +63,7 @@ use common\models\UsersFriends;
 use yii\base\Model;
 use tests\codeception\common\fixtures\UserFixture;
 use common\models\UserProfile;
+use common\models\User;
 $model_SurveyTotal = new common\models\Survey();
 $sessionUser = ZCommonSessionFun::get_user_session();
 
@@ -74,7 +75,7 @@ $url_user_setting = Yii::$app->urlManager->createUrl(['user-profile/bind']);
 $url_logout = Yii::$app->urlManager->createUrl(['login/logout']);
 $url_ta_me_test = Yii::$app->urlManager->createUrl(['my/personal-page','uid'=>$uid]);
 $url_ta_test = Yii::$app->urlManager->createUrl(['my/my-test','uid'=>$uid]);
-$url_ta_message = Yii::$app->urlManager->createUrl(['my/message','uid'=>$uid]);
+$url_ta_message = Yii::$app->urlManager->createUrl(['my/my-message','to_uid'=>$uid]);
 $login_uid = ZCommonSessionFun::get_user_id();
 $concern_status = 0;
 if($login_uid<1){
@@ -94,11 +95,11 @@ if($login_uid<1){
 			     <?php echo isset($sessionUser['head_image']) ? '<img width="48" height="48" src="'.$sessionUser['head_image'].'"/>': '<i class="fa fa-user user-image  common-color"></i>'?>
 			</td>
 			<td class="td-2">
-				<h3 class="common-color"><?php echo isset($sessionUser['nickname']) ? '<label style="color: #333;">昵称</label>'.$sessionUser['nickname']: '暂无昵称'?></h3>
+				<h3 class="common-color"><label style="color: #333;">昵称</label>&nbsp;<?php echo User::getTaUidShowName($uid); ?></h3>
 				
 				<div>
 					签名<sapn class="common-color">
-					他什么都没留下
+					<?php echo User::getTaUidShowIntro($uid); ?>
 					</sapn>
 				</div>
 				

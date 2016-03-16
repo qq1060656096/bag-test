@@ -108,6 +108,54 @@ class Message extends \yii\db\ActiveRecord
     }
     
     /**
+     * 获取列表数据
+     * @param integer $ta_uid
+     * @param integer $login_uid
+     * @param string  $table
+     * @param integer $pageSize
+     * @param mixed $where
+     * @param mixed $sort
+     * @return []
+     */
+    public function getTaList( $ta_uid , $login_uid , $table,$pageSize,$where,$sort = ['add_time'=>SORT_DESC]){
+        
+        $arr = [
+            $ta_uid,$login_uid
+        ];
+        $arr = array_unique( $arr );
+        $str = implode(',', $arr);
+        $model_Message = new Message();
+    
+        $query = $model_Message->find()->where('`table`=:table and ( from_uid in( '.$str.' ) or to_uid  in( '.$str.' ) ) ',
+            [':table'=>$table ] ) ;
+    
+        if($where){
+            $query->andWhere($where);
+        }
+        if($sort){
+            $query->orderBy($sort);
+        }
+    
+        $pagination = new Pagination();
+        $pagination->totalCount = $query->count();
+    
+        $offset = $pagination->getOffset();
+        $limit = $pagination->getLimit();
+        $query->offset($offset);
+        $query->limit($limit);
+//                 echo $query->createCommand()->getRawSql();
+//                 exit;
+        $a_models = $query->all();
+        if( isset($_GET[$pagination->pageParam])&& $pagination->pageCount < $_GET[$pagination->pageParam]  ){
+            $a_models = [];
+        }
+    
+        $temp_data['models'] = $a_models;
+        $temp_data['pagination'] = $pagination;
+        return $temp_data;
+    }
+    
+    /**
      * 添加关注日志
      * @param integer $from_uid 发送者uid
      * @param integer $to_uid   接受者uid

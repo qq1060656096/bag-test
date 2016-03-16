@@ -66,7 +66,7 @@ class CommentController extends Controller
     		<span class="time">{$time}</span>
     	</div>
     	<div class="item-minor txt-l mct-b">
-    	<a href="{$to_uid_url}">@{$to_show_name}</a>
+    	<a class="ta-page" href="{$to_uid_url}">@{$to_show_name}</a>
     	{$model_Message->content}
     	</div>
     </div>
@@ -105,6 +105,8 @@ str;
         
         if ($uid < 1)
             ZCommonFun::output_json(null, -1, '请登录');
+        if($to_uid==$uid)
+            ZCommonFun::output_json(null, 3, '私信不能发给自己');
         
         $model_Message = new Message();
         $model_Message->from_uid = $uid;

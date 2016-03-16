@@ -61,11 +61,13 @@ use common\z\ZCommonSessionFun;
 use common\z\ZCommonFun;
 use common\models\UsersFriends;
 use common\models\UserProfile;
+use common\models\User;
 $model_SurveyTotal = new common\models\Survey();
 $sessionUser = ZCommonSessionFun::get_user_session();
 
 $url_my_test = Yii::$app->urlManager->createUrl(['survey/my']);
 $url_me_test = Yii::$app->urlManager->createUrl(['my/me-test']);
+$url_me_message = Yii::$app->urlManager->createUrl(['my/my-message']);
 $url_create_test = Yii::$app->urlManager->createUrl(['survey/step1']);
 $url_withdraw = '';
 $url_user_setting = Yii::$app->urlManager->createUrl(['user-profile/bind']);
@@ -79,14 +81,14 @@ $url_logout = Yii::$app->urlManager->createUrl(['login/logout']);
 			     <?php echo isset($sessionUser['head_image']) ? '<img width="48" height="48" src="'.$sessionUser['head_image'].'"/>': '<i class="fa fa-user user-image  common-color"></i>'?>
 			</td>
 			<td class="td-2">
-				<h3 class="common-color"><?php echo isset($sessionUser['nickname']) ? '<label style="color: #333;">昵称</label>'.$sessionUser['nickname']: '暂无昵称'?></h3>
+				<h3 class="common-color"><label style="color: #333;">昵称</label><?php echo User::getUidShowName(ZCommonSessionFun::get_user_id());?></h3>
 				<div>
 					创建了<sapn class="common-color">
 					<?php echo $model_SurveyTotal->getMySurveyCount();?>
 					</sapn>个测试
 				</div>
 				<div>
-					关注<sapn class="common-color"><?php echo UsersFriends::get_concern_count(ZCommonSessionFun::get_user_id(),true);?></sapn>人
+					关注<sapn class="common-color"><?php echo UsersFriends::get_concern_count( ZCommonSessionFun::get_user_id() ,true );?></sapn>人
 				</div>
 			</td>
 			<td class="td-3">
@@ -110,7 +112,7 @@ $url_logout = Yii::$app->urlManager->createUrl(['login/logout']);
 <nav class="user-menu">
 	<a href="<?php echo $url_my_test;?>">我创建的<span class="vertical-line"></span></a> 
 	<a href="<?php echo $url_me_test;?>">我测试的<span class="vertical-line"></span></a> 
-	<a href="<?php echo $url_withdraw;?>">我的私信<span class="vertical-line"></span></a>
+	<a href="<?php echo $url_me_message;?>">我的私信<span class="vertical-line"></span></a>
 	<!-- <a href="<?php echo $url_user_setting;?>">修改设置 </a> -->
 </nav>
 

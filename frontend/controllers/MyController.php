@@ -171,11 +171,30 @@ class MyController extends Controller
      * Ta的私信
      */
     public function actionMessage($uid){
+        
         $this->layout = false;
         $this->view->title = 'Ta的私信';
         $model = new Message();
         $a_models = $model->getList($uid, 'users_friends', $this->pageSize, null);
-        return $this->render('message',[
+        return $this->render('my-message',[
+            'a_models' => $a_models,
+            'uid'=>$uid,
+            'ajax_url'=>Yii::$app->urlManager->createUrl(['comment/list','page'=>'#page#','sort'=>1,'self'=>1,'ajax'=>1,'uid'=>$uid]),
+        ]);
+    }
+    
+    public function actionMyMessage(){
+        $login_uid = ZCommonSessionFun::get_user_id();
+        //请登录
+        if( $login_uid < 1 ){
+            return $this->redirect( [ 'login/login' ] );
+        }
+        $this->layout = false;
+        $this->view->title = '我的私信';
+        $model = new Message();
+        $uid = $login_uid;
+        $a_models = $model->getList($login_uid, 'users_friends', $this->pageSize, null);
+        return $this->render('my-message',[
             'a_models' => $a_models,
             'uid'=>$uid,
             'ajax_url'=>Yii::$app->urlManager->createUrl(['comment/list','page'=>'#page#','sort'=>1,'self'=>1,'ajax'=>1,'uid'=>$uid]),
