@@ -236,7 +236,7 @@ $(document).ready(function(){
     	$(".testing-count").hide();
         $("#panel2").hide();
         $(".title-sub,.test-image").hide();
-        
+        window.scrollTo(0,0);
 
         return false;
     });

@@ -195,6 +195,8 @@ $(document).ready(function(){
     $(".btn.btn-lg.start-test").click(function(){
     	$("#panel1").hide();
         $("#panel2").show();
+        $(".header-title").hide();
+        window.scrollTo(0,0);
         $('#age').click();
         return false;
     });
