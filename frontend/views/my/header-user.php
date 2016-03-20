@@ -138,9 +138,9 @@ if($login_uid<1){
 				
 				
 				<div>
-					创建了<sapn class="common-color">
+					创建<sapn class="common-color">
 					<?php echo $model_SurveyTotal->getMySurveyCount($uid);?>
-					</sapn>个测试
+					</sapn>个
 				</div>
 				
 				<div class="">
@@ -153,7 +153,7 @@ if($login_uid<1){
 					测过<sapn class="common-color"><?php echo UserProfile::getTestingCount($uid);?></sapn>次
 				</div>
 				<div>
-					粉丝<sapn class="common-color"><?php echo UsersFriends::get_concern_count($uid,false);?></sapn>次
+					粉丝<sapn class="common-color"><?php echo UsersFriends::get_concern_count($uid,false);?></sapn>个
 				</div>
 			</td>
 		</tr>

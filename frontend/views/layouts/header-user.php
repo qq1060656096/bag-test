@@ -110,7 +110,7 @@ foreach ($header_user_menu as $key=>$header_user_menu_row){
 			<td class="td-2">
 				<h3 class="common-color"><label style="color: #333;">昵称</label><?php echo User::getUidShowName(ZCommonSessionFun::get_user_id());?></h3>
 				<div>
-					创建了<sapn class="common-color">
+					创建<sapn class="common-color">
 					<?php echo $model_SurveyTotal->getMySurveyCount();?>
 					</sapn>个
 				</div>
