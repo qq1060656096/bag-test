@@ -62,7 +62,7 @@
 }
 #answer .cover,#answer  .cover img{
 	width: 97% !important;
-	height: 97%  !important;
+
 }
 #all-game .diy-item {
     position: relative;
