@@ -119,7 +119,7 @@ h1{
     			商务联系： dashensuan@qq.com
     		</p>
     		<p>
-    			友情提示：大神蒜，可以自己创建小测试的网站
+    			大神蒜，可以自己创建小测试的网站
     		</p>
     		<p>
     			京ICP备09042499号-10<span><a href="http://dashensuan.com" >dashensuan.com</a></span>
