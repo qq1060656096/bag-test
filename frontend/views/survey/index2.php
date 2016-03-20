@@ -50,12 +50,7 @@ section#all-game {
 }
 </style>
 	<!-- 主页面标题 -->
-	<header class="s_header">
-    		<nav>
-
-    			<span style="font-size: 1.4rem"><?php echo $this->title;?></span>
-    		</nav>
-    	</header>
+	<?php include dirname(__DIR__).'/layouts/head-top.php'; ?>
 
 	<div class="mui-content" style="position:relative;">
 		<section class="diy-content-space-small"></section>
@@ -65,7 +60,7 @@ section#all-game {
 				action="<?php echo Yii::$app->urlManager->createUrl(['survey/index','sort'=>$sort]);?>"
 				class="form" method="post" data-ui="static" id="search-form">
 				<div data-role="input">
-					<input placeholder="大家都在搜：史上最坑手机测试" type="text" autocomplete="off"
+					<input placeholder="搜索测试" type="text" autocomplete="off"
 						autocorrect="off" value="<?php echo $search ? $search : ''; ?>" maxlength="64" name="SurverySearch[title]" id="search"> <i
 						class="iconfont icon-search"></i> <i class="iconfont icon-close"></i>
 				</div>
@@ -75,6 +70,7 @@ section#all-game {
 		</section>
 		<!--slider-->
 		<!-- end slider -->
+		<?php if($sort<1): ?>
 		<section class="main-content" id="hash-rcmd">
 			<h5 class="diy-content-padded">
 				精品测试 <a class="diy-more"  style="display: none;"
@@ -95,7 +91,7 @@ section#all-game {
     			    $image = common\models\Survey::getImageUrl($row);
     			    
 			    ?>
-				<li class="mui-table-view-cell mui-media mui-col-xs-3"><a
+				<li class="mui-table-view-cell mui-media mui-col-xs-6"><a
 					href="<?php echo $url;?>"
 					target="_blank">
 						<figure class="cover">
@@ -107,7 +103,7 @@ section#all-game {
 				<?php endforeach;?>
 			</ul>
 		</section>
-
+        <?php endif;?>
 		<!-- category start -->
 		<!-- category end -->
 		

@@ -62,6 +62,7 @@ footer{
 	left: 0;
 	width: 100%;
 	background: #F6F6F6;
+	z-index: 1;
 }
 .footer-nav a {
 	border-top:1px solid #ddd;
@@ -130,4 +131,15 @@ display: block;
 }
 .concern:hover{
 	color: #999;
+}
+#hash-rcmd .cover,#hash-rcmd .cover img{
+	width: 97% !important;
+	height: 97%  !important;
+}
+.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body,h5.diy-content-padded{
+	font-size: 15px !important;
+	font-weight: bold !important;
+}
+.mui-grid-view.mui-grid-9 .mui-table-view-cell{
+	margin-bottom: 15px;
 }

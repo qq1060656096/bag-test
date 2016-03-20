@@ -4,11 +4,14 @@ use yii\grid\GridView;
 use common\z\ZCommonFun;
 use common\models\Survey;
 use common\z\ZCommonSessionFun;
+use common\models\User;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\SurverySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $row common\models\Survey */
 $this->title = '我测过的';
+$login_user_showNickname = User::getUidShowName(ZCommonSessionFun::get_user_id());
+$this->title = $login_user_showNickname.'的个人主页';
 $this->params['breadcrumbs'][] = $this->title;
 
 echo $this->renderFile(__DIR__.'/../layouts/head.php');

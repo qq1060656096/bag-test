@@ -107,7 +107,7 @@ switch ($concern_status){
 					src="<?php echo $model_UsersProfile->getHeadImage0();?>">
 			</figure>
 			<div class="diy-meta">
-				<div class="title mui-ellipsis"><?php echo $model_UsersProfile->getNickname0();?></div>
+				<div class="title mui-ellipsis">本测试创建者:&nbsp;<?php echo $model_UsersProfile->getNickname0();?></div>
 				<span class="iconfont icon-start-filled5"></span>
 				<div class="desc mui-ellipsis"><?php echo $model_UsersProfile->getIntro1();?></div>
 			</div>

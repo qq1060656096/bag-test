@@ -471,21 +471,9 @@ a:not (.flat ):after, button:not (.flat ):after {
 	font-size: 30px;
 }
 </style>
-	<div class="footer">
-		<div class="container">
-			<ul>
-				<li>联系人 : dashensuan@qq.com</li>
-			</ul>
-			<div class="disclaimer">
-				<span>友情提示：本网站所有内容以娱乐性为目的</span>
-			</div>
-			<div class="disclaimer">
-				<span>京ICP备09042499号-10&nbsp;&nbsp;<span><a
-						href="http://dashensuan.com">dashensuan.com</a></span></span>
-			</div>
-			<div class="copyright"></div>
-		</div>
-	</div>
+	<?php 
+	include dirname(__DIR__).'/layouts/copy-right.php';
+	?>
 	<div class="modal modal2 fade in" id="myModal" tabindex="-1"
 		role="dialog" aria-labelledby="myModalLabel"
 		style="padding-top: 20px; display: none; background: rgba(0, 0, 0, 0.6);"

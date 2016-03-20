@@ -87,8 +87,14 @@ class SurveyController extends ZController
             
             exit;
         }
-        $sort = Yii::$app->request->get('sort',1);
+        $sort = Yii::$app->request->get('sort',0 );
         $this->view->title = $sort > 0 ?'最新' : '最热';
+        if( $sort < 1 ){
+            $this->view->title = ZController::$site_name.' : 可以自己创建测试的网站';
+        }else{
+            $this->view->title = ZController::$site_name.' : 最新';
+        }
+        
         $this->layout = false;
         $searchModel = new SurverySearch();
         $queryParams = Yii::$app->request->queryParams;

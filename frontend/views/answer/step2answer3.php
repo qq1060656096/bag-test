@@ -67,7 +67,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
                         echo '<img class="image" style="width:100%;" src= "', $image, '" title="', $model->title, '"/>';
                     ?>
 				</div>
-				
+				<!-- 
 				<div class="title-sub">
 					<div>
 						<span class="newmiaoshu">简介:<?php echo $model->intro;?></span>
@@ -75,7 +75,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 							已有<span><?php echo $model->answer_count;?></span>人参与测试
 						</p>
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<!-- E header -->
 			<div id="bd" class="panel">
@@ -185,6 +185,19 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 				
 			</div>
 			<!-- E bd -->
+			
+			<div class="title header-title">
+		
+				<div class="title-sub">
+					<div>
+						<span class="newmiaoshu">简介:<?php echo $model->intro;?></span>
+						<p class="testing-count">
+							已有<span><?php echo $model->answer_count;?></span>人参与测试
+						</p>
+					</div>
+				</div>
+			</div>
+			
 			<?php 
 				include __DIR__.'/anser-user.php';
 				?>
@@ -329,7 +342,7 @@ $(document).ready(function(){
 	<div class="container more-test">
 		<div id="more">
 			<h3 class="bold text-muted">
-				随便测测：<a class="pull-right text-muted more_link"
+				推荐测试：<a class="pull-right text-muted more_link"
 					onclick="return toggleMore();"><i
 					class="glyphicon glyphicon-refresh"></i> &nbsp;换一批</a>
 			</h3>
@@ -597,20 +610,9 @@ a:not (.flat ):after, button:not (.flat ):after {
 	<?php 
     echo $this->renderFile(__DIR__ . '/../layouts/foot-menu.php');
     ?>
-	<div class="footer more-footer">
-		<div class="container">
-			<ul>
-				<li>联系人 : dashensuan@qq.com</li>
-			</ul>
-			<div class="disclaimer">
-				<span>友情提示：本网站所有内容以娱乐性为目的</span>
-			</div>
-			<div class="disclaimer">
-				<span>京ICP备09042499号-10&nbsp;&nbsp;<span><a href="http://dashensuan.com" >dashensuan.com</a></span></span>
-			</div>
-			<div class="copyright"></div>
-		</div>
-	</div>
+	<?php 
+	include dirname(__DIR__).'/layouts/copy-right.php';
+	?>
 	<div class="modal modal2 fade in" id="myModal" tabindex="-1"
 		role="dialog" aria-labelledby="myModalLabel"
 		style="padding-top: 20px; display: none; background: rgba(0, 0, 0, 0.6);"

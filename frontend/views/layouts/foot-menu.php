@@ -13,11 +13,11 @@ if(in_array(strtolower($this->context->action->id), ['step2-answer2'])){
     <footer>
         <div>
             <nav class="footer-nav">
-                <a class="new" href="<?php echo $url_new;?>">
-                    <span class="fa fa-home"><br />最新</span>
+                <a class="new" href="<?php echo $url_hot;?>">
+                    <span class="fa fa-home"><br />首页</span>
                 </a>
-                <a class="hot" href="<?php echo $url_hot;?>">
-                    <span class="fa fa-fire"><br />最热</span><br />
+                <a class="hot" href="<?php echo $url_new;?>">
+                    <span class="fa fa-fire"><br />最新</span><br />
                 </a>
                 <a class="find" href="<?php echo $url_find;?>">
                     <span class="fa fa-edit"><br />创建测试</span>
