@@ -42,6 +42,9 @@
 }
 #answer  .mui-col-xs-3 {
     width: 25%;
+}	
+#answer  .mui-col-xs-6 {
+    width: 50%;
 }	  
 
 #answer .mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {
@@ -57,7 +60,10 @@
 #answer .mui-table-view .mui-media, .mui-table-view .mui-media-body {
     overflow: hidden;
 }
-
+#answer .cover,#answer  .cover img{
+	width: 97% !important;
+	height: 97%  !important;
+}
 #all-game .diy-item {
     position: relative;
     display: -webkit-flex;
@@ -160,7 +166,7 @@
     			    $image = common\models\Survey::getImageUrl($row);
     			    
 			    ?>
-				<li class="mui-table-view-cell mui-media mui-col-xs-3"><a
+				<li class="mui-table-view-cell mui-media mui-col-xs-6"><a
 					href="<?php echo $url;?>"
 					target="_blank">
 						<figure class="cover">
