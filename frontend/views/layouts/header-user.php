@@ -128,7 +128,7 @@ foreach ($header_user_menu as $key=>$header_user_menu_row){
 					测过<sapn class="common-color"><?php echo UserProfile::getTestingCount(ZCommonSessionFun::get_user_id());?></sapn>次
 				</div>
 				<div>
-					粉丝<sapn class="common-color"><?php echo UsersFriends::get_concern_count(ZCommonSessionFun::get_user_id());?></sapn>个
+					粉丝<sapn class="common-color"><?php echo UsersFriends::get_concern_count(ZCommonSessionFun::get_user_id());?></sapn>人
 				</div>
 			</td>
 		</tr>

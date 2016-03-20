@@ -153,7 +153,7 @@ if($login_uid<1){
 					测过<sapn class="common-color"><?php echo UserProfile::getTestingCount($uid);?></sapn>次
 				</div>
 				<div>
-					粉丝<sapn class="common-color"><?php echo UsersFriends::get_concern_count($uid,false);?></sapn>个
+					粉丝<sapn class="common-color"><?php echo UsersFriends::get_concern_count($uid,false);?></sapn>人
 				</div>
 			</td>
 		</tr>
