@@ -61,7 +61,16 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 						<dd>
 						      <a class="btn_bg" href="<?php echo $row_ur_done;?>">预览</a>
 						      &nbsp; &nbsp;
-						      <a class="btn_bg ajax-publish" href="<?php echo $row_ur_done_publish;?>">发布</a>
+						      <?php 
+						      if( $row->is_publish ==1 ):
+						      ?>
+						      
+						      <a class="btn_bg ajax-publish" href="#">已发布</a>
+						      <?php 
+						      else:
+						      ?>
+						      <a class="btn_bg ajax-publish" href="<?php echo $row_ur_done_publish;?>">草稿</a>
+						      <?php endif;?>
 						      &nbsp;&nbsp;
 						    <a class="btn_bg" href="<?php echo $row_ur_change;?>">修改</a>
 							<span>测试过：<?php echo $row->answer_count;?></span>
@@ -96,7 +105,12 @@ $(document).ready(function(){
 			data:{"save":1},
 			url: url+"",
 			success:function(json) {
-				element.text('发布');
+				if(json.status==0){
+					element.text('已发布');
+				}else{
+					element.text('草稿');
+				 }
+				
 				alert(json.message);
 			}
 		});

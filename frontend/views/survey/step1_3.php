@@ -74,12 +74,12 @@ $this->title .='.封面图';
             $submitText = '';
             switch ($model->tax):
                 case 1:
-                    $submitText = '保存/下一步添加结果';
+                    $submitText = '保存/下一步';//'保存/下一步添加结果';
                     break;
                 case 2:
                     
                 case 3:
-                    $submitText = '保存/下一步添加题目';
+                    $submitText = '保存/下一步';//'保存/下一步添加题目';
                     break;
             endswitch;
        ?>
@@ -111,7 +111,7 @@ $this->title .='.封面图';
 		
 
         <?php ActiveForm::end(); ?>
-
+        <p class="text-hint">保存配图后，在下一步，你需要依次创建不少于<?php echo SurveyController::stepCount($tax)-2;?>个测试结果。后面还有3个步骤，这个测试就能创建完毕。</p>
 	</section>
 		
       

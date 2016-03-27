@@ -51,7 +51,7 @@ $this->title .='.标题介绍';
     
         
         <div class="btn_bg" >
-			<input type="submit" id="submit" value="保存/下一步封面图片"> 
+			<input type="submit" id="submit" value="保存/下一步"> 
 		</div>
 		<br />
     	<?php 
@@ -63,7 +63,7 @@ $this->title .='.标题介绍';
 		?>
         <?php ActiveForm::end(); ?>
 
-
+            <p class="text-hint">保存标题介绍后，在下一步，你需要为这个测试题上传一张封面图片。后面还有<?php echo SurveyController::stepCount($tax)-1;?>个步骤，这个测试就能创建完毕。</p>
 	</section>
 		
       

@@ -57,12 +57,15 @@ $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.选择算
 
 
         <?php $form = ActiveForm::begin(['id'=>'form1']); ?>
-    
+        <h3 class="po_title common-color" style="text-align: left;font-weight: bold;">什么时代的人</h3>
         <?php 
 //         echo $model->arithmetic;
         ?>
         <p>
-            请选择测试算法。大家使用您的测试时，系统将采用您选择的算法，为大家测出最佳结果 
+            请选择测试算法，可以同时选择多个算法。
+        </p>
+        <p>
+            大家做测试时，大神蒜将采用你选择的算法，为大家算出最佳结果
         </p>
         <br />
         <?= $form->field($model, 'arithmetic')->hiddenInput(['placeholder'=>'选择算法'])->label(false); ?>
@@ -91,7 +94,7 @@ $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.选择算
 	    </a> 
        <br />
         <div class="btn_bg" >
-			<input type="submit" id="submit" value="完成/最后一步 预览"> 
+			<input type="submit" id="submit" value="完成/最后一步 "> 
 		</div>
 		<br />
     	
@@ -101,7 +104,7 @@ $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.选择算
 		
 		
         <?php ActiveForm::end(); ?>
-
+        <p class="text-hint">选择算法后保存，在下一步，你需要最后看一下已经创建完毕的全部内容。如果没有问题，就可以发布出去啦。后面还有最后1个步骤，这个测试就能创建完毕。</p>
 
 	</section>
 		

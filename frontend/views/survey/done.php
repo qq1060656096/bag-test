@@ -252,6 +252,7 @@ foreach ($result_all as $key0=>$result0){
                                     $error_intro = empty($model->intro) ? '简介不能为空':'';
                                     ?> 
                                     <span class="red"><?php echo $error_intro;?></span>
+                                    <a class="change-btn" href="<?php echo Yii::$app->urlManager->createUrl(['survey/step2','id'=>$model->id]);?>">修改测试简介</a>
                                 </p>
                             </section>
                         </section>
@@ -333,6 +334,7 @@ foreach ($result_all as $key0=>$result0){
                          } 
                          echo implode('，', $arithmetic_arr );
                          ?>
+                         <a class="change-btn" href="<?php echo Yii::$app->urlManager->createUrl(['survey/step-airthmetic','id'=>$model->id]);?>">修改测试算法</a>
                         </p>
                     </section>
                  </section>   

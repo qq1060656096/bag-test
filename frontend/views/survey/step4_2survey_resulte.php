@@ -14,12 +14,14 @@ $this->title=isset($survey_tax[$tax])? $survey_tax[$tax] : $survey_tax['0'];
 
 $submitAddText = '';
 $submitNexText = '';
+$text_hint = '';
 switch ($model->tax):
     case 1:
         $this->title .= '-步骤3/'.SurveyController::stepCount($tax).'.添加结果';
         
-        $submitAddText = '保存/增加';
-        $submitNexText = '保存/下一步选择算法';
+        $submitAddText = '再编一个结果';//'保存/增加';
+        $submitNexText = '保存/下一步';//'保存/下一步选择算法';
+        $text_hint = '编完所有测试结果后保存，在下一步，你需要选择最适合这个测试题的算法。后面还有'.(SurveyController::stepCount($tax)-3).'个步骤，这个测试就能创建完毕。 ';
     break;
     case 2:
         $this->title .= '-步骤5/'.SurveyController::stepCount($tax).'.添加结果';
@@ -207,6 +209,9 @@ text-align:left;
 				class="topic_input" type="text" placeholder="请输入姓名之后的内容，限15个字" ><?php echo $model_SurveyResulte->value;?></textarea>
 			</div>
 		</div>
+		<div class="BlankBlock" style="text-align: left;">			
+				比如，在姓名前输入“经测试认为”，在姓名后输入“是《甄嬛传》中的甄嬛”，那么，张三在测试时，测试结果可能会是“经测试认为<span style="color:#FE8C78;font-weight:bold;">张三</span>是《甄嬛传》中的甄嬛。			
+		</div>
 		<div class="BlankBlock">
 		    <div class="BlockTitle">
 				<h2>测试结果详情</h2>
@@ -237,7 +242,7 @@ text-align:left;
 		</div>
 		<?php } ?>
 		<div class="form-group field-images-image">
-            <label class="control-label upload-click" for="images-image">上传图片
+            <label class="control-label upload-click" for="images-image">上传图片结果配图
                 <div id="BlockCon" class="">
                     <i class="QaddImg ">    
                     </i>
@@ -267,26 +272,30 @@ text-align:left;
             $model->tax == 1 ? $prv_url = Yii::$app->urlManager->createUrl( ['survey/step1_3','id'=>$model->id] ) : '';
             $model->tax == 3 ? $prv_url = Yii::$app->urlManager->createUrl( ['survey/step4_2_question','id'=>$model->id] ) : '';
             ?>
-			<a 
+			<a  style="width: 28%;"
 			href="<?php echo $prv_url;?>" 
 			id="prev-step">上一步</a> 
 		</div>
-        <button type="submit" name="save-next" class="btn_bg add-btn"><?php echo $submitAddText;?></button>
         
-        <button type="submit" name="save" class="btn_bg btn btn-primary save"><?php echo $submitNexText;?></button>
+        <div class="btn_bg btn-2 btn-100" style="margin:0;margin-left:4.8%;width: 28%;" >
+			<a 
+			href="<?php echo Yii::$app->urlManager->createUrl(['survey/result-delete','id'=>$model->id,'page'=>$page]);?>" 
+			id="prev-step">删除</a> 
+		</div>
         
+        
+        <button type="submit" name="save-next" class="btn_bg add-btn" style="float:right;margin-left: 0;width: 28%;"><?php echo $submitAddText;?></button>
         
 		<a class="btn_bg" style="display:none;width: 98.5%;margin-top: 15px;"
 		href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
 	       <input type="button"  value="预览"> 
 	    </a> 
         
-        <div class="btn_bg btn-2 btn-100" >
-			<a 
-			href="<?php echo Yii::$app->urlManager->createUrl(['survey/result-delete','id'=>$model->id,'page'=>$page]);?>" 
-			id="prev-step">删除</a> 
-		</div>
+        <button type="submit" name="save" class="btn_bg btn btn-primary save" style="width: 100%;margin: 20px 0 20px 0;"><?php echo $submitNexText;?></button>
+		
  <?php ActiveForm::end(); ?>
+            <p class="text-hint"><?php echo $text_hint;?></p>
+            <br/>
         <div class="resulte">
 			
 		</div>

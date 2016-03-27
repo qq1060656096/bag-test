@@ -143,3 +143,7 @@ display: block;
 .mui-grid-view.mui-grid-9 .mui-table-view-cell{
 	margin-bottom: 15px;
 }
+.text-hint{
+	text-align: center;
+	font-size: 1.3em;
+}

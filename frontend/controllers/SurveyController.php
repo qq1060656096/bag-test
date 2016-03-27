@@ -405,7 +405,7 @@ str;
             if(!$model || $model->uid != ZCommonSessionFun::get_user_id())
                 return $this->redirect(['my']);
         
-            $this->view->title = $model->title;
+            $this->view->title = '奇趣测试';//$model->title;
             $tax = $model->tax;
         }
         if(isset($_POST['Survey']['arithmetic'])){
@@ -794,8 +794,7 @@ str;
             'count'=>$model_SurveyResulteDetail['count'],
             'model_SurveyResulteDetail'=>$model_SurveyResulteDetail,
             'question_total_score'=>$question_total_score,
-            'question_total_min_score'=>$question_total_min_score,//可选最小分数
-            
+            'question_total_min_score'=>$question_total_min_score,//可选最小分数            
         ]);
     }
     
@@ -938,20 +937,26 @@ str;
             $message .= $message==''&& isset($check_arr['message']) && !empty($check_arr['message']) ? $check_arr['message']:'';
             $message ? $message.='不能发布。':null;
 //             ZCommonFun::print_r_debug($check_arr);
-//             exit;
+//             exit;\
+            $status = 0;
             if($message==''){
                 $model->is_publish=1;
                 if($model->save()){
                     $message='发布成功';
+                    $status =0;
                     return $this->redirect(['survey/index','sort'=>1]);
                 }else{
                    $message='发布失败';
+                   $status = 1;
                 } 
+            }else{
+                $status =1;
             }
             //ajax发布
             if(isset($_GET['is_ajax']) && $_GET['is_ajax'] ){
                 $this->layout = false;
                 $json['message'] = $message; 
+                $json['status'] = $status;
                 header('Content-type: application/json');
                 echo json_encode($json);
 //                 ZCommonFun::print_r_debug($json);
