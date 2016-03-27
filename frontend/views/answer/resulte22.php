@@ -34,8 +34,8 @@ $op_name='最新';
 <meta name="description" content="<?php echo ZController::$description;?>">
 <title>
 <?php
-echo empty(ZController::$site_name) ? '' : ZController::$site_name . ' - ';
-echo $this->title, ' ', $model->title;
+echo empty(ZController::$site_name) ? '-' : ZController::$site_name . '(';
+echo $this->title, ' ', $model->title,')-',$model_SurveyResulte->intro;
 
 $create_url = Yii::$app->urlManager->createAbsoluteUrl([
     'survey/step1',
