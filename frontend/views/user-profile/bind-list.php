@@ -126,7 +126,7 @@ label, label input {
 <div id="main_body">
 	<header class="s_header">
 		<nav>
-
+            <a href="javascript:history.back();" class="bg"> <span class="fa ">返回</span></a>
 
 			<span style="font-size: 1.4rem"><?php echo $this->title;?></span>
 		</nav>
@@ -138,9 +138,14 @@ label, label input {
 				<td class="td-l"></td>
 
 			</tr>
+			<!-- 
 			<tr>
 				<td class="td-l">当前<span style="color:#FE8C78;">账号</span>登录</td>
 				<td class="td-r"></td>
+			</tr>
+			 -->
+			<tr>
+				<td colspan="1">当前<span style="color:#FE8C78;">账号</span>登录</td>
 			</tr>
 		</table>
 	</div>

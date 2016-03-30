@@ -111,7 +111,7 @@ $this->title .='.封面图';
 		
 
         <?php ActiveForm::end(); ?>
-        <p class="text-hint">保存配图后，在下一步，你需要依次创建不少于<?php echo SurveyController::stepCount($tax)-2;?>个测试结果。后面还有3个步骤，这个测试就能创建完毕。</p>
+        <p class="text-hint">保存配图后，在下一步，你需要依次创建不少于2个测试结果。后面还有<?php echo SurveyController::stepCount($tax)-2;?>个步骤，这个测试就能创建完毕。</p>
 	</section>
 		
       

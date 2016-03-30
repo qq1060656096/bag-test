@@ -20,6 +20,7 @@ use common\z\ZCommonFun;
 use common\models\UsersFriends;
 use common\models\Message;
 use common\models\User;
+use common\models\common\models;
 /**
  * Site controller
  */
@@ -76,7 +77,7 @@ class MyController extends Controller
      * 他人主页，无权限
      */
     public function actionPersonalPage($uid=0){
-        $this->getView()->title = 'Ta创建的测试';
+        $this->getView()->title = User::getTaUidShowName($uid).'个人主页';
         $this->layout = false;
         $uid = intval($uid);
         $uid = $uid>0 ? $uid : 0;
@@ -224,5 +225,109 @@ class MyController extends Controller
         } 
         echo json_encode($json);
         exit;
+    }
+    
+    /**
+     * 指定用户的粉丝
+     * @param integer $uid
+     */
+    public function actionUidFans($uid){
+        $this->layout = false;
+        $uid = intval($uid);
+        $this->view->title = User::getUidShowName($uid).'的粉丝';
+        $model = new UsersFriends();
+        $condition['uid'] = $uid;
+        $data = $model->getList($condition, null, $this->pageSize);
+        if(isset($_GET['ajax'])){
+            $status = 0;
+        
+            $html = '';
+            if( isset($_GET[$data['pagination']->pageParam])&& $data['pagination']->pageCount < $_GET[$data['pagination']->pageParam]  ){
+                $data['models']  = [];
+            }
+//             ZCommonFun::print_r_debug($data);
+            foreach ($data['models'] as $key => $row){
+                $ta_url = Yii::$app->urlManager->createUrl(['my/personal-page','uid'=>$row->fuid]);
+                $ta_image = User::getTaUidShowHead_image($uid);
+                $ta_nickname = User::getTaUidShowName($uid);
+                $ta_intro = User::getTaUidShowIntro($uid);
+                $html .=<<<str
+                <ul class="list" id="answer-view">
+           <li class="diy-item"><a
+					href="$ta_url"
+					target="_blank">
+						<figure class="cover">
+							<img src="$ta_image"
+								class="tuijian-img">
+						</figure>
+						<div class="diy-meta">
+            				<div class="title mui-ellipsis">本测试创建者:&nbsp;{$ta_nickname}</div>
+            				<span class="iconfont icon-start-filled5"></span>
+            				<div class="desc mui-ellipsis">{$ta_intro}</div>
+            			</div>
+				</a></li>
+                </ul>
+str;
+            }
+            echo $html;
+            exit;
+        }
+        
+        return $this->render('fans',[
+            'a_models' => $data['models'],
+            'uid'=>$uid,
+            'ajax_url'=>Yii::$app->urlManager->createUrl(['my/uid-fans','uid'=>$uid,'page'=>'#page#','ajax'=>'1']),
+        ]);
+    }
+    /**
+     * 指定用户关注的人
+     * @param integer $uid
+     */
+    public function actionUidConcern($uid){
+        $this->layout = false;
+        $uid = intval($uid);
+        $this->view->title = User::getUidShowName($uid).'关注的人';
+        $model = new UsersFriends();
+        $condition['fuid'] = $uid;
+        $data = $model->getList($condition, null, $this->pageSize);
+        if(isset($_GET['ajax'])){
+            $status = 0;
+        
+            $html = '';
+            if( isset($_GET[$data['pagination']->pageParam])&& $data['pagination']->pageCount < $_GET[$data['pagination']->pageParam]  ){
+                $data['models']  = [];
+            }
+            //             ZCommonFun::print_r_debug($data);
+            foreach ($data['models'] as $key => $row){
+                $ta_url = Yii::$app->urlManager->createUrl(['my/personal-page','uid'=>$row->fuid]);
+                $ta_image = User::getTaUidShowHead_image($uid);
+                $ta_nickname = User::getTaUidShowName($uid);
+                $ta_intro = User::getTaUidShowIntro($uid);
+                $html .=<<<str
+                <ul class="list" id="answer-view">
+           <li class="diy-item"><a
+					href="$ta_url"
+					target="_blank">
+						<figure class="cover">
+							<img src="$ta_image"
+								class="tuijian-img">
+						</figure>
+						<div class="diy-meta">
+            				<div class="title mui-ellipsis">本测试创建者:&nbsp;{$ta_nickname}</div>
+            				<span class="iconfont icon-start-filled5"></span>
+            				<div class="desc mui-ellipsis">{$ta_intro}</div>
+            			</div>
+				</a></li>
+                </ul>
+str;
+            }
+            echo $html;
+            exit;
+        }
+        return $this->render('fans',[
+     
+            'uid'=>$uid,
+            'ajax_url'=>Yii::$app->urlManager->createUrl(['my/uid-concern','uid'=>$uid,'page'=>'#page#','ajax'=>'1']),
+        ]);
     }
 }

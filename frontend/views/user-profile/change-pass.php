@@ -13,7 +13,7 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 <div id="main_body">
     <header class="s_header">
 		<nav>
-
+            <a href="javascript:history.back();" class="bg"> <span class="fa ">返回</span></a>
 
 			 <span style="font-size: 1.4rem"><?php echo $this->title;?></span>
 		</nav>
@@ -33,7 +33,7 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
     			<?= $form->field($model, 'flag')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'再次输入新密码'])->label('重复密码') ?>
     		</div>
     		
-    		<input type="submit" id="submit" value="完 成">
+    		<input type="submit" id="submit" value="保存">
     	<?php ActiveForm::end(); ?>
     </section>
 

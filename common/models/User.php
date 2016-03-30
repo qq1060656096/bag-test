@@ -258,13 +258,19 @@ class User extends \yii\db\ActiveRecord
         return '';
     }
     
-    public static function getTaUidShowName($uid){
+    public static function getTaUidShowName($uid,$is_cache=true){
+        static $data = null;
+        if( $data!== null && $is_cache){
+            return  $data ;
+        }
         $model = new User();
         $model = $model->findOne($uid);
         if($model){
-            return $model->getTaShowName();
+            $data = $model->getTaShowName();
+        }else{
+            $data = '';
         }
-        return '';
+        return $data;
     }
     
     public function getTaShowName(){
@@ -282,18 +288,37 @@ class User extends \yii\db\ActiveRecord
      */
     public static function getTaUidShowIntro($uid){
         $model = new User();
-        $model1 = $model->findOne($uid);
+        $model = $model->findOne($uid);
         if($model){
             return $model->getTaShowIntro();
         }
-        return '';
+        return 'Ta什么都没留下';
     } 
     public function getTaShowIntro(){
         if( $this->userProfile && !empty($this->userProfile->nickname) ){
-            return $this->userProfile->intro;
+            return !empty($this->userProfile->intro )? $this->userProfile->intro:'Ta什么都没留下';
         }else{
             return 'Ta什么都没留下';
         }
     }
-    
+    /**
+     * 获取头像
+     * @param unknown $uid
+     * @return string
+     */
+    public static function getTaUidShowHead_image($uid){
+        $model = new User();
+        $model = $model->findOne($uid);
+        if($model){
+            return $model->getTaShowHead_image();
+        }
+        return './images/head_image.png';
+    }
+    public function getTaShowHead_image(){
+        if( isset($this->userProfile->head_image)  ){  
+            return $this->userProfile->getHeadImage0();
+        }else{
+            return './images/head_image.png';
+        }
+    }
 }

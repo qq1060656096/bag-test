@@ -46,8 +46,9 @@ label, label input {
 .a-left,.a-right{
 	padding: 0px 5px;
     float: left;
-    border: 1px solid #ddd;
+    /*border: 1px solid #ddd;*/
 	display: inline-block;
+	color: #999;
 }
 .user-info{
 	border-bottom: 1px solid #ddd;
@@ -58,10 +59,11 @@ label, label input {
 	width: 100%;
 }
 .user-info td{
-	width: 50%;
+	width: 40%;
 	text-align: center;
 }
 .user-info td.td-r{
+	width: 60%;
 	text-align: left;
 	padding-bottom: 5px;
 }
@@ -77,6 +79,11 @@ label, label input {
 	padding: 5px;
 	margin: auto;
 	color: #fff;
+	
+}
+.user-info2>input,.user-info2 input.btn-z-bind{
+	font-size: 13px !important;
+	font-weight: 100;
 }
 .user-info2>input.btn-z-bind{
 	margin-top: 12px;
@@ -100,7 +107,7 @@ label, label input {
     			     头像
     			</td>
     			<td class="td-r">
-    			    <?php echo isset($sessionUser['head_image']) ? '<img width="48" height="48" src="'.$sessionUser['head_image'].'"/>': '<i class="fa fa-user user-image  common-color"></i>'?>
+    			    <?php echo $model->getHeadImage0() ? '<img width="48" height="48" src="'.$model->getHeadImage0().'"/>': '<i class="fa fa-user user-image  common-color"></i>'?>
     				
     			</td>
     		</tr>
@@ -110,7 +117,7 @@ label, label input {
     			</td>
     			<td class="td-r">
     			    <a class="a-left">
-    			         <?php echo isset($sessionUser['nickname']) ? $sessionUser['nickname']: '暂无昵称'?>
+    			         <?php echo !empty($model->nickname) ? $model->nickname : '暂无昵称'?>
     			    </a>
     			</td>
     		</tr>
@@ -158,7 +165,7 @@ label, label input {
     		<div class="input-wrap">
     			<?= $form->field($model, 'school')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'学校']) ?>
     		</div>
-    		<input type="submit" id="submit" value="完 成">
+    		<input type="submit" id="submit" value="保存">
     	<?php ActiveForm::end(); ?>
     </section>
 

@@ -45,6 +45,7 @@ class UserProfileController extends Controller
         $load = $model->load(Yii::$app->request->post());
        
         if ( $load && $model->save()) {
+            
             return $this->redirect(['bind']);
         } else {
             return $this->render('_form', [

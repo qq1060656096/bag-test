@@ -29,7 +29,7 @@ use common\z\ZController;
 	color: red;
 }
 .btn_bg{
-	width:39% !important;
+	/*width:39% !important;*/
 	background-color: #245D94;
     height: 44px;
     padding: 0;
@@ -86,12 +86,13 @@ use common\z\ZController;
         </div>
 
         <div class="form-group">
+            <!-- 
             <div class="btn_bg">
                 <button type="button"  onclick="javascript:window.top.document.location='<?php echo Yii::$app->urlManager->createUrl(['login/login'])?>' " 
                     class="">登录</button>
             </div>
-  
-            <div class="btn_bg btn_bg2">
+            -->
+            <div class="btn_bg btn_bg2" >
                 <button type="submit" class="">注册</button>
             </div>
         </div>

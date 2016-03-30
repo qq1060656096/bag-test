@@ -3,7 +3,7 @@
 namespace common\models;
 
 use Yii;
-
+use yii\data\Pagination;
 /**
  * This is the model class for table "users_friends".
  *
@@ -112,5 +112,28 @@ class UsersFriends extends \yii\db\ActiveRecord
         $count = $model->find()->where($condition)->count();
 //         echo $model->find()->where($condition)->createCommand()->getRawSql();
         return $count;
+    }
+    
+    public function getList($condition ,$page,$page_size){
+        $pagination = new Pagination();
+        
+        $model = new UsersFriends();
+        $query = $model->find();
+        $query->where($condition);
+    
+        $count = $query->count();
+        $models = $query->all();
+        isset($models[0]) ? null : $models = [];
+        $pagination->pageSize = $page_size;
+        //总数量
+        $pagination->totalCount = $count;
+        $offset = $pagination->getOffset();
+        $limit = $pagination->getLimit();
+        $query->offset($offset);
+        $query->limit($limit);
+        
+        $temp_data['models'] = $models;
+        $temp_data['pagination'] = $pagination;
+        return $temp_data;
     }
 }
