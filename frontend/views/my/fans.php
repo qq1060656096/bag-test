@@ -105,7 +105,7 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 <link href="./bag-test/bootstrap/datetimepicker.css" rel="stylesheet" media="screen">
 
 <script type="text/javascript" src="./bag-test/bootstrap/jquery.min.js"></script>    
-
+<script src="./js/concern.js"></script>
 <script type="text/javascript">
 page = 0;
 pulldownRefreshEvent();

@@ -107,7 +107,7 @@ label, label input {
     			     头像
     			</td>
     			<td class="td-r">
-    			    <?php echo $model->getHeadImage0() ? '<img width="48" height="48" src="'.$model->getHeadImage0().'"/>': '<i class="fa fa-user user-image  common-color"></i>'?>
+    			    <?php echo $model->getHeadImage0() ? '<img id="head_image" width="48" height="48" src="'.$model->getHeadImage0().'"/>': '<i class="fa fa-user user-image  common-color"></i>'?>
     				
     			</td>
     		</tr>
@@ -140,8 +140,9 @@ label, label input {
 	<section class="s_reg s_login">
     	<div class="notice" title="太好了，完成最后一步吧^o^~">&nbsp;</div>
     	<?php $form = ActiveForm::begin(); ?>
-    	
-    		
+    	   <?= $form->field($model, 'head_image')->hiddenInput(['maxlength' => true,'class'=>'','placeholder'=>'头像'])->label(false) ?>
+    		 <input id="upload" type="file" name="file" style="display:none;"/>
+            
     		<div class="input-wrap">
     			<?= $form->field($model, 'nickname')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'昵称']) ?>
     		</div>
@@ -177,33 +178,58 @@ label, label input {
 
 <script src="./bag-test/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript" src="./bag-test/bootstrap/bootstrap-datetimepicker.min.js"></script>
+<script src="common/php-html5-uploadz/ZHtml5Upload.js">
+</script>
 <script type="text/javascript">
-(function($){
-	$.fn.datetimepicker.dates['zh-CN'] = {
-			days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
-			daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-			daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
-			months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-			monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-			today: "今天",
-			suffix: [],
-			meridiem: ["上午", "下午"]
-	};
-}(jQuery));
+// (function($){
+// 	$.fn.datetimepicker.dates['zh-CN'] = {
+// 			days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+// 			daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+// 			daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
+// 			months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+// 			monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+// 			today: "今天",
+// 			suffix: [],
+// 			meridiem: ["上午", "下午"]
+// 	};
+// }(jQuery));
 $(document).ready(function(){
-	 $("#userprofile-birthday").datetimepicker({
-		 format:'yyyy-mm-dd',
-		 language:'zh-CN',
-		 startView:4,
-// 		 viewSelect:'day',
-		 todayBtn: true,
-		 todayHighlight:true,
-		 minView: 2,
-		 autoclose: true
+// 	 $("#userprofile-birthday").datetimepicker({
+// 		 format:'yyyy-mm-dd',
+// 		 language:'zh-CN',
+// 		 startView:4,
+// // 		 viewSelect:'day',
+// 		 todayBtn: true,
+// 		 todayHighlight:true,
+// 		 minView: 2,
+// 		 autoclose: true
 		
-     }).on('changeDate', function(ev){
-    	    console.log(ev.date);
+//      }).on('changeDate', function(ev){
+//     	    console.log(ev.date);
+//      });
+
+    $("#head_image").click(function(){
+    	$("#upload").click();
      });
+	 $("#upload").ZHtml5Upload({
+			uploadSucess: function(result,uploadz){
+				var json = $.parseJSON(result);
+				//console.log( json );
+				if( json.result.status==1 && json.id){
+					$("#userprofile-head_image").val('<?php echo Yii::$app->request->baseUrl,UPLOAD_DIR;?>'+json.id);
+			    }
+				
+				//console.log(this);
+				if( uploadz.isReaderFile ){
+			
+					$("#head_image").attr('src','<?php echo Yii::$app->request->baseUrl,UPLOAD_DIR;?>'+json.id);
+				}
+				console.log( uploadz.base64Data );
+			},
+			uploadError: function(result){
+				console.log( result);
+			}
+		});
 });
    
 </script> 
