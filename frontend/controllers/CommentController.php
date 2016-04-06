@@ -21,29 +21,39 @@ class CommentController extends Controller
     {
         $id = Yii::$app->request->get('id', 0);
         $uid = Yii::$app->request->get('uid', 0);
+
+        $ta_me = Yii::$app->request->get('ta_me', 0);
         $condition['table_id'] = $id;
 //         $condition['table']  = self::$messageTable;
         // 分页
-        
+
         $count = Message::find()->where($condition)->count();
         $pagination = new Pagination();
         $pagination->totalCount = $count;
         $pagination->pageSize = ZCommonFun::getPageSize();
-        
+
         $model_Message = new Message();
         $where = null;
-        $data = $model_Message->getList($uid, '', 10, $where);
+        $login_uid = ZCommonSessionFun::get_user_id();
+        //Ta与我私信
+        if($ta_me==1){
+
+
+            $data = $model_Message->getTaList($uid, $login_uid, '', 10, null);
+        }else{
+            $data = $model_Message->getList($uid, '', 10, $where);
+        }
 //         ZCommonFun::print_r_debug($data);
         isset($data['models'][0]) ?  : $data['models'] = [];
-      
-      
+
+
         if(count($data['models'])<1 ){
             //             echo $page,$pageCount;
             //超过最后一页
-          
+
                 echo '';
                 exit;
-            
+
         }
          foreach( $data['models'] as $key=>$model_Message){
              $name = isset($model_Message->fromUser) ? $model_Message->fromUser->getShowName():'';
@@ -53,8 +63,9 @@ class CommentController extends Controller
              $comment_add_url = Yii::$app->urlManager->createUrl(['comment/add','id'=>$id,'tid'=>$model_Message->from_uid,'content'=>'#content#']);
              $to_uid_url = Yii::$app->urlManager->createUrl(['my/personal-page','uid'=>$model_Message->to_uid]);
              $to_show_name = isset($model_Message->toUser) ? $model_Message->toUser->getShowName():'';
+             $now_uid = $login_uid>0 && $model_Message->from_uid!=$login_uid ? $model_Message->from_uid: $model_Message->to_uid;
             echo <<<str
-<li class="module-infobox layout-box media-graphic line-bottom" uid="{$model_Message->from_uid}" comment-url="{$comment_add_url}">
+<li class="module-infobox layout-box media-graphic line-bottom" uid="{$now_uid}" comment-url="{$comment_add_url}">
     <a href="javascript:void(0);" class="mod-media size-xs">
         <div class="media-main">
     		<img src="{$head_image}" height="34" width="34" data-bd-imgshare-binded="1">
@@ -76,7 +87,7 @@ class CommentController extends Controller
     </a>
 </li>
 str;
-            
+
         }
         exit;
     }
@@ -92,22 +103,22 @@ str;
         $to_uid = $to_uid ? (int) $to_uid : 0;
         $uid = ZCommonSessionFun::get_user_id();
         $content = Yii::$app->request->get('content', '');
-        
+
 //         if ($id < 1)
 //             ZCommonFun::output_json(null, 1, '页面不存在');
-            
+
             /*
          * if($to_uid < 1 )
          * ZCommonFun::output_json(null, 1, '页面不存在3');
          */
         if (empty($content))
             ZCommonFun::output_json(null, 2, '评论内容不能为空');
-        
+
         if ($uid < 1)
             ZCommonFun::output_json(null, -1, '请登录');
         if($to_uid==$uid)
             ZCommonFun::output_json(null, 3, '私信不能发给自己');
-        
+
         $model_Message = new Message();
         $model_Message->from_uid = $uid;
         $model_Message->to_uid = $to_uid;

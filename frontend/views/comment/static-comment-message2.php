@@ -1,4 +1,4 @@
-<div class="ux-popmenu ux-popmenu1" style="position: fixed; display: none; background-color: rgba(0, 0, 0, 0.498039);vertical-align: bottom;">
+<div class="ux-popmenu ux-popmenu1" style="background-color: rgba(0, 0, 0, 0.498039);vertical-align: bottom;">
 <div id="box-comment" class="container stage-publisher">
 
 	<div id="boxId_1447072618335_3"></div>
@@ -11,7 +11,7 @@
 	</header>
 	<article class="module-publisher" >
 		<div class="txt-publisher-wrapper">
-		    <input type="text" id="txt-to_uid" uid="" name="content" class="" placeholder="@Ta"/>
+		    <input type="text" disabled="disabled" id="txt-to_uid" uid="" name="content" class="" placeholder="@Ta" value="@<?php echo $ta_user_showNickname;?>"/>
 			<textarea id="txt-publisher" name="content" class="J-textarea txt-publisher" placeholder="内容"></textarea>
 		</div>
 		<div class="wrapper-info-publisher">

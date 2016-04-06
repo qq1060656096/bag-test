@@ -77,18 +77,18 @@ class Message extends \yii\db\ActiveRecord
      */
     public function getList($uid,$table,$pageSize,$where,$sort = ['add_time'=>SORT_DESC]){
         $model_Message = new Message();
-  
+
         $query = $model_Message->find()->where('`table`=:table and (from_uid=:from_uid or to_uid=:to_uid)',
             [':table'=>$table,':from_uid'=>$uid,'to_uid'=>$uid])
         ;
-        
+
         if($where){
             $query->andWhere($where);
         }
         if($sort){
             $query->orderBy($sort);
         }
-        
+
         $pagination = new Pagination();
         $pagination->totalCount = $query->count();
 
@@ -101,12 +101,12 @@ class Message extends \yii\db\ActiveRecord
         if( isset($_GET[$pagination->pageParam])&& $pagination->pageCount < $_GET[$pagination->pageParam]  ){
             $a_models = [];
         }
-        
+
         $temp_data['models'] = $a_models;
         $temp_data['pagination'] = $pagination;
         return $temp_data;
     }
-    
+
     /**
      * 获取列表数据
      * @param integer $ta_uid
@@ -118,27 +118,27 @@ class Message extends \yii\db\ActiveRecord
      * @return []
      */
     public function getTaList( $ta_uid , $login_uid , $table,$pageSize,$where,$sort = ['add_time'=>SORT_DESC]){
-        
+
         $arr = [
             $ta_uid,$login_uid
         ];
         $arr = array_unique( $arr );
         $str = implode(',', $arr);
         $model_Message = new Message();
-    
-        $query = $model_Message->find()->where('`table`=:table and ( from_uid in( '.$str.' ) or to_uid  in( '.$str.' ) ) ',
+
+        $query = $model_Message->find()->where("`table`=:table and ( (from_uid=$login_uid and to_uid=$ta_uid ) or (from_uid=$ta_uid and to_uid=$login_uid ) ) ",
             [':table'=>$table ] ) ;
-    
+
         if($where){
             $query->andWhere($where);
         }
         if($sort){
             $query->orderBy($sort);
         }
-    
+
         $pagination = new Pagination();
         $pagination->totalCount = $query->count();
-    
+
         $offset = $pagination->getOffset();
         $limit = $pagination->getLimit();
         $query->offset($offset);
@@ -149,12 +149,12 @@ class Message extends \yii\db\ActiveRecord
         if( isset($_GET[$pagination->pageParam])&& $pagination->pageCount < $_GET[$pagination->pageParam]  ){
             $a_models = [];
         }
-    
+
         $temp_data['models'] = $a_models;
         $temp_data['pagination'] = $pagination;
         return $temp_data;
     }
-    
+
     /**
      * 添加关注日志
      * @param integer $from_uid 发送者uid
@@ -178,12 +178,12 @@ class Message extends \yii\db\ActiveRecord
         $model->table_id = $table_id;
         $model->add_time = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);
         return $model->save();
-    } 
-    
+    }
+
     public function getFromUser(){
         return $this->hasOne(User::className(), ['uid'=>'from_uid']);
     }
-    
+
     public function getToUser(){
         return $this->hasOne(User::className(), ['uid'=>'to_uid']);
     }

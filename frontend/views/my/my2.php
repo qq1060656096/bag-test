@@ -17,33 +17,33 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 
 <script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js"></script>
 <div id="main_body">
-    
-	
+
+
 	<?php echo $this->renderFile(__DIR__.'/../layouts/head-top.php');?>
-	
+
 	<section class="s_moreread">
-			
+
 			<?php echo $this->renderFile(__DIR__.'/header-user.php',['uid'=>$uid]);?>
-			
+
 			<div class="list_box">
-    			<?php 
-                foreach ($a_models as $key=>$row){            
-//                     ZCommonFun::print_r_debug($row->images);  
+    			<?php
+                foreach ($a_models as $key=>$row){
+//                     ZCommonFun::print_r_debug($row->images);
                     switch( $row->tax){
-                        case 1: 
+                        case 1:
                             $row_url = Yii::$app->urlManager->createUrl(['answer/step1','id'=>$row->id]);
                             break;
-                        case 2: 
+                        case 2:
                         case 3:
                             $row_url = Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$row->id]);
                             break;
                         default: $row_url='';break;
                     }
                     $row_ur_done   = Yii::$app->urlManager->createUrl(['survey/done','id'=>$row->id]);
-                    //发布  
+                    //发布
                     $row_ur_done_publish   = Yii::$app->urlManager->createUrl(['survey/done','is_ajax'=>1,'id'=>$row->id]);
-                    $row_ur_change = Yii::$app->urlManager->createUrl(['survey/step2','id'=>$row->id]); 
-                    $image = common\models\Survey::getImageUrl($row);         
+                    $row_ur_change = Yii::$app->urlManager->createUrl(['survey/step2','id'=>$row->id]);
+                    $image = common\models\Survey::getImageUrl($row);
                 ?>
 				<dl>
 					<a href="<?php echo $row_url;?>">
@@ -58,7 +58,7 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 						<dd>
 						      <a class="btn_bg" href="<?php echo $row_url;?>">去测试</a>
 						      &nbsp; &nbsp;
-						      
+
 							  <span>测试过：<?php echo $row->answer_count;?></span>
 						</dd>
 					</a>
@@ -66,10 +66,10 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
                 <?php } ?>
 			</div>
 			<div class="load_more">加载更多</div>
-			
+
 		</section>
-		
-      
+
+
  </div>
  <script type="text/javascript">
  ajaxLoad();
@@ -105,13 +105,13 @@ $(document).ready(function(){
  */
 function ajaxLoad(){
 	page = 1;
-	isAjaxLoad = false; 
+	isAjaxLoad = false;
     $(".load_more").click(function(){
         var now =$(this);
         page++;
         var url = "<?php echo $ajax_url;?>";
         url = url.replace('%23page%23',page);
-        
+
         //有没有执行ajax就执行ajax,在执行，等执行后在加载
         if(!isAjaxLoad){
         	isAjaxLoad = true;

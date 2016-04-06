@@ -14,7 +14,7 @@
 }
 .user-info table td{
 	vertical-align: bottom;
-	
+
 }
 .user-info .td-2,.user-info .td-3{
 	line-height:2em;
@@ -59,7 +59,7 @@
 	margin-left: 20px;
 }
 </style>
-<?php 
+<?php
 use common\z\ZCommonSessionFun;
 use common\z\ZCommonFun;
 use common\models\UsersFriends;
@@ -78,7 +78,7 @@ $url_user_setting = Yii::$app->urlManager->createUrl(['user-profile/bind']);
 $url_logout = Yii::$app->urlManager->createUrl(['login/logout']);
 $url_ta_me_test = Yii::$app->urlManager->createUrl(['my/personal-page','uid'=>$uid]);
 $url_ta_test = Yii::$app->urlManager->createUrl(['my/my-test','uid'=>$uid]);
-$url_ta_message = Yii::$app->urlManager->createUrl(['my/my-message','to_uid'=>$uid]);
+$url_ta_message = Yii::$app->urlManager->createUrl(['my/ta-me-message','uid'=>$uid]);
 $login_uid = ZCommonSessionFun::get_user_id();
 $concern_status = 0;
 if($login_uid<1){
@@ -114,20 +114,20 @@ foreach ($header_user_menu as $key=>$header_user_menu_row){
 			</td>
 			<td class="td-2">
 				<h3 class="common-color"><label style="color: #333;">昵称</label>&nbsp;<?php echo User::getTaUidShowName($uid); ?></h3>
-				
+
 				<div>
 					签名<sapn class="common-color">
 					<?php echo User::getTaUidShowIntro($uid); ?>
 					</sapn>
 				</div>
-				
+
 			</td>
 			<td class="td-3">
 			     <div>
-			        <?php 
+			        <?php
 			        $url = '';
 			        $concer_text = '';
-			  
+
 			        switch ($concern_status){
 			            case 1:
 			                $url = Yii::$app->urlManager->createUrl(['my/concern','fuid'=>$uid]);
@@ -145,28 +145,28 @@ foreach ($header_user_menu as $key=>$header_user_menu_row){
 			        ?>
 					<a url="<?php echo $url; ?>" class="concern" onclick="concern(this)"><?php echo $concer_text; ?></a>
 				</div>
-				
+
 			</td>
 		</tr>
 		<tr>
 			<td class="td-1">
-			    
+
 			</td>
 			<td class="td-2">
-				
-				
+
+
 				<div>
 					创建<sapn class="common-color">
 					<?php echo $model_SurveyTotal->getMySurveyCount($uid);?>
 					</sapn>个
 				</div>
-				
+
 				<div onclick="javascript:window.top.document.location='<?php echo Yii::$app->urlManager->createUrl(['my/uid-concern','uid'=>$uid])?>'">
 					关注<sapn class="common-color"><?php echo UsersFriends::get_concern_count($uid,true);?></sapn>人
 				</div>
 			</td>
 			<td class="td-3">
-			  
+
 				<div >
 					测过<sapn class="common-color"><?php echo UserProfile::getTestingCount($uid);?></sapn>次
 				</div>
@@ -177,12 +177,12 @@ foreach ($header_user_menu as $key=>$header_user_menu_row){
 		</tr>
 	</table>
 </div>
-<?php 
+<?php
 
 ?>
 <nav class="user-menu">
-	<a href="<?php echo $url_ta_me_test;?>" class="<?php echo $header_user_name_select0;?>">Ta创建的<span class="vertical-line" style="font-size:100%;border-right:1px dashed #ddd;"></span></a> 
-	<a href="<?php echo $url_ta_test;?>" class="<?php echo $header_user_name_select1;?>">Ta测过的<span class="vertical-line" style="font-size:100%;border-right:1px dashed #ddd;"></span></a> 
+	<a href="<?php echo $url_ta_me_test;?>" class="<?php echo $header_user_name_select0;?>">Ta创建的<span class="vertical-line" style="font-size:100%;border-right:1px dashed #ddd;"></span></a>
+	<a href="<?php echo $url_ta_test;?>" class="<?php echo $header_user_name_select1;?>">Ta测过的<span class="vertical-line" style="font-size:100%;border-right:1px dashed #ddd;"></span></a>
 	<a href="<?php echo $url_ta_message;?>">给Ta的私信<span class="vertical-line"></span></a>
 </nav>
 
