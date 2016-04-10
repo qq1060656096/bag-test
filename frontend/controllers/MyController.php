@@ -385,7 +385,7 @@ class MyController extends Controller
 								class="tuijian-img">
 						</figure>
 						<div class="diy-meta">
-            				<div class="title mui-ellipsis">本测试创建者:&nbsp;{$ta_nickname}</div>
+            				<div class="title mui-ellipsis">{$ta_nickname}</div>
             				<span class="iconfont icon-start-filled5"></span>
             				<div class="desc mui-ellipsis">{$ta_intro}</div>
             			</div>
@@ -462,7 +462,7 @@ str;
 								class="tuijian-img">
 						</figure>
 						<div class="diy-meta">
-            				<div class="title mui-ellipsis">本测试创建者:&nbsp;{$ta_nickname}</div>
+            				<div class="title mui-ellipsis">{$ta_nickname}</div>
             				<span class="iconfont icon-start-filled5"></span>
             				<div class="desc mui-ellipsis">{$ta_intro}</div>
             			</div>

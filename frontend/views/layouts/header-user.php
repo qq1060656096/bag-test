@@ -22,7 +22,7 @@
 }
 .user-info table td{
 	vertical-align: bottom;
-	
+
 }
 .user-info .td-2,.user-info .td-3{
 	line-height:2em;
@@ -68,7 +68,7 @@
 	float: right;
 }
 </style>
-<?php 
+<?php
 use common\z\ZCommonSessionFun;
 use common\z\ZCommonFun;
 use common\models\UsersFriends;
@@ -120,26 +120,26 @@ foreach ($header_user_menu as $key=>$header_user_menu_row){
 			</td>
 			<td class="td-3">
 			     <div>
-					
+
 					<a class="a-left" href="<?php echo $url_user_setting;?>">设置</a>
 					<a class="a-right" href="<?php echo $url_logout;?>">退出</a>
 				</div>
-				<div>
+				<div onclick="javascript:window.top.document.location='<?php echo Yii::$app->urlManager->createUrl(['my/uid-concern','uid'=>$sessionUser['uid']])?>'">
 					测过<sapn class="common-color"><?php echo UserProfile::getTestingCount(ZCommonSessionFun::get_user_id());?></sapn>次
 				</div>
-				<div>
+				<div onclick="javascript:window.top.document.location='<?php echo Yii::$app->urlManager->createUrl(['my/uid-fans','uid'=>$sessionUser['uid']])?>'">
 					粉丝<sapn class="common-color"><?php echo UsersFriends::get_concern_count(ZCommonSessionFun::get_user_id());?></sapn>人
 				</div>
 			</td>
 		</tr>
 	</table>
 </div>
-<?php 
+<?php
 
 ?>
 <nav class="user-menu">
-	<a class="<?php echo $header_user_name_select0;?>" href="<?php echo $url_my_test;?>">我创建的<span class="vertical-line"></span></a> 
-	<a class="<?php echo $header_user_name_select1;?>" href="<?php echo $url_me_test;?>">我测试的<span class="vertical-line"></span></a> 
+	<a class="<?php echo $header_user_name_select0;?>" href="<?php echo $url_my_test;?>">我创建的<span class="vertical-line"></span></a>
+	<a class="<?php echo $header_user_name_select1;?>" href="<?php echo $url_me_test;?>">我测试的<span class="vertical-line"></span></a>
 	<a class="<?php echo $header_user_name_select2;?>" href="<?php echo $url_me_message;?>">我的私信<span class="vertical-line"></span></a>
 	<!-- <a href="<?php echo $url_user_setting;?>">修改设置 </a> -->
 </nav>

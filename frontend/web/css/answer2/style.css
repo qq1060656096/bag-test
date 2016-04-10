@@ -103,7 +103,7 @@ h4{font-size: 14px;}
     .share .main.qzone button {
         background: url(http://cdn-cn-static-dr.vonvon.net/images/icon_qzone_big.png) 7px 7px no-repeat #ffba21;
         background-size: 45px;
-       
+
     }
     .share .main.weibo button {
         border: 1px solid #c00028;
@@ -166,7 +166,7 @@ a:not(.flat):after, button:not(.flat):after {
     pointer-events: none;
 }
 /* more */
-h3.text-muted,#ad h3.text-muted{ 
+h3.text-muted,#ad h3.text-muted{
 
     color: black;
     font-size: 24px;
@@ -193,7 +193,7 @@ h3.text-muted,#ad h3.text-muted{
 #ad h4{padding-top: 3px;}
 #more h3 .more_link{
 	font-size: 14px;cursor: pointer;
-	
+
 }
 
 /* pop share */
@@ -213,7 +213,7 @@ h3.text-muted,#ad h3.text-muted{
     margin-left: -100px;
     width: 200px;
     z-index: 20001; }
-#test_content{ color: black;font-size: 24px;display: inline;font-weight: 700;word-break: break-word;}
+#test_content{ color: black;font-size: 24px;display: inline;font-weight: 700;word-break: break-word;display:block;text-align: center;}
 #test_content p{white-space: inherit;font-size: 24px !important; display: inline;}
 #test_content dd img{max-width: 100% !important;}
 .progre{display: inline;padding-right: 10px;}
@@ -379,7 +379,7 @@ select{
     margin-left: auto;
 }
 .panel-body {
-    padding: 0px; 
+    padding: 0px;
 }
 .list-xuan input{
 	display: none;

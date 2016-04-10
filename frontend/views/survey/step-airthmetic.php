@@ -39,7 +39,7 @@ $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.选择算
 	font-size: 25px;
 	margin-bottom: 10px;
 	background: #fff;
-	
+
 }
 .arithmetic-button:hover,.arithmetic-button.active{
 	color: #fff;
@@ -48,17 +48,17 @@ $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.选择算
 </style>
 <script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js1"></script>
 <div id="main_body">
-    
-	
+
+
 	<?php echo $this->renderFile(__DIR__.'/../layouts/head-top.php');?>
-	
+
 	<section class="s_moreread s_reg s_login">
 		<?php //echo $this->renderFile(__DIR__.'/../layouts/header-user.php');?>
 
 
         <?php $form = ActiveForm::begin(['id'=>'form1']); ?>
-        <h3 class="po_title common-color" style="text-align: left;font-weight: bold;">什么时代的人</h3>
-        <?php 
+        <h3 class="po_title common-color" style="text-align: left;font-weight: bold;text-align: center;"><?php echo $model->title;?></h3>
+        <?php
 //         echo $model->arithmetic;
         ?>
         <p>
@@ -70,7 +70,7 @@ $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.选择算
         <br />
         <?= $form->field($model, 'arithmetic')->hiddenInput(['placeholder'=>'选择算法'])->label(false); ?>
         <div class="form-group">
-        <?php 
+        <?php
         $arr = $model->arithmetic!='' ? explode(',', $model->arithmetic):null;
         $arr?null:$arr=[];
         foreach (Survey::$arithmeticList as $key=>$value){
@@ -81,38 +81,38 @@ $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.选择算
         ?>
         <button type="button" stepid="<?php echo $key;?>" class="arithmetic-button arithmetic-button-<?php echo ($key+1)%2 ,' ',$active?>"><?php echo $value ?></button>
        <?php }?>
-     
+
        </div>
        <br/>
-       <?php 
+       <?php
        $test_url = $model->tax==1 ? Yii::$app->urlManager->createUrl(['answer/step1','id'=>$model->id])
        : Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$model->id]);
        $pre_url    = Yii::$app->urlManager->createUrl(['survey/step4_2','id'=>$model->id]);
        ?>
        <a class="btn_bg" href="<?php echo $pre_url;?>">
-	       <input type="button" value="上一步"> 
-	    </a> 
+	       <input type="button" value="上一步">
+	    </a>
        <br />
         <div class="btn_bg" >
-			<input type="submit" id="submit" value="完成/最后一步 "> 
+			<input type="submit" id="submit" value="完成/最后一步 ">
 		</div>
 		<br />
-    	
+
 	    <a style="display:none;" class="btn_bg" href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
-	       <input type="button" value="预览"> 
-	    </a> 
-		
-		
+	       <input type="button" value="预览">
+	    </a>
+
+
         <?php ActiveForm::end(); ?>
         <p class="text-hint">选择算法后保存，在下一步，你需要最后看一下已经创建完毕的全部内容。如果没有问题，就可以发布出去啦。后面还有最后1个步骤，这个测试就能创建完毕。</p>
 
 	</section>
-		
-      
+
+
  </div>
 <style>
 .s_header nav,.s_reg .btn_bg,.s_reg input[type=submit]{
-	
+
 }
 
 label, label input {
@@ -129,11 +129,12 @@ label, label input {
 	float: right;
 	margin-right: 5%;
 }
-</style> 
+</style>
 <script type="text/javascript">
 $(document).ready(function(){
 	$(".arithmetic-button").click(function(){
-	    $(this).hasClass('active')? $(this).removeClass('active'): $(this).addClass('active');
+		console.log( $(this).hasClass('active') );
+	    $(this).hasClass('active') ? $(this).removeClass('active') : $(this).addClass('active');
 	});
 
 	$("#submit").click(function(){
@@ -153,4 +154,4 @@ $(document).ready(function(){
 });
 </script>
  <?php echo $this->renderFile(__DIR__.'/../layouts/group-add.php');?>
-<?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>    
+<?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

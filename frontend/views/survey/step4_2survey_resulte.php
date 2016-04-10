@@ -1,4 +1,4 @@
-<?php 
+<?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\z\ZCommonFun;
@@ -18,25 +18,26 @@ $text_hint = '';
 switch ($model->tax):
     case 1:
         $this->title .= '-步骤3/'.SurveyController::stepCount($tax).'.添加结果';
-        
+
         $submitAddText = '再编一个结果';//'保存/增加';
         $submitNexText = '保存/下一步';//'保存/下一步选择算法';
-        $text_hint = '编完所有测试结果后保存，在下一步，你需要选择最适合这个测试题的算法。后面还有'.(SurveyController::stepCount($tax)-3).'个步骤，这个测试就能创建完毕。 ';
+        $text_hint = "点击“再增加一个结果”，你可以添加多个测试结果。添加玩所有测试结果后保存。在下一步，你需要选择最适合这个测试的算法。后面还有".(SurveyController::stepCount($tax)-3)."个步骤，这个测试就能创建完毕。";
     break;
     case 2:
         $this->title .= '-步骤5/'.SurveyController::stepCount($tax).'.添加结果';
-        
+
         $submitAddText = '保存/增加';
         $submitNexText = '保存/最后一步 预览';
         break;
     case 3:
         $this->title .= '-步骤4/'.SurveyController::stepCount($tax).'.添加结果';
-        
+
         $submitAddText = '保存/增加';
         $submitNexText = '保存/下一步设置跳转';
+
         break;
 endswitch;
-    
+
 
 $question_total_score = isset($question_total_score) ? intval($question_total_score) : 0;
 $question_total_min_score = isset($question_total_min_score) ? intval($question_total_min_score) : 0;
@@ -69,11 +70,11 @@ $question_total_min_score = isset($question_total_min_score) ? intval($question_
 .row{
 	border-bottom: 3px dashed #DDD;
 	margin-top: 1em;
-}    
+}
 .label-name{
     display: block;
     text-align: left;
-}   
+}
 .row textarea ,.row input,.s_reg input[type=text], .s_reg input[type=password], .s_reg textarea{
 	width: 99%;
 	height: 2em;
@@ -177,11 +178,11 @@ text-align:left;
 	border: 1px solid #ddd;
 	font-size: 1.2em;
 	padding: 5px;
-}  
+}
 .resulte span{
 	font-size: 1.5em;
 	color: blue;
-}  
+}
 .BlockCon.core{
 	text-align: left;
 }
@@ -189,11 +190,11 @@ text-align:left;
 
 <div id="main_body">
     <?php echo $this->renderFile(__DIR__.'/../layouts/head-top.php');?>
-	
+
     <section class="s_moreread s_reg s_login">
     <?php $form = ActiveForm::begin(['id'=>'form1','action'=>['survey/step4_2','id'=>$model->id,'page'=>$page+1]]); ?>
         <div class="BlankBlock">
-                                
+
              <div class="BlockTitle">
 				<h2 class="text-red">第<?php echo $page;?>测试结果</h2>
 			</div>
@@ -209,15 +210,15 @@ text-align:left;
 				class="topic_input" type="text" placeholder="请输入姓名之后的内容，限15个字" ><?php echo $model_SurveyResulte->value;?></textarea>
 			</div>
 		</div>
-		<div class="BlankBlock" style="text-align: left;">			
-				比如，在姓名前输入“经测试认为”，在姓名后输入“是《甄嬛传》中的甄嬛”，那么，张三在测试时，测试结果可能会是“经测试认为<span style="color:#FE8C78;font-weight:bold;">张三</span>是《甄嬛传》中的甄嬛。			
+		<div class="BlankBlock" style="text-align: left;">
+				比如，在姓名前输入“经测试认为”，在姓名后输入“是《甄嬛传》中的甄嬛”，那么，张三在测试时，测试结果可能会是“经测试认为<span style="color:#FE8C78;font-weight:bold;">张三</span>是《甄嬛传》中的甄嬛。”
 		</div>
 		<div class="BlankBlock">
 		    <div class="BlockTitle">
 				<h2>测试结果详情</h2>
 			</div>
 			<div class="BlockCon InputBor_pr0">
-				<textarea  name="SurveyResulte[intro]" id="SurveyResulte-intro"  
+				<textarea  name="SurveyResulte[intro]" id="SurveyResulte-intro"
 				class="topic_input last" type="text" placeholder="测试结果详情" ><?php echo $model_SurveyResulte->intro?></textarea>
 			</div>
 		</div>
@@ -227,13 +228,13 @@ text-align:left;
 				<h2>选择分数范围</h2>
 				<div class="BlockCon core">
 				    <select name="SurveyResulte[score_min]" id="SurveyResulte-score_min">
-				        <?php 
+				        <?php
 				        echo $question_total_min_score>$question_total_score ? '<option value="">分数区间已经选择完了</option>' : '';
 				        ?>
 				    </select>
 				    到
 				    <select name="SurveyResulte[score_max]" id="SurveyResulte-score_max">
-				        <?php 
+				        <?php
 				        echo $question_total_min_score>$question_total_score ? '<option value="">分数区间已经选择完了</option>' : '';
 				        ?>
 				    </select>
@@ -244,60 +245,63 @@ text-align:left;
 		<div class="form-group field-images-image">
             <label class="control-label upload-click" for="images-image">上传图片结果配图
                 <div id="BlockCon" class="">
-                    <i class="QaddImg ">    
+                    <i class="QaddImg ">
                     </i>
                 </div>
             </label>
             <input id="upload" type="file" name="file">
             <input type="hidden"  name="sr_id" value="<?php echo $model_SurveyResulte->sr_id;?>" >
-            <input type="hidden" id="SurveyResulte-image" 
-            
+            <input type="hidden" id="SurveyResulte-image"
+
             class="form-control " name="SurveyResulte[image]" value="<?php echo $model_SurveyResulte->image;?>">
-            
+
             <div class="help-block"></div>
         </div>
 		<div id="image-wrap">
-            <?php 
-                
+            <?php
+
                 if(isset($model_SurveyResulte->image) && !empty($model_SurveyResulte->image)){
                     echo '<img src="',$image = SurveyResulte::getImageUrl($model_SurveyResulte),'"/>';
                 }
             ?>
         </div>
         <br/>
-        <div class="btn_bg btn-2" >
-            <?php 
+        <div class="btn_bg btn-2" style="padding:0;" >
+            <?php
             $prv_url = Yii::$app->urlManager->createUrl(['survey/step4_2_question','id'=>$model->id]);
             $model->tax == 2 ? $prv_url = Yii::$app->urlManager->createUrl( ['survey/step4_3','id'=>$model->id] ) : '';
             $model->tax == 1 ? $prv_url = Yii::$app->urlManager->createUrl( ['survey/step1_3','id'=>$model->id] ) : '';
             $model->tax == 3 ? $prv_url = Yii::$app->urlManager->createUrl( ['survey/step4_2_question','id'=>$model->id] ) : '';
             ?>
-			<a  style="width: 28%;"
-			href="<?php echo $prv_url;?>" 
-			id="prev-step">上一步</a> 
+			<a  style=""
+			href="<?php echo $prv_url;?>"
+			id="prev-step">上一步</a>
 		</div>
-        
-        <div class="btn_bg btn-2 btn-100" style="margin:0;margin-left:4.8%;width: 28%;" >
-			<a 
-			href="<?php echo Yii::$app->urlManager->createUrl(['survey/result-delete','id'=>$model->id,'page'=>$page]);?>" 
-			id="prev-step">删除</a> 
+
+        <div class="btn_bg btn-2 btn-100" style="margin:0;margin-left:4.6%;max-width: 30%;padding:0;" >
+			<a
+			href="<?php echo Yii::$app->urlManager->createUrl(['survey/result-delete','id'=>$model->id,'page'=>$page]);?>"
+			id="prev-step">删除</a>
 		</div>
-        
-        
-        <button type="submit" name="save-next" class="btn_bg add-btn" style="float:right;margin-left: 0;width: 28%;"><?php echo $submitAddText;?></button>
-        
+
+
+        <button type="submit" name="save-next" class="btn_bg add-btn" style="float:right;margin-left: 0;max-width: 30%;padding:0;"><?php echo $submitAddText;?></button>
+
 		<a class="btn_bg" style="display:none;width: 98.5%;margin-top: 15px;"
 		href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
-	       <input type="button"  value="预览"> 
-	    </a> 
-        
+	       <input type="button"  value="预览">
+	    </a>
+
         <button type="submit" name="save" class="btn_bg btn btn-primary save" style="width: 100%;margin: 20px 0 20px 0;"><?php echo $submitNexText;?></button>
-		
+
  <?php ActiveForm::end(); ?>
             <p class="text-hint"><?php echo $text_hint;?></p>
             <br/>
+            <div class="BlockTitle">
+				<h2 class="text-red">本测试结果预览</h2>
+			</div>
         <div class="resulte">
-			
+
 		</div>
     </section>
  </div>
@@ -320,13 +324,13 @@ function loadOptions(start,end,selected){
 			html += '<option selected="selected" value="'+start+'">'+start+'分</option>';
 	    }else{
 	    	html += '<option value="'+start+'">'+start+'分</option>';
-		}	
+		}
 	}
 	console.log(html);
 	return html;
 }
 $(document).ready(function(){
-	<?php 
+	<?php
 	if($tax==2 && $question_total_min_score<=$question_total_score){
 	?>
 	loadSelect('#SurveyResulte-score_min',<?php echo $model_SurveyResulte->score_min>0 ? $model_SurveyResulte->score_min : $question_total_min_score;?>,<?php echo $question_total_min_score;?>,<?php echo $question_total_min_score;?>);
@@ -347,7 +351,7 @@ $(document).ready(function(){
 			if( json.result.status==1 && json.id){
 				$("#SurveyResulte-image").val(json.id);
 		    }
-			
+
 			//console.log(this);
 			if( uploadz.isReaderFile ){
 				$("#image-wrap").empty();
@@ -404,6 +408,6 @@ function submitValid(){
     }
     return true;
 }
-</script> 
+</script>
  <?php echo $this->renderFile(__DIR__.'/../layouts/group-add.php');?>
-<?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>  
+<?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

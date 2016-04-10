@@ -17,7 +17,7 @@ use common\models\OauthBind;
  */
 class UserProfileController extends Controller
 {
-   
+
 
 
     /**
@@ -32,7 +32,7 @@ class UserProfileController extends Controller
             $url = Yii::$app->urlManager->createUrl([ZCommonSessionFun::urlLoginUserStr]);
             return $this->redirect($url);
         }
-        
+
         $this->view->title='个人设置';
         $this->layout = false;
         $condition['uid']  = ZCommonSessionFun::get_user_id();
@@ -43,9 +43,14 @@ class UserProfileController extends Controller
         $model->uid = ZCommonSessionFun::get_user_id();
         $model->birthday = $model->birthday ? date('Y-m-d',strtotime($model->birthday)):'';
         $load = $model->load(Yii::$app->request->post());
-       
+
         if ( $load && $model->save()) {
-            
+            $userInfo = ZCommonSessionFun::get_user_session();
+            $userInfo['profile'] = $model->attributes;
+            $userInfo['nickname'] = $model->nickname;
+            $userInfo['head_image'] = $model->head_image;
+            $userInfo['intro'] = $model->intro;
+            ZCommonSessionFun::set_user_session($userInfo);
             return $this->redirect(['bind']);
         } else {
             return $this->render('_form', [
@@ -66,7 +71,7 @@ class UserProfileController extends Controller
         $condition['uid']  = ZCommonSessionFun::get_user_id();
         $model_old = User::findOne($condition);
         if(!$model_old){
-            
+
             $url = Yii::$app->urlManager->createUrl([ZCommonSessionFun::urlLoginUserStr]);
             return $this->redirect($url);
         }
@@ -83,7 +88,7 @@ class UserProfileController extends Controller
             }else if($model->pass!=$model->flag){
                 $model->addError('flag','两次密码不一致');
             }
-            
+
             if( !$model->hasErrors() ){
                 $model_old->pass = ZCommonFun::getPass($model->pass);
                 if( $model_old->save()){
@@ -98,7 +103,7 @@ class UserProfileController extends Controller
             'message'=>$message,
         ]);
     }
-    
+
   /**
    * 第三方绑定列表
    */
@@ -119,7 +124,7 @@ class UserProfileController extends Controller
       }
       return $this->render('bind-list',['model'=>$model]);
   }
-  
+
   /**
    * 绑定账号
    */
@@ -131,9 +136,9 @@ class UserProfileController extends Controller
           return $this->redirect($url);
       }
       $model = new User();
- 
+
       if(isset($_POST['User']['user']) && isset($_POST['op'])){
-         
+
           $post = $_POST['User'];
           $user = isset($post['user']) ? $post['user']: '';
           $pass = isset($post['pass']) ? $post['pass']: '';
@@ -142,9 +147,9 @@ class UserProfileController extends Controller
           if($_POST['op']==1){
               $condition['user'] = $user;
               $model_find = new User();
-              
+
               $model_find = $model_find->find()->where($condition)->one();
-           
+
               if(!$model_find){
                   $model->addError('user','用户没有找到');
               }
@@ -159,7 +164,7 @@ class UserProfileController extends Controller
                         $model_find->is_bind_user = 1;
                         $model_find->save();
                         $model_Oauth = new OauthBind();
-                        
+
                         $model_Oauth_condition['uid'] = $old_login_uid;
                         $model_Oauth_attributes['uid'] = $model_find->uid;
                         $model_Oauth->updateAll($model_Oauth_attributes,$model_Oauth_condition);
@@ -171,11 +176,11 @@ class UserProfileController extends Controller
                         $transaction->rollBack();
                         $model->addError('user','绑定失败');
                     }
-                  
+
               }
           }//绑定新账户
           else{
-              
+
               $model->pass = ZCommonFun::getPass($model->pass);
               $model = $model->findOne(ZCommonSessionFun::get_user_id());
               if( $model ){
@@ -191,18 +196,18 @@ class UserProfileController extends Controller
                   $model = new User();
                   $model->user = $user;
                   $model->pass = $pass;
-              
+
                   $model->addError('user','用户已被删除');
               }
           }
-          
-            
+
+
 
         }
       return $this->render('bind-account', [ 'model'=>$model ] );
   }
 
-  
+
 
     /**
      * Finds the UserProfile model based on its primary key value.

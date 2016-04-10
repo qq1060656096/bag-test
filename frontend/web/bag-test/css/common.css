@@ -29,12 +29,17 @@
     line-height: 36px;
     color: #fff;
     border: 0 none;
-  
+
     width: 90%;
     border-radius: 5px;
 }
 .s_reg .btn_bg,.s_reg a.btn_bg{
 	display: block;
+
+}
+.btn_bg,.s_reg .btn_bg,.s_reg a.btn_bg,.btn_bg input,.btn-z-change,.btn-z-bind{
+font-size: 16px !important;
+	font-weight: bold !important;
 }
 .common-color{
 	color: #FE8C78;
@@ -107,7 +112,7 @@ dt img{
 display: block;
     line-height: 40px;
     height: 40px;
-
+	width: auto;
     color: #fff;
 
 }
@@ -115,11 +120,11 @@ display: block;
 .btn_bg.btn-3 {
     margin-left: 25px;
 }
-.btn_bg,.s_reg input[type=submit]{
+/* .btn_bg,.s_reg input[type=submit]{
 	font-weight: 100 !important;
 	font-size: 13px !important;
 }
-
+ */
 .span-wrap{
 	color: #FE8C78;
 }

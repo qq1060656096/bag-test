@@ -23,15 +23,15 @@ class User extends \yii\db\ActiveRecord
     public $operationError=0;
     public $operationMessage=null;
     public $operationData = null;
-    
+
     const scenarioOauthBind = 'oauth-bind';
-    
+
     public function clearOperation(){
         $this->operationError = 0;
         $this->operationMessage = null;
         $this->operationData = null;
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -73,7 +73,7 @@ class User extends \yii\db\ActiveRecord
             'is_bind_user'=>'账号绑定'
         ];
     }
-    
+
     /**
      * 登录
      * @param string $user
@@ -98,6 +98,12 @@ class User extends \yii\db\ActiveRecord
          $userInfo = $model->attributes;
          isset($userInfo['role'])?null:$userInfo['role'] = 0; //角色
          $userInfo['openidInfo'] = null;//第三方登录信息
+         if(isset($model->userProfile)){
+             $userInfo['profile'] = $model->userProfile->attributes;
+             $userInfo['nickname'] = $model->userProfile->nickname;
+             $userInfo['head_image'] = $model->userProfile->head_image;
+             $userInfo['intro'] = $model->userProfile->intro;
+         }
          ZCommonSessionFun::set_user_session($userInfo);
         }
         return $this->operationError;
@@ -150,35 +156,35 @@ class User extends \yii\db\ActiveRecord
             }else{
                 $model_User = User::findOne($model_OauthBind->uid);
             }
-            
+
         }
-        
+
         //已存在用户
         if(!$is_register){
-            
+
         }//注册用户
         else{
             $model_User = new User();
-    
+
             $max_uid = User::find()->max('uid');
             $max_uid ++;
             $model_User->user = $max_uid.'';
             $model_User->pass = $model_User->user;
             $model_User->created = NOW_TIME_YmdHis;
-        
+
             $model_User->save();
         }
 //         echo $uid;
 //         ZCommonFun::print_r_debug($model_User->attributes);
 //         ZCommonFun::print_r_debug($model_OauthBind->attributes);
 //         exit;
-        
+
         $model_OauthBind = new OauthBind();
-        
+
         $condition['openid'] = $openid;
         $condition['type'] = $type;
         $model_OauthBind=$model_OauthBind->findOne($condition);
-       
+
         //已经绑定了
         if( $model_OauthBind ){
             $this->operationData['user'] = $model_User;
@@ -190,7 +196,7 @@ class User extends \yii\db\ActiveRecord
                 $model_UserProfile->head_image = $head_image;
                 $model_UserProfile->money = 0;
                 $model_UserProfile->friend_money = 0;
-                
+
                 $model_UserProfile->save();
 //                 ZCommonFun::print_r_debug($model_UserProfile);
 //                 exit;
@@ -204,7 +210,7 @@ class User extends \yii\db\ActiveRecord
             $this->operationData['user_profile'] = $model_UserProfile ;
             return 1;
         }
-        
+
         $model_OauthBind = new OauthBind();
         $model_OauthBind->openid = $openid.'';
         $model_OauthBind->type = $type;
@@ -213,36 +219,36 @@ class User extends \yii\db\ActiveRecord
         if( $model_OauthBind->save() ){
             $model_UserProfile = UserProfile::findOne(['uid'=>$model_User->uid]);
             //如果没有设置过用户信息，就设置用户信息
-            if(!$model_UserProfile){ 
+            if(!$model_UserProfile){
                 $model_UserProfile = new UserProfile();
                 $model_UserProfile->uid = $model_User->uid;
                 $model_UserProfile->nickname = $nickname;
                 $model_UserProfile->head_image = $head_image;
                 $model_UserProfile->money = 0;
                 $model_UserProfile->friend_money = 0;
-            
+
                 $model_UserProfile->save();
             }
-            
+
             $this->operationData['user'] = $model_User;
             $this->operationData['user_profile'] = $model_UserProfile;
             return 0;
         }
-        
+
         return -1;
     }
-    
+
     public function getUserProfile(){
         return $this->hasOne(UserProfile::className(), ['uid'=>'uid']);
     }
-    
+
     public function getShowName(){
         if( $this->userProfile && !empty($this->userProfile->nickname) ){
             return $this->userProfile->nickname;
         }else{
             return $this->user;
         }
-        
+
     }
     /**
      * 根据uid获取显示账户信息
@@ -257,7 +263,7 @@ class User extends \yii\db\ActiveRecord
         }
         return '';
     }
-    
+
     public static function getTaUidShowName($uid,$is_cache=true){
         static $data = null;
         if( $data!== null && $is_cache){
@@ -272,14 +278,14 @@ class User extends \yii\db\ActiveRecord
         }
         return $data;
     }
-    
+
     public function getTaShowName(){
         if( $this->userProfile && !empty($this->userProfile->nickname) ){
             return $this->userProfile->nickname;
         }else{
             return 'Ta暂无昵称';
         }
-    
+
     }
     /**
      * 显示他的签名
@@ -293,7 +299,7 @@ class User extends \yii\db\ActiveRecord
             return $model->getTaShowIntro();
         }
         return 'Ta什么都没留下';
-    } 
+    }
     public function getTaShowIntro(){
         if( $this->userProfile && !empty($this->userProfile->nickname) ){
             return !empty($this->userProfile->intro )? $this->userProfile->intro:'Ta什么都没留下';
@@ -315,7 +321,7 @@ class User extends \yii\db\ActiveRecord
         return './images/head_image.png';
     }
     public function getTaShowHead_image(){
-        if( isset($this->userProfile->head_image)  ){  
+        if( isset($this->userProfile->head_image)  ){
             return $this->userProfile->getHeadImage0();
         }else{
             return './images/head_image.png';

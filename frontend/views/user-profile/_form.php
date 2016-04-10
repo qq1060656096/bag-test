@@ -53,7 +53,7 @@ label, label input {
 .user-info{
 	border-bottom: 1px solid #ddd;
 	margin-top: 15px;
-	
+
 }
 .user-info table{
 	width: 100%;
@@ -79,7 +79,7 @@ label, label input {
 	padding: 5px;
 	margin: auto;
 	color: #fff;
-	
+
 }
 .user-info2>input,.user-info2 input.btn-z-bind{
 	font-size: 13px !important;
@@ -88,7 +88,7 @@ label, label input {
 .user-info2>input.btn-z-bind{
 	margin-top: 12px;
 	margin-bottom: 12px;
-	
+
 }
 </style>
 <div id="main_body">
@@ -99,7 +99,7 @@ label, label input {
 			 <span style="font-size: 1.4rem"><?php echo $this->title;?></span>
 		</nav>
 	</header>
-	
+
 	<div class="user-info">
     	<table>
     		<tr>
@@ -108,7 +108,7 @@ label, label input {
     			</td>
     			<td class="td-r">
     			    <?php echo $model->getHeadImage0() ? '<img id="head_image" width="48" height="48" src="'.$model->getHeadImage0().'"/>': '<i class="fa fa-user user-image  common-color"></i>'?>
-    				
+
     			</td>
     		</tr>
     		<tr>
@@ -123,30 +123,30 @@ label, label input {
     		</tr>
     	</table>
     </div>
-    
+
     <div class="user-info user-info2">
-        
-        
+
+
         <input type="button"  class="btn-z-change"
-            onclick="javascript:location.href='<?php echo Yii::$app->urlManager->createUrl(['user-profile/change-pass']);?>';" 
+            onclick="javascript:location.href='<?php echo Yii::$app->urlManager->createUrl(['user-profile/change-pass']);?>';"
             value="修改<?php echo ZController::$site_name;?>密码" />
-        
-        <input type="button"  class="btn-z-bind"   
-            onclick="javascript:location.href='<?php echo Yii::$app->urlManager->createUrl(['user-profile/bind-list']);?>';" 
+
+        <input type="button"  class="btn-z-bind"
+            onclick="javascript:location.href='<?php echo Yii::$app->urlManager->createUrl(['user-profile/bind-list']);?>';"
             value="绑定QQ、微信、微博、账号" />
-        
-    </div>		
-    
+
+    </div>
+
 	<section class="s_reg s_login">
     	<div class="notice" title="太好了，完成最后一步吧^o^~">&nbsp;</div>
     	<?php $form = ActiveForm::begin(); ?>
     	   <?= $form->field($model, 'head_image')->hiddenInput(['maxlength' => true,'class'=>'','placeholder'=>'头像'])->label(false) ?>
     		 <input id="upload" type="file" name="file" style="display:none;"/>
-            
+
     		<div class="input-wrap">
     			<?= $form->field($model, 'nickname')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'昵称']) ?>
     		</div>
-    	
+
     		<div class="input-wrap">
     			<?= $form->field($model, 'sex')->dropDownList(UserProfile::$sexData,['maxlength' => true,'class'=>'','placeholder'=>'性别']) ?>
     		</div>
@@ -162,7 +162,7 @@ label, label input {
     		<div class="input-wrap">
     			<?= $form->field($model, 'qq')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'QQ']) ?>
     		</div>
-    		
+
     		<div class="input-wrap">
     			<?= $form->field($model, 'school')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'学校']) ?>
     		</div>
@@ -174,39 +174,39 @@ label, label input {
 
 
 
-<script type="text/javascript" src="./bag-test/bootstrap/jquery.min.js"></script>    
+<script type="text/javascript" src="./bag-test/bootstrap/jquery.min.js"></script>
 
 <script src="./bag-test/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript" src="./bag-test/bootstrap/bootstrap-datetimepicker.min.js"></script>
 <script src="common/php-html5-uploadz/ZHtml5Upload.js">
 </script>
 <script type="text/javascript">
-// (function($){
-// 	$.fn.datetimepicker.dates['zh-CN'] = {
-// 			days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
-// 			daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-// 			daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
-// 			months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-// 			monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-// 			today: "今天",
-// 			suffix: [],
-// 			meridiem: ["上午", "下午"]
-// 	};
-// }(jQuery));
+(function($){
+	$.fn.datetimepicker.dates['zh-CN'] = {
+			days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+			daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+			daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
+			months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+			monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+			today: "今天",
+			suffix: [],
+			meridiem: ["上午", "下午"]
+	};
+}(jQuery));
 $(document).ready(function(){
-// 	 $("#userprofile-birthday").datetimepicker({
-// 		 format:'yyyy-mm-dd',
-// 		 language:'zh-CN',
-// 		 startView:4,
-// // 		 viewSelect:'day',
-// 		 todayBtn: true,
-// 		 todayHighlight:true,
-// 		 minView: 2,
-// 		 autoclose: true
-		
-//      }).on('changeDate', function(ev){
-//     	    console.log(ev.date);
-//      });
+	 $("#userprofile-birthday").datetimepicker({
+		 format:'yyyy-mm-dd',
+		 language:'zh-CN',
+		 startView:4,
+// 		 viewSelect:'day',
+		 todayBtn: true,
+		 todayHighlight:true,
+		 minView: 2,
+		 autoclose: true
+
+     }).on('changeDate', function(ev){
+    	    console.log(ev.date);
+     });
 
     $("#head_image").click(function(){
     	$("#upload").click();
@@ -218,10 +218,10 @@ $(document).ready(function(){
 				if( json.result.status==1 && json.id){
 					$("#userprofile-head_image").val('<?php echo Yii::$app->request->baseUrl,UPLOAD_DIR;?>'+json.id);
 			    }
-				
+
 				//console.log(this);
 				if( uploadz.isReaderFile ){
-			
+
 					$("#head_image").attr('src','<?php echo Yii::$app->request->baseUrl,UPLOAD_DIR;?>'+json.id);
 				}
 				console.log( uploadz.base64Data );
@@ -231,7 +231,7 @@ $(document).ready(function(){
 			}
 		});
 });
-   
-</script> 
+
+</script>
 
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

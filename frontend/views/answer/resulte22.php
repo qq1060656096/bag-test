@@ -81,7 +81,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 		<div class="container newcontent">
 			<a id="top"></a>
 			<div class="title header-title" style="display: none;">
-				
+
 				<h2 style="display: none;"><?php //echo $model->title;?></h2>
 				<div class="title-sub">
 					<div>
@@ -101,7 +101,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 						<div class="progre">
 							<span class="value"  style="display: none;"><span class="current">我的测试结果</span></span>
 							<p>
-							<?php 
+							<?php
     				        echo $model_SurveyResulte->name;
     				        echo $model_AnswerUser->answer_name ? '<span class="answer-name">'.$model_AnswerUser->answer_name.'</span>' : '';
     				        echo $model_SurveyResulte->value;
@@ -114,17 +114,17 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
                             }
                             ?>
             				</div>
-            				
+
 						</div>
 
 					</div>
-					
+
 					<dl>
 						<dt>详细分析:</dt>
 						<dd style="" id="details">
 							<p></p>
 							<p>
-    							<?php     				     
+    							<?php
         				        echo $model_SurveyResulte->intro;
         				        ?>
 				            </p>
@@ -142,7 +142,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
         				</div>
     				</div>
 					<hr>
-					
+
 					<!-- 分享按钮区 -->
 					<div class="share">
 						<div></div>
@@ -158,9 +158,13 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 
 			</div>
 			<!-- E bd -->
+			<?php
+				include __DIR__.'/anser-user.php';
+				?>
 		</div>
+
 		<!-- E container -->
-        
+
 	</div>
 	<script>function closeADFunc() {
 document.getElementById('hideADbtn').style.display='none';
@@ -230,17 +234,17 @@ $(document).ready(function(){
 							</div> <span class="title"><h3><?php echo $row->title;?></h3></span></a>
 					</div>
 					<?php }?>
-					
+
 				</div>
 			</section>
 		</div>
 	</div>
 	<!-- suiji -->
-	
+
 	<?php include(__DIR__.'/answer-test-list.php');?>
 	<style>
 .answer-name{
-color: #fd7400;	
+color: #fd7400;
 }
 .layer {
 	background: rgba(0, 0, 0, .6);
@@ -473,7 +477,7 @@ a:not (.flat ):after, button:not (.flat ):after {
 	font-size: 30px;
 }
 </style>
-	<?php 
+	<?php
 	include dirname(__DIR__).'/layouts/copy-right.php';
 	?>
 	<div class="modal modal2 fade in" id="myModal" tabindex="-1"
@@ -503,9 +507,9 @@ a:not (.flat ):after, button:not (.flat ):after {
 			</div>
 		</div>
 	</div>
-	
-	
-	<?php 
+
+
+	<?php
     echo $this->renderFile(__DIR__ . '/../layouts/foot-menu.php');
     ?>
 </body>

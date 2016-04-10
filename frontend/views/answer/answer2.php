@@ -7,6 +7,14 @@ use common\z\ZCommonSessionFun;
 use common\z\ZCommonFun;
 use common\models\UsersFriends;
 /* @var $model common\models\Survey */
+
+use common\z\Constellation;
+$sessionUser = ZCommonSessionFun::get_user_session();
+$sessionUser_year = empty($sessionUser['profile']['birthday']) ? '' : date('Y',strtotime($sessionUser['profile']['birthday']));
+$sessionUser_constellation = empty($sessionUser['profile']['birthday']) ? '' : Constellation::getDateToConstellation( date('Y',strtotime($sessionUser['profile']['birthday'])) );
+$sessionUser_constellation_key = isset($sessionUser_constellation['key']) ? $sessionUser_constellation['key'] : '';
+// ZCommonFun::print_r_debug($sessionUser_constellation);
+// ZCommonFun::print_r_debug($sessionUser);
 ?>
 <html>
 <head>
@@ -37,8 +45,8 @@ $create_url = Yii::$app->urlManager->createAbsoluteUrl([
 <script src="./css/answer2/hammer.min.js"></script>
 <script src="./css/answer2/jquery.mmenu.min.all.js"></script>
 <script type="text/javascript" src="./css/answer2/jweixin-1.0.0.js"></script>
-<link href="./js/jquery-ui.css" rel="stylesheet" type="text/css"/>  
-<script src="./js/jquery-ui.min.js"></script> 
+<link href="./js/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script src="./js/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="./bag-test/css/common.css">
 <script type="text/javascript">
 var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->request->hostInfo,$image;?>',
@@ -59,7 +67,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 </head>
 <body style="overflow:-Scroll;overflow-x:hidden">
 	<div id="content">
-		
+
 		<div class="container newcontent">
 			<a id="top"></a>
 			<div class="title header-title">
@@ -70,7 +78,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
                         echo '<img class="image" style="width:100%;" src= "', $image, '" title="', $model->title, '"/>';
                     ?>
 				</div>
-				<!-- 
+				<!--
 				<div class="title-sub">
 					<div>
 						<span class="newmiaoshu">简介:<?php echo $model->intro;?></span>
@@ -83,43 +91,44 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 			<!-- E header -->
 			<div id="bd" class="panel">
 				<div id="panel1" class="panel-body  btn-body">
-				
+
 						<div class="buttons">
 							<a class="btn btn-lg btn-success start-test" style="width: 100%"
 								href="#">开始测试</a>
 							<!--<a href="/index.php?g=member&m=index&a=index" class="btn btn-lg btn-success" style="width:100%">登录开始</a>-->
 							<div class="share-box">
-								
+
 							</div>
 						</div>
-			
+
 				</div>
 				<div id="panel2" class="panel-body js_answer" style="display: none;">
 					<?php $form = ActiveForm::begin(); ?>
 						<a name="result" href="javascript:void(0)"></a>
 						<div id="test_content">
 							<div class="progre">
-								<span class="value"><span class="current">开始测试</span>/<span
-									class="question-length">请输入你的姓名和出生年份、星座</span></span>
+								<span class="value"><!-- <span class="current">开始测试</span>  -->
+								<span
+									class="question-length">填入你的名字出生<br />测试结果更准确</span></span>
 							</div>
 							<span><p>
 									<br>
 								</p> </span>
-						    
+
 						</div>
 						<ul class="js_group">
 							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">
 							<input  size="30" placeholder="填入你的姓名"
-								id="name" name="name" type="text" class="" value=""  style="width:auto;"></li>
+								id="name" name="name" type="text" class="" value="<?php echo empty($sessionUser['nickname']) ? '' : $sessionUser['nickname'];?>"  style="width:auto;"></li>
 							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">
 							     <select style="width: 100%;" id="age" name="age birth_year" class="" onchange="adjustAstro();"></select>
 							     <select id="birth_month" name="birth[month]" style="display:none;" onchange="adjustAstro();"></select>
 							     <select id="birth_day" name="birth[day]" style="display:none;" onchange="adjustAstro();"></select>
-							 
+
 							</li>
-							
+
 							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">
-							 <SELECT style="width: 100%;" id="constellation" name="constellation"> 
+							 <SELECT style="width: 100%;" id="constellation" name="constellation">
 							 <OPTION  value="">请选择星座</OPTION>
                                 <OPTION value="1">水瓶座1.20~2.18</OPTION>
                                 <OPTION value="2">双鱼座2.10~3.20</OPTION>
@@ -133,27 +142,27 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
                                 <OPTION value="10">天蝎座10.22~11.22</OPTION>
                                 <OPTION value="11">射手座11.23~12.24</OPTION>
                                 <OPTION value="12">摩羯座12.25~1.19</OPTION>
-                                                                                                                        
+
                             </SELECT>
 							</li>
 						</ul>
 						<input type="hidden" id="birth_year" name="birth[year]" value=""/>
-						
-						
+
+
 						<a class="btn btn-lg btn-success submit-test" style="width: 100%"
 								>提交/查看测试结果</a>
 					<!-- question end  -->
         			<?php ActiveForm::end(); ?>
-				
+
 				</div>
-			
-				<?php 
+
+				<?php
 				include __DIR__.'/anser-user.php';
 				?>
 			</div>
 			<!-- E bd -->
-			
-			<div class="title header-title">		
+
+			<div class="title header-title">
 				<div class="title-sub">
 					<div>
 						<span class="newmiaoshu">简介:<?php echo $model->intro;?></span>
@@ -163,8 +172,8 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 					</div>
 				</div>
 			</div>
-			
-			
+
+
 		</div>
 		<!-- E container -->
 
@@ -174,7 +183,7 @@ document.getElementById('hideADbtn').style.display='none';
 document.getElementById('spn').style.display='none';
 }
 </script>
-<script type="text/javascript" src="js/date-select.js"></script>	
+<script type="text/javascript" src="js/date-select.js"></script>
 <script>
 birthday = false;
 var is_submit = false;
@@ -205,6 +214,10 @@ $(document).ready(function(){
         $("#birth_year").val($(this).val());
     });
     $('#age').val('1990');
+    <?php
+            echo $sessionUser_year ? '$("#age").val("'.$sessionUser_year.'");' :'';
+            echo $sessionUser_constellation_key ? '$("#constellation").val("'.$sessionUser_constellation_key.'");' :'';
+        ?>
     $('#age').click(function(){
     	birthday = true;
         $("#birth_year").val($(this).val());
@@ -215,7 +228,7 @@ $(document).ready(function(){
 			alert("请输入姓名");
 		    return true;
 	    }
-		
+
 		var age = $('#age');
 		if( age && age.val()=="" || !birthday){
 			alert("请选择生日");
@@ -243,7 +256,7 @@ $(document).ready(function(){
 			</h3>
 			<section class="s_moreread">
 				<div class="list_box">
-				    <?php 
+				    <?php
         		   foreach ($randSurvey as $key=>$row){
         		       $key_index = $key+1;
         		       if($row->tax==1){
@@ -261,13 +274,13 @@ $(document).ready(function(){
 							</div> <span class="title"><h3><?php echo $row->title;?></h3></span></a>
 					</div>
 					<?php }?>
-					
+
 				</div>
 			</section>
 		</div>
 	</div>
 	<!-- suiji -->
-	
+
 	<?php include(__DIR__.'/answer-test-list.php');?>
 	<style>
 .layer {
@@ -501,7 +514,7 @@ a:not (.flat ):after, button:not (.flat ):after {
 	font-size: 30px;
 }
 </style>
-	<?php 
+	<?php
 	include dirname(__DIR__).'/layouts/copy-right.php';
 	?>
 	<div class="modal modal2 fade in" id="myModal" tabindex="-1"
@@ -531,7 +544,7 @@ a:not (.flat ):after, button:not (.flat ):after {
 			</div>
 		</div>
 	</div>
-	<?php 
+	<?php
     echo $this->renderFile(__DIR__ . '/../layouts/foot-menu.php');
     ?>
 </body>

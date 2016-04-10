@@ -1,9 +1,19 @@
-<?php 
+<?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\z\ZController;
 use common\models\UserProfile;
 /* @var $model common\models\Survey */
+
+use common\z\ZCommonSessionFun;
+use common\z\ZCommonFun;
+use common\z\Constellation;
+$sessionUser = ZCommonSessionFun::get_user_session();
+$sessionUser_year = empty($sessionUser['profile']['birthday']) ? '' : date('Y',strtotime($sessionUser['profile']['birthday']));
+$sessionUser_constellation = empty($sessionUser['profile']['birthday']) ? '' : Constellation::getDateToConstellation( date('Y',strtotime($sessionUser['profile']['birthday'])) );
+$sessionUser_constellation_key = isset($sessionUser_constellation['key']) ? $sessionUser_constellation['key'] : '';
+// ZCommonFun::print_r_debug($sessionUser_constellation);
+// ZCommonFun::print_r_debug($sessionUser);
 ?>
 <html>
 <head>
@@ -34,9 +44,11 @@ $create_url = Yii::$app->urlManager->createAbsoluteUrl([
 <script src="./css/answer2/hammer.min.js"></script>
 <script src="./css/answer2/jquery.mmenu.min.all.js"></script>
 <script type="text/javascript" src="./css/answer2/jweixin-1.0.0.js"></script>
-<link href="./js/jquery-ui.css" rel="stylesheet" type="text/css"/>  
+<link href="./js/jquery-ui.css" rel="stylesheet" type="text/css"/>
 <link rel="stylesheet" href="./bag-test/css/common.css">
 <script src="./js/jquery-ui.min.js"></script>
+<script src="js/sweet-alert.js"></script>
+  <link rel="stylesheet" href="css/sweet-alert.css">
 <script type="text/javascript">
 var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->request->hostInfo,$image;?>',
 		desc: '<?php echo $model->intro;?>',
@@ -52,11 +64,11 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 .list-xuan.list-xuan-text{
 	text-align: center;
 }
-</style>	
+</style>
 </head>
 <body style="overflow:-Scroll;overflow-x:hidden">
 	<div id="content">
-		
+
 		<div class="container newcontent">
 			<a id="top"></a>
 			<div class="title header-title">
@@ -67,7 +79,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
                         echo '<img class="image" style="width:100%;" src= "', $image, '" title="', $model->title, '"/>';
                     ?>
 				</div>
-				<!-- 
+				<!--
 				<div class="title-sub">
 					<div>
 						<span class="newmiaoshu">简介:<?php echo $model->intro;?></span>
@@ -80,25 +92,26 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 			<!-- E header -->
 			<div id="bd" class="panel">
 				<div id="panel1" class="panel-body  btn-body">
-				
+
 						<div class="buttons">
 							<a class="btn btn-lg btn-success start-test" style="width: 100%"
 								href="#">开始测试</a>
 							<!--<a href="/index.php?g=member&m=index&a=index" class="btn btn-lg btn-success" style="width:100%">登录开始</a>-->
 							<div class="share-box">
-								
+
 							</div>
 						</div>
-			
+
 				</div>
 				<?php $form = ActiveForm::begin(); ?>
 				<div id="panel2" class="panel-body js_answer" style="display: none;">
-					
+
 						<a name="result" href="javascript:void(0)"></a>
 						<div id="test_content">
 							<div class="progre">
-								<span class="value"><span class="current">开始测试</span>/<span
-									class="question-length">请输入你的姓名和出生年份、星座</span></span>
+								<span class="value"><!-- <span class="current">开始测试</span> -->
+								<span
+									class="question-length">填入你的名字出生<br />测试结果更准确</span></span>
 							</div>
 							<span><p>
 									<br>
@@ -106,16 +119,16 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 						</div>
 						<ul class="js_group">
 							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;"><input size="30" placeholder="填入你的姓名"
-								id="name" name="name" type="text" class="" value="" style="width:auto;"></li>
+								id="name" name="name" type="text" class="" value="<?php echo empty($sessionUser['nickname']) ? '' : $sessionUser['nickname'];?>" style="width:auto;"></li>
 							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">
 							    <select style="width: 100%;" id="age" name="age birth_year" class=""  onchange="adjustAstro();"></select>
 							     <select id="birth_month" name="birth[month]" style="display:none;" onchange="adjustAstro();"></select>
 							     <select id="birth_day" name="birth[day]" style="display:none;" onchange="adjustAstro();"></select>
-							 
+
 							</li>
-							
+
 							<li class="list-xuan list-xuan-text" style="width: 70%;margin:0 auto;">
-							 <SELECT style="width: 100%;" id="constellation" name="constellation" > 
+							 <SELECT style="width: 100%;" id="constellation" name="constellation" >
 							 <OPTION value="">请选择星座</OPTION>
                                 <OPTION value="1">水瓶座1.20~2.18</OPTION>
                                 <OPTION value="2">双鱼座2.10~3.20</OPTION>
@@ -129,7 +142,7 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
                                 <OPTION value="10">天蝎座10.22~11.22</OPTION>
                                 <OPTION value="11">射手座11.23~12.24</OPTION>
                                 <OPTION value="12">摩羯座12.25~1.19</OPTION>
-                                                                                                                        
+
                             </SELECT>
 							</li>
 						</ul>
@@ -137,15 +150,15 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 						<a class="btn btn-lg btn-success submit-test" style="width: 100%"
 								>提交测试</a>
 					<!-- question end  -->
-        			
-				
+
+
 				</div>
-				
-				
-				<?php 
+
+
+				<?php
                 $question_count = count($data['questions']);
-                foreach ($data['questions'] as $key=>$question){    
-                        
+                foreach ($data['questions'] as $key=>$question){
+
                 ?>
                 <!-- question start  -->
 				<div id="panel3" class="panel-body js_answer question-row" style="display: none;">
@@ -158,10 +171,10 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 							<span><p class="p1">
 									<strong><?php echo $question->label;?></strong>
 								</p>
-								
+
 						</div>
 						<ul class="js_group">
-						    <?php 
+						    <?php
                             isset($data['options'][$key]) ? null : $data['options'][$key]=[];
                             $option_index = 1;
                             foreach ($data['options'][$key] as $key2=>$option){
@@ -169,8 +182,8 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
                                 $option_index++;
                             ?>
 							<li class="list-xuan">
-							     <input  type="radio"  id="option-id-<?php echo $option->qo_id;?>" 
-        						          res="<?php echo $option->skip_resulte;?>" 
+							     <input  type="radio"  id="option-id-<?php echo $option->qo_id;?>"
+        						          res="<?php echo $option->skip_resulte;?>"
         						          skip-question="<?php echo $option->skip_question;?>"
         						          name="options[<?php echo $question->question_id; ?>][]" value="<?php echo $option->qo_id;?>"
 							 ><?php echo $option->option_label;?>
@@ -182,12 +195,12 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 				<?php } ?>
 				<input type="hidden" name="res" id="res" />
 				<?php ActiveForm::end(); ?>
-				
+
 			</div>
 			<!-- E bd -->
-			
+
 			<div class="title header-title">
-		
+
 				<div class="title-sub">
 					<div>
 						<span class="newmiaoshu">简介:<?php echo $model->intro;?></span>
@@ -197,8 +210,8 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
 					</div>
 				</div>
 			</div>
-			
-			<?php 
+
+			<?php
 				include __DIR__.'/anser-user.php';
 				?>
 		</div>
@@ -210,7 +223,7 @@ document.getElementById('hideADbtn').style.display='none';
 document.getElementById('spn').style.display='none';
 }
 </script>
-<script type="text/javascript" src="js/date-select.js"></script>		
+<script type="text/javascript" src="js/date-select.js"></script>
 <script>
 birthday = false;
 var is_submit = false;
@@ -244,7 +257,13 @@ $(document).ready(function(){
     	birthday = true;
         $("#birth_year").val($(this).val());
     });
+
     $('#age').val('1990');
+    <?php
+        echo $sessionUser_year ? '$("#age").val("'.$sessionUser_year.'");' :'';
+        echo $sessionUser_constellation_key ? '$("#constellation").val("'.$sessionUser_constellation_key.'");' :'';
+    ?>
+
     $('#age').click(function(){
     	birthday = true;
 //     	alert($(this).val());
@@ -257,8 +276,8 @@ $(document).ready(function(){
 			alert("请输入姓名");
 		    return true;
 	    }
-		
-		
+
+
 		var age = $('#age');
 		if( age && age.val()=="" || !birthday ){
 			alert("请选择生日");
@@ -278,28 +297,28 @@ $(document).ready(function(){
 //         $("#panel3").show();
     });
 
-    var index = 0; 
+    var index = 0;
     $(".question-row .list-xuan").click(function(){
     	$(this).closest(".question-row").find("input[type=radio]").attr('checked',false);
     	//选择答案
-	    $("input[type=radio]",this).attr('checked',true); 
+	    $("input[type=radio]",this).attr('checked',true);
 	    console.log($("input[type=radio]",this).attr('checked'));
 	    //直接跳转结果
-	    var res = $(this).find('input').attr('res'); 
+	    var res = $(this).find('input').attr('res');
 		  //提交
 	    if($(this).hasClass('options') &&  res ){
 	        $("#res").val(res);
 	        $(".question-row").hide();
 	        $("#panel1").show();
 			$("#panel2").show();
-			
+
 			$(".header-title").hide();
 			$(".more-test,.more-footer").hide();
 			$(".title-sub,.test-image").hide();
 // 	    	$("form").submit();
 		    return true;
 		}
-		  //index当前元素索引 
+		  //index当前元素索引
 		//显示元素索引
 	    show_index = index+1;
 		  //跳到指定的题
@@ -310,7 +329,7 @@ $(document).ready(function(){
 	    console.log('show_index=',show_index,'--',question_row_len);
 		  //提交
 	    if(question_row_len>0 &&  skip_question>0){
-	    	
+
 	    	show_index=index+skip_question-1;
 //		    	alert(skip_question+"--"+show_index);
 		}
@@ -324,19 +343,19 @@ $(document).ready(function(){
 
 			$(".header-title").hide();
 			$(".more-test,.more-footer").hide();
-			
+
 // 			$("form").submit();
 		    return true;
 	    }
-		  //zhao end 屏蔽 name和age元素动画	
+		  //zhao end 屏蔽 name和age元素动画
 		$(".question-row").eq(index).animate({"opacity":"0"},'slow',function(){
 			$(".question-row").eq(index).hide();
 			$(".question-row").eq(show_index).fadeIn('slow');
 			index++;
-	    });	
+	    });
     });
 
-    
+
 });
 </script>
 	<div class="container more-test">
@@ -348,7 +367,7 @@ $(document).ready(function(){
 			</h3>
 			<section class="s_moreread">
 				<div class="list_box">
-				    <?php 
+				    <?php
         		   foreach ($randSurvey as $key=>$row){
         		       $key_index = $key+1;
         		       if($row->tax==1){
@@ -366,15 +385,15 @@ $(document).ready(function(){
 							</div> <span class="title"><h3><?php echo $row->title;?></h3></span></a>
 					</div>
 					<?php }?>
-					
+
 				</div>
 			</section>
 		</div>
 	</div>
 	<!-- suiji -->
     <?php include(__DIR__.'/answer-test-list.php');?>
-	
-	
+
+
 	<style>
 .layer {
 	background: rgba(0, 0, 0, .6);
@@ -607,10 +626,10 @@ a:not (.flat ):after, button:not (.flat ):after {
 	font-size: 30px;
 }
 </style>
-	<?php 
+	<?php
     echo $this->renderFile(__DIR__ . '/../layouts/foot-menu.php');
     ?>
-	<?php 
+	<?php
 	include dirname(__DIR__).'/layouts/copy-right.php';
 	?>
 	<div class="modal modal2 fade in" id="myModal" tabindex="-1"
@@ -640,6 +659,6 @@ a:not (.flat ):after, button:not (.flat ):after {
 			</div>
 		</div>
 	</div>
-	
+
 </body>
 </html>

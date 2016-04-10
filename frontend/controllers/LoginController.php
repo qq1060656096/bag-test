@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace frontend\controllers;
 use yii;
 use yii\web\Controller;
@@ -17,15 +17,15 @@ class LoginController extends Controller{
      * 登录
      */
     public function actionLogin(){
-        
+
         $this->layout = false;
         $model = new User();
         $post = Yii::$app->request->post();
-     
+
         if(isset($post['username'])){
             $model->user = isset($post['username']) ? $post['username']: '';
             $model->pass = isset($post['password']) ? $post['password']: '';
-            
+
             $error = $model->login($model->user, $model->pass);
             if($error==0){
                 //账号登陆类型
@@ -41,10 +41,10 @@ class LoginController extends Controller{
         return $this->render('login',[
             'model'=>$model,
             'gourl'=>$gourl,
-            
+
         ]);
     }
-    
+
     /**
      * 注册
      */
@@ -57,7 +57,9 @@ class LoginController extends Controller{
             $model->load($post);
             $success = $model->register();
             $url = Yii::$app->urlManager->createUrl(['survey/my']);
-            return $this->redirect($url);
+            if($success){
+                return $this->redirect($url);
+            }
             //             ZCommonFun::print_r_debug($post);
         }
         return $this->render('register',[
