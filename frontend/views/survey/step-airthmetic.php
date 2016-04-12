@@ -41,7 +41,7 @@ $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.选择算
 	background: #fff;
 
 }
-.arithmetic-button:hover,.arithmetic-button.active{
+.arithmetic-button.active{
 	color: #fff;
 	background: #E46C0A;
 }
@@ -133,8 +133,13 @@ label, label input {
 <script type="text/javascript">
 $(document).ready(function(){
 	$(".arithmetic-button").click(function(){
-		console.log( $(this).hasClass('active') );
-	    $(this).hasClass('active') ? $(this).removeClass('active') : $(this).addClass('active');
+
+	    if( $(this).hasClass('active') ){
+	    	$(this).removeClass('active')
+		 }else{
+			 $(this).addClass('active');
+		 }
+	    console.log( $(this).hasClass('active') );
 	});
 
 	$("#submit").click(function(){

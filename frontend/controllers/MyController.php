@@ -21,6 +21,7 @@ use common\models\UsersFriends;
 use common\models\Message;
 use common\models\User;
 use common\models\common\models;
+use yii\db\Query;
 
 /**
  * Site controller
@@ -356,27 +357,75 @@ class MyController extends Controller
                 $data['models'] = [];
             }
             // ZCommonFun::print_r_debug($data);
+            $my_fans_uids = ZCommonFun::listData($data['models'], 'uid', 'uid');
+            $concer_data = [];
+            if(count($my_fans_uids)>0){
+                $my_fans_uids_str = implode(',', $my_fans_uids);
+                $sql = <<<str
+
+select uf.uid uf_uid,uf.fuid fans /*我关注的人*/,(
+select count(id) from users_friends where uid=uf_uid and fuid=$login_uid
+) fans_is_concern_ta /*uf.uid关注了他 */
+,(
+select count(id) from users_friends where uid=$login_uid and fuid=uf_uid
+)ta_is_concern_fans /* 他关注了uf.uid */
+,up.*
+from users_friends uf
+left join user_profile up on up.uid=uf.uid
+where uf.uid in($my_fans_uids_str )
+group by uf.uid
+
+str;
+
+
+                $query = new Query();
+                $concer_data = $query->createCommand()->setSql($sql)->queryAll();
+            }
+//             ZCommonFun::print_r_debug($concer_data);
+//             exit;
             foreach ($data['models'] as $key => $row) {
                 $ta_url = Yii::$app->urlManager->createUrl([
                     'my/personal-page',
                     'uid' => $row->uid
                 ]);
-                $ta_image = User::getTaUidShowHead_image($row->uid);
-                $ta_nickname = User::getTaUidShowName($row->uid);
-                $ta_intro = User::getTaUidShowIntro($row->uid);
-                if ($login_uid && $model->get_user_friend($login_uid, $row->uid)) {
+                $ta_nickname = User::getDefaultTaNickname();
+                $ta_image    = User::getDefaultHead_image();
+                $ta_intro    = User::getDefaultTaIntro();
+                $concer_text = '关注';
+                $is_find = false;
+                foreach ($concer_data as $key2=>$row2){
+                    if( $row->uid == $row2['uf_uid'] ){
+                        !empty($row2['nickname']) ? $ta_nickname    = $row2['nickname']     : null;
+                        !empty($row2['head_image']) ? $ta_image     = $row2['head_image']   : null;
+                        !empty($row2['intro']) ? $ta_intro          = $row2['intro']        : null;
+                        if( $row2['fans_is_concern_ta'] && $row2['ta_is_concern_fans'] ){
+                            $url            = '';
+                            $concer_text    = '相互关注';
+                        }//当前用户已关注
+                        else if( $row2['ta_is_concern_fans'] ){
+                            $url            = '';
+                            $concer_text    = '已关注';
+                        }else {
+                            $url = Yii::$app->urlManager->createUrl([
+                                'my/concern',
+                                'fuid' => $row->uid
+                            ]);
 
-                    $url = '';
-                    $concer_text = '已关注';
-                } else {
+                        }
+                        $is_find = true;
+                        break;
+                    }
+                }
+                if(!$is_find){
                     $url = Yii::$app->urlManager->createUrl([
                         'my/concern',
-                        'fuid' => $row->fuid
+                        'fuid' => $row->uid
                     ]);
-                    $concer_text = '关注';
                 }
+
+
                 $html .= <<<str
-                <ul class="list" id="answer-view">
+                <ul class="list" id="answer-view" style="margin:0;">
            <li class="diy-item"><a
 					href="$ta_url"
 					target="_blank">
@@ -431,29 +480,78 @@ str;
             if (isset($_GET[$data['pagination']->pageParam]) && $data['pagination']->pageCount < $_GET[$data['pagination']->pageParam]) {
                 $data['models'] = [];
             }
+            $my_fans_uids = ZCommonFun::listData($data['models'], 'fuid', 'fuid');
+            $concer_data = [];
+            if(count($my_fans_uids)>0){
+                $my_fans_uids_str = implode(',', $my_fans_uids);
+                $sql = <<<str
+
+select uf.uid uf_uid,uf.fuid fans /*我关注的人*/,(
+select count(id) from users_friends where uid=uf_uid and fuid=$login_uid
+) fans_is_concern_ta /*uf.uid关注了他 */
+,(
+select count(id) from users_friends where uid=$login_uid and fuid=uf_uid
+)ta_is_concern_fans /* 他关注了uf.uid */
+,up.*
+from users_friends uf
+left join user_profile up on up.uid=uf.uid
+where uf.uid in($my_fans_uids_str )
+group by uf.uid
+
+str;
+
+
+                $query = new Query();
+                $concer_data = $query->createCommand()->setSql($sql)->queryAll();
+            }
+            //             ZCommonFun::print_r_debug($concer_data);
+            //             exit;
             // ZCommonFun::print_r_debug($data);
             foreach ($data['models'] as $key => $row) {
                 $ta_url = Yii::$app->urlManager->createUrl([
                     'my/personal-page',
                     'uid' => $row->fuid
                 ]);
-                $ta_image = User::getTaUidShowHead_image($row->fuid);
-                $ta_nickname = User::getTaUidShowName($row->fuid);
-                $ta_intro = User::getTaUidShowIntro($row->fuid);
-                if ($login_uid && $model->get_user_friend($login_uid, $row->fuid)) {
 
-                    $url = '';
-                    $concer_text = '已关注';
-                } else {
+                $ta_nickname = User::getDefaultTaNickname();
+                $ta_image    = User::getDefaultHead_image();
+                $ta_intro    = User::getDefaultTaIntro();
+                $concer_text = '关注';
+                $is_find = false;
+                foreach ($concer_data as $key2=>$row2){
+                    if( $row->fuid == $row2['uf_uid'] ){
+                        !empty($row2['nickname']) ? $ta_nickname    = $row2['nickname']     : null;
+                        !empty($row2['head_image']) ? $ta_image     = $row2['head_image']   : null;
+                        !empty($row2['intro']) ? $ta_intro          = $row2['intro']        : null;
+                        if( $row2['fans_is_concern_ta'] && $row2['ta_is_concern_fans'] ){
+                            $url            = '';
+                            $concer_text    = '相互关注';
+                        }//当前用户已关注
+                        else if( $row2['ta_is_concern_fans'] ){
+                            $url            = '';
+                            $concer_text    = '已关注';
+                        }else {
+                            $url = Yii::$app->urlManager->createUrl([
+                                'my/concern',
+                                'fuid' => $row->fuid
+                            ]);
+
+                        }
+                        $is_find = true;
+                        break;
+                    }
+                }
+                if(!$is_find){
                     $url = Yii::$app->urlManager->createUrl([
                         'my/concern',
                         'fuid' => $row->fuid
                     ]);
-                    $concer_text = '关注';
                 }
 
+
+
                 $html .= <<<str
-                <ul class="list" id="answer-view">
+                <ul class="list" id="answer-view" style="margin:0;">
            <li class="diy-item"><a
 					href="$ta_url"
 					target="_blank">

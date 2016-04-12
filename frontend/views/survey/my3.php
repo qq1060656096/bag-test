@@ -5,6 +5,7 @@ use common\z\ZCommonFun;
 use common\models\Survey;
 use common\z\ZCommonSessionFun;
 use common\models\User;
+use common\z\ZController;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\SurverySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -98,6 +99,10 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 
 
  </div>
+ <style>
+
+
+ </style>
  <script type="text/javascript">
  ajaxLoad();
 $(document).ready(function(){
@@ -140,14 +145,14 @@ $(document).ready(function(){
 					}
 
 				}else{
-					if(element.text()=="取消发布中..."){
+					if(element.text()=="取消发布" || element.text()=="发布中..."){
 						element.text('发布');
 					}else{
-						element.text('已发布');
+						element.text('取消发布');
 					}
 				 }
 
-				alert(json.message);
+				alert('<?php echo ZController::$site_name;?>',json.message);
 			}
 		});
 

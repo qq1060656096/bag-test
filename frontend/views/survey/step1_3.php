@@ -33,6 +33,7 @@ $this->title .='.封面图';
 .po_title{
 	text-align: left;
 	font-size: 2em;
+	text-align: center;
 }
 .intro{
 	text-align: left;
@@ -43,10 +44,10 @@ $this->title .='.封面图';
 <script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js"></script>
 <script type="text/javascript" src="./common/js/cropit-master/dist/jquery.cropit.js"></script>
 <div id="main_body">
-    
-	
+
+
 	<?php echo $this->renderFile(__DIR__.'/../layouts/head-top.php');?>
-	
+
 	<section class="s_moreread s_reg s_login">
 
     <?php $form = ActiveForm::begin(['id'=>'form1']); ?>
@@ -56,65 +57,65 @@ $this->title .='.封面图';
             <label class="control-label upload-click" for="images-image">上传封面图
                 <div id="BlockCon" class="">
                     <i class="QaddImg " >
-                        
+
                     </i>
                 </div>
             </label>
             <input id="upload" type="file" name="file">
             <input type="hidden" id="images-image" class="form-control " name="image" value="<?php echo isset($model->images->image)?$model->images->image: '';?>">
-            
+
             <div class="help-block"></div>
         </div>
-        
+
         <div class="btn_bg btn-2 btn-100">
-			<a href="<?php echo Yii::$app->urlManager->createUrl(['survey/step2','id'=>$model->id]);?>" id="prev-step">上一步</a> 
+			<a href="<?php echo Yii::$app->urlManager->createUrl(['survey/step2','id'=>$model->id]);?>" id="prev-step">上一步</a>
 		</div>
 		<br/>
-        <?php 
+        <?php
             $submitText = '';
             switch ($model->tax):
                 case 1:
                     $submitText = '保存/下一步';//'保存/下一步添加结果';
                     break;
                 case 2:
-                    
+
                 case 3:
                     $submitText = '保存/下一步';//'保存/下一步添加题目';
                     break;
             endswitch;
        ?>
         <div class="btn_bg" >
-			<input type="submit" id="submit" value="<?php echo $submitText;?>"> 
+			<input type="submit" id="submit" value="<?php echo $submitText;?>">
 		</div>
 		<br />
 		<?php /*
-		<a class="btn_bg" 
-		href="<?php echo Yii::$app->urlManager->createUrl(['survey/step2','id'=>$model->id]);?>" 
-		id="prev-step">上一步</a> 
+		<a class="btn_bg"
+		href="<?php echo Yii::$app->urlManager->createUrl(['survey/step2','id'=>$model->id]);?>"
+		id="prev-step">上一步</a>
 		<br />
-		
+
 		<a class="btn_bg" href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
-	       <input type="button" value="预览"> 
-	    </a> 
+	       <input type="button" value="预览">
+	    </a>
         <br />
         */
         ?>
-        
+
         <div id="image-wrap">
-            <?php 
+            <?php
                 if(isset($model->images->image) && !empty($model->images->image)){
                     echo '<img src="',Survey::getImageUrl($model),'"/>';
                 }
             ?>
         </div>
-        
-		
+
+
 
         <?php ActiveForm::end(); ?>
         <p class="text-hint">保存配图后，在下一步，你需要依次创建不少于2个测试结果。后面还有<?php echo SurveyController::stepCount($tax)-2;?>个步骤，这个测试就能创建完毕。</p>
 	</section>
-		
-      
+
+
  </div>
 <script src="common/php-html5-uploadz/ZHtml5Upload.js">
 </script>
@@ -141,7 +142,7 @@ $(function() {
 			if( json.result.status==1 && json.id){
 				$("#images-image").val(json.id);
 		    }
-			
+
 			//console.log(this);
 			if( uploadz.isReaderFile ){
 				$("#image-wrap").empty();
@@ -154,7 +155,7 @@ $(function() {
 		}
 	});
 });
-</script> 
+</script>
 <style>
 #BlockCon{
     position: relative;
@@ -193,7 +194,7 @@ $(function() {
     height: 0;
     	width:0;
     }
-    
+
 
       .image-size-label {
         margin-top: 10px;
@@ -208,4 +209,4 @@ $(function() {
 }
     </style>
      <?php echo $this->renderFile(__DIR__.'/../layouts/group-add.php');?>
-<?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>  
+<?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

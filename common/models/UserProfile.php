@@ -100,7 +100,7 @@ class UserProfile extends \yii\db\ActiveRecord
             return $testing_count;
         }
         $model_UserProfile = UserProfile::findOne($uid);
-        
+
         if($model_UserProfile){
             $testing_count = $model_UserProfile->testing_count;
             $testing_count = $testing_count ? intval($testing_count) : 0;
@@ -115,8 +115,8 @@ class UserProfile extends \yii\db\ActiveRecord
         $nickname = !empty($this->nickname) ? $this->nickname : 'NO.'.$this->uid;
         return $nickname;
     }
-    
-    
+
+
     /**
      * 获取简介
      * @return string
@@ -137,11 +137,11 @@ class UserProfile extends \yii\db\ActiveRecord
      * 获取头像
      */
     public function getHeadImage0(){
-        $image = !empty($this->head_image) ? $this->head_image : './images/head_image.png';
-        
+        $image = !empty($this->head_image) ? $this->head_image : user::getDefaultHead_image();
+
         return $image;
     }
-    
+
     /**
      * 获取准确率
      * @return float;

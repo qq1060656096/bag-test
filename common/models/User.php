@@ -283,9 +283,15 @@ class User extends \yii\db\ActiveRecord
         if( $this->userProfile && !empty($this->userProfile->nickname) ){
             return $this->userProfile->nickname;
         }else{
-            return 'Ta暂无昵称';
+            return self::getDefaultTaNickname();
         }
 
+    }
+    public static function getDefaultTaNickname(){
+        return 'Ta暂无昵称';
+    }
+    public static function getDefaultTaIntro(){
+        return 'Ta什么都没留下';
     }
     /**
      * 显示他的签名
@@ -298,15 +304,16 @@ class User extends \yii\db\ActiveRecord
         if($model){
             return $model->getTaShowIntro();
         }
-        return 'Ta什么都没留下';
+        return self::getDefaultTaIntro();
     }
     public function getTaShowIntro(){
         if( $this->userProfile && !empty($this->userProfile->nickname) ){
             return !empty($this->userProfile->intro )? $this->userProfile->intro:'Ta什么都没留下';
         }else{
-            return 'Ta什么都没留下';
+            return self::getDefaultTaIntro();
         }
     }
+
     /**
      * 获取头像
      * @param unknown $uid
@@ -318,13 +325,17 @@ class User extends \yii\db\ActiveRecord
         if($model){
             return $model->getTaShowHead_image();
         }
-        return './images/head_image.png';
+        return self::getDefaultHead_image();
     }
     public function getTaShowHead_image(){
         if( isset($this->userProfile->head_image)  ){
             return $this->userProfile->getHeadImage0();
         }else{
-            return './images/head_image.png';
+            return self::getDefaultHead_image();
         }
+    }
+
+    public static function getDefaultHead_image(){
+        return './images/head_image.png';
     }
 }

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,user-scalable=0">
+<title>HTML5 smile-alert</title>
+<link rel="stylesheet" href="smile-alert.css" />
+<script src="smile-alert.js"></script>
+<script>
+function demo3(){
+	var options = {
+			cancel          : true,
+			cancelText		: 'cancel',
+			cancelCallBack 	:function(event){
+				console.log('options.cancelCallBack');
+			},
+			delay           :0,
+			confirm	  		: true,
+			confirmText 	: 'confirm',
+			confirmCallBack : function(event){
+				console.log('options.confirmCallBack');
+			}
+		}
+	alert('demo 3','demo 3 show message',options);
+}
+function demo4(){
+	var options = {
+			cancel          : false,
+			cancelText		: 'cancel',
+			cancelCallBack 	:function(event){
+				console.log('options.cancelCallBack');
+			},
+			delay           :0,
+			confirm	  		: true,
+			confirmText 	: 'confirm',
+			confirmCallBack : function(event){
+				console.log('options.confirmCallBack');
+			}
+		}
+	alert('demo 4','demo 4 show message',options);
+}
+function demo5(){
+	var options = {
+			cancel          : true,
+			cancelText		: 'cancel button',
+			cancelCallBack 	:function(event){
+				console.log('options.cancelCallBack');
+			},
+			delay           :300,
+			confirm	  		: true,
+			confirmText 	: 'confirm button',
+			confirmCallBack : function(event){
+				console.log('options.confirmCallBack');
+			}
+		}
+	alert('demo 5','demo 5 show message',options);
+}
+</script>
+<style>
+.main-content {
+	width: 90%;
+	margin: 0 auto;
+}
+pre {
+    display: block;
+    padding: 9.5px;
+    margin: 0 0 10px;
+    font-size: 13px;
+    line-height: 20px;
+    word-break: break-all;
+    word-wrap: break-word;
+    white-space: pre;
+    white-space: pre-wrap;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,0.15);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+</style>
+</head>
+<body>
+	<div class="main-content">
+		<h1>HTML5 smile-alert</h1>
+		<div class="row">
+			<h3>demo 1</h3>
+<small>show the title and confirm  button</small>
+<pre class="">
+	<button onclick="alert('Only show the title');">click me</button>
+	&ltscript type="text/javascript"&gt
+		alert('demo1 title');
+	&lt/script&gt
+</pre>
+		</div>
+
+
+	<div class="row">
+			<h3>demo 2</h3>
+<small>show the title message and confirm  button</small>
+<pre class="">
+	<button onclick="alert('demo 2 title','demo 2 show message');">click me</button>
+	&ltscript type="text/javascript"&gt
+		alert('this is title','show message');
+	&lt/script&gt
+</pre>
+
+	</div>
+
+	<div class="row">
+			<h3>demo 3</h3>
+<small>show the title message cancel button and confirm  button</small>
+<pre class="">
+	<button onclick="demo3()">click me</button>
+
+	&ltscript type="text/javascript"&gt
+		var options = {
+			cancel          : true,
+			cancelText		: 'cancel',
+			cancelCallBack 	:function(event){
+				consle.log('options.cancelCallBack');
+			},
+			delay           :0,
+			confirm	  		: true,
+			confirmText 	: 'confirm',
+			confirmCallBack : function(event){
+				consle.log('options.confirmCallBack');
+			}
+		}
+		alert('demo 3','show message',options);
+	&lt/script&gt
+</pre>
+	</div>
+	<div class="row">
+			<h3>demo 4</h3>
+
+<pre class="">
+	<button onclick="demo4()">click me</button>
+
+	&ltscript type="text/javascript"&gt
+		var options = {
+			cancel          : false,
+			cancelText		: 'cancel',
+			cancelCallBack 	:function(event){
+				console.log('options.cancelCallBack');
+			},
+			delay           :0,
+			confirm	  		: true,
+			confirmText 	: 'confirm',
+			confirmCallBack : function(event){
+				console.log('options.confirmCallBack');
+			}
+		}
+		alert('demo 4','show message',options);
+	&lt/script&gt
+</pre>
+	</div>
+	<div class="row">
+			<h3>demo 5</h3>
+
+<pre class="">
+	<button onclick="demo5()">click me</button>
+
+	&ltscript type="text/javascript"&gt
+		var options = {
+			cancel          : true,
+			cancelText		: 'cancel button',
+			cancelCallBack 	:function(event){
+				console.log('options.cancelCallBack');
+			},
+			delay           :300,
+			confirm	  		: false,
+			confirmText 	: 'confirm button',
+			confirmCallBack : function(event){
+				console.log('options.confirmCallBack');
+			}
+		}
+		alert('demo 5','show message',options);
+	&lt/script&gt
+</pre>
+	</div>
+
+</body>
+</html>
+

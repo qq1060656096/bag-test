@@ -21,7 +21,7 @@ switch ($model->tax):
 
         $submitAddText = '再编一个结果';//'保存/增加';
         $submitNexText = '保存/下一步';//'保存/下一步选择算法';
-        $text_hint = "点击“再增加一个结果”，你可以添加多个测试结果。添加玩所有测试结果后保存。在下一步，你需要选择最适合这个测试的算法。后面还有".(SurveyController::stepCount($tax)-3)."个步骤，这个测试就能创建完毕。";
+        $text_hint = "点击“再编写一个结果”，你可以添加多个测试结果。添加完所有测试结果后保存。在下一步，你需要选择最适合这个测试的算法。后面还有".(SurveyController::stepCount($tax)-3)."个步骤，这个测试就能创建完毕。";
     break;
     case 2:
         $this->title .= '-步骤5/'.SurveyController::stepCount($tax).'.添加结果';

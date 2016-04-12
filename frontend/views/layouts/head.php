@@ -1,4 +1,4 @@
-<?php 
+<?php
 use common\z\ZController;
 ?>
 <!DOCTYPE html>
@@ -15,7 +15,7 @@ use common\z\ZController;
 	name="viewport">
 <meta name="keywords" content="<?php echo ZController::$keywords;?>" />
 <meta name="description" content="<?php echo ZController::$description;?>">
-	
+
 <meta content="yes" name="apple-mobile-web-app-capable">
 <meta content="black" name="apple-mobile-web-app-status-bar-style">
 <meta content="telephone=no" name="format-detection">
@@ -27,7 +27,7 @@ use common\z\ZController;
 <link href="./bag-test/css/mobile-register.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="./bag-test/css/qz_home.css">
 <link rel="stylesheet" href="./bag-test/css/common.css">
-
+<link rel="stylesheet" href="js/smile-alert-master/smile-alert.css" />
+<script src="js/smile-alert-master/smile-alert.js"></script>
 </head>
 <body class=" hPC" style="padding-bottom: initial;">
-	

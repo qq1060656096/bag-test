@@ -153,25 +153,27 @@ class AnswerController extends Controller{
         <html>
         <head>
         <meta charset="utf-8"/>
-        <link rel="stylesheet" href="js/sweet-alert/css/sweet-alert.css" />
-
-        <script src="js/sweet-alert/js/sweet-alert.js"></script>
+        <link rel="stylesheet" href="js/smile-alert-master/smile-alert.css" />
+        <script src="js/smile-alert-master/smile-alert.js"></script>
         </head>
 <body>
 
 
         </body>
 <script>
-document.querySelector('body').onload = function(){
-	sweetAlert({   title: "{$title}",   text: "{$message}" },function(is_peration){
-        if(is_peration){
-            window.location.href="{$url}";
-        }
-        console.log(is_peration);
-    });
+
+var options = {
+	cancel          : true,
+	cancelText		: '确定',
+	cancelCallBack 	:function(event){
+                window.location.href="{$url}";
+		consle.log('options.cancelCallBack');
+	},
+	delay           :0,
+	confirm         : false
 };
 
-          //
+alert('{$title}','{$message}',options);
     </script>
 </html>
 str;

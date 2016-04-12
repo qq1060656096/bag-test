@@ -16,12 +16,12 @@ $this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey
 switch ($model->tax):
     case 1:
         $this->title .= '-步骤5/'.SurveyController::stepCount($model->tax).'.测试预览';
-    
+
     $submitAddText = '保存/增加';
     $submitNexText = '保存/下一步选择算法';
     break;
     case 2:
-    
+
     case 3:
         $this->title .= '-步骤6/'.SurveyController::stepCount($model->tax).'.测试预览';
         $submitText = '保存/下一步添加题目';
@@ -70,11 +70,11 @@ h1{
 .row{
 	border-bottom: 3px dashed #DDD;
 	margin-top: 1em;
-}    
+}
 .label-name{
     display: block;
     text-align: left;
-}   
+}
 .row textarea ,.row input,.s_reg input[type=text], .s_reg input[type=password], .s_reg textarea{
 	width: 99%;
 	height: 2em;
@@ -149,11 +149,11 @@ margin-left: 4.5%;
     hyphens: auto;
 }
 .article135{
-white-space: normal; color: rgb(62, 62, 62); 
-line-height: 25.6000003814697px; font-family: 微软雅黑;	
+white-space: normal; color: rgb(62, 62, 62);
+line-height: 25.6000003814697px; font-family: 微软雅黑;
 }
 .135editor{
-	box-sizing: border-box; border: 0px none; padding: 0px; margin: 0px; 
+	box-sizing: border-box; border: 0px none; padding: 0px; margin: 0px;
 }
 .layout{
 	margin: 5px auto; border: 3px solid rgb(255, 129, 36); padding: 5px; box-sizing: border-box;
@@ -163,7 +163,7 @@ line-height: 25.6000003814697px; font-family: 微软雅黑;
 }
 .red{
 	padding-left: 5px;
-	color: red; 
+	color: red;
 }
 .arithmetic-button{
 
@@ -178,7 +178,7 @@ line-height: 25.6000003814697px; font-family: 微软雅黑;
 	font-size: 25px;
 	margin-bottom: 10px;
 	background: #fff;
-	
+
 }
 
 .change-btn{
@@ -191,7 +191,7 @@ line-height: 25.6000003814697px; font-family: 微软雅黑;
     display: inline-block;
 }
 </style>
-<?php 
+<?php
 $test_url = $model->tax==1 ? Yii::$app->urlManager->createUrl(['answer/step1','id'=>$model->id])
 : Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$model->id]);
 $pre_url    = Yii::$app->urlManager->createUrl(['survey/step4_2','id'=>$model->id]);
@@ -210,7 +210,7 @@ switch ($model->tax){
 
 $create_url = Yii::$app->urlManager->createUrl(['survey/step1','id'=>$model->id]);
 $update_url = Yii::$app->urlManager->createUrl(['survey/step2','id'=>$model->id]);
-
+$my_url     = Yii::$app->urlManager->createUrl(['survey/my']);
 // ZCommonFun::print_r_debug($question_all);
 // ZCommonFun::print_r_debug($result_all);
 
@@ -232,25 +232,25 @@ foreach ($result_all as $key0=>$result0){
 	<div id="page-content">
         <div id="img-content" class="rich_media_area_primary">
             <h2 class="rich_media_title" id="activity-name">
-                <?php 
+                <?php
                 echo ZCommonFun::replace_filter_words($model->title, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
                 $error_title = empty($model->title) ? '标题不能为空':'';
-                ?> 
+                ?>
                 <span class="red"><?php echo $error_title;?></span>
-            </h2>                              
-            
+            </h2>
+
             <div class="rich_media_content " id="js_content">
-                
+
                 <section class="article135" >
                     <section class="135editor" >
                         <section class="layout">
                             <section data-bcless="lighten">
                                 <p style="text-align: left;">
-                                    <?php   
+                                    <?php
                                     echo ZCommonFun::replace_filter_words($model->intro, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
-                                  
+
                                     $error_intro = empty($model->intro) ? '简介不能为空':'';
-                                    ?> 
+                                    ?>
                                     <span class="red"><?php echo $error_intro;?></span>
                                     <a class="change-btn" href="<?php echo Yii::$app->urlManager->createUrl(['survey/step2','id'=>$model->id]);?>">修改测试简介</a>
                                 </p>
@@ -260,11 +260,11 @@ foreach ($result_all as $key0=>$result0){
                         </section>
                     </section>
                     <p><br></p>
-                    <?php 
+                    <?php
                     $index=0;
-                    
+
                     foreach ($question_all['questions'] as $key=>$question){
-                        
+
                         $index++;
                         $row_change_question_url = Yii::$app->urlManager->createUrl(['survey/step4_2_question','id'=>$model->id,'page'=>$index]);
                         $label = $question->label;
@@ -276,11 +276,11 @@ foreach ($result_all as $key0=>$result0){
                         <?php echo $index;?>
                         <span class="question-label"><?php echo $label;?></span>
                         <span class="red"><?php echo $error ;?></span>
-                    
-                        
+
+
                         <a class="change-btn" href="<?php echo $row_change_question_url;?>" >修改此问题</a>
                     </p>
-                        <?php 
+                        <?php
                         isset($question_all['options'][$key]) ? null : $question_all['options'][$key]=[];
                         if(count($question_all['options'][$key])<1){
                         ?>
@@ -290,31 +290,31 @@ foreach ($result_all as $key0=>$result0){
                         </p>
                         <?php }?>
                         <?php
-                        
+
                         foreach ($question_all['options'][$key] as $key2=>$question_option){
                             $option_label = $question_option->option_label;
                             $option_label =  ZCommonFun::replace_filter_words($option_label, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
                             $error_option_label = !empty($option_label) ? '':'选项不能为空';
                             $speparator = $question_option->skip_question>0 || $question_option->skip_resulte>0 ? '——' :'';
                             $skip_text = '';
-                            
+
                             $question_option->skip_question>0 ? $skip_text="转{$question_option->skip_question}题":'';
                             $question_option->skip_resulte>0 && isset($arr_result_index[$question_option->skip_resulte]) ? $skip_text="转{$arr_result_index[$question_option->skip_resulte]}结果":'';
-                            $score_text=''; 
+                            $score_text='';
                             if($model->tax==2){
                                 $score_text='—('.$question_option->option_score.'分)';
                             }
                         ?>
                         <p>
-                        
+
                             <span class="option_label"><?php echo $option_label,$score_text,$speparator,$skip_text;?></span>
                             <span class="red"><?php echo $error_option_label;?></span>
                         </p>
                         <?php }?>
                     <?php }?>
-                 
+
                  </section>
-                 <?php 
+                 <?php
                  $arr = $model->arithmetic!='' ? explode(',', $model->arithmetic):null;
                  if(count($arr)>0 || $model->tax==1){
                  ?>
@@ -322,8 +322,8 @@ foreach ($result_all as $key0=>$result0){
                     <section data-bcless="lighten">
                         <h2>选择算法</h2>
                         <p style="text-align: left;">
-                        <?php 
-                        
+                        <?php
+
                         $arr?null:$arr=[];
                         $arithmetic_arr =[];
                         foreach (Survey::$arithmeticList as $key=>$value){
@@ -331,15 +331,15 @@ foreach ($result_all as $key0=>$result0){
                             if(in_array($key, $arr)){
                                 $arithmetic_arr[] = $value;
                             }
-                         } 
+                         }
                          echo implode('，', $arithmetic_arr );
                          ?>
                          <a class="change-btn" href="<?php echo Yii::$app->urlManager->createUrl(['survey/step-airthmetic','id'=>$model->id]);?>">修改测试算法</a>
                         </p>
                     </section>
-                 </section>   
-                 <?php } ?>     
-                 <?php 
+                 </section>
+                 <?php } ?>
+                 <?php
                  $index=0;
                  foreach ($result_all as $key=>$result){
                      $index++;
@@ -390,14 +390,14 @@ foreach ($result_all as $key0=>$result0){
                     </section>
                  </section>
                  <?php }?>
-                 <?php 
+                 <?php
                  if($index<1){
                  ?>
                  <section class="layout">
                     <section data-bcless="lighten">
                         <h2 class="red">最少包含一个测试结果</h2>
                     </section>
-                 </section>   
+                 </section>
                  <?php } ?>
             </div>
         </div>
@@ -406,30 +406,43 @@ foreach ($result_all as $key0=>$result0){
 	<section class="s_moreread s_reg s_login">
 	   <p>&nbsp;</p>
 	   <p>已成功的创建了一个奇趣测试，您已是测试大师</p>
-	   <button type="button" class="btn_bg btn btn-primary btn-100" 
+	   <!--
+	   <button type="button" class="btn_bg btn btn-primary btn-100"
 	   onclick="javascript:location.href='<?php echo $pre_url;?>';"
 	   name="save-next">上一步</button>
-	   <button type="button" class="btn_bg btn btn-primary btn-l" 
+	   <button type="button" class="btn_bg btn btn-primary btn-l"
 	   onclick="javascript:location.href='<?php echo $test_url;?>';"
 	   name="save-next">我要试用</button>
-	   <button type="button" class="btn_bg btn btn-primary btn-2" 
+	   <button type="button" class="btn_bg btn btn-primary btn-2"
 	   onclick="javascript:location.href='<?php echo $create_url;?>';"
 	   name="save-next">再创建一个</button>
-	   <button type="button" class="btn_bg btn btn-primary btn-r" 
+	   <button type="button" class="btn_bg btn btn-primary btn-r"
 	   onclick="javascript:location.href='<?php echo $update_url;?>';"
 	   name="save-next">修改此测试</button>
-	   
-	   <button type="submit" class="btn_bg btn btn-primary btn-100" 
-	  
+	    -->
+	   <button type="button" class="btn_bg btn btn-primary btn-l"
+	   onclick="javascript:location.href='<?php echo $pre_url;?>';"
+	   name="save-next">上一步</button>
+	   <button type="button" class="btn_bg btn btn-primary btn-2"
+	   onclick="javascript:location.href='<?php echo $test_url;?>';"
+	   name="save-next">我要试用</button>
+	   <button type="button" class="btn_bg btn btn-primary btn-r"
+	   onclick="javascript:location.href='<?php echo $my_url;?>';"
+	   name="save-next">保存为草稿</button>
+
+	   <button type="submit" class="btn_bg btn btn-primary btn-100"
+
 	   name="save" id="submit">直接发布</button>
-	   
-    </section>    
+
+    </section>
+    <p>&nbsp;</p>
+    <p>发布之后，所有人都可以做你刚刚创建的这个测试。</p>
     <?php ActiveForm::end(); ?>
-</div>  
+</div>
 <script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	<?php 
+	<?php
 	if($message){
 	    echo 'alert("',$message,'");';
 	}

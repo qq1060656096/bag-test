@@ -114,7 +114,7 @@ foreach ($header_user_menu as $key=>$header_user_menu_row){
 					<?php echo $model_SurveyTotal->getMySurveyCount();?>
 					</sapn>个
 				</div>
-				<div>
+				<div onclick="javascript:window.top.document.location='<?php echo Yii::$app->urlManager->createUrl(['my/uid-concern','uid'=>$sessionUser['uid']])?>'">
 					关注<sapn class="common-color"><?php echo UsersFriends::get_concern_count( ZCommonSessionFun::get_user_id() ,true );?></sapn>人
 				</div>
 			</td>
@@ -124,7 +124,7 @@ foreach ($header_user_menu as $key=>$header_user_menu_row){
 					<a class="a-left" href="<?php echo $url_user_setting;?>">设置</a>
 					<a class="a-right" href="<?php echo $url_logout;?>">退出</a>
 				</div>
-				<div onclick="javascript:window.top.document.location='<?php echo Yii::$app->urlManager->createUrl(['my/uid-concern','uid'=>$sessionUser['uid']])?>'">
+				<div >
 					测过<sapn class="common-color"><?php echo UserProfile::getTestingCount(ZCommonSessionFun::get_user_id());?></sapn>次
 				</div>
 				<div onclick="javascript:window.top.document.location='<?php echo Yii::$app->urlManager->createUrl(['my/uid-fans','uid'=>$sessionUser['uid']])?>'">
