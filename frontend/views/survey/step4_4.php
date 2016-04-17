@@ -1,4 +1,4 @@
-<?php 
+<?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\z\ZCommonFun;
@@ -16,16 +16,19 @@ echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
 $this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey_tax['0'];
 $submitAddText = '';
 $submitNexText = '';
+$text_hint = '';
 switch ($model->tax):
     case 1:
-    
+
         break;
     case 2:
-    
+
     case 3:
         $this->title .= '-步骤5/'.SurveyController::stepCount($model->tax).'.设置跳转';
         $submitAddText = '保存/增加';
         $submitNexText = '保存/下一步添加结果';
+        $text_hint = "（1）设置完跳转后保存。在下一步，你需要最后看一下已经创建完毕的全部内容。如果没有问题，就可以发布出去啦。<br/>
+（2）后面还有最后".(SurveyController::stepCount($model->tax)-3)."个步骤，这个测试就能创建完毕。";
         break;
 endswitch;
 
@@ -44,7 +47,7 @@ function selectShow($name,$start,$end,$select=''){
         return '';
     }
     echo '<select class="select-question" name="',$name,'"><option value="" >请选择跳转问题</option>';
-    
+
     for($start;$start<=$end;$start++){
         $selected = $select==$start ? 'selected="selected"':'';
         echo '<option ',$selected,' value="',$start,'">跳转到',$start,'题</option>';
@@ -61,7 +64,7 @@ function selectShowResulte($models_SurveyResulte,$selected_id,$name=''){
         $selected = $selected_id==$row->sr_id ? 'selected="selected"':'';
         $i++;
         echo  '<option value="',$row->sr_id,'" ',$selected,'>结果',$i,'</option>';
-        
+
     }
     echo '</select>';
 }
@@ -96,7 +99,7 @@ fieldset {
         <?php $form = ActiveForm::begin(['id'=>'id-form']); ?>
             <div id="id_question_list" style="display: none1" data-type="score">
 
-                <?php 
+                <?php
                 $question_count = count($data['questions']);
                 foreach ($data['questions'] as $key=>$question){
                 ?>
@@ -107,12 +110,12 @@ fieldset {
 						class="ui-corner-all ui-controlgroup ui-controlgroup-vertical">
 						<div role="heading" class="ui-controlgroup-label"><?php echo $key+1,'.',$question->label; ?></div>
 						<div class="ui-controlgroup-controls">
-							<?php 
+							<?php
                             isset($data['options'][$key]) ? null : $data['options'][$key]=[];
                             foreach ($data['options'][$key] as $key2=>$option){
-                            ?>	
+                            ?>
 							<label for="option-id-<?php echo $option->qo_id;?>" >
-						
+
 									<input type="radio" id="option-id-<?php echo $option->qo_id;?>" name="options[<?php echo $question->question_id; ?>][]" value="<?php echo $option->qo_id;?>">
 									<span ><?php echo '选项'.$key2.'.'.$option->option_label;?></span>
 								    <?php echo selectShow("option[{$option->qo_id}]", $key+2, $question_count,$option->skip_question);?>
@@ -122,30 +125,31 @@ fieldset {
 
 						</div>
 					</fieldset>
-					
+
 				</div>
                 <?php } ?>
 
 			</div>
-			
+
 			<div class="s_reg">
     			<a class="btn_bg" href="<?php echo Yii::$app->urlManager->createUrl(['survey/step4_2','id'=>$model->id]);?>">
-        			<input type="button" id="submit" value="上一步"> 
+        			<input type="button" id="submit" value="上一步">
         		</a>
     		</div>
-    		
+
 			<div class="s_reg">
     			<a class="btn_bg" href="javascript:void(0);">
-        			<input type="submit" id="submit" value="保存/最后一步 预览"> 
+        			<input type="submit" id="submit" value="保存/最后一步 预览">
         		</a>
     		</div>
     		<br />
+    		<p class="text-hint"><?php echo $text_hint;?></p>
     		<br />
     		<br />
     		<br />
     		<br />
         <?php ActiveForm::end(); ?>
-</section>    
+</section>
 <script type="text/javascript">
 Array.prototype.unique2 = function()
 {
@@ -159,14 +163,14 @@ Array.prototype.unique2 = function()
 		}
 	}
 	return r;
-}                            
+}
 $(document).ready(function(){
 	//点击问题
 	$("label").on('click','.select-question',function(){
 		var value = $(this).val();
 		var resulte = $(this).closest('label').find('.select-resulte');
 		if(value>0){
-			
+
 			resulte.find('option:selected').attr('selected',false);
 			resulte.hide();
 		    console.log(value+'--'+resulte.val() );
@@ -199,20 +203,20 @@ $(document).ready(function(){
 		}else{
 			now.removeAttr('valueid');
 		}
-		
+
 		var arr_select = new Array();
 		//当前值被选中就显示，没被选中就隐藏
 	    $("select.select-question[valueid]").each(function(){
-		    var row = $(this);		    
+		    var row = $(this);
 		    var row_value = row.attr('valueid');
 		    arr_select.push(row_value);
 		    $("select.select-question option[value='"+row_value+"']:not(:selected)").hide();
 		    $("select.select-question option[value='"+row_value+"']:selected").show();
-		});  
+		});
 	    arr_select = arr_select.unique2();
 // 		console.log(arr_select);
 		$("select.select-question:not([valueid]) option").each(function(){
-			var row = $(this);	
+			var row = $(this);
 			var row_value = row.attr('value');
 			var op = false;
 		    for(var i in arr_select){
@@ -224,7 +228,7 @@ $(document).ready(function(){
 			}
 // 			console.log(op,row_value);
 		    op? null : row.show();
-		}); 
+		});
 	});
 	$("select.select-question").change();
 	*/

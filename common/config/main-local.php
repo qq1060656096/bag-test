@@ -11,7 +11,7 @@ return [
                     'port' => 11211,
                     'weight' => 100,
                 ],
-                 
+
             ],
             'serializer'=>false,
             'keyPrefix'=>'',
@@ -19,20 +19,20 @@ return [
         ], */
         //======缓存配置 end======
 //         'session' => ['class' => '\common\components\ZSession'],            // session组件yii\web\Session
-        /*
-         * 'db' => [
-         * 'class' => 'yii\db\Connection',
-         * 'dsn' => 'mysql:host=localhost;dbname=yii2advanced',
-         * 'username' => 'root',
-         * 'password' => '',
-         * 'charset' => 'utf8',
-         * ],
-         */
-        
+        /* */
+         'db' => [
+         'class' => 'yii\db\Connection',
+         'dsn' => 'mysql:host=localhost;dbname=survey',
+         'username' => 'root',
+         'password' => 'root',
+         'charset' => 'utf8',
+         ],
+         /* */
+
         //======主从数据库配置 start======
-        'db' => [
-            
-            'class' => 'yii\db\Connection',          
+      /*   'db' => [
+
+            'class' => 'yii\db\Connection',
             // 配置主服务器
             'masterConfig' => [
                 'username' => 'root',
@@ -44,15 +44,15 @@ return [
                     PDO::ATTR_TIMEOUT => 10
                 ]
             ],
-            
+
             // 配置主服务器组
             'masters' => [
                 [
                     'dsn' => 'mysql:host=localhost;dbname=survey'
                 ],
-        
+
             ],
-            
+
             // 配置从服务器
             'slaveConfig' => [
                 'username' => 'root',
@@ -64,7 +64,7 @@ return [
                     PDO::ATTR_TIMEOUT => 10
                 ]
             ],
-            
+
             // 配置从服务器组
             'slaves' => [
                 [
@@ -72,17 +72,17 @@ return [
                 ],
 
             ]
-        ],
+        ], */
         //======主从数据库配置 end======
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@common/mail'
         ],
-        
-         
-        
-        
-        
+
+
+
+
+
     ],
     'modules' => [
         'gii' => YII_DEBUG ? [

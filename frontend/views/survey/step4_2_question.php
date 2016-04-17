@@ -1,4 +1,4 @@
-<?php 
+<?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\z\ZCommonFun;
@@ -12,19 +12,24 @@ echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
 $this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey_tax['0'];
 $submitAddText = '';
 $submitNexText = '';
+$text_hint= '';
 switch ($model->tax):
     case 1:
-        
+
     break;
     case 2:
         $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.预览题目分数区间';
         $submitAddText = '保存/增加';
         $submitNexText = '保存/下一步预览分数区间';
+        $text_hint = "（1）点击“增加一题”后，你可以再添加一道选择题。<br />
+（2）添加完所有选择题后保存。在下一步，你需要创建至少一个测试结果。<br />（3）后面还有".( SurveyController::stepCount($model->tax)-3 )."个步骤，这个测试就能创建完毕。";
         break;
     case 3:
-        $this->title .= '-步骤3/'.SurveyController::stepCount($model->tax).'.添加题目';   
+        $this->title .= '-步骤3/'.SurveyController::stepCount($model->tax).'.添加题目';
         $submitAddText = '保存/增加';
         $submitNexText = '保存/下一步添加结果';
+        $text_hint = "（1）点击“增加一题”后，你可以再添加一道选择题。<br />
+（2）添加完所有选择题后保存。在下一步，你需要创建至少一个测试结果。<br />（3）后面还有".( SurveyController::stepCount($model->tax)-3 )."个步骤，这个测试就能创建完毕。";
         break;
 endswitch;
 // ZCommonFun::print_r_debug($questionData);
@@ -57,11 +62,11 @@ endswitch;
 .row{
 	border-bottom: 3px dashed #DDD;
 	margin-top: 1em;
-}    
+}
 .label-name{
     display: block;
     text-align: left;
-}   
+}
 .row textarea ,.row input,.s_reg input[type=text], .s_reg input[type=password], .s_reg textarea{
 	width: 99%;
 	height: 2em;
@@ -78,7 +83,7 @@ endswitch;
 	margin-top: 0.5em;
 }
 .s_reg .btn_bg:last-child{
-	
+
 	float: right;
 }
 .s_reg .btn_bg.btn-3{
@@ -96,7 +101,7 @@ endswitch;
 	float: right;
 }
 .option{
-    
+
 	text-align: left;
 }
 .option>label,.option>select{
@@ -139,7 +144,7 @@ endswitch;
     left: -20px;
     color: #2E8EC1;
 }
-<?php 
+<?php
 if( $model->tax==3 ) echo 'select.option-score{display: none;}';
 ?>
 </style>
@@ -158,7 +163,7 @@ function loadOptions(start,end,selected){
 			html += '<option selected="selected" value="'+start+'">'+start+'分</option>';
 	    }else{
 	    	html += '<option value="'+start+'">'+start+'分</option>';
-		}	
+		}
 	}
 	console.log(html);
 	return html;
@@ -177,7 +182,7 @@ $(document).ready(function(){
 			      +'     </div>'
 		          +'   </li>';
 	    $(this).closest('.Q_Style_con').find('.unstyled').append(html);
-	    
+
     });
 	$(".add_question").click();
 
@@ -201,10 +206,10 @@ $(document).ready(function(){
 	  return true;
 	});
 
-	
+
 });
 </script>
-<?php 
+<?php
 
 ?>
 <div id="main_body">
@@ -212,11 +217,11 @@ $(document).ready(function(){
     <?php echo $this->renderFile(__DIR__.'/../layouts/head-top.php');?>
     <section class="s_moreread s_reg s_login">
     <?php $form = ActiveForm::begin(['id'=>'form1','action'=>['survey/step4_2_question','id'=>$model->id,'page'=>$page+1]]); ?>
-        
-        
-        
+
+
+
         <?php if( isset($questionData['question']) ){?>
-        
+
         <div class="row">
             <div class="BlankBlock">
                 <div class="BlockTitle">
@@ -229,31 +234,31 @@ $(document).ready(function(){
             </div>
             <div class="Q_Style_con">
                 <ul class="unstyled">
-                    <?php 
+                    <?php
                     isset($questionData['options'][0]) ? null : $questionData['options']=[];
-                    foreach ($questionData['options'] as $key=>$row2){ 
+                    foreach ($questionData['options'] as $key=>$row2){
                     ?>
-                    <li>    
-                        <div class="option-warp">   
-                        	<input type="hidden" name="label[qo-id][]" value="<?php echo $row2->qo_id;?>"/>       
-                            <input class="option-label Q_Sytle_input " placeholder="请输入选项名称" 
+                    <li>
+                        <div class="option-warp">
+                        	<input type="hidden" name="label[qo-id][]" value="<?php echo $row2->qo_id;?>"/>
+                            <input class="option-label Q_Sytle_input " placeholder="请输入选项名称"
                             value="<?php echo $row2->option_label;?>"
-                            oid=""  name="label[option-label][]">          
-                            <select class="option-score" name="label[option-score][]" 
+                            oid=""  name="label[option-label][]">
+                            <select class="option-score" name="label[option-score][]"
                             onload="loadSelect(this)"
                             selectedvalue="<?php echo $row2->option_score; ?>">
-                            </select>     
-                        </div>   
+                            </select>
+                        </div>
                     </li>
                     <?php } ?>
                  </ul>
-                <div class="add_question"> 
+                <div class="add_question">
                     <i class="fa fa-plus"></i>
                                             添加选项
                 </div>
             </div>
         </div>
- 
+
          <?php }else{ ?>
          <div class="row">
             <div class="BlankBlock">
@@ -266,43 +271,43 @@ $(document).ready(function(){
             </div>
             <div class="Q_Style_con">
                 <ul class="unstyled">
-                    
+
                  </ul>
-                <div class="add_question"> 
+                <div class="add_question">
                     <i class="fa fa-plus"></i>
                                             添加选项
                 </div>
             </div>
         </div>
          <?php }?>
-         
+
          <div class="btn_bg btn-2" >
-			<a 
-			href="<?php echo Yii::$app->urlManager->createUrl(['survey/step1_3','id'=>$model->id]);?>" 
-			id="prev-step">上一步</a> 
+			<a
+			href="<?php echo Yii::$app->urlManager->createUrl(['survey/step1_3','id'=>$model->id]);?>"
+			id="prev-step">上一步</a>
 		</div>
-		
+
         <button type="submit" class="btn_bg btn btn-primary btn-3" name="save-next"><?php echo $submitAddText;?></button>
-        
+
         <button type="submit" class="btn_bg btn btn-primary btn-r" name="save"><?php echo $submitNexText;?></button>
-        
+
         <a class="btn_bg" style="display:none;width: 98.5%;margin-top: 15px;"
 		href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
-	       <input type="button"  value="预览"> 
-	    </a> 
+	       <input type="button"  value="预览">
+	    </a>
         <div class="btn_bg btn-2 btn-100" >
-			<a 
-			href="<?php echo Yii::$app->urlManager->createUrl(['survey/question-delete','id'=>$model->id,'page'=>$page]);?>" 
-			id="prev-step">删除</a> 
+			<a
+			href="<?php echo Yii::$app->urlManager->createUrl(['survey/question-delete','id'=>$model->id,'page'=>$page]);?>"
+			id="prev-step">删除</a>
 		</div>
-		
-		
+
+
  <?php ActiveForm::end(); ?>
-
-
+<p class="text-hint">&nbsp;</p>
+<p class="text-hint"><?php echo $text_hint; ?></p>
 
 
     </section>
  </div>
   <?php echo $this->renderFile(__DIR__.'/../layouts/group-add.php');?>
-<?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>  
+<?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

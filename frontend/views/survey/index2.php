@@ -4,6 +4,7 @@ use yii\grid\GridView;
 use common\z\ZCommonFun;
 use common\models\Survey;
 use common\z\ZCommonSessionFun;
+use common\z\ZController;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\SurverySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -79,9 +80,9 @@ section#all-game {
 				</a>
 			</h5>
 			<ul class="mui-table-view mui-grid-view mui-grid-9">
-			    <?php 
-			    
-			    
+			    <?php
+
+
 			    foreach ($models_SurveyOperation as $key => $row):
     			    if($row->tax==1){
     			        $url = Yii::$app->urlManager->createUrl(['answer/step1','id'=>$row->id]);
@@ -89,7 +90,7 @@ section#all-game {
     			        $url = Yii::$app->urlManager->createUrl(['answer/step2-answer2','id'=>$row->id]);
     			    }
     			    $image = common\models\Survey::getImageUrl($row);
-    			    
+
 			    ?>
 				<li class="mui-table-view-cell mui-media mui-col-xs-6"><a
 					href="<?php echo $url;?>"
@@ -106,11 +107,11 @@ section#all-game {
         <?php endif;?>
 		<!-- category start -->
 		<!-- category end -->
-		
+
 		<!-- all list  -->
 		<section id="all-game" class="main-content">
 		    <h5 class="diy-content-padded">
-				
+
 			</h5>
 			<h5 class="diy-content-padded">
 				<?php echo $op_name;?>测试<a class="diy-more"
@@ -119,21 +120,21 @@ section#all-game {
 			<div class="diy-tab diy-space-big">
 				<a class="diy-tab-item mui-active" style="display: none;"
 					url="">最新</a>
-					<!-- 
+					<!--
 				<a class="diy-tab-item"
 					url="/index.php?s=/wetest/index/getpagedata/order/view/pageIndex/">最火</a>
 				<a class="diy-tab-item "
 					url="/index.php?s=/wetest/index/getpagedata/order/top/rcmd/1/pageIndex/">推荐</a> -->
 			</div>
-			<?php 
+			<?php
 			if($search!==false):
 			     $new_url = Yii::$app->urlManager->createUrl(['survey/index-ajax','page'=>'#page#','sort'=>'1','SurverySearch[title]'=>$search]);
-			else: 
+			else:
 			     $new_url = Yii::$app->urlManager->createUrl(['survey/index-ajax','page'=>'#page#','sort'=>'1']);
 			endif;
 			?>
 			<ul class="list " id="new" page="1" url="<?php echo $new_url;?>">
-			    <?php 
+			    <?php
 			    $role = ZCommonSessionFun::get_role();
 			    foreach ($a_models as $key => $row):
     			    if($row->tax==1){
@@ -169,7 +170,7 @@ section#all-game {
     								class="count"><?php echo $row->answer_count;?>人在测</span>
     							<div class="desc mui-ellipsis"><?php echo $row->intro;?></div>
     						</div>
-    				</a> 
+    				</a>
     				<?php if( $role == 1 ):?>
     				<a
     					is_top="<?php echo $is_top;?>" op0="<?php echo $op0?>" op1="<?php echo $op1;?>"
@@ -185,7 +186,7 @@ section#all-game {
 				</li>
 	            <?php endforeach;?>
 			</ul>
-			<!-- 
+			<!--
 			<ul class="list " id="hot" page="0" url="<?php echo Yii::$app->urlManager->createUrl(['survey/index-ajax','page'=>'#page#','sort'=>'0']);?>">
 			</ul>
 			<ul class="list " id="recommend" page="0" url="<?php echo Yii::$app->urlManager->createUrl(['survey/index-ajax','page'=>'#page#','sort'=>'2']);?>">
@@ -195,9 +196,9 @@ section#all-game {
         <div class="refresh-tip main-content" style="display: none;text-align: center;">
     		<span><img src="./css/index/loading.gif"></span>正在加载
     	</div>
-	
+
 	</div>
-	
+
 
 </div>
 
@@ -215,8 +216,8 @@ $(document).ready(function(){
 		if(value){
 			$("form").submit();
 	    }
-	    
-	});  
+
+	});
 	//推荐
     $("#all-game").on('click','a.recommend',function(){
     	var now_element = $(this);
@@ -229,17 +230,17 @@ $(document).ready(function(){
     		if(json.status==0){
     			now_element.attr('is_top',is_top==1 ? '0':'1');
     			now_element.html(is_top==1 ? '取消推荐':'推荐');
- 			   alert("推荐成功");
+ 			   alert("<?php echo ZController::$site_name;?>","推荐成功");
     	    }else{
         	    console.log(json);
-    	        alert("操作失败");
+    	        alert("<?php echo ZController::$site_name;?>","操作失败");
         	}
-    		
+
     	});
-    });  
-    
+    });
+
     $("#all-game .diy-tab-item").click(function(){
-        
+
     	var now_element = $(this);
     	$("#all-game .diy-tab-item").removeClass('mui-active');
     	now_element.addClass('mui-active');
@@ -255,7 +256,7 @@ $(document).ready(function(){
      	   case 1:
       		  selector="#hot";
       		    break;
-      	   default: 
+      	   default:
         		 selector="#new";
             	break;
     	}
@@ -280,7 +281,7 @@ function pulldownRefreshEvent(){
 	        	window.pulldownrefreshEvent = 2;
 	        	var index = $("#all-game .diy-tab-item").index($("#all-game .diy-tab-item.mui-active"));
 	        	console.log(index);
-	        	
+
 	        	var selector = '';
 	        	switch(index){
 	     	       case 2:
@@ -289,7 +290,7 @@ function pulldownRefreshEvent(){
 	         	   case 1:
 	          		  selector="#hot";
 	          		    break;
-	          	   default: 
+	          	   default:
 	            		 selector="#new";
 	                	break;
 	        	}
@@ -297,7 +298,7 @@ function pulldownRefreshEvent(){
 		    }
 	    }
 
-	}	
+	}
 }
 
 function ajaxLoad(selector){
@@ -307,7 +308,7 @@ function ajaxLoad(selector){
 		return false;
 	}
 	var url = $(selector).attr('url');
-    
+
 	var page = $(selector).attr('page');
 	page++;
 	$(selector).attr('page',page);
@@ -323,9 +324,9 @@ function ajaxLoad(selector){
 				is_ajax_done();
 				$(selector).append(json.data);
 		    }
-			
+
 	    }
-		
+
 	});
 }
 //开始ajax样式

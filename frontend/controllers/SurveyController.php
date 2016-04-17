@@ -23,6 +23,7 @@ use common\z\oauth\qq\QQ;
 use common;
 use yii\base\Model;
 use common\models\OauthBind;
+use common\z\ZCache;
 
 /**
  * SurveyController implements the CRUD actions for Survey model.
@@ -103,6 +104,7 @@ class SurveyController extends ZController
         }
         $sort = Yii::$app->request->get('sort', 0);
         $this->view->title = $sort > 0 ? '最新' : '最热';
+
         if ($sort < 1) {
             $this->view->title = ZController::$site_name . ' : 可以自己创建测试的网站';
         } else {
@@ -110,12 +112,10 @@ class SurveyController extends ZController
         }
 
         $this->layout = false;
-        $searchModel = new SurverySearch();
+
         $queryParams = Yii::$app->request->queryParams;
         $queryParams['SurverySearch']['is_publish'] = 1;
-        // ZCommonFun::print_r_debug($queryParams);
-        // ZCommonFun::print_r_debug(Yii::$app->request->queryParams);
-        // ZCommonFun::print_r_debug($_POST);
+
         if (isset($_POST['SurverySearch']['title'])) {
             $queryParams['SurverySearch']['title'] = $_POST['SurverySearch']['title'];
         }
@@ -123,6 +123,18 @@ class SurveyController extends ZController
         if (isset($queryParams['SurverySearch']['title'])) {
             $search = $queryParams['SurverySearch']['title'];
         }
+
+        $cache_key_arr = $queryParams;
+        $cache_key_arr['sort'] = $sort;
+        $cache_key = ZCache::array_to_key($cache_key_arr);
+        $cache_data = Yii::$app->cache->get($cache_key);
+        // echo 1,'<br/>';
+        // 缓存存在，跳转到缓存label
+        if ($cache_data) {
+            goto cache;
+        }
+        // echo 2,'<br/>';
+        $searchModel = new SurverySearch();
         $query = $searchModel->query($queryParams);
 
         $count = $query->count();
@@ -158,9 +170,8 @@ else {
 
         $model_SurveyOperation = new SurveyOperation();
         $models_SurveyOperation = $model_SurveyOperation->getIsTop();
-        // echo $pageCount,'=',$page+1;
-        // ZCommonFun::print_r_debug($pagination);
-        return $this->render('index2', [
+        // 要缓存的数据
+        $cache_data = [
             'models_SurveyOperation' => $models_SurveyOperation,
             'searchModel' => $searchModel,
             'a_models' => $a_models,
@@ -168,14 +179,14 @@ else {
             'sort' => $sort,
             'op_name' => $op_name,
             'search' => $search
-        ]);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'a_models' => $a_models,
-            'pagination' => $pagination,
-            'sort' => $sort
-        ]);
+        ];
+        Yii::$app->cache->set($cache_key, $cache_data, ZCache::HOME_PAGE_TIMEOUT);
+        cache:
+        // echo 3,'<br/>';
+        // exit;
+        // echo $pageCount,'=',$page+1;
+        // ZCommonFun::print_r_debug($pagination);
+        return $this->render('index2', $cache_data);
     }
 
     /**
@@ -293,6 +304,7 @@ else {
 str;
 
 
+
        				endif;
                 if ($self > 0) {
                     $row_ur_done = Yii::$app->urlManager->createUrl([
@@ -377,9 +389,9 @@ str;
     {
         $this->layout = false;
         // $model = new Survey();
-        return $this->render('step1', []
+        return $this->render('step1', [])
 
-        );
+        ;
     }
 
     /**
@@ -843,7 +855,7 @@ str;
                     ]);
                     $this->redirect($url);
                 }  // 保存结果完成
-else {
+                else {
                     if ($model->tax == 3) {
                         $url = [
                             'step4_4',
@@ -851,7 +863,13 @@ else {
                         ];
                         return $this->redirect($url);
                     }
-
+                    /* if ($model->tax == 2) {
+                        $url = [
+                            'step4_4',
+                            'id' => $model->id
+                        ];
+                        return $this->redirect($url);
+                    } */
                     if ($model->tax == 1) {
                         $url = \Yii::$app->urlManager->createUrl([
                             'survey/step-airthmetic',
@@ -903,8 +921,8 @@ else {
             'model_SurveyResulteDetail' => $model_SurveyResulteDetail,
             'question_total_score' => $question_total_score,
             'question_total_min_score' => $question_total_min_score
-        ] // 可选最小分数
-);
+        ]) // 可选最小分数
+;
     }
 
     /**
@@ -1016,7 +1034,7 @@ else {
                 'done',
                 'id' => $id
             ]; // 跳转到预览
-                                       // $url = ['step-airthmetic','id'=>$id];//选择算法
+               // $url = ['step-airthmetic','id'=>$id];//选择算法
             return $this->redirect($url);
             // ZCommonFun::print_r_debug($row_option);
             // exit;
@@ -1113,7 +1131,7 @@ else {
                 if ($model->save()) {
                     $message = '发布成功';
                     $status = 0;
-                    if (!isset($_GET['is_ajax']) && !$_GET['is_ajax']) {
+                    if (! isset($_GET['is_ajax']) && ! $_GET['is_ajax']) {
                         return $this->redirect([
                             'survey/index',
                             'sort' => 1
@@ -1175,13 +1193,22 @@ else {
             'id' => SORT_DESC
         ]);
         $a_models = $query->all();
+        if (isset($_GET['is_ajax'])) {
+            $this->layout = false;
+            if (! isset($a_models[0])) {
+                $html['data'] = '';
+            } else {
+                $html['data'] = $this->render('my-ajax', [
+                    'searchModel' => $searchModel,
+                    'a_models' => $a_models,
+                    'pagination' => $pagination,
+                    'self' => 1
+                ]);
+            }
+            ZCommonFun::output_json($html['data'], 0, '');
+        }
+
         return $this->render('my3', [
-            'searchModel' => $searchModel,
-            'a_models' => $a_models,
-            'pagination' => $pagination,
-            'self' => 1
-        ]);
-        return $this->render('my2', [
             'searchModel' => $searchModel,
             'a_models' => $a_models,
             'pagination' => $pagination,
@@ -1396,6 +1423,7 @@ else {
             $data['1']['step'] = 5;
             $data['2']['step'] = 6;
             $data['3']['step'] = 6;
+
 
         endif;
 

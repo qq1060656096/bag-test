@@ -25,6 +25,17 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 .btn_bg.ajax-publish{
 	float: right;
 }
+.title-right-text{
+	position: absolute;
+
+	color: #ff7585;
+	display: block;
+	top: 0px;
+	right: 10px;
+}
+.s_moreread dd h3{
+	position: relative;
+}
 </style>
 <script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js"></script>
 <div id="main_body">
@@ -56,6 +67,8 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
                     $row_ur_not_publish   = Yii::$app->urlManager->createUrl(['survey/is-not-publish','id'=>$row->id]);
                     $row_ur_change = Yii::$app->urlManager->createUrl(['survey/step2','id'=>$row->id]);
                     $image = common\models\Survey::getImageUrl($row);
+
+                    $title_right_text = $row->is_publish ==1 ? '已发布': '草稿';
                 ?>
 				<dl>
 					<a href="<?php echo $row_url;?>">
@@ -64,7 +77,9 @@ echo $this->renderFile(__DIR__.'/../layouts/head.php');
 								alt="<?php echo $row->title;?>">
 						</dt>
 						<dd>
-							<h3><?php echo $row->title;?></h3>
+							<h3><?php echo $row->title;?>&nbsp;
+							     <a class="title-right-text" href="#"><?php echo $title_right_text;?></a>
+							</h3>
 						</dd>
 						<dd>
 						  <a class="btn_bg" href="<?php echo $row_ur_done;?>">预览/修改</a>
@@ -138,17 +153,21 @@ $(document).ready(function(){
 				if(json.status==0){
 					if(element.text()=="取消发布中..."){
 						element.text('发布');
+						$(".title-right-text").text('草稿');
 						element.attr('href',row_ur_done_publish);
 					}else{
 						element.text('取消发布');
+						$(".title-right-text").text('已发布');
 						element.attr('href',row_ur_not_publish);
 					}
 
 				}else{
 					if(element.text()=="取消发布" || element.text()=="发布中..."){
 						element.text('发布');
+						$(".title-right-text").text('草稿');
 					}else{
 						element.text('取消发布');
+						$(".title-right-text").text('已发布');
 					}
 				 }
 
@@ -169,7 +188,7 @@ function ajaxLoad(){
     $(".load_more").click(function(){
         var now =$(this);
         page++;
-        var url = "<?php echo Yii::$app->urlManager->createUrl(['survey/index-ajax','page'=>'#page#','sort'=>1,'self'=>1]);?>";
+        var url = "<?php echo Yii::$app->urlManager->createUrl(['survey/my','page'=>'#page#','sort'=>1,'self'=>1,'is_ajax'=>1]);?>";
         url = url.replace('%23page%23',page);
 
         //有没有执行ajax就执行ajax,在执行，等执行后在加载
