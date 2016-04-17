@@ -39,7 +39,7 @@ switch ($model->tax):
         $submitNexText = '保存/下一步设置跳转';
         $text_hint = "（1）点击“增加一个结果”后，你可以再添加一个测试结果。<br/>
 （2）添加完所有测试结果后保存。在下一步，你需要设定如何跳转，将某个选项跳转到某个选择题，或者跳转到某个测试结果。<br/>
-（3）后面还有".(SurveyController::stepCount($tax)-3)."个步骤，这个测试就能创建完毕。";
+（3）后面还有".(SurveyController::stepCount($model->tax)-4)."个步骤，这个测试就能创建完毕。";
         break;
 endswitch;
 
