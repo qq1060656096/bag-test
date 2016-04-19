@@ -653,7 +653,7 @@ str;
 
         $url = $model_SurveyResulte->step4_2_questionSave($posts, $id, $page);
 
-        if ($url || (isset($_POST['save']) && $questionData['count'] > 0)) {
+        if ($url || (isset($_POST['save']) && $questionData['count'] > -1)) {
 
             // ZCommonFun::print_r_debug($url);
             // ZCommonFun::print_r_debug($posts);
@@ -1006,8 +1006,10 @@ str;
         // 获取所有问题选项
         $data = $model->FindAllQuestionsOptions($id);
         $posts = Yii::$app->request->post();
+//         ZCommonFun::print_r_debug($_POST);
+//        exit;
         // post提交
-        if (isset($posts['option']) || isset($posts['resulte'])) {
+        if (isset($posts['option']) || isset($posts['resulte']) || isset($posts['_csrf'])) {
             // ZCommonFun::print_r_debug( $data );
             // ZCommonFun::print_r_debug($posts);
             // exit;

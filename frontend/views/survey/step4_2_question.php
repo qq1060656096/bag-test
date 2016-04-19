@@ -19,14 +19,14 @@ switch ($model->tax):
     break;
     case 2:
         $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.预览题目分数区间';
-        $submitAddText = '保存/增加';
+        $submitAddText = '增加一题';
         $submitNexText = '保存/下一步预览分数区间';
         $text_hint = "（1）点击“增加一题”后，你可以再添加一道选择题。<br />
 （2）添加完所有选择题后保存。在下一步，你需要创建至少一个测试结果。<br />（3）后面还有".( SurveyController::stepCount($model->tax)-3 )."个步骤，这个测试就能创建完毕。";
         break;
     case 3:
         $this->title .= '-步骤3/'.SurveyController::stepCount($model->tax).'.添加题目';
-        $submitAddText = '保存/增加';
+        $submitAddText = '增加一题';
         $submitNexText = '保存/下一步添加结果';
         $text_hint = "（1）点击“增加一题”后，你可以再添加一道选择题。<br />
 （2）添加完所有选择题后保存。在下一步，你需要创建至少一个测试结果。<br />（3）后面还有".( SurveyController::stepCount($model->tax)-3 )."个步骤，这个测试就能创建完毕。";
