@@ -11,6 +11,11 @@ use common\models\User;
 /* @var $row common\models\Survey */
 $login_user_showNickname = User::getUidShowName(ZCommonSessionFun::get_user_id());
 $ta_user_showNickname    = User::getTaUidShowName($uid);
+$User               = User::findOne(ZCommonSessionFun::get_user_id());
+$login_head_image   = $User ? $User->getTaShowHead_image() : User::getDefaultHead_image();
+$ta_User            = User::findOne($uid);
+$ta_head_image      = $ta_User ? $ta_User->getTaShowHead_image() : User::getDefaultHead_image();
+
 $this->title = $ta_user_showNickname.'与'.$login_user_showNickname;
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -20,6 +25,7 @@ echo $this->renderFile(__DIR__ . '/../layouts/head.php');
 <style>
 .s_moreread{
 	margin-bottom: 220px;
+	position: relative;
 }
 </style>
 <script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js"></script>
@@ -30,17 +36,27 @@ echo $this->renderFile(__DIR__ . '/../layouts/head.php');
 
 	<section class="s_moreread">
 
-		<div class="list_box">
 
-		  <?php  include(__DIR__.'/ta-static-list.php');?>
+		  <?php  include(__DIR__.'/ta-static-list3.php');?>
 
-	    </div>
 
-        <?php echo $this->renderFile(__DIR__.'/../layouts/foot-comment2.php',['uid'=>$uid,'ta_user_showNickname'=>$ta_user_showNickname,'ta_me'=>$ta_me]);?>
+
+        <?php //echo $this->renderFile(__DIR__.'/../layouts/foot-comment2.php',['uid'=>$uid,'ta_user_showNickname'=>$ta_user_showNickname,'ta_me'=>$ta_me]);?>
 	</section>
 
 
 </div>
+<style>
+<!--
+.wei-chat-footer{
+	bottom: 51px;
+}
+.load_more2{
+	text-align: center;
+	display:block;
+}
+-->
+</style>
 <script type="text/javascript">
  ajaxLoad();
  $(".load_more2").click();
@@ -72,11 +88,13 @@ function ajaxLoad(){
                 	now.text('已经没有了');
                 	console.log('已经没有了');
                 }
-                $(".card-list").append( html );
+                $(".wei-chat").prepend( html );
             });
         }
     });
 }
+
+
 </script>
 
 <style>
@@ -87,10 +105,46 @@ function ajaxLoad(){
 -->
 </style>
 <script type="text/javascript">
-$(".ux-popmenu1").show().css('background-color','transparent');
-$(".ux-popmenu1").css('max-height','215px');
-$(".disable1").click(function(){
-	$(".ux-popmenu1").show();
+//提交评论
+$(".wei-chat-footer .btn").click(function(){
+    var content = $('.wei-chat-footer .text').val();
+
+	if(content==''){
+
+		alert('请输入评论内容');
+
+		return false;
+	}
+	var url = "<?php echo Yii::$app->urlManager->createUrl(['comment/add','tid'=>'#tid#','content'=>'#content#']); ?>";
+	url = url.replace('%23tid%23', '<?php echo $uid;?>');
+	url = url.replace('%23content%23',content);
+    var pageCount = $("li.eq(0)").attr('pageCount');
+    if(pageCount>0){
+    	page = page==null ? pageCount: page;
+    	url = url.replace('%23page%23',page);
+    }
+    console.log(url);
+	comment(url,content);
+
+	return false;
 });
+//评论
+function comment(url,content){
+	$.get(url,function(json){
+    	if(json.message){
+        	//没登录就跳到登录页
+        	if(json.status==-1){
+            	location.href="<?php echo Yii::$app->urlManager->createUrl(['login/login']) ;?>";
+             }else{
+//           	   alert(json.message);
+          	   var html = '<li><img src="<?php echo $login_head_image;?>" class="imgright"><span class="spanright">'+content+'</span></li>';
+          	   $(".wei-chat").append( html );
+//             	 location.reload();
+             }
+        }else{
+            alert("出错了");
+        }
+    });
+}
 </script>
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

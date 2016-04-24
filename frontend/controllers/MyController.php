@@ -245,7 +245,7 @@ class MyController extends Controller
         $this->layout = false;
         $this->view->title = 'Ta的私信';
         $model = new Message();
-        $a_models = $model->getList($uid, 'users_friends', $this->pageSize, null);
+        $a_models = [];
         return $this->render('my-message', [
             'a_models' => $a_models,
             'uid' => $uid,
@@ -277,13 +277,13 @@ class MyController extends Controller
         $this->view->title = '我的私信';
         $model = new Message();
         $uid = $login_uid;
-        $a_models = $model->getList($login_uid, 'users_friends', $this->pageSize, null);
-        return $this->render('my-message2', [
-            'a_models' => $a_models,
+
+        return $this->render('my-message3', [
+            'a_models' => [],
             'uid' => $uid,
             'ta_me'=>0,
             'ajax_url' => Yii::$app->urlManager->createUrl([
-                'comment/list',
+                'comment/my-list',
                 'page' => '#page#',
                 'sort' => 1,
                 'self' => 1,

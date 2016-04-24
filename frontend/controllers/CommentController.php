@@ -8,6 +8,8 @@ use common\z\ZCommonSessionFun;
 use common\models\Message;
 use yii\data\Pagination;
 use common\models\AnswerSurveyResulte;
+use common\z\ZController;
+use common\models\User;
 class CommentController extends Controller
 {
     static $messageTable = '';
@@ -17,75 +19,83 @@ class CommentController extends Controller
         exit();
     }
 
-    public function actionList()
-    {
-        $id = Yii::$app->request->get('id', 0);
-        $uid = Yii::$app->request->get('uid', 0);
-
-        $ta_me = Yii::$app->request->get('ta_me', 0);
-        $condition['table_id'] = $id;
-//         $condition['table']  = self::$messageTable;
-        // 分页
-
-        $count = Message::find()->where($condition)->count();
-        $pagination = new Pagination();
-        $pagination->totalCount = $count;
-        $pagination->pageSize = ZCommonFun::getPageSize();
-
+    /**
+     * 我的消息
+     */
+    public function actionMyList(){
         $model_Message = new Message();
-        $where = null;
-        $login_uid = ZCommonSessionFun::get_user_id();
-        //Ta与我私信
-        if($ta_me==1){
-
-
-            $data = $model_Message->getTaList($uid, $login_uid, '', 10, null);
-        }else{
-            $data = $model_Message->getList($uid, '', 10, $where);
-        }
-//         ZCommonFun::print_r_debug($data);
+        $data = $model_Message->getMyList(ZCommonSessionFun::get_user_id(), ZCommonFun::getPageSize(), '');
         isset($data['models'][0]) ?  : $data['models'] = [];
-
-
         if(count($data['models'])<1 ){
             //             echo $page,$pageCount;
             //超过最后一页
+            echo '';
+            exit;
+        }
 
+        foreach( $data['models'] as $key=>$model_Message){
+            $name       = isset($model_Message->fromUser) ? $model_Message->fromUser->getShowName():'';
+            $head_image = isset($model_Message->fromUser->userProfile) ? $model_Message->fromUser->userProfile->getHeadImage0():'./images/head_image.png';
+            $intro      = isset($model_Message->fromUser->userProfile) ? $model_Message->fromUser->userProfile->getHeadImage0():'./images/head_image.png';
+            $talk_url   = Yii::$app->urlManager->createUrl(['my/ta-me-message','uid'=>$model_Message->from_uid]);
+            echo <<<str
+    	<a href="{$talk_url}" class="weui_media_box weui_media_appmsg">
+			<div class="weui_media_hd">
+				<img class="weui_media_appmsg_thumb" src="{$head_image}" alt="">
+			</div>
+			<div class="weui_media_bd">
+				<h4 class="weui_media_title">{$name}</h4>
+				<p class="weui_media_desc">{$model_Message->content}</p>
+			</div>
+		</a>
+str;
+        }
+    }
+
+    /**
+     * Ta与我私信
+     * 我和某人的消息
+     */
+    public function actionList()
+    {
+        $id     = Yii::$app->request->get('id', 0);
+        $ta_uid = Yii::$app->request->get('uid', 0);
+        $login_uid = ZCommonSessionFun::get_user_id();
+        $model_Message = new Message();
+        $data   = $model_Message->getTaList($ta_uid, $login_uid, '', ZCommonFun::getPageSize(), null);
+        isset($data['models'][0]) ?  : $data['models'] = [];
+//         ZCommonFun::print_r_debug($data);
+//         exit;
+        if(count($data['models'])<1 ){
+            //echo $page,$pageCount;
+            //超过最后一页
                 echo '';
                 exit;
-
         }
+
+        $User               = User::findOne($login_uid);
+        $login_head_image   = $User ? $User->getTaShowHead_image() : User::getDefaultHead_image();
+        $ta_User            = User::findOne($ta_uid);
+        $ta_head_image      = $ta_User ? $ta_User->getTaShowHead_image() : User::getDefaultHead_image();
+//         $this->title = $ta_user_showNickname.'与'.$login_user_showNickname;
          foreach( $data['models'] as $key=>$model_Message){
-             $name = isset($model_Message->fromUser) ? $model_Message->fromUser->getShowName():'';
-             $head_image = isset($model_Message->fromUser->userProfile) ? $model_Message->fromUser->userProfile->getHeadImage0():'./images/head_image.png';
-//              ZCommonFun::print_r_debug($model_Message->fromUser->userProfile);
-             $time = ZCommonFun::time_tran($model_Message->add_time);
-             $comment_add_url = Yii::$app->urlManager->createUrl(['comment/add','id'=>$id,'tid'=>$model_Message->from_uid,'content'=>'#content#']);
-             $to_uid_url = Yii::$app->urlManager->createUrl(['my/personal-page','uid'=>$model_Message->to_uid]);
-             $to_show_name = isset($model_Message->toUser) ? $model_Message->toUser->getShowName():'';
-             $now_uid = $login_uid>0 && $model_Message->from_uid!=$login_uid ? $model_Message->from_uid: $model_Message->to_uid;
-            echo <<<str
-<li class="module-infobox layout-box media-graphic line-bottom" uid="{$now_uid}" comment-url="{$comment_add_url}">
-    <a href="javascript:void(0);" class="mod-media size-xs">
-        <div class="media-main">
-    		<img src="{$head_image}" height="34" width="34" data-bd-imgshare-binded="1">
-    	</div>
-     </a>
-    <div class="box-col item-list">
-    	<div class="item-main txt-s mct-a txt-cut">{$name}</div>
-    	<div class="item-other txt-xxs mct-d txt-cut">
-    		<span class="time">{$time}</span>
-    	</div>
-    	<div class="item-minor txt-l mct-b">
-    	<a class="ta-page" href="{$to_uid_url}">@{$to_show_name}</a>
-    	{$model_Message->content}
-    	</div>
-    </div>
-	<a href="javascript:void(0);" class="operate-box" data-node="zanPL">
-	    <i class="icon icon-likesmall"></i>
-	    <em class="num mct-d"></em>
-    </a>
-</li>
+             //我发出的
+             if( $model_Message->from_uid == $login_uid ){
+                $head_image = $login_head_image;
+                $class0     = 'imgright';
+                $class      = 'spanright';
+             }//他发给我的
+             else{
+                $head_image = $ta_head_image;
+                $class0     = 'imgleft';
+                $class      = 'spanleft';
+             }
+
+             echo <<<str
+             <li page="{$data['pagination']->page}" pageCount="{$data['pagination']->pageCount}"><img src="{$head_image}"
+				class="{$class0}"><span class="{$class}">{$model_Message->content}</span></li>
+
+
 str;
 
         }

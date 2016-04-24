@@ -1,0 +1,114 @@
+/**
+*@version: 1.0
+*@author simle
+*@email  1060656096@qq.com
+*/
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            font-family: '微软雅黑'
+        }
+
+
+        .wei-chat-footer{
+            width: 100%;
+            height: 50px;
+            background: #f5f5f5;
+            position: fixed;
+            bottom: 0;
+			display: -webkit-flex; /* Safari */
+  			display: flex;
+        	flex-wrap: nowrap;
+        	justify-content:  space-between;
+
+        }
+        .wei-chat-footer input {
+            width: 275px;
+            height: 45px;
+            outline: none;
+            font-size: 20px;
+            text-indent: 10px;
+            position: absolute;
+            border-radius: 6px;
+           	width: 83%;
+			margin-left: 10px;
+
+
+        }
+        .wei-chat-footer span {
+            display: inline-block;
+            width: 10%;
+            height: 48px;
+            background: #04BE02;
+        	color: #FFFFFF;
+            font-weight: 900;
+            line-height: 45px;
+            cursor: pointer;
+            text-align: center;
+            position: absolute;
+            right: 10px;
+            border-radius: 6px;
+        	margin-top: 1px;
+
+        }
+        .footer span:hover {
+            color: #fff;
+            background: #999;
+        }
+        #user_face_icon {
+            display: inline-block;
+            background: red;
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            position: absolute;
+            bottom: 6px;
+            left: 14px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .wei-chat img {
+            width: 60px;
+            height: 60px;
+        }
+        .wei-chat {
+            font-size: 20px;
+            min-height: 662px;
+            overflow: auto;
+            padding: 5px;
+        }
+        .wei-chat li {
+            margin-top: 10px;
+            padding-left: 10px;
+            display: block;
+            clear: both;
+            overflow: hidden;
+        }
+        .wei-chat li img {
+            float: left;
+        }
+        .wei-chat li span{
+            background: #7cfc00;
+            padding: 10px;
+            border-radius: 10px;
+            float: left;
+            margin: 6px 10px 0 10px;
+            max-width: 310px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 3px #ccc;
+        }
+        .wei-chat li img.imgleft {
+            float: left;
+        }
+        .wei-chat li img.imgright {
+            float: right;
+        }
+        .wei-chat li span.spanleft {
+            float: left;
+            background: #fff;
+        }
+        .wei-chat li span.spanright {
+            float: right;
+            background: #7cfc00;
+        }

@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\data\Pagination;
+use yii\db\Query;
 /**
  * This is the model class for table "{{%message}}".
  *
@@ -106,7 +107,55 @@ class Message extends \yii\db\ActiveRecord
         $temp_data['pagination'] = $pagination;
         return $temp_data;
     }
+    /**
+     * 获取列表数据
+     * @param integer $login_uid
+     * @param integer $pageSize
+     * @param mixed $where
+     * @param mixed $sort
+     * @return []
+     */
+    public function getMyList(  $login_uid ,$pageSize,$where,$sort = ['add_time'=>SORT_DESC]){
 
+
+        $model_Message = new Message();
+        /**
+         select * from message where msg_id in(
+        	select MAX(msg_id) from
+        	message GROUP BY from_uid
+        )
+         */
+        $message = new Message();
+        $query = $message->find();
+        $query->select('max(`msg_id`)');
+        $query->where(['to_uid'=>$login_uid]);
+        $query->groupBy('from_uid');
+
+
+        $pagination = new Pagination();
+        $pagination->totalCount = $query->count();
+        $pagination->setPageSize($pageSize);
+        $offset = $pagination->getOffset();
+        $limit = $pagination->getLimit();
+
+        $condition[0] = 'in';
+        $condition[1] = 'msg_id' ;
+        $condition[2] = $query;
+        $query_all = $model_Message->find()->where($condition)->offset($offset)->limit($limit);
+//         echo $query_all->createCommand()->getRawSql();
+// exit();
+
+        //                 echo $query->createCommand()->getRawSql();
+        //                 exit;
+        $a_models = $query_all->all();
+        if( isset($_GET[$pagination->pageParam])&& $pagination->pageCount < $_GET[$pagination->pageParam]  ){
+            $a_models = [];
+        }
+
+        $temp_data['models'] = $a_models;
+        $temp_data['pagination'] = $pagination;
+        return $temp_data;
+    }
     /**
      * 获取列表数据
      * @param integer $ta_uid
@@ -117,8 +166,8 @@ class Message extends \yii\db\ActiveRecord
      * @param mixed $sort
      * @return []
      */
-    public function getTaList( $ta_uid , $login_uid , $table,$pageSize,$where,$sort = ['add_time'=>SORT_DESC]){
-
+    public function getTaList( $ta_uid , $login_uid , $table,$pageSize,$where,$sort = ['msg_id'=>SORT_ASC]){
+        $pageSize=1;
         $arr = [
             $ta_uid,$login_uid
         ];
@@ -133,6 +182,7 @@ class Message extends \yii\db\ActiveRecord
             $query->andWhere($where);
         }
         if($sort){
+            $sort['msg_id']=SORT_DESC;
             $query->orderBy($sort);
         }
 
@@ -143,6 +193,7 @@ class Message extends \yii\db\ActiveRecord
         $limit = $pagination->getLimit();
         $query->offset($offset);
         $query->limit($limit);
+        $pagination->page;
 //                 echo $query->createCommand()->getRawSql();
 //                 exit;
         $a_models = $query->all();
