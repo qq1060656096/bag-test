@@ -28,7 +28,7 @@ switch ($model->tax):
         $submitAddText = '保存/增加';
         $submitNexText = '保存/下一步添加结果';
         $text_hint = "（1）设置完跳转后保存。在下一步，你需要最后看一下已经创建完毕的全部内容。如果没有问题，就可以发布出去啦。<br/>
-（2）后面还有最后".(SurveyController::stepCount($model->tax)-4)."个步骤，这个测试就能创建完毕。";
+（2）后面还有最后".(SurveyController::stepCount($model->tax)-5)."个步骤，这个测试就能创建完毕。";
         break;
 endswitch;
 
@@ -117,7 +117,7 @@ fieldset {
 							<label for="option-id-<?php echo $option->qo_id;?>" >
 
 									<input type="radio" id="option-id-<?php echo $option->qo_id;?>" name="options[<?php echo $question->question_id; ?>][]" value="<?php echo $option->qo_id;?>">
-									<span ><?php echo '选项'.$key2.'.'.$option->option_label;?></span>
+									<span ><?php echo '选项'.($key2+1).'.'.$option->option_label;?></span>
 								    <?php echo selectShow("option[{$option->qo_id}]", $key+2, $question_count,$option->skip_question);?>
 								    <?php echo selectShowResulte($models_SurveyResulte, $option->skip_resulte,"resulte[{$option->qo_id}]");?>
 							</label><br/>

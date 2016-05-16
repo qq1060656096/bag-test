@@ -46,7 +46,7 @@ class SurveyController extends ZController
         if (ZCommonSessionFun::get_user_id() < 1) {
             $url = Yii::$app->urlManager->createUrl([
                 ZCommonSessionFun::urlLoginUserStr,
-                'gourl' => $_SERVER['REQUEST_URI']
+                'gourl' => urlencode(Yii::$app->request->url)
             ]);
             return $this->redirect($url);
         }
@@ -795,8 +795,8 @@ str;
         $model_SurveyResulte = new SurveyResulte();
         $model_SurveyResulteDetail = $model_SurveyResulte->findOneSurveyResulte($id, 1, $page - 1);
         $model_SurveyResulte = $model_SurveyResulteDetail['SurveyResulte'] ? $model_SurveyResulteDetail['SurveyResulte'] : new SurveyResulte();
-        // ZCommonFun::print_r_debug($model_SurveyResulteDetail);
-        // exit;
+//         ZCommonFun::print_r_debug($model_SurveyResulteDetail);
+//         exit;
         $limit_score_start = 0;
         $limit_score_end = 0;
 
@@ -814,9 +814,9 @@ str;
         }
         // 保存
         if (isset($_POST['SurveyResulte'])) {
-            // ZCommonFun::print_r_debug($_POST);
-            // ZCommonFun::print_r_debug($model_save_SurveyResulte);
-            // exit;
+//             ZCommonFun::print_r_debug($_POST);
+//             ZCommonFun::print_r_debug($model_save_SurveyResulte);
+//             exit;
             $sr_id = isset($_POST['sr_id']) ? $_POST['sr_id'] : 0;
             $model_save_SurveyResulte = new SurveyResulte();
 

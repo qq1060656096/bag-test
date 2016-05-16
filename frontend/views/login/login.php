@@ -1,4 +1,4 @@
-<?php 
+<?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\models\User;
@@ -17,10 +17,10 @@ $qq_login = Yii::$app->urlManager->createUrl(['api/login-qq']);
 <html>
 <head>
 <?php echo $this->renderFile(__DIR__.'/../layouts/title.php');?>
-<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"> 
-<meta content="yes" name="apple-mobile-web-app-capable"> 
-<meta content="black" name="apple-mobile-web-app-status-bar-style"> 
-<meta content="telephone=no" name="format-detection"> 
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
 <link href="./bag-test/css/mobile-register.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="./bag-test/css/common.css">
 <script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js"></script>
@@ -38,20 +38,20 @@ h1{
 .btn_bg{
 	width:39% !important;
 	float: left;
-	
+
 }
 .btn_bg2{
 	float: right;
 }
 .footer-nav .fa{
 	display: inline-block;
-	vertical-align: middle; 
+	vertical-align: middle;
 	font-size: 1.2em;
-	
+
 }
 .footer-nav .fa:before{
 	color: #FE8C78;
-} 
+}
 </style>
 
 </head>
@@ -64,12 +64,12 @@ h1{
     			<span id="more">&nbsp;&nbsp;&nbsp;&nbsp;</span>
     		</nav>
     	</header>
-    	
+
     </div>
 
-    
+
     <section  class="s_reg s_login" style="margin-top: 100px;margin-bottom: 0;">
-        
+
         <div class="qita">
         	<ul>
         		<li class="">
@@ -94,24 +94,24 @@ h1{
     		<p class="wrong_tip" id="username_tip"></p>
     		<input type="text" id="password" name="password" placeholder="密码">
     		<p class="wrong_tip" id="password_tip"></p>
-    		
+
     		<div class="btn_bg">
     			<input type="button"  value="注册" onclick="javascript:window.top.document.location='<?php echo Yii::$app->urlManager->createUrl(['login/register'])?>' ">
     		</div>
-    		
+
     		<div class="btn_bg btn_bg2">
     			<input type="submit" id="submit" value="登录">
     		</div>
-    		
+
     		<div class="link_btn" style="display:none;">
     	    	<a href="" class="a_forget">忘记密码?</a>
     			<a href="" class="a_reg">注册帐号</a>
     		</div>
     	</form>
     </section>
-    
 
-    
+
+
 
 	<footer class="footer">
     	<div sytle="text-align: center;">
@@ -128,7 +128,7 @@ h1{
     </footer>
 </div>
 <script>
-$('#more').click(function(){  
+$('#more').click(function(){
 	if($('#toplist').css('display')!='none') {
 		$('#toplist').hide();
 	} else {
@@ -139,12 +139,12 @@ $('#more').click(function(){
 
 <script>
 $('#form1').submit(function(){
-	
+
 	var $this = $(this);
 	if($this.data('lock')) {
 		return false;
 	}
-	
+
 	var username = $.trim($('#username').val());
 	var check1 = false, check2 = false;
 	if(username == '') {
@@ -166,13 +166,13 @@ $('#form1').submit(function(){
 	}
 	var value = $('#submit').val();
 	$('#submit').val('提交中...');
-	
+
 	$this.data('lock', true);
 	var url = $this.attr('action');
 	var data = $this.serialize();
 	$.post(url, data, function(resp) {
 		if (resp.code == 0) {
-			var url = '<?php echo Yii::$app->request->hostInfo.$gourl;?>';
+			var url = '<?php echo Yii::$app->request->getHostInfo().urldecode($gourl);?>';
 // 			alert(url);
 			window.top.document.location = url;
 		} else {
@@ -188,4 +188,3 @@ $('#form1').submit(function(){
 
 
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>
- 

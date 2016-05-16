@@ -18,7 +18,7 @@ switch ($model->tax):
 
     break;
     case 2:
-        $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.预览题目分数区间';
+        $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'. 添加题目';
         $submitAddText = '增加一题';
         $submitNexText = '保存/下一步预览分数区间';
         $text_hint = "（1）点击“增加一题”后，你可以再添加一道选择题。<br />

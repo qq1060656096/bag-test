@@ -12,6 +12,7 @@ use yii\web\BadRequestHttpException;
 use common\z\ZController;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use common\z\ZCommonFun;
 
 /**
  * 空白页
@@ -22,6 +23,15 @@ class BlankController extends ZController
     public function actionTest(){
         $this->layout = false;
         $this->view->title = '如何创建测试';
+        $params = ['blank/test2','id'=>2];
+        $url = Yii::$app->urlManager->createUrl($params);
+        $this->redirect($url);
         return $this->render('test');
+    }
+
+    public function actionTest2(){
+        $params = ['blank/test2','id'=>2];
+        echo Yii::$app->urlManager->createUrl($params);
+        ZCommonFun::print_r_debug($_SERVER);
     }
 }

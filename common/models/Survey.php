@@ -65,7 +65,7 @@ class Survey extends \yii\db\ActiveRecord
             [['front_img','type','tax', 'uid', 'theme', 'theme_mobile', 'is_publish', 'answer_count', 'visit_count', 'is_public', 'is_statistics_public', 'max_answer_count', 'is_share_template', 'answer_total_time', 'answer_average_time', 'answer_limit_time', 'reward_count','is_top'], 'integer'],
             [['created', 'start_date', 'end_date'], 'safe'],
             [['reward_total', 'reward_average'], 'number'],
-    
+
             [['title', 'intro', 'pass','arithmetic'], 'string', 'max' => 255]
         ];
     }
@@ -122,7 +122,7 @@ class Survey extends \yii\db\ActiveRecord
      * @return array
      */
     public function findOneQuestion($survey_id,$limit,$offset){
-        
+
         $model_Question = new Question();
         $model_QuestionOptions = new QuestionOptions();
         $condition['table_id'] = $survey_id;
@@ -133,20 +133,20 @@ class Survey extends \yii\db\ActiveRecord
         //问题选项
         $data['options'] = null;
         if($data['count']>0){
-            
+
             $model_Question = $model_Question->find()->where($condition)->limit($limit)->offset($offset)->one();
 //             ZCommonFun::print_r_debug($model_Question);
             if( $model_Question){
                 $data['question'] = $model_Question;
                 $condition = null;
                 $condition['question_id'] = $model_Question->question_id;
-                $a_QuestionOptions = $model_QuestionOptions->find()->where($condition)->orderBy([])->all();
+                $a_QuestionOptions = $model_QuestionOptions->find()->where($condition)->orderBy(['qo_id'=>SORT_ASC])->all();
 //                 ZCommonFun::print_r_debug($a_QuestionOptions);
                 //没有问题就没有选项
                 if(!isset($a_QuestionOptions[0]))
                     $a_QuestionOptions=[];
                 $data['options'] = $a_QuestionOptions;
-               
+
             }
         }
         return $data;
@@ -160,12 +160,12 @@ class Survey extends \yii\db\ActiveRecord
         $model_Question = new Question();
         $model_QuestionOptions = new QuestionOptions();
         $condition['table_id'] = $survey_id;
-        
-       
+
+
         $a_Question = $model_Question->find()->where($condition)->orderBy([])->all();
-        
+
         $a_QuestionOptions = $model_QuestionOptions->find()->where($condition)->orderBy([])->all();
-        
+
         $a_Question? null :$a_Question=[];
         $a_QuestionOptions? null :$a_QuestionOptions=[];
         $a_options = [];
@@ -186,18 +186,18 @@ class Survey extends \yii\db\ActiveRecord
                         $a_options[$key][] = $row2;
                         //获取问题最大得分
                         $question_max_score = max($row2->option_score,$question_max_score);
-                        $question_min_score =  $question_min_score==null ? 
+                        $question_min_score =  $question_min_score==null ?
                         $row2->option_score : min($question_min_score,$row2->option_score);
 //                         echo $row2->option_score,'=',$question_total_score,'<br/>';
                     }
-                    
+
                 }
                 //设置问题总分数
                 $question_total_score+=$question_max_score;
                 $question_total_min_score+=$question_min_score;
 //                 isset($a_Question[$key]['options'][0])? null :$a_Question[$key]['options']=[];
             }
-        } 
+        }
         $data['questions'] = $a_Question;
         $data['options']   = $a_options;
         $data['question_total_count'] = $question_total_count;
@@ -205,8 +205,8 @@ class Survey extends \yii\db\ActiveRecord
         $data['question_total_min_score'] = $question_total_min_score;
         return $data;
     }
-    
-    
+
+
     /**
      * 设置回答数量
      * @param unknown $id
@@ -217,7 +217,7 @@ class Survey extends \yii\db\ActiveRecord
         $this->answer_count = $this->randCount($this->answer_count);
         $this->save();
     }
-    
+
     public function randCount($count){
         $rand = rand(1, 9);
         $rand<=8?$count++:$count+=10;
@@ -230,11 +230,11 @@ class Survey extends \yii\db\ActiveRecord
     public function  getImages(){
         return $this->hasOne(Images::className(),  ['id'=>'front_img']);
     }
-    
+
     public function getUser(){
         return $this->hasOne(User::className(), ['uid'=>'uid']);
     }
-    
+
     public function getUserProfile(){
         return $this->hasOne(UserProfile::className(), ['uid'=>'uid']);
     }
@@ -247,13 +247,13 @@ class Survey extends \yii\db\ActiveRecord
              return 0;
          }
         $count = $this->find()->where(['uid'=>$uid])->count();
-        
+
         $count ? null : $count=0;
         return $count;
-    } 
+    }
     /**
      * 获取图片
-     * @param \common\models\Survey $model 
+     * @param \common\models\Survey $model
      * @return string
      */
     public static function getImageUrl($model){

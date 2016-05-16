@@ -15,7 +15,7 @@ use common\models\SurverySearch;
  */
 class SurveyOperation extends Survey{
     public $errorResulte = '';
-    
+
     /**
      * 获取置顶测试
      * @return array common\models\Survey
@@ -51,23 +51,23 @@ class SurveyOperation extends Survey{
             $deleteAll = $deleteSurveyResulte->getAll($id);
             isset($deleteAll[0]) ?  null : $deleteAll=[];
             $sr_ids = ZCommonFun::listData($deleteAll, 'sr_id', 'sr_id');
-            
+
 //             ZCommonFun::print_r_debug($sr_ids);
 //             ZCommonFun::print_r_debug($post_data);
 //             exit;
-            
+
             //有结果
             if($post_data){
                 //保存结果
                 $transaction = Yii::$app->db->beginTransaction();
-                
+
                 $save=0;
                 try {
                     foreach ($post_data as $key=>$row){
                         if( isset( $row['sr-id']) && $row['sr-id']>0 ){
                             $row_SurveyResulte = SurveyResulte::findOne($row['sr-id']);
                             if($row_SurveyResulte ){
-                                
+
                                 //结果存在，就不删除
                                 unset($sr_ids[$row['sr-id']]);
                                 if($row_SurveyResulte->s_id != $id){
@@ -83,8 +83,8 @@ class SurveyOperation extends Survey{
                         $row_SurveyResulte->name = $row['name'];
                         $row_SurveyResulte->value = $row['value'];
                         $row_SurveyResulte->s_id = $id;
-                        
-                        $row_SurveyResulte->uid = ZCommonSessionFun::get_user_id(); 
+
+                        $row_SurveyResulte->uid = ZCommonSessionFun::get_user_id();
                         $row_SurveyResulte->save() ? $save++:null;
                     }
                     if($save>0){
@@ -105,13 +105,13 @@ class SurveyOperation extends Survey{
                 }
             }
         }
-        
+
 //         ZCommonFun::print_r_debug($post);
 //         ZCommonFun::print_r_debug($post_data);
 //         exit;
         return $url;
     }
-    
+
     /**
      *  分数型测试问题
      * @param unknown $posts
@@ -120,8 +120,8 @@ class SurveyOperation extends Survey{
     public function step4_2_questionSave($posts,$id,$page){
         $url='';
         $error='';
-        
-        if( isset($posts['label']['option-label'][0])){     
+
+        if( isset($posts['label']['option-label'][0])){
 //             ZCommonFun::print_r_debug($posts);
 //             exit;
             //保存问题!empty($posts['label-name'] )
@@ -138,7 +138,7 @@ class SurveyOperation extends Survey{
                     }else{
                         $model_Question = new Question();
                     }
-                    
+
                     $model_Question->label = $posts['label-name'];
                     $model_Question->table_id = $id;
                     $model_Question->uid = ZCommonSessionFun::get_user_id();
@@ -148,8 +148,7 @@ class SurveyOperation extends Survey{
                         foreach ($posts['label']['option-label'] as $key=>$value){
                                $qo_id = isset ($posts['label']['qo-id'][$key] ) ? $posts['label']['qo-id'][$key] : 0;
                                //验证问题
-//                             if(empty($value)) continue;
-                               if( empty($value ) && ($key+1 ==$len || $posts['label']['option-score'][$key] <2) ){
+                               if( empty($value ) ){
                                    //删除空选项
                                    $model_QuestionOptions = QuestionOptions::findOne($qo_id);
                                    //不是当前测试的选项
@@ -158,11 +157,11 @@ class SurveyOperation extends Survey{
                                    }else{
                                        $model_QuestionOptions->delete();
                                    }
-                                   
+
                                    continue;
-                               } 
-                            
-                            
+                               }
+
+
                             if($qo_id>0){
                                 $model_QuestionOptions = QuestionOptions::findOne($qo_id);
                                 //不是当前测试的选项
@@ -170,9 +169,9 @@ class SurveyOperation extends Survey{
                                     continue;
                                 }
                                 $save++;
-                            }else{                       
+                            }else{
                                 $model_QuestionOptions = new QuestionOptions();
-                                
+
                             }
                             $model_QuestionOptions->question_id = $model_Question->question_id;
                             $model_QuestionOptions->table_id = $id;
@@ -183,14 +182,14 @@ class SurveyOperation extends Survey{
                             $score = (int)$score;
                             $model_QuestionOptions->option_score = $score;
                             if($model_QuestionOptions->save()) $save++;
-            
+
                         }
                     }else{
                         $transacation->rollBack();
                         $error = '保存失败';
                     }
                     if($save>0){
-                       
+
                             $transacation->commit();
 //                             ZCommonFun::print_r_debug($posts);
 //                             exit;
@@ -201,13 +200,13 @@ class SurveyOperation extends Survey{
                             }else{
                                return $url = ['step4_2','id'=>$id];
                             }
-                        
-                        
+
+
                     }else{
                         $transacation->rollBack();
                         $error='请填写选项';
                     }
-        
+
                 } catch (\Exception $e) {
 //                     ZCommonFun::print_r_debug($e);
                     $transacation->rollBack();
@@ -220,8 +219,10 @@ class SurveyOperation extends Survey{
 //             exit;
             $this->errorResulte = $error;
         }
+//         ZCommonFun::print_r_debug($posts);
+//         exit;
     }
-    
+
     /**
      * 分数型测试结果保存
      * @param unknown $post
@@ -237,14 +238,14 @@ class SurveyOperation extends Survey{
                 $intro = isset($post['intro'][$key]) ? $post['intro'][$key] : '';
                 $min = isset($post['score-min'][$key]) ? $post['score-min'][$key] : 1;
                 $max = isset($post['score-max'][$key]) ? $post['score-max'][$key] : 1;
-                
+
                 $temp = $min>$max ?$min:$max;
                 if($min>$max){
                     $temp = $min;
                     $min = $max;
                     $max = $temp;
                 }
-                
+
                 if($max>0&& $min>0 &&!empty($value)&& isset($name[0]) ){
                     $post_data[$key]['name'] = $value;
                     $post_data[$key]['value'] = $value;
@@ -254,7 +255,7 @@ class SurveyOperation extends Survey{
                     $post_data[$key]['max'] = $max;
                 }
             }
-            
+
 //             ZCommonFun::print_r_debug($post_data);
 //             ZCommonFun::print_r_debug($post);
 //             exit();
@@ -262,20 +263,20 @@ class SurveyOperation extends Survey{
             if($post_data){
                 //保存结果
                 $transaction = Yii::$app->db->beginTransaction();
-                
+
                 //删除结果
                 $deleteSurveyResulte = new SurveyResulte();
                 $deleteAll = $deleteSurveyResulte->getAll($id);
                 isset($deleteAll[0]) ?  null : $deleteAll=[];
                 $sr_ids = ZCommonFun::listData($deleteAll, 'sr_id', 'sr_id');
-                
+
                 $save=0;
                 try {
                     foreach ($post_data as $key=>$row){
                         if( isset( $row['sr-id']) && $row['sr-id']>0 ){
                             $row_SurveyResulte = SurveyResulte::findOne($row['sr-id']);
                             if($row_SurveyResulte ){
-                                
+
                                 //结果存在，就不删除
                                 unset($sr_ids[$row['sr-id']]);
                                 if($row_SurveyResulte->s_id != $id){
@@ -288,13 +289,13 @@ class SurveyOperation extends Survey{
                         }else{
                             $row_SurveyResulte = new SurveyResulte();
                         }
-                        
+
                         $row_SurveyResulte->score_max = $row['max'];
                         $row_SurveyResulte->score_min = $row['min'];
                         $row_SurveyResulte->name = $row['name'];
                         $row_SurveyResulte->value = $row['value'];
                         $row_SurveyResulte->intro = $row['intro'];
-                        
+
                         $row_SurveyResulte->value = $row['value'];
                         $row_SurveyResulte->value = $row['value'];
                         $row_SurveyResulte->uid = ZCommonSessionFun::get_user_id();
@@ -309,8 +310,8 @@ class SurveyOperation extends Survey{
                             //删除所有结果
                             SurveyResulte::deleteAll($condition);
                         }
-                        
-                        
+
+
                         $transaction->commit();
                         $url = ['my'];
                     }
@@ -323,9 +324,9 @@ class SurveyOperation extends Survey{
                     $transaction->rollBack();
                 }
             }
-            
+
         }
-        
+
         return $url;
     }
 }
