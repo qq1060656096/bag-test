@@ -17,29 +17,36 @@ $submitNexText = '';
 $text_hint = '';
 switch ($model->tax):
     case 1:
-        $this->title .= '-步骤3/'.SurveyController::stepCount($tax).'.添加结果';
+        $this->title = '无题测试-步骤3. 添加测试结果';
 
         $submitAddText = '增加一个结果';//'保存/增加';
         $submitNexText = '保存/下一步';//'保存/下一步选择算法';
-        $text_hint = "（1）点击“增加一个结果”后，你可以再添加一个测试结果。<br/>（2）在下一步，你需要选择最适合这个测试的算法。后面还有".(SurveyController::stepCount($tax)-3)."个步骤，这个测试就能创建完毕。";
+        $text_hint = "（1）填写测试结果，并为这个结果配图。<br/>
+（2）点击“增加结果”后，你可以继续再添加一个测试结果。<br/>
+（3）添加完所有测试结果后保存。在下一步，你需要选择一种测试算法。<br/>
+（4）后面还有2个步骤，这个测试就能创建完毕。
+        ";
     break;
     case 2:
-        $this->title .= '-步骤5/'.SurveyController::stepCount($tax).'.添加结果';
+        $this->title = '分数型测试-步骤5. 添加测试结果';
 
 
         $submitAddText = '增加一个结果';
         $submitNexText = '保存/最后一步 预览';
-        $text_hint = "（1）点击“增加一个结果”后，你可以再添加一个测试结果。<br/>
-（2）后面还有".(SurveyController::stepCount($tax)-5)."个步骤，这个测试就能创建完毕。";
+        $text_hint = "（1）填写测试结果，并为这个结果配图。<br/>
+（2）点击“增加结果”后，你可以继续再添加一个测试结果。<br/>
+（3）添加完所有测试结果后保存。在下一步，你需要选择一种测试算法。<br/>
+（4）后面还有1个步骤，这个测试就能创建完毕。";
         break;
     case 3:
-        $this->title .= '-步骤4/'.SurveyController::stepCount($tax).'.添加结果';
+        $this->title = '跳转型测试-步骤4. 添加测试结果';
 
         $submitAddText = '增加一个结果';
         $submitNexText = '保存/下一步设置跳转';
-        $text_hint = "（1）点击“增加一个结果”后，你可以再添加一个测试结果。<br/>
-（2）添加完所有测试结果后保存。在下一步，你需要设定如何跳转，将某个选项跳转到某个选择题，或者跳转到某个测试结果。<br/>
-（3）后面还有".(SurveyController::stepCount($model->tax)-4)."个步骤，这个测试就能创建完毕。";
+        $text_hint = "（1）填写测试结果，并为这个结果配图。<br/>
+（2）点击“增加结果”后，你可以继续再添加一个测试结果。<br/>
+（3）添加完所有测试结果后保存。在下一步，你需要选择一种测试算法。<br/>
+（4）后面还有2个步骤，这个测试就能创建完毕。";
         break;
 endswitch;
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\z\ZCommonFun;
@@ -12,10 +12,10 @@ $submitNexText = '';
 
 switch ($model->tax):
     case 1:
-    
+
         break;
     case 2:
-        $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.预览题目分数区间';
+        $this->title = '分数型测试-步骤4. 预览题目分数区间';
         $submitAddText = '保存/增加';
         $submitNexText = '保存/下一步预览分数区间';
         break;
@@ -37,7 +37,7 @@ function selectShow($name,$start,$end,$select=''){
         return '';
     }
     echo '<select name="',$name,'"><option value="" >请选择</option>';
-    
+
     for($start;$start<=$end;$start++){
         $selected = $select==$start ? 'selected="selected"':'';
         echo '<option ',$selected,' value="',$start,'">跳转到',$start,'题</option>';
@@ -69,8 +69,8 @@ fieldset {
         <?php $form = ActiveForm::begin(['id'=>'id-form']); ?>
             <div id="id_question_list" style="display: none1" data-type="score">
                 <h3><?php echo ZController::$site_name;?>提示：你一个添加<span class="span-wrap"><?php echo $question_count;?></span>了道题,答案分数区间为<span class="span-wrap"><?php echo $data['question_total_min_score'];?></span>分到<span class="span-wrap"><?php echo $data['question_total_score'];?></span>分.</h3>
-                <?php 
-                
+                <?php
+
                 foreach ($data['questions'] as $key=>$question){
                 ?>
 				<div id="id_question_list" class="question-item">
@@ -80,14 +80,14 @@ fieldset {
 						class="ui-corner-all ui-controlgroup ui-controlgroup-vertical">
 						<div role="heading" class="ui-controlgroup-label"><?php echo $key+1,'.',$question->label; ?></div>
 						<div class="ui-controlgroup-controls">
-							<?php 
+							<?php
                             isset($data['options'][$key]) ? null : $data['options'][$key]=[];
                             foreach ($data['options'][$key] as $key2=>$option){
                                 if( $model->tax ==2 )
                                     break;
-                            ?>	
+                            ?>
 							<label for="option-id-<?php echo $option->qo_id;?>" >
-						
+
 									<input type="radio" id="option-id-<?php echo $option->qo_id;?>" name="options[<?php echo $question->question_id; ?>][]" value="<?php echo $option->qo_id;?>">
 									<span ><?php echo $option->option_label;?></span>
 								    <?php echo selectShow("option[{$option->qo_id}]", $key+2, $question_count,$option->skip_question);?>
@@ -96,24 +96,24 @@ fieldset {
 
 						</div>
 					</fieldset>
-					
+
 				</div>
                 <?php } ?>
 
 			</div>
 			<div class="s_reg">
 			    <div class="btn_bg btn-2" >
-        			<a 
-        			href="<?php echo Yii::$app->urlManager->createUrl(['survey/step4_2_question','id'=>$model->id]);?>" 
-        			id="prev-step">上一步</a> 
+        			<a
+        			href="<?php echo Yii::$app->urlManager->createUrl(['survey/step4_2_question','id'=>$model->id]);?>"
+        			id="prev-step">上一步</a>
         		</div>
     			<a class="btn_bg" href="javascript:void(0);" style="margin: 15px auto;">
-        			<input type="submit" id="submit" name="save" value="保存/下一步添加结果"> 
+        			<input type="submit" id="submit" name="save" value="保存/下一步添加结果">
         		</a>
-        		<!-- 
+        		<!--
         		<a class="btn_bg" style="margin: 0 auto; "
 		href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
-	       <input type="button"  value="预览"> 
+	       <input type="button"  value="预览">
 	    </a>  -->
     		</div>
     		<br />
@@ -122,7 +122,7 @@ fieldset {
     		<br />
     		<br />
         <?php ActiveForm::end(); ?>
-</section>    
+</section>
 <script type="text/javascript">
 /* $(document).ready(function(){
 	$("select").on('click change',function(){

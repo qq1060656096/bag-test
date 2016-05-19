@@ -18,28 +18,29 @@ $this->title .='.封面图';
 
 switch ($tax):
 case 1:
-
+    $this->title = '无题测试-步骤2.封面图';
 
     $submitAddText = '再编一个结果';//'保存/增加';
     $submitNexText = '保存/下一步';//'保存/下一步选择算法';
-    $text_hint = "保存配图后，在下一步，你需要依次创建不少于2个测试结果。后面还有". (SurveyController::stepCount($tax)-2)."个步骤，这个测试就能创建完毕。";
+    $text_hint = "（1）保存配图后，在下一步，你需要为这个测试添加至少一个测试结果。<br/>
+（2）后面还有最后4个步骤，这个测试就能创建完毕。";
 break;
 case 2:
-//     $this->title .= '-步骤5/'.SurveyController::stepCount($tax).'.添加结果';
+    $this->title = '分数型测试-步骤2.封面图';
 
     $submitAddText = '保存/增加';
     $submitNexText = '保存/最后一步 预览';
-    $text_hint = "（1）保存配图后，在下一步，你需要创建至少一道选择题，包括题目和选项。<br />
-（2）后面还有". (SurveyController::stepCount($tax)-2)."个步骤，这个测试就能创建完毕。";
+    $text_hint = "（1）保存配图后，在下一步，你需要为这个测试添加至少一道测试题目，包括题目和选项。<br/>
+（2）后面还有最后4个步骤，这个测试就能创建完毕。";
 
     break;
 case 3:
-//     $this->title .= '-步骤4/'.SurveyController::stepCount($tax).'.添加结果';
+    $this->title = '跳转型测试-步骤2.封面图';
 
     $submitAddText = '保存/增加';
     $submitNexText = '保存/下一步设置跳转';
-    $text_hint = "（1）保存配图后，在下一步，你需要创建至少一道选择题，包括题目和选项。<br/>
-（2）后面还有". (SurveyController::stepCount($tax)-2)."个步骤，这个测试就能创建完毕。";
+    $text_hint = "（1）保存配图后，在下一步，你需要为这个测试添加至少一道测试题目，包括题目和选项。<br/>
+（2）后面还有最后4个步骤，这个测试就能创建完毕。";
 
     break;
 endswitch;

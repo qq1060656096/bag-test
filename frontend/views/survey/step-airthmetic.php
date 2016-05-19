@@ -10,7 +10,7 @@ use frontend\controllers\SurveyController;
 echo $this->renderFile(__DIR__.'/../layouts/head-login.php');
 
 
-$this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.选择算法';
+$this->title .= '无题测试-步骤4.选择算法';
 ?>
 <style>
 .s_login div,.s_reg div{
@@ -104,7 +104,10 @@ $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'.选择算
 
 
         <?php ActiveForm::end(); ?>
-        <p class="text-hint">选择算法后保存，在下一步，你需要最后看一下已经创建完毕的全部内容。如果没有问题，就可以发布出去啦。后面还有最后1个步骤，这个测试就能创建完毕。</p>
+        <p class="text-hint">
+        （1）选择算法后保存，在下一步，你需要预览一下已经添加的全部内容。如果没有问题，发布出去之后，成千上万的人都可以做这个测试啦。<br/>
+（2）后面还有最后1个步骤，这个测试就能创建完毕，加油。
+        </p>
 
 	</section>
 

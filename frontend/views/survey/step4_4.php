@@ -24,11 +24,10 @@ switch ($model->tax):
     case 2:
 
     case 3:
-        $this->title .= '-步骤5/'.SurveyController::stepCount($model->tax).'.设置跳转';
+        $this->title = '跳转型测试-步骤5.设置跳转';
         $submitAddText = '保存/增加';
         $submitNexText = '保存/下一步添加结果';
-        $text_hint = "（1）设置完跳转后保存。在下一步，你需要最后看一下已经创建完毕的全部内容。如果没有问题，就可以发布出去啦。<br/>
-（2）后面还有最后".(SurveyController::stepCount($model->tax)-5)."个步骤，这个测试就能创建完毕。";
+        $text_hint = "";
         break;
 endswitch;
 

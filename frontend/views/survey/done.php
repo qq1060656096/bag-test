@@ -15,7 +15,7 @@ global $survey_tax;
 $this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey_tax['0'];
 switch ($model->tax):
     case 1:
-        $this->title .= '-步骤5/'.SurveyController::stepCount($model->tax).'.测试预览';
+        $this->title = '无题测试-步骤5.测试预览';
 
     $submitAddText = '保存/增加';
     $submitNexText = '保存/下一步选择算法';

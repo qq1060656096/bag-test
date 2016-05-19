@@ -18,18 +18,22 @@ switch ($model->tax):
 
     break;
     case 2:
-        $this->title .= '-步骤4/'.SurveyController::stepCount($model->tax).'. 添加题目';
+        $this->title = '分数型测试-步骤3. 添加测试题目';
         $submitAddText = '增加一题';
         $submitNexText = '保存/下一步预览分数区间';
-        $text_hint = "（1）点击“增加一题”后，你可以再添加一道选择题。<br />
-（2）添加完所有选择题后保存。在下一步，你需要创建至少一个测试结果。<br />（3）后面还有".( SurveyController::stepCount($model->tax)-3 )."个步骤，这个测试就能创建完毕。";
+        $text_hint = "（1）填写题目和选项，并设定每个选项的分数。点击“添加选项”，你可以添加多个选项。<br/>
+（2）点击“增加一题”后，你可以继续再添加一道选择题。<br/>
+（3）添加完所有选择题后保存。在下一步，你需要添加至少一个测试结果。<br/>
+（4）后面还有3个步骤，这个测试就能创建完毕。";
         break;
     case 3:
-        $this->title .= '-步骤3/'.SurveyController::stepCount($model->tax).'.添加题目';
+        $this->title = '跳转型测试-步骤3. 添加测试题目';
         $submitAddText = '增加一题';
         $submitNexText = '保存/下一步添加结果';
-        $text_hint = "（1）点击“增加一题”后，你可以再添加一道选择题。<br />
-（2）添加完所有选择题后保存。在下一步，你需要创建至少一个测试结果。<br />（3）后面还有".( SurveyController::stepCount($model->tax)-3 )."个步骤，这个测试就能创建完毕。";
+        $text_hint = "（1）填写题目和选项，并设定每个选项的分数。点击“添加选项”，你可以添加多个选项。<br/>
+（2）点击“增加一题”后，你可以继续再添加一道选择题。<br/>
+（3）添加完所有选择题后保存。在下一步，你需要添加至少一个测试结果。<br/>
+（4）后面还有3个步骤，这个测试就能创建完毕。";
         break;
 endswitch;
 // ZCommonFun::print_r_debug($questionData);
