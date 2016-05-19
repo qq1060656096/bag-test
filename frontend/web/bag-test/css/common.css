@@ -44,6 +44,10 @@ font-size: 16px !important;
 .common-color{
 	color: #FE8C78;
 }
+.node-title{
+	text-align: center !important;
+	    font-size: 2em;
+}
 .s_header nav{
 	text-shadow: none;
 }

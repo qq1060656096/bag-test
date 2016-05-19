@@ -222,7 +222,7 @@ $(document).ready(function(){
     <section class="s_moreread s_reg s_login">
     <?php $form = ActiveForm::begin(['id'=>'form1','action'=>['survey/step4_2_question','id'=>$model->id,'page'=>$page+1]]); ?>
 
-
+        <h1 class="po_title common-color node-title"><?php echo $model->title;?></h1>
 
         <?php if( isset($questionData['question']) ){?>
 

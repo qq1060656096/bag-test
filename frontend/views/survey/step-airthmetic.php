@@ -57,7 +57,7 @@ $this->title .= '无题测试-步骤4.选择算法';
 
 
         <?php $form = ActiveForm::begin(['id'=>'form1']); ?>
-        <h3 class="po_title common-color" style="text-align: left;font-weight: bold;text-align: center;"><?php echo $model->title;?></h3>
+        <h1 class="po_title common-color node-title" style="font-weight: bold;text-align: center;"><?php echo $model->title;?></h1>
         <?php
 //         echo $model->arithmetic;
         ?>

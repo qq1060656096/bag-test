@@ -96,6 +96,7 @@ fieldset {
 <?php echo $this->renderFile(__DIR__.'/../layouts/head-top.php');?>
 <section class="s_moreread s_reg s_login">
         <?php $form = ActiveForm::begin(['id'=>'id-form']); ?>
+            <h1 class="po_title common-color node-title"><?php echo $model->title;?></h1>
             <div id="id_question_list" style="display: none1" data-type="score">
 
                 <?php

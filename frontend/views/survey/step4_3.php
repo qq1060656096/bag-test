@@ -67,6 +67,7 @@ fieldset {
 <?php echo $this->renderFile(__DIR__.'/../layouts/head-top.php');?>
 <section class="s_moreread s_reg s_login">
         <?php $form = ActiveForm::begin(['id'=>'id-form']); ?>
+            <h1 class="po_title common-color node-title"><?php echo $model->title;?></h1>
             <div id="id_question_list" style="display: none1" data-type="score">
                 <h3><?php echo ZController::$site_name;?>提示：你一个添加<span class="span-wrap"><?php echo $question_count;?></span>了道题,答案分数区间为<span class="span-wrap"><?php echo $data['question_total_min_score'];?></span>分到<span class="span-wrap"><?php echo $data['question_total_score'];?></span>分.</h3>
                 <?php

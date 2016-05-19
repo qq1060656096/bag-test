@@ -231,7 +231,7 @@ foreach ($result_all as $key0=>$result0){
 	<?php echo $this->renderFile(__DIR__.'/../layouts/head-top.php');?>
 	<div id="page-content">
         <div id="img-content" class="rich_media_area_primary">
-            <h2 class="rich_media_title" id="activity-name">
+            <h2 class="rich_media_title po_title common-color node-title" id="activity-name">
                 <?php
                 echo ZCommonFun::replace_filter_words($model->title, $replace_prefix, $replace_self, $replace_suffix, $replace,$replace_count) ;
                 $error_title = empty($model->title) ? '标题不能为空':'';

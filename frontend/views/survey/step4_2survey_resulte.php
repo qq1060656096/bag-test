@@ -205,6 +205,7 @@ text-align:left;
 
     <section class="s_moreread s_reg s_login">
     <?php $form = ActiveForm::begin(['id'=>'form1','action'=>['survey/step4_2','id'=>$model->id,'page'=>$page+1]]); ?>
+        <h1 class="po_title common-color node-title"><?php echo $model->title;?></h1>
         <div class="BlankBlock">
 
              <div class="BlockTitle">

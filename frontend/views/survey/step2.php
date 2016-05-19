@@ -55,7 +55,7 @@ endswitch;
 
 
 	<?php echo $this->renderFile(__DIR__.'/../layouts/head-top.php');?>
-
+    <h1></h1>
 	<section class="s_moreread s_reg s_login">
 		<?php //echo $this->renderFile(__DIR__.'/../layouts/header-user.php');?>
 
