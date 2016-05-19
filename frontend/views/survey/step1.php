@@ -41,7 +41,8 @@ $this->title="创建测试";
 
         <?php
         foreach ($survey_tax as $id=>$name){
-            $url = Yii::$app->urlManager->createUrl(['survey/step2','tax'=>$id]);
+//             $url = Yii::$app->urlManager->createUrl(['survey/step2','tax'=>$id]);
+            $url = Yii::$app->urlManager->createUrl(['blank/how_test','tax'=>$id]);
 //             if($id>=3){
 //                 break;
 //             }

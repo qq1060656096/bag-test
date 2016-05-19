@@ -34,4 +34,15 @@ class BlankController extends ZController
         echo Yii::$app->urlManager->createUrl($params);
         ZCommonFun::print_r_debug($_SERVER);
     }
+
+    /**
+     * 如何创建测试
+     * @param unknown $tax
+     * @return \yii\base\string
+     */
+    public function actionHow_test($tax){
+        $this->layout = false;
+        $tax = intval($tax);
+        return $this->render('how_test',['tax'=>$tax]);
+    }
 }
