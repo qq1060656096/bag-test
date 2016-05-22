@@ -1133,11 +1133,18 @@ str;
                 if ($model->save()) {
                     $message = '发布成功';
                     $status = 0;
-                    if (! isset($_GET['is_ajax']) && ! $_GET['is_ajax']) {
-                        return $this->redirect([
-                            'survey/index',
-                            'sort' => 1
-                        ]);
+                    if (!isset($_GET['is_ajax'])) {
+                        if( $model->tax==1 ){
+                            return $this->redirect([
+                                'answer/step1',
+                                'id'=>$model->id
+                            ]);
+                        } else {
+                            return $this->redirect([
+                                'answer/step2-answer2',
+                                'id'=>$model->id
+                            ]);
+                        }
                     }
                 } else {
                     $message = '发布失败';

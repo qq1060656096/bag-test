@@ -60,7 +60,7 @@ $this->title="创建测试";
         ?>
 
             <a class="btn_bg btn-up" href="<?php echo $url;?>">
-    			<input type="submit" id="submit" value="<?php echo $name;?>">
+    			<input type="submit" id="submit" value="<?php echo $id==1? '无题测试': $name;?>">
     		</a>
     		<a class="btn_bg btn-down" href="<?php echo $url;?>">
     		  <?php echo $note;?>

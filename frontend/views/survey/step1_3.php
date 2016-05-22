@@ -21,9 +21,9 @@ case 1:
     $this->title = '无题测试-步骤2.封面图';
 
     $submitAddText = '再编一个结果';//'保存/增加';
-    $submitNexText = '保存/下一步';//'保存/下一步选择算法';
+    $submitNexText = '保存/下一步 添加题目';//'保存/下一步 添加题目';
     $text_hint = "（1）保存配图后，在下一步，你需要为这个测试添加至少一个测试结果。<br/>
-（2）后面还有最后4个步骤，这个测试就能创建完毕。";
+（2）后面还有最后3个步骤，这个测试就能创建完毕。";
 break;
 case 2:
     $this->title = '分数型测试-步骤2.封面图';
@@ -104,12 +104,13 @@ endswitch;
             $submitText = '';
             switch ($model->tax):
                 case 1:
-                    $submitText = '保存/下一步';//'保存/下一步添加结果';
+                    $submitText = '保存/下一步 添加结果';//'保存/下一步添加结果';
                     break;
                 case 2:
-                    $submitText = '保存/下一步创建测试题';//'保存/下一步添加题目';
+                    $submitText = '保存/下一步 添加题目';//'保存/下一步添加题目';
+                    break;
                 case 3:
-                    $submitText = '保存/下一步';//'保存/下一步添加题目';
+                    $submitText = '保存/下一步 添加题目';//'保存/下一步添加题目';
                     break;
             endswitch;
        ?>

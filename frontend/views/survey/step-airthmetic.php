@@ -94,7 +94,7 @@ $this->title .= '无题测试-步骤4.选择算法';
 	    </a>
        <br />
         <div class="btn_bg" >
-			<input type="submit" id="submit" value="完成/最后一步 ">
+			<input type="submit" id="submit" value="保存/下一步 预览">
 		</div>
 		<br />
 

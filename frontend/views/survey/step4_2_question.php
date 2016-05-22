@@ -20,7 +20,7 @@ switch ($model->tax):
     case 2:
         $this->title = '分数型测试-步骤3. 添加测试题目';
         $submitAddText = '增加一题';
-        $submitNexText = '保存/下一步预览分数区间';
+        $submitNexText = '保存/下一步 预览分数区间';
         $text_hint = "（1）填写题目和选项，并设定每个选项的分数。点击“添加选项”，你可以添加多个选项。<br/>
 （2）点击“增加一题”后，你可以继续再添加一道选择题。<br/>
 （3）添加完所有选择题后保存。在下一步，你需要添加至少一个测试结果。<br/>
@@ -29,7 +29,7 @@ switch ($model->tax):
     case 3:
         $this->title = '跳转型测试-步骤3. 添加测试题目';
         $submitAddText = '增加一题';
-        $submitNexText = '保存/下一步添加结果';
+        $submitNexText = '保存/下一步 创建测试结果';
         $text_hint = "（1）填写题目和选项，并设定每个选项的分数。点击“添加选项”，你可以添加多个选项。<br/>
 （2）点击“增加一题”后，你可以继续再添加一道选择题。<br/>
 （3）添加完所有选择题后保存。在下一步，你需要添加至少一个测试结果。<br/>
@@ -84,6 +84,7 @@ endswitch;
 	float: left;
 	width: 30%;
 	border: none;
+	padding:0;
 	margin-top: 0.5em;
 }
 .s_reg .btn_bg:last-child{
@@ -91,10 +92,10 @@ endswitch;
 	float: right;
 }
 .s_reg .btn_bg.btn-3{
-	margin-left: 3.8%;
+	margin-left: 5%;
 }
 .s_reg .btn_bg.btn-100{
-	width: 98.5%;
+	width: 99.9%;
 	float: left;
 	margin-top: 10px;
 }
@@ -291,20 +292,22 @@ $(document).ready(function(){
 			id="prev-step">上一步</a>
 		</div>
 
-        <button type="submit" class="btn_bg btn btn-primary btn-3" name="save-next"><?php echo $submitAddText;?></button>
-
-        <button type="submit" class="btn_bg btn btn-primary btn-r" name="save"><?php echo $submitNexText;?></button>
-
-        <a class="btn_bg" style="display:none;width: 98.5%;margin-top: 15px;"
-		href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
-	       <input type="button"  value="预览">
-	    </a>
-        <div class="btn_bg btn-2 btn-100" >
+		<div class="btn_bg btn btn-primary btn-3" >
 			<a
 			href="<?php echo Yii::$app->urlManager->createUrl(['survey/question-delete','id'=>$model->id,'page'=>$page]);?>"
 			id="prev-step">删除</a>
 		</div>
 
+        <button type="submit" class=" btn_bg btn btn-primary btn-r" name="save-next"><?php echo $submitAddText;?></button>
+
+
+
+        <a class="btn_bg" style="display:none;width: 98.5%;margin-top: 15px;"
+		href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
+	       <input type="button"  value="预览">
+	    </a>
+
+        <button type="submit" class="btn_bg btn-2 btn-100" name="save"><?php echo $submitNexText;?></button>
 
  <?php ActiveForm::end(); ?>
 <p class="text-hint">&nbsp;</p>

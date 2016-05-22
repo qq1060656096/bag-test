@@ -9,7 +9,7 @@ global $survey_tax;
 $this->title=isset($survey_tax[$model->tax])? $survey_tax[$model->tax] : $survey_tax['0'];
 $submitAddText = '';
 $submitNexText = '';
-
+$text_hint='';
 switch ($model->tax):
     case 1:
 
@@ -18,6 +18,8 @@ switch ($model->tax):
         $this->title = '分数型测试-步骤4. 预览题目分数区间';
         $submitAddText = '保存/增加';
         $submitNexText = '保存/下一步预览分数区间';
+        $text_hint = "（1）保存后，在下一步，你需要添加至少一个测试结果，并为每个测试结果设定分数区间。<br />
+（2）后面还有2个步骤，这个测试就能创建完毕。";
         break;
     case 3:
         $this->title .= '-步骤3/'.SurveyController::stepCount($model->tax).'.添加题目';
@@ -68,8 +70,16 @@ fieldset {
 <section class="s_moreread s_reg s_login">
         <?php $form = ActiveForm::begin(['id'=>'id-form']); ?>
             <h1 class="po_title common-color node-title"><?php echo $model->title;?></h1>
+            <p style="text-algin: center;">
+                                    你为本测试创建了<span class="span-wrap"><?php echo $question_count;?></span>道选择题<br />
+                                    最高得分将会是<span class="span-wrap"><?php echo $data['question_total_score'];?></span><br />
+                                    最低得分将会是<span class="span-wrap"><?php echo $data['question_total_min_score'];?></span><br />
+                                    你需要在最高和最低得分之间<br />
+                                    设置各个测试结果的分数区间<br />
+            </p>
+
             <div id="id_question_list" style="display: none1" data-type="score">
-                <h3><?php echo ZController::$site_name;?>提示：你一个添加<span class="span-wrap"><?php echo $question_count;?></span>了道题,答案分数区间为<span class="span-wrap"><?php echo $data['question_total_min_score'];?></span>分到<span class="span-wrap"><?php echo $data['question_total_score'];?></span>分.</h3>
+                <h3 style="display: none;"><?php echo ZController::$site_name;?>提示：你一个添加<span class="span-wrap"><?php echo $question_count;?></span>了道题,答案分数区间为<span class="span-wrap"><?php echo $data['question_total_min_score'];?></span>分到<span class="span-wrap"><?php echo $data['question_total_score'];?></span>分.</h3>
                 <?php
 
                 foreach ($data['questions'] as $key=>$question){
@@ -109,20 +119,18 @@ fieldset {
         			id="prev-step">上一步</a>
         		</div>
     			<a class="btn_bg" href="javascript:void(0);" style="margin: 15px auto;">
-        			<input type="submit" id="submit" name="save" value="保存/下一步添加结果">
+        			<input type="submit" id="submit" name="save" value="保存/下一步 添加测试结果">
         		</a>
         		<!--
         		<a class="btn_bg" style="margin: 0 auto; "
 		href="<?php echo Yii::$app->urlManager->createUrl(['survey/done','id'=>$model->id]);?>">
 	       <input type="button"  value="预览">
 	    </a>  -->
+	    <p class="text-hint"><?php echo $text_hint; ?></p>
     		</div>
-    		<br />
-    		<br />
-    		<br />
-    		<br />
-    		<br />
+
         <?php ActiveForm::end(); ?>
+
 </section>
 <script type="text/javascript">
 /* $(document).ready(function(){

@@ -15,20 +15,24 @@ $this->title .= '-步骤1/'.SurveyController::stepCount($tax);
 // endif;
 $this->title .='.标题介绍';
 $text_hint = '';
+$submitNexText = '保存/下一步 上传封面图';
 switch ($model->tax):
     case 1:
         $this->title = '无题测试-步骤1.标题简介';
+        $submitNexText = '保存/下一步 上传封面图';
         $text_hint ='（1）保存测试的标题和简介之后，在下一步，你需要为这个测试上传封面图片。<br/>
-（2）后面还有最后5个步骤，这个测试就能创建完毕。';
+（2）后面还有最后4个步骤，这个测试就能创建完毕。';
         break;
 
     case 2:
         $this->title = '分数型测试-步骤1.标题简介';
+//         $submitNexText = '';
         $text_hint ='（1）保存测试的标题和简介之后，在下一步，你需要为这个测试上传封面图片。<br/>
 （2）后面还有最后5个步骤，这个测试就能创建完毕。';
         break;
     case 3:
         $this->title = '跳转型测试-步骤1.标题简介';
+//         $submitNexText = '';
         $text_hint ='（1）保存测试的标题和简介之后，在下一步，你需要为这个测试上传封面图片。<br/>
 （2）后面还有最后5个步骤，这个测试就能创建完毕。';
         break;
@@ -70,7 +74,7 @@ endswitch;
 
 
         <div class="btn_bg" >
-			<input type="submit" id="submit" value="保存/下一步">
+			<input type="submit" id="submit" value="<?php echo $submitNexText; ?>">
 		</div>
 		<br />
     	<?php
