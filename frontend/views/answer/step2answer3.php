@@ -638,6 +638,7 @@ a:not (.flat ):after, button:not (.flat ):after {
 	<?php
 	include dirname(__DIR__).'/layouts/copy-right.php';
 	?>
+	<!--
 	<div class="modal modal2 fade in" id="myModal" tabindex="-1"
 		role="dialog" aria-labelledby="myModalLabel"
 		style="padding-top: 20px; display: none; background: rgba(0, 0, 0, 0.6);"
@@ -665,6 +666,6 @@ a:not (.flat ):after, button:not (.flat ):after {
 			</div>
 		</div>
 	</div>
-
+     -->
 </body>
 </html>
