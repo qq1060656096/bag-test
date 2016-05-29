@@ -37,29 +37,35 @@ $create_url = Yii::$app->urlManager->createAbsoluteUrl([
 <link rel="stylesheet" href="./css/answer2/bootstrap.min.css">
 <link rel="stylesheet" href="./css/answer2/style.css">
 <link rel="stylesheet" href="./css/answer2/index.css">
-<link href="./css/answer2/jquery.mmenu.all.css" rel="stylesheet">
-<script src="./css/answer2/hm.js"></script>
+<?php
+// <link href="./css/answer2/jquery.mmenu.all.css" rel="stylesheet">
+// <script src="./css/answer2/hm.js"></script>
+?>
+
 <script type="text/javascript" src="./js/jquery.js"></script>
 <script src="./css/answer2/bootstrap.min.js"></script>
-<script src="./css/answer2/hammer.min.js"></script>
-<script src="./css/answer2/jquery.mmenu.min.all.js"></script>
-<script type="text/javascript" src="./css/answer2/jweixin-1.0.0.js"></script>
+<?php
+
+// <script src="./css/answer2/hammer.min.js"></script>
+// <script src="./css/answer2/jquery.mmenu.min.all.js"></script>
+// <script type="text/javascript" src="./css/answer2/jweixin-1.0.0.js"></script>
+?>
 <link href="./js/jquery-ui.css" rel="stylesheet" type="text/css"/>
 <link rel="stylesheet" href="./bag-test/css/common.css">
 <script src="./js/jquery-ui.min.js"></script>
-<script src="js/sweet-alert.js"></script>
-  <link rel="stylesheet" href="css/sweet-alert.css">
+<?php
+// <script src="js/sweet-alert.js"></script>
+// <link rel="stylesheet" href="css/sweet-alert.css">
+?>
+
 <script type="text/javascript">
 var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->request->hostInfo,$image;?>',
 		desc: '<?php echo $model->intro;?>',
 		url: '<?php echo $create_url;?>',
-		successurl:'http://dwz.cn/2kGo8W',
+// 		successurl:'http://dwz.cn/2kGo8W',
 };var wxlink = '<?php echo $create_url;?>';</script>
 <script type="text/javascript">wx.config({debug: window.location.href.indexOf("m_dbg=1") > 0 ? true: false,appId: "wx6081e88ae13bda8a",timestamp: "1453757006",nonceStr: 'zyxONtonutlewt3I',signature: '1fa02b44caec1d8812ef02f6db864369bc6544a3',jsApiList: ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareQZone']});wx.ready(function() {wx.onMenuShareTimeline({title: document.title,link: wxlink,imgUrl: sharedata.img,success: function () {shareSuccess()},cancel: function () {}});wx.onMenuShareQQ({title: sharedata.title,link: sharedata.url,imgUrl: sharedata.img,success: function () {shareSuccess()},cancel: function () {}});wx.onMenuShareWeibo({title: sharedata.title,link: sharedata.url,imgUrl: sharedata.img,success: function () {shareSuccess()},cancel: function () {}});wx.onMenuShareQZone({title: sharedata.title,link: sharedata.url,imgUrl: sharedata.img,success: function () {shareSuccess()},cancel: function () {}});wx.onMenuShareAppMessage({title: sharedata.title,desc: sharedata.desc,link: sharedata.url,imgUrl: sharedata.img,type: '',dataUrl: '',success: function () {shareSuccess()},cancel: function () {}});}); </script>
-<script src="./css/answer2/qc.php" type="text/javascript"
-	charset="utf-8"></script>
-<script src="http://tajs.qq.com/qc.php?dm=" type="text/javascript"
-	charset="utf-8"></script>
+
 	<style type="text/css">
 .list-xuan.list-xuan-text{
 	text-align: center;
