@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 
 function concern(now_element){
@@ -8,6 +8,7 @@ function concern(now_element){
 	var $now = $(now_element);
 	var fuid = $now.attr('fuid');
 	var url = $now.attr('url');
+	var gourl = $now.attr('gourl');
 	var ajax = $now.attr(ajax_name);
 	if( ajax == undefined ){
 		ajax = 0;
@@ -27,7 +28,12 @@ function concern(now_element){
 			alert('操作错误,'+json);
 		}
 		else if( json.status==-1 ){
-			alert('请登录');
+			if(gourl){
+				window.top.document.location = gourl;
+			}else{
+				alert('请登录');
+			}
+
 		}else if( json.status==0  ){
 			json.data ? $now.html(json.data) : null;
 			alert(json.message);

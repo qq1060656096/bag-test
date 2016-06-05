@@ -51,7 +51,8 @@ class User extends \yii\db\ActiveRecord
             [['register_type'], 'string', 'max' => 12],
             [['user'], 'string', 'max' => 128],
             [['pass'], 'string', 'max' => 255],
-            [['user'], 'unique','message'=>'{attribute}已经存在'],
+            [['user'], 'unique','message'=>'{attribute}已人注册了，是你吗？
+            '],
             [['user','pass'], 'required','message'=>'{attribute}不能为空'],
             [['pass'], 'safe', 'on' =>self::scenarioOauthBind],
         ];

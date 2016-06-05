@@ -56,7 +56,8 @@ class LoginController extends Controller{
         if(isset($post['User'])){
             $model->load($post);
             $success = $model->register();
-            $url = Yii::$app->urlManager->createUrl(['survey/my']);
+            $gourl = !empty($_GET['gourl']) ? ($_GET['gourl']) :'';
+            $url = $gourl ? $gourl : Yii::$app->urlManager->createUrl(['survey/step1']);
             if($success){
                 return $this->redirect($url);
             }

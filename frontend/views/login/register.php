@@ -1,19 +1,21 @@
-<?php 
+<?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\models\User;
 use common\z\ZCommonFun;
 use common\z\ZController;
 /* @var $model common\models\User */
+
+$gourl = isset($_GET['gourl'])  && !empty($_GET['gourl'])? $_GET['gourl']:'';
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 <?php echo $this->renderFile(__DIR__.'/../layouts/title.php');?>
-<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"> 
-<meta content="yes" name="apple-mobile-web-app-capable"> 
-<meta content="black" name="apple-mobile-web-app-status-bar-style"> 
-<meta content="telephone=no" name="format-detection"> 
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
 <link href="./bag-test/css/mobile-register.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="./bag-test/css/common.css">
 <script type="text/javascript" src="./bag-test/js/jquery-2.1.0.min.js"></script>
@@ -27,6 +29,9 @@ use common\z\ZController;
 .help-block{
 	margin-bottom: 10px;
 	color: red;
+}
+.control-label{
+	display: none;
 }
 .btn_bg{
 	/*width:39% !important;*/
@@ -45,7 +50,7 @@ use common\z\ZController;
 	margin-top: 20px;
 }
 .btn_bg button{
-   
+
     border-radius: 5px;
 	height: 100%;
     width: 100%;
@@ -69,26 +74,26 @@ use common\z\ZController;
     			<span id="more">&nbsp;&nbsp;&nbsp;&nbsp;</span>
     		</nav>
     	</header>
-    	
+
     </div>
-    
+
     <section class="survey-form ">
-    
-        <?php $form = ActiveForm::begin(); ?>
-        <?= $form->field($model, 'user')->textInput(['maxlength' => true])->label('账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;号') ?>
-        <?= $form->field($model, 'pass')->textInput(['maxlength' => true])->label('密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;码') ?>
-        
+
+        <?php $form = ActiveForm::begin(['action' => ['login/register','gourl'=>urldecode($gourl)]]); ?>
+        <?= $form->field($model, 'user')->textInput(['maxlength' => true,'placeholder'=>'邮箱/手机号'])->label('账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;号') ?>
+        <?= $form->field($model, 'pass')->textInput(['maxlength' => true,'placeholder'=>'密码'])->label('密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;码') ?>
+
         <div class="form-group field-user-pass2 required">
             <label class="control-label" for="user-pass2">确认密码</label>
-            <input type="text" id="user-pass2" class="form-control" name="User[pass]" value="<?php echo $model->pass;?>" maxlength="255">
-            
+            <input type="text" id="user-pass2" class="form-control" name="User[pass]" value="<?php echo $model->pass;?>" maxlength="255" placeholder="确认密码">
+
             <div class="help-block"></div>
         </div>
 
         <div class="form-group">
-            <!-- 
+            <!--
             <div class="btn_bg">
-                <button type="button"  onclick="javascript:window.top.document.location='<?php echo Yii::$app->urlManager->createUrl(['login/login'])?>' " 
+                <button type="button"  onclick="javascript:window.top.document.location='<?php echo Yii::$app->urlManager->createUrl(['login/login'])?>' "
                     class="">登录</button>
             </div>
             -->
@@ -97,21 +102,21 @@ use common\z\ZController;
             </div>
         </div>
         <div class="form-group">
-            <?php 
+            <?php
             //ZCommonFun::print_r_debug($model->errors);
-            
+
             ?>
         </div>
         <?php ActiveForm::end(); ?>
-    
-    </section>    
+
+    </section>
 <script>
 var is_submit = false;
 $('form').submit(function(){
-	
+
 	var $this = $(this);
-	
-	
+
+
 	var username = $.trim($('#user-user').val());
 	var check1 = false, check2 = false,check3=false;
 	if(username == '') {
@@ -119,11 +124,20 @@ $('form').submit(function(){
 	} else {
 		$('.field-user-user .help-block').html('');
 		check1 = true;
+		if( is_phone(username) ){
+
+	    }else if( is_mail(username) ){
+
+		}else{
+			check1 = false;
+	    	$('.field-user-user .help-block').html('帐号不是手机或邮箱哦？');
+		}
+
 	}
 	var password = $.trim($('#user-pass').val());
 	if(password == '') {
 		$('.field-user-pass .help-block').html('请输入密码');
-	
+
 	} else {
 		$('.field-user-pass .help-block').html('');
 		check2 = true;
@@ -140,7 +154,7 @@ $('form').submit(function(){
 	var password2 = $.trim($('#user-pass2').val());
 	if(password2 == '') {
 		$('.field-user-pass2 .help-block').html('请输入确认密码');
-		
+
 	} else {
 		$('.field-user-pass2 .help-block').html('');
 		check3 = true;
@@ -148,7 +162,7 @@ $('form').submit(function(){
 	if(!check1|| !check2 || !check3){
 		return false;
 	}
-	
+
 	if(password2!==password){
 		$('.field-user-pass2 .help-block').html('两次输入密码不一致');
 		return false;
@@ -161,7 +175,21 @@ $('form').submit(function(){
     	$('#submit').val('提交中...');
 	return true;
 	}
-	
+
 });
+
+function is_phone(str){
+	var pattern = /^1\d{10}$/;
+    return is_valid(pattern,str);
+}
+function is_mail(str){
+	var pattern = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+    return is_valid(pattern,str);
+}
+function is_valid(pattern,str){
+	if(pattern.test(str))
+		 return true;
+	 return false;
+}
 </script>
 <?php echo $this->renderFile(__DIR__.'/../layouts/foot.php');?>

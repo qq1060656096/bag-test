@@ -81,11 +81,15 @@ $url_ta_test = Yii::$app->urlManager->createUrl(['my/my-test','uid'=>$uid]);
 $url_ta_message = Yii::$app->urlManager->createUrl(['my/ta-me-message','uid'=>$uid]);
 $login_uid = ZCommonSessionFun::get_user_id();
 $concern_status = 0;
+$gourl = '';
 if($login_uid<1){
     $concern_status = 0;
+    $gourl = Yii::$app->request->getUrl();
+    $gourl = Yii::$app->urlManager->createUrl(['login/login','gourl'=>urlencode($gourl)]);
 }else{
     $model_UsersFriends = new UsersFriends();
     $concern_status = $model_UsersFriends->get_user_each_concern($login_uid, $uid);
+
 }
 
 $current_id = Yii::$app->controller->id.'/'.Yii::$app->controller->action->id;
@@ -143,7 +147,7 @@ foreach ($header_user_menu as $key=>$header_user_menu_row){
 			                break;
 			        }
 			        ?>
-					<a url="<?php echo $url; ?>" class="concern" onclick="concern(this)"><?php echo $concer_text; ?></a>
+					<a url="<?php echo $url; ?>" class="concern" gourl="<?php echo $gourl;?>" onclick="concern(this)"><?php echo $concer_text; ?></a>
 				</div>
 
 			</td>

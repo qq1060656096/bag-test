@@ -14,6 +14,7 @@ use common\z\ZController;
 echo $this->renderFile(__DIR__.'/../layouts/head.php');
 
 $sessionUser = ZCommonSessionFun::get_user_session();
+$hide_field  =  true;
 ?>
 
 <link href="./bag-test/bootstrap/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -94,7 +95,7 @@ label, label input {
 <div id="main_body">
     <header class="s_header">
 		<nav>
-
+            <a href="<?php echo Yii::$app->urlManager->createUrl(['survey/my']);?>" class="bg"> <span class="fa ">返回</span></a>
 
 			 <span style="font-size: 1.4rem"><?php echo $this->title;?></span>
 		</nav>
@@ -153,12 +154,19 @@ label, label input {
     		<div class="input-wrap">
     			<?= $form->field($model, 'birthday')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'生日']) ?>
     		</div>
+    		<?php
+    		if( !$hide_field ):
+    		?>
     		<div class="input-wrap">
     			<?= $form->field($model, 'address')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'地址']) ?>
     		</div>
+    		<?php endif;?>
     		<div class="input-wrap">
     			<?= $form->field($model, 'intro')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'限20个字'])->label('签名') ?>
     		</div>
+    		<?php
+    		if( !$hide_field ):
+    		?>
     		<div class="input-wrap">
     			<?= $form->field($model, 'qq')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'QQ']) ?>
     		</div>
@@ -166,6 +174,7 @@ label, label input {
     		<div class="input-wrap">
     			<?= $form->field($model, 'school')->textInput(['maxlength' => true,'class'=>'','placeholder'=>'学校']) ?>
     		</div>
+    		<?php endif;?>
     		<input type="submit" id="submit" value="保存">
     	<?php ActiveForm::end(); ?>
     </section>

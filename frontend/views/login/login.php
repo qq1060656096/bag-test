@@ -12,6 +12,8 @@ $this->title = '登录';
 // $qq_login = $qq->qq_login();
 
 $qq_login = Yii::$app->urlManager->createUrl(['api/login-qq']);
+
+$gourl = isset($_GET['gourl'])  && !empty($_GET['gourl'])? $_GET['gourl']:'';
 ?>
 <!DOCTYPE html>
 <html>
@@ -96,7 +98,7 @@ h1{
     		<p class="wrong_tip" id="password_tip"></p>
 
     		<div class="btn_bg">
-    			<input type="button"  value="注册" onclick="javascript:window.top.document.location='<?php echo Yii::$app->urlManager->createUrl(['login/register'])?>' ">
+    			<input type="button"  value="注册" onclick="javascript:window.top.document.location='<?php echo Yii::$app->urlManager->createUrl(['login/register','gourl'=>($gourl)])?>' ">
     		</div>
 
     		<div class="btn_bg btn_bg2">
