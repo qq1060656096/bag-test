@@ -80,7 +80,7 @@ class LoginController extends ZController{
 //                     $bind_info['nickname'] = $user_info->nickname;
 //                     $bind_info['headimgurl'] = $user_info->headimgurl;
                     $model_User = new User();
-                    $return = $model_User->userBind('', '', ZCommonSessionFun::get_user_id(), $bind_info['openid'], OauthBind::typeWeiXin, $bind_info['nickname'] , $bind_info['headimgurl'] ,false);
+                    $return = $model_User->userBind('', '', ZCommonSessionFun::get_user_id(), $bind_info['openid'], $bind, $bind_info['nickname'] , $bind_info['headimgurl'] ,false);
                 }
 //                 ZCommonFun::print_r_debug($model->oldAttributes['pass']);
 //                 ZCommonFun::print_r_debug($data);

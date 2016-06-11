@@ -68,7 +68,7 @@ $gourl = $gourl ? $gourl : 'survey/my';
 	float: right;
 }
 .btn1{
-	width: 40%;
+	width: 35%;
     margin-bottom: 20px;
 	margin-top: 0;
 }

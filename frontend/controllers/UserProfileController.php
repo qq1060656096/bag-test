@@ -214,6 +214,38 @@ class UserProfileController extends ZController
    */
   public function actionBinding(){
       $this->layout = false;
+      $bind = ZCommonSessionFun::get_session('bind');
+      $bind_info = ZCommonSessionFun::get_session('bind_info');
+      if($bind && isset($bind_info['openid'])){
+          $model_OauthBind = new OauthBind();
+
+          $condition['openid']  = $bind_info['openid'];
+          $condition['type']    = $bind;
+          $model_OauthBind=$model_OauthBind->findOne($condition);
+          if($model_OauthBind){
+
+              $model            = new User();
+              $condition        = null;
+              $condition['uid'] = $model_OauthBind->uid;
+              $model = $model->findOne($condition);
+              if($model){
+                  $userInfo = $model->attributes;
+                  isset($userInfo['role'])?null:$userInfo['role'] = 0; //角色
+                  $userInfo['openidInfo'] = null;//第三方登录信息
+                  if(isset($model->userProfile)){
+                      $userInfo['profile'] = $model->userProfile->attributes;
+                      $userInfo['nickname'] = $model->userProfile->nickname;
+                      $userInfo['head_image'] = $model->userProfile->head_image;
+                      $userInfo['intro'] = $model->userProfile->intro;
+                  }
+                  ZCommonSessionFun::set_user_session($userInfo);
+                  $LoginRedirect = new \LoginRedirectYii2();
+                  $gourl = $LoginRedirect->getFirstVisitUrl();
+                  $gourl = $gourl ? $gourl :  'survey/my' ;
+                  return $this->redirect([$gourl]);
+              }
+          }
+      }
       $model = new User();
       return $this->render('binding',['model'=>$model]);
   }
