@@ -30,11 +30,12 @@ use common\z\ZCache;
  */
 class SurveyController extends ZController
 {
-
+    public $bind_url = ['user-profile/binding'];
     public $pageSize = 10;
 
     public function beforeAction($action)
     {
+        parent::beforeAction($action);
         $no_login_actions = [
             'index',
             'index-ajax'
@@ -74,7 +75,21 @@ class SurveyController extends ZController
             $openid = $qq->get_openid();
             $qq = new QQ($access_token, $openid);
             $user_info = $qq->get_user_info();
-            $model_User = new User();
+            $openid = $openid;
+            $bind_info['openid'] = $openid;
+            $bind_info['nickname'] = $user_info['nickname'];
+            $bind_info['headimgurl'] = $user_info['figureurl'];
+            ZCommonSessionFun::set_session('bind_info', $bind_info);
+            ZCommonSessionFun::set_session('bind', OauthBind::typeQQ);
+            //微信登陆类型
+            if(intval($zhao_uid)>0){
+
+                return $this->redirect($this->bind_url);
+            }else{
+                ZCommonSessionFun::set_login_type(OauthBind::typeQQ);
+            }
+            return $this->redirect($this->bind_url);
+            /* $model_User = new User();
             $return = $model_User->userBind('', '', $zhao_uid, $openid, OauthBind::typeQQ, $user_info['nickname'], $user_info['figureurl'], true);
             // 绑定成功或者已经绑定
             if ($return === 0 || $return === 1) {
@@ -96,7 +111,7 @@ class SurveyController extends ZController
                 return $this->redirect([
                     ZCommonSessionFun::urlMyStr
                 ]);
-            }
+            } */
 
             ZCommonFun::print_r_debug($model_User->operationData);
 

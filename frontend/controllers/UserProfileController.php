@@ -12,10 +12,11 @@ use common\z\ZCommonSessionFun;
 use common\models\User;
 use common\z\ZCommonFun;
 use common\models\OauthBind;
+use common\z\ZController;
 /**
  * UserProfileController implements the CRUD actions for UserProfile model.
  */
-class UserProfileController extends Controller
+class UserProfileController extends ZController
 {
 
 
@@ -205,6 +206,16 @@ class UserProfileController extends Controller
 
         }
       return $this->render('bind-account', [ 'model'=>$model ] );
+  }
+
+  /**
+   * 绑定，注册
+   * @return \yii\base\string
+   */
+  public function actionBinding(){
+      $this->layout = false;
+      $model = new User();
+      return $this->render('binding',['model'=>$model]);
   }
 
 

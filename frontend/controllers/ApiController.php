@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace frontend\controllers;
 use yii;
 use yii\web\Controller;
@@ -10,32 +10,34 @@ use yii\helpers\Json;
 use common\models\OauthBind;
 use common\z\ZCommonSessionFun;
 use common\z\oauth\weixin\WeiXin;
+use common\z\ZController;
 /**
  * 登录
  * @author pc
- *  
+ *
  */
-class ApiController extends Controller{
-    
+class ApiController extends ZController{
+
+    public $no_login_url = '';
     public $enableCsrfValidation = false;
-    public $bind_url = ['user-profile/bind-list'];
-    
+    public $bind_url = ['user-profile/binding'];
+
     /**
      * qq登录
      */
     public function actionLoginQq(){
       $qq = new QQ();
-        
+
       $qq->qq_login();
       exit;
-       
+
     }
     /**
      * qq回调地址
      */
     public function actionCallbackQq(){
-        
-        
+
+
         $qq = new QQ();
         $access_token = $qq->qq_callback();
         $zhao_uid = ZCommonSessionFun::get_user_id();
@@ -45,7 +47,21 @@ class ApiController extends Controller{
         $openid = $qq->get_openid();
         $qq = new QQ($access_token,$openid);
         $user_info = $qq->get_user_info();
-        $model_User = new User();
+        $openid = $openid;
+        $bind_info['openid'] = $openid;
+        $bind_info['nickname'] = $user_info['nickname'];
+        $bind_info['headimgurl'] = $user_info['figureurl'];
+        ZCommonSessionFun::set_session('bind_info', $bind_info);
+        ZCommonSessionFun::set_session('bind', OauthBind::typeQQ);
+        //微信登陆类型
+        if(intval($zhao_uid)>0){
+
+            return $this->redirect($this->bind_url);
+        }else{
+            ZCommonSessionFun::set_login_type(OauthBind::typeQQ);
+        }
+        return $this->redirect($this->bind_url);
+        /* $model_User = new User();
         $return = $model_User->userBind('', '', $zhao_uid, $openid, OauthBind::typeQQ, $user_info['nickname'], $user_info['figureurl'],true);
         //绑定成功或者已经绑定
         if($return===0 || $return===1){
@@ -55,21 +71,21 @@ class ApiController extends Controller{
             $user['openid'] = $openid;
             ZCommonSessionFun::set_user_session($user);
             //qq登录类型
-            if(intval($zhao_uid)>0){          
+            if(intval($zhao_uid)>0){
                 $bind_url = ['user-profile/bind-list'];
                 return $this->redirect($bind_url);
             }else{
                 ZCommonSessionFun::set_login_type(OauthBind::typeQQ);
             }
             return $this->redirect([ZCommonSessionFun::urlMyStr]);
-        }
-       
+        } */
+
         ZCommonFun::print_r_debug( $model_User->operationData );
-        
+
         exit;
     }
-    
-    
+
+
     /**
      * 微博登录
      */
@@ -78,7 +94,7 @@ class ApiController extends Controller{
         $code_url = $weibo->getAuthorizeURL( WB_CALLBACK_URL );
         header('Location:'.$code_url);
         exit;
-         
+
     }
     /**
      * 微博回调地址
@@ -87,7 +103,7 @@ class ApiController extends Controller{
         $zhao_uid = ZCommonSessionFun::get_user_id();
         $zhao_uid =  $zhao_uid>0 ? $zhao_uid : '';
         $weibo = new WeiBo(WB_AKEY , WB_SKEY);
-        
+
         if (isset($_REQUEST['code'])) {
             $keys = array();
             $keys['code'] = $_REQUEST['code'];
@@ -97,11 +113,11 @@ class ApiController extends Controller{
             } catch (\OAuthException $e) {
             }
         }
-        
+
         if ($token) {
             $_SESSION['token'] = $token;
             setcookie( 'weibojs_'.$weibo->client_id, http_build_query($token) );
-            
+
         $uid_get = $weibo->get_uid();
 //         ZCommonFun::print_r_debug($uid_get);
 //         exit;
@@ -110,10 +126,24 @@ class ApiController extends Controller{
         }
         $openid = $uid = $uid_get['uid'];
 //         echo $uid;
-        
+
         $user_message = $weibo->show_user_by_id($openid);//根据ID获取用户等基本信息
         if( isset( $user_message['name'] ) && count($user_message)>0){
-            $model_User = new User();
+            $openid = $openid;
+            $bind_info['openid'] = $openid;
+            $bind_info['nickname'] = $user_message['name'];
+            $bind_info['headimgurl'] = $user_message['profile_image_url'];
+            ZCommonSessionFun::set_session('bind_info', $bind_info);
+            ZCommonSessionFun::set_session('bind', OauthBind::typeWeiBo);
+            //微信登陆类型
+            if(intval($zhao_uid)>0){
+
+                return $this->redirect($this->bind_url);
+            }else{
+                ZCommonSessionFun::set_login_type(OauthBind::typeWeiBo);
+            }
+            return $this->redirect($this->bind_url);
+            /* $model_User = new User();
             $return = $model_User->userBind('', '', $zhao_uid, $openid, OauthBind::typeWeiBo, $user_message['name'], $user_message['profile_image_url'],true);
             //绑定成功或者已经绑定
             if($return===0 || $return===1){
@@ -127,13 +157,13 @@ class ApiController extends Controller{
 //                 exit;
                 //微博登录类型
                 if(intval($zhao_uid)>0){
-                    
+
                     return $this->redirect($this->bind_url);
                 }else{
                     ZCommonSessionFun::set_login_type(OauthBind::typeWeiBo);
                 }
                 return $this->redirect([ZCommonSessionFun::urlMyStr]);
-            }
+            } */
         }
 //         echo $return;
         ZCommonFun::print_r_debug( $model_User->operationData );
@@ -142,7 +172,7 @@ class ApiController extends Controller{
         exit;
         }
     }
-    
+
     /**
      * 微信认证
      */
@@ -150,7 +180,7 @@ class ApiController extends Controller{
         $o_WeiXin = new WeiXin();
         $o_WeiXin->valid();
     }
-    
+
     /**
      * 微信登录授权
      */
@@ -194,9 +224,22 @@ class ApiController extends Controller{
                             print_r($user_info);
                             exit;
                         }
+
                         $openid = $data->openid;
-                        
-                        $model_User = new User();
+                        $bind_info['openid'] = $openid;
+                        $bind_info['nickname'] = $user_info->nickname;
+                        $bind_info['headimgurl'] = $user_info->headimgurl;
+                        ZCommonSessionFun::set_session('bind_info', $bind_info);
+                        ZCommonSessionFun::set_session('bind', OauthBind::typeWeiXin);
+                        //微信登陆类型
+                        if(intval($zhao_uid)>0){
+
+                            return $this->redirect($this->bind_url);
+                        }else{
+                            ZCommonSessionFun::set_login_type(OauthBind::typeWeiXin);
+                        }
+                        return $this->redirect($this->bind_url);
+                        /* $model_User = new User();
                         $return = $model_User->userBind('', '', $zhao_uid, $openid, OauthBind::typeWeiXin, $user_info->nickname , $user_info->headimgurl ,true);
                         //绑定成功或者已经绑定
                         if($return===0 || $return===1){
@@ -210,29 +253,30 @@ class ApiController extends Controller{
 //                                             exit;
                             //微信登陆类型
                             if(intval($zhao_uid)>0){
-                                
+
                                 return $this->redirect($this->bind_url);
                             }else{
                                 ZCommonSessionFun::set_login_type(OauthBind::typeWeiXin);
                             }
                             return $this->redirect([ZCommonSessionFun::urlMyStr]);
-                        }
-                        
+                        } */
+
                     }else{
-                      
+
 //                         print_r( $data );
+                        return $this->redirect($this->bind_url);
                     }
 
-                
-               
-                
-//                 
+
+
+
+//
             }
-            
-            
+
+
             echo $code,'code';
             print_r( $data );
         }
-        
+
     }
 }

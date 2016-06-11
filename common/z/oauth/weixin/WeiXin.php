@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace common\z\oauth\weixin;
 
 /**
@@ -16,14 +16,16 @@ class WeiXin {
 	 * appid
 	 * @var string
 	 */
-	public $APPID = "wx389a3d914a54f385";
+// 	public $APPID = "wx389a3d914a54f385";
+	public $APPID = "wxf035d19f448caea0";//debug
 	//wx1ebfaefb5cf5edc5
 	//116db9d5c7a1469b97e65be1b93d622d
 	/**
 	 * appsecrets
 	 * @var string
 	 */
-	public $SECRETS = "78d58f632ed51cca2c7e740fb4728eb2";
+// 	public $SECRETS = "78d58f632ed51cca2c7e740fb4728eb2";
+	public $SECRETS = "404cf1399d59f8fb4968332a0eeb4d9e";//debug
 	/**
 	 * 凭证接口认证 地址
 	 * @var string
@@ -45,25 +47,25 @@ class WeiXin {
 	 */
 	public $url_create_menu  = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=";
 	/**
-	 * 
+	 *
 	 * @var string 开发者 网址
 	 */
 	public $URL = '';
 	/**
-	 * 
+	 *
 	 * @var string 接收方帐号（收到的OpenID）
 	 */
-	public $ToUserName	 = '';//是	 
+	public $ToUserName	 = '';//是
 	/**
-	 * 
+	 *
 	 * @var string 开发者微信号
 	 */
 	public $FromUserName = '';// 是	开发者微信号
 	/**
-	 * 
+	 *
 	 * @var int 消息创建时间 （整型）
 	 */
-	public $CreateTime	 = 0;//是	
+	public $CreateTime	 = 0;//是
 	/**
 	 * 消息类型
 	 * voice 语音
@@ -71,10 +73,10 @@ class WeiXin {
 	 * video 视频
 	 * text  文本
 	 * @var string
-	 */ 
+	 */
 	public $MsgType	     = null;//是	 text
 	/**
-	 * 
+	 *
 	 * @var string 回复的消息内容
 	 */
 	public $Content	     = '';//是	 （换行：在content中能够换行，微信客户端就支持换行显示）
@@ -144,7 +146,7 @@ class WeiXin {
 	 */
 	public $event_type_CLICK = 'CLICK';
 	/*================ get user info==================*/
-	
+
 	/**
 	 *用户基本信息url
 	 * @var string
@@ -156,10 +158,10 @@ class WeiXin {
 	 * @var string
 	 */
 	public $oauth2Url   ="https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=%s&scope=%s&state=%s#wechat_redirect";
-	
+
 	/**
 	 * 用户认证成功后获取code
-	 * @var string 
+	 * @var string
 	 */
 	public $oauth2_code = '';
 	/**
@@ -167,7 +169,7 @@ class WeiXin {
 	 * @var string
 	 */
 	public $oauth2_access_token_url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code';
-	
+
 	/**
 	 * 刷新授权token
 	 * @var string
@@ -181,7 +183,7 @@ class WeiXin {
 	public $access_token = '';
 	public $params_arr =array(
 		'text'=>array(
-			'ToUserName','FromUserName','Content','MsgId'	
+			'ToUserName','FromUserName','Content','MsgId'
 		),
 		'image'=>array(
 				'ToUserName','FromUserName','PicUrl','MediaId','MsgId'
@@ -205,39 +207,39 @@ class WeiXin {
 	public function __construct($xml=''){
 	    $GLOBALS['HTTP_RAW_POST_DATA'] = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : '';
 		$xml = empty($xml)?$GLOBALS['HTTP_RAW_POST_DATA'] : $xml;
-		$this->xml_parse = simplexml_load_string($xml);//$GLOBALS['HTTP_RAW_POST_DATA']	
+		$this->xml_parse = simplexml_load_string($xml);//$GLOBALS['HTTP_RAW_POST_DATA']
 		if(isset($this->xml_parse->CreateTime) || isset($this->xml_parse->MsgType) ){
 		    $this->CreateTime = trim($this->xml_parse->CreateTime);
 		    $this->MsgType    = trim($this->xml_parse->MsgType);
 		}
-		
 
-		
+
+
 		if( !empty($this->xml_parse->EventKey) ){
 			$this->event_key = trim( $this->xml_parse->EventKey );
 		}
 		if(!empty($this->xml_parse->Event )){
 			$this->Event = $this->xml_parse->Event;
 		}
-		
+
 		$this->parseValue();
-		
+
 	}
-	
+
 	/**
 	 * 微信token验证
 	 */
  	public function valid()
 	{
 		$echoStr = $_GET["echostr"];
-	
+
 		//valid signature , option
 		//if($this->checkSignature()){
 		if($echoStr){
 			echo $echoStr;
 			exit;
 		}
-			
+
 		//}
 	}
 // 	private function checkSignature()
@@ -245,29 +247,29 @@ class WeiXin {
 // 		$signature = $_GET["signature"];
 // 		$timestamp = $_GET["timestamp"];
 // 		$nonce = $_GET["nonce"];
-	
+
 // 		$token = $this->TOKEN;
 // 		$tmpArr = array($token, $timestamp, $nonce);
 // 		sort($tmpArr);
 // 		$tmpStr = implode( $tmpArr );
 // 		$tmpStr = sha1( $tmpStr );
-	
+
 // 		if( $tmpStr == $signature ){
 // 			return true;
 // 		}else{
 // 			return false;
 // 		}
 // 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	/**
 	 * 解析sample xml 对象 的值
 	 */
 	public function parseValue(){
-		$data = array();	
+		$data = array();
 		if($this->MsgType==='text'){
 			$data = $this->params_arr['text'] ;
 		}else if($this->MsgType=='image'){
@@ -283,7 +285,7 @@ class WeiXin {
 				$data = $this->params_arr['LOCATION'] ;
 			}
 		}
-	
+
 		foreach ($data as $key=>$value){
 			$this->$value = trim($this->xml_parse->$value);
 		}
@@ -331,7 +333,7 @@ class WeiXin {
 			<Content><![CDATA[{$content}]]></Content>
 		</xml>
 str;
-		
+
 		echo $data;
 		if($debug){
 			return $data;
@@ -345,7 +347,7 @@ str;
 	 * @param string $media_id 图片media_id
 	 * @param string $debug 调试
 	 * @return string 开启调试返回复图片内容
-	 * 
+	 *
 	 */
 	public function repayImage($FromUserName,$ToUserName,$time,$media_id,$debug=false){
 		$FromUserName     = empty($FromUserName) ? $this->ToUserName : $FromUserName;
@@ -365,7 +367,7 @@ str;
 		echo $data;
 		if($debug){
 			return $data;
-		}	
+		}
 	}
 	/**
 	 * 回复图文消息
@@ -424,15 +426,15 @@ str;
 	 * @return mixed|boolean 开启调试返回mixed,默认返回 true或者false
 	 */
 	public function send_text($access_token,$touser,$text,$debug=false){
-		
+
 		//调用接口凭证
-		$access_token 			= empty($access_token) ? $this->access_token:$access_token;	 
+		$access_token 			= empty($access_token) ? $this->access_token:$access_token;
 		//普通用户openid
 		$data['touser']		 	= empty($touser)? $this->FromUserName : $touser;
 		//消息类型，image
 		$data['msgtype'] 	  	= 'text';
 		//内容
-		$data['text']['content']= $text;	
+		$data['text']['content']= $text;
 		$url = $this->url_send_message.$access_token;
 		$json_data = $this->array_to_json_format($data);
 		$return = $this->curl_post_json($url, $json_data);
@@ -448,7 +450,7 @@ str;
 	}
 	/**
 	 * 发送图片
-	 * 
+	 *
 	 * @param string $access_token 调用接口凭证
 	 * @param string $touser 发送用户
 	 * @param string $media_id 媒体文件ID
@@ -478,7 +480,7 @@ str;
 		return false;
 	}
 	/**
-	 * 
+	 *
 	 * @param string $access_token 调用接口凭证
 	 * @param string $touser 发送用户
 	 * @param array $data 发送图文信息【$data = array(
@@ -524,7 +526,7 @@ str;
 			return true;
 		}
 		return false;
-			
+
 	}
 	/*================ send message end====================*/
 	/*================ menu operation start====================*/
@@ -556,7 +558,7 @@ str;
 		}
 		return false;
 	}
-	
+
 	public function create_menu_json($access_token,$menu_data_json,$debug=false){
 		$access_token = empty($access_token)?$this->access_token : $access_token;
 		$url = $this->url_create_menu.$access_token;
@@ -590,9 +592,9 @@ str;
 			return $resulte_obj;
 		}
 	}
-	
+
 	/*================ menu operation end====================*/
-	
+
 	/*================ upload or download media start====================*/
 	public function media_upload($file_path,$access_token,$type,$debug=false){
 		$access_token = empty($access_token)?$this->access_token : $access_token;
@@ -612,7 +614,7 @@ str;
 	/*================ upload or download media end====================*/
 
 	/*================ user oauth operation start ====================*/
-	
+
 	/**
 	 * 生成oauch2认证地址
 	 * @param string $appid 公众号的唯一标识
@@ -622,7 +624,7 @@ str;
 	 * @return string oauch2 跳转地址
 	 */
 	public function oauth2_url($appid,$redirect_uri,$scope=false,$state=''){
-		
+
 		//公众号的唯一标识
 		$appid         = empty($appid)?$this->APPID:$appid;
 		//授权后重定向的回调链接地址，请使用urlencode对链接进行处理
@@ -637,7 +639,7 @@ str;
 		$state 		   = empty($state) ? 'STATE': $state;
 		//appid=$APPID&redirect_uri=$redirect_uri&
 		//response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
-		
+
 		return sprintf($this->oauth2Url,$appid,$redirect_uri,$response_type,$scope,$state);
 	}
 	/**
@@ -656,7 +658,7 @@ str;
 	 * @param string $openid 普通用户的标识，对当前公众号唯一
 	 * @param string $lang 国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
 	 * @param boolean $debug 开启调试
-	 * @return 成功返回 array 失败返回 false 开启调试返回 错误信息array 
+	 * @return 成功返回 array 失败返回 false 开启调试返回 错误信息array
 	 */
 	public function user_info($access_token,$openid,$lang='zh_CN',$debug=false){
 		//调用接口凭证
@@ -677,7 +679,7 @@ str;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 用户认证后获取code
 	 */
@@ -696,7 +698,7 @@ str;
 	 * @param string $secret 公众号的appsecret
 	 * @param string $code 第一步获取的code参数
 	 * @param boolean $debug 默认 false关闭调试 true 开启
-	 * @return 成功返回 array 失败返回 false 开启调试返回 错误信息array 
+	 * @return 成功返回 array 失败返回 false 开启调试返回 错误信息array
 	 */
 	public function oautch_access_token($appid,$secret,$code,$debug=false){
 		//调用接口凭证
@@ -721,21 +723,21 @@ str;
 		    return false;
 		}
 		return $json_data;
-		
+
 	}
-	
+
 	/**
 	 * 刷新网页授权token
-	 * 
+	 *
 	 * access_token	 网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同
 		expires_in	 access_token接口调用凭证超时时间，单位（秒）
 		refresh_token	 用户刷新access_token
 		openid	 用户唯一标识
-		scope	 用户授权的作用域，使用逗号（,）分隔	
+		scope	 用户授权的作用域，使用逗号（,）分隔
 	 * @param string $appid 公众号的唯一标识
 	 * @param string $refresh_token  填写通过access_token获取到的refresh_token参数
 	 * @param boolean $debug 默认 false关闭调试 true 开启
-	 * @return 成功返回 array 失败返回 false 开启调试返回 错误信息array 
+	 * @return 成功返回 array 失败返回 false 开启调试返回 错误信息array
 	 */
 	public function oauth2_refresh_token($appid,$refresh_token,$debug=false){
 		//appid	 是	 公众号的唯一标识
@@ -756,9 +758,9 @@ str;
 		}
 		return false;
 	}
-	
+
 	/*================ user oauth operation end ====================*/
-	
+
 	/*================ lib start ====================*/
 	function curl_post_simple($url,$data){ // 模拟提交数据函数
 		$curl = curl_init(); // 启动一个CURL会话
@@ -803,59 +805,59 @@ str;
 		if( !is_array( $array ) ){
 			return false;
 		}
-	
+
 		$associative = count( array_diff( array_keys($array), array_keys( array_keys( $array )) ));
 		if( $associative ){
-	
+
 			$construct = array();
 			foreach( $array as $key => $value ){
-	
+
 				// We first copy each key/value pair into a staging array,
 				// formatting each key and value properly as we go.
-	
+
 				// Format the key:
 				if( is_numeric($key) ){
 					$key = "key_$key";
 				}
 				$key = '"'.addslashes($key).'"';
-	
+
 				// Format the value:
 				if( is_array( $value )){
 					$value = $this->array_to_json_format( $value );
 				} else if( !is_numeric( $value ) || is_string( $value ) ){
 					$value = '"'.addslashes($value).'"';
 				}
-	
+
 				// Add to staging array:
 				$construct[] = "$key: $value";
 			}
-	
+
 			// Then we collapse the staging array into the JSON form:
 			$result = "{ " . implode( ", ", $construct ) . " }";
-	
+
 		} else { // If the array is a vector (not associative):
-	
+
 			$construct = array();
 			foreach( $array as $value ){
-	
+
 				// Format the value:
 				if( is_array( $value )){
 					$value = $this->array_to_json_format( $value );
 				} else if( !is_numeric( $value ) || is_string( $value ) ){
 					$value = '"'.addslashes($value).'"';
 				}
-	
+
 				// Add to staging array:
 				$construct[] = $value;
 			}
-	
+
 			// Then we collapse the staging array into the JSON form:
 			$result = "[ " . implode( ", ", $construct ) . " ]";
 		}
-	
+
 		return $result;
 	}
-	
+
 	/*================ lib end====================*/
-	
+
 }

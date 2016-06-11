@@ -22,11 +22,12 @@ use common\models\Message;
 use common\models\User;
 use common\models\common\models;
 use yii\db\Query;
+use common\z\ZController;
 
 /**
  * Site controller
  */
-class MyController extends Controller
+class MyController extends ZController
 {
 
     public $pageSize = 3;

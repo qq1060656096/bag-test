@@ -4,7 +4,14 @@ use yii\web\Controller;
 use yii;
 use yii\caching\FileCache;
 use common\models\UserProfile;
+use yii\base\ActionEvent;
+use yii\base\InvalidRouteException;
+if( !class_exists('LoginRedirectYii2') ){
+    include_once  __DIR__ .'/login-redirect/extend/LoginRedirectYii2.php';
+}
+
 class ZController extends Controller{
+
     /**
      * 站点名
      * @var string
@@ -32,7 +39,8 @@ class ZController extends Controller{
      */
     public function init(){
         parent::init();
-        
+
+
         $sessionUser = ZCommonSessionFun::get_user_session();
         //没有设置用户信息
         if(ZCommonSessionFun::get_user_id()>0&&!isset($sessionUser['is_set_profile'])){
@@ -46,18 +54,31 @@ class ZController extends Controller{
                 ZCommonSessionFun::set_user_session($sessionUser);
             }
         }
+
     }
-    
+
+
+
+
     /**
      * 执行动作之前
      * @see \yii\base\Controller::beforeAction()
      */
     public function beforeAction($action){
         $operation = false;
-        $operation = true;       
+        $operation = true;
+        $LoginRedirect = new \LoginRedirectYii2();
+        //设置第一次访问url
+        $controller_action = Yii::$app->controller->id.'/'.Yii::$app->controller->action->id;
+
+        $LoginRedirect->setFirstVisitUrl($controller_action);
+//         ZCommonFun::print_r_debug($LoginRedirect->getFirstVisitUrl());
+//         ZCommonFun::print_r_debug($LoginRedirect->getFirstVisitUrl());
+//         ZCommonFun::print_r_debug(Yii::$app->session[$LoginRedirect->prefix]);
+//         exit;
         return $operation ;
     }
-    
+
     /**
      * 获取文件缓存
      * @return \yii\caching\FileCache
@@ -65,14 +86,14 @@ class ZController extends Controller{
     public static function  getFileCache(){
         if (!self::$fileCache)
             self::$fileCache = new FileCache();
-        
+
         return self::$fileCache;
     }
-    
+
     public static function setFileCache($name,$key,$id){
         $key = md5($name.$key);
         $fileCache = self::getFileCache();
         $fileCache->set( $key , $value);
     }
-    
+
 }

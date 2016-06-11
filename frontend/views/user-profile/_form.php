@@ -130,11 +130,11 @@ label, label input {
 
         <input type="button"  class="btn-z-change"
             onclick="javascript:location.href='<?php echo Yii::$app->urlManager->createUrl(['user-profile/change-pass']);?>';"
-            value="修改<?php echo ZController::$site_name;?>密码" />
+            value="设置<?php echo ZController::$site_name;?>帐号密码" />
 
         <input type="button"  class="btn-z-bind"
             onclick="javascript:location.href='<?php echo Yii::$app->urlManager->createUrl(['user-profile/bind-list']);?>';"
-            value="绑定QQ、微信、微博、账号" />
+            value="绑定微信、微博、QQ" />
 
     </div>
 

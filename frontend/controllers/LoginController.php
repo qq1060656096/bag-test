@@ -6,12 +6,14 @@ use common\models\User;
 use common\z\ZCommonFun;
 use yii\helpers\Json;
 use common\z\ZCommonSessionFun;
+use common\z\ZController;
+use common\models\OauthBind;
 /**
  * 登录
  * @author pc
  *
  */
-class LoginController extends Controller{
+class LoginController extends ZController{
     public $enableCsrfValidation = false;
     /**
      * 登录
@@ -37,7 +39,9 @@ class LoginController extends Controller{
             exit;
 //             ZCommonFun::print_r_debug($post);
         }
-        $gourl = !empty($_GET['gourl']) ? $_GET['gourl'] : Yii::$app->urlManager->createUrl( 'survey/my' );
+        $LoginRedirect = new \LoginRedirectYii2();
+        $gourl = $LoginRedirect->getFirstVisitUrl();
+        $gourl = $gourl ? $gourl : Yii::$app->urlManager->createUrl( 'survey/my' );
         return $this->render('login',[
             'model'=>$model,
             'gourl'=>$gourl,
@@ -56,6 +60,36 @@ class LoginController extends Controller{
         if(isset($post['User'])){
             $model->load($post);
             $success = $model->register();
+            if(isset($_GET['is_ajax'])){
+                $data['code'] = 0;
+                $data['errors'] = $model->errors;
+                is_array($data['errors']) ? null : $data['errors'] = [];
+                foreach ($data['errors'] as $attrbite => $error){
+                    $data['msg'] = $error[0];
+                    $data['code'] = -3;
+
+                    break;
+                }
+                $model = new User();
+                $model->load($post);
+                $bind = ZCommonSessionFun::getSessionName('bind');
+                $bind_info = ZCommonSessionFun::getSessionName('bind_info');
+
+                if($bind){
+//                     $bind_info['openid'] = $openid;
+//                     $bind_info['nickname'] = $user_info->nickname;
+//                     $bind_info['headimgurl'] = $user_info->headimgurl;
+                    $model_User = new User();
+                    $return = $model_User->userBind('', '', ZCommonSessionFun::get_user_id(), $bind_info['openid'], OauthBind::typeWeiXin, $bind_info['nickname'] , $bind_info['headimgurl'] ,false);
+                }
+//                 ZCommonFun::print_r_debug($model->oldAttributes['pass']);
+//                 ZCommonFun::print_r_debug($data);
+//                 ZCommonFun::print_r_debug($model->errors);
+//                 exit;
+                header('content-type:text/json;charset=utf-8;');
+                echo Json::encode($data);
+                exit;
+            }
             $gourl = !empty($_GET['gourl']) ? ($_GET['gourl']) :'';
             $url = $gourl ? $gourl : Yii::$app->urlManager->createUrl(['survey/step1']);
             if($success){

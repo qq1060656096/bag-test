@@ -21,7 +21,7 @@ use common\models\UserProfile;
 use common\models\AnswerSurveyResulte;
 use frontend\models\SurveyOperation;
 use common\z\ZController;
-class AnswerController extends Controller{
+class AnswerController extends ZController{
     /**
      * 随机皮肤
      * @return array('file'=>'','css'=>'')

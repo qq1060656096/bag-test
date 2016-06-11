@@ -158,6 +158,9 @@ class User extends \yii\db\ActiveRecord
                 $model_User = User::findOne($model_OauthBind->uid);
             }
 
+        }else if($uid>0){
+            $is_register=false;
+            $model_User = User::findOne($uid);
         }
 
         //已存在用户
@@ -180,11 +183,11 @@ class User extends \yii\db\ActiveRecord
 //         ZCommonFun::print_r_debug($model_OauthBind->attributes);
 //         exit;
 
-        $model_OauthBind = new OauthBind();
+//         $model_OauthBind = new OauthBind();
 
-        $condition['openid'] = $openid;
-        $condition['type'] = $type;
-        $model_OauthBind=$model_OauthBind->findOne($condition);
+//         $condition['openid'] = $openid;
+//         $condition['type'] = $type;
+//         $model_OauthBind=$model_OauthBind->findOne($condition);
 
         //已经绑定了
         if( $model_OauthBind ){

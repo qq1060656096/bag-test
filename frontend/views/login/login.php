@@ -14,6 +14,9 @@ $this->title = '登录';
 $qq_login = Yii::$app->urlManager->createUrl(['api/login-qq']);
 
 $gourl = isset($_GET['gourl'])  && !empty($_GET['gourl'])? $_GET['gourl']:'';
+$LoginRedirect = new LoginRedirectYii2();
+$gourl = $LoginRedirect->getFirstVisitUrl() ;
+$gourl = $gourl ? $gourl : 'survey/my';
 ?>
 <!DOCTYPE html>
 <html>
@@ -174,7 +177,7 @@ $('#form1').submit(function(){
 	var data = $this.serialize();
 	$.post(url, data, function(resp) {
 		if (resp.code == 0) {
-			var url = '<?php echo Yii::$app->request->getHostInfo().urldecode($gourl);?>';
+			var url = '<?php echo Yii::$app->urlManager->createUrl($gourl);?>';
 // 			alert(url);
 			window.top.document.location = url;
 		} else {

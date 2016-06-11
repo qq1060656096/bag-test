@@ -10,7 +10,7 @@ use yii\data\Pagination;
 use common\models\AnswerSurveyResulte;
 use common\z\ZController;
 use common\models\User;
-class CommentController extends Controller
+class CommentController extends ZController
 {
     static $messageTable = '';
     public function actionIndex()
