@@ -213,9 +213,17 @@ class UserProfileController extends ZController
    * @return \yii\base\string
    */
   public function actionBinding(){
+      $LoginRedirect = new \LoginRedirectYii2();
+      $gourl = $LoginRedirect->getFirstVisitUrl();
+      $gourl = $gourl ? $gourl :  'survey/my' ;
+
       $this->layout = false;
       $bind = ZCommonSessionFun::get_session('bind');
       $bind_info = ZCommonSessionFun::get_session('bind_info');
+//       ZCommonFun::print_r_debug($gourl);
+//       ZCommonFun::print_r_debug($bind);
+//       ZCommonFun::print_r_debug($bind_info);
+//       exit;
       if($bind && isset($bind_info['openid'])){
           $model_OauthBind = new OauthBind();
 
@@ -233,15 +241,13 @@ class UserProfileController extends ZController
                   isset($userInfo['role'])?null:$userInfo['role'] = 0; //角色
                   $userInfo['openidInfo'] = null;//第三方登录信息
                   if(isset($model->userProfile)){
-                      $userInfo['profile'] = $model->userProfile->attributes;
-                      $userInfo['nickname'] = $model->userProfile->nickname;
-                      $userInfo['head_image'] = $model->userProfile->head_image;
-                      $userInfo['intro'] = $model->userProfile->intro;
+                      $userInfo['profile']      = $model->userProfile->attributes;
+                      $userInfo['nickname']     = $model->userProfile->nickname;
+                      $userInfo['head_image']   = $model->userProfile->head_image;
+                      $userInfo['intro']        = $model->userProfile->intro;
                   }
                   ZCommonSessionFun::set_user_session($userInfo);
-                  $LoginRedirect = new \LoginRedirectYii2();
-                  $gourl = $LoginRedirect->getFirstVisitUrl();
-                  $gourl = $gourl ? $gourl :  'survey/my' ;
+
                   return $this->redirect([$gourl]);
               }
           }

@@ -405,6 +405,7 @@ foreach ($result_all as $key0=>$result0){
     <?php $form = ActiveForm::begin()?>
 	<section class="s_moreread s_reg s_login">
 	   <p>&nbsp;</p>
+	   <p class="red">发布内容包含蓝色字体，表示包含敏感词，红色字体代表未填项。</p>
 	   <p>已成功的创建了一个奇趣测试，您已是测试大师</p>
 	   <!--
 	   <button type="button" class="btn_bg btn btn-primary btn-100"

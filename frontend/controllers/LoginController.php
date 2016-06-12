@@ -30,6 +30,18 @@ class LoginController extends ZController{
 
             $error = $model->login($model->user, $model->pass);
             if($error==0){
+                $bind = ZCommonSessionFun::get_session('bind');
+                $bind_info = ZCommonSessionFun::get_session('bind_info');
+//                 ZCommonFun::print_r_debug($bind);
+//                 ZCommonFun::print_r_debug($bind_info);
+//                 exit;
+                if($bind){
+                    //                     $bind_info['openid'] = $openid;
+                    //                     $bind_info['nickname'] = $user_info->nickname;
+                    //                     $bind_info['headimgurl'] = $user_info->headimgurl;
+                    $model_User = new User();
+                    $return = $model_User->userBind('', '', ZCommonSessionFun::get_user_id(), $bind_info['openid'], $bind, $bind_info['nickname'] , $bind_info['headimgurl'] ,false);
+                }
                 //账号登陆类型
                 ZCommonSessionFun::set_login_type('user');
             }
@@ -72,10 +84,12 @@ class LoginController extends ZController{
                 }
                 $model = new User();
                 $model->load($post);
-                $bind = ZCommonSessionFun::getSessionName('bind');
-                $bind_info = ZCommonSessionFun::getSessionName('bind_info');
-
-                if($bind){
+                $bind = ZCommonSessionFun::get_session('bind');
+                $bind_info = ZCommonSessionFun::get_session('bind_info');
+//                 echo $success,'==';
+//                 ZCommonFun::print_r_debug(ZCommonSessionFun::get_user_session());
+//                 exit;
+                if($success && $bind){
 //                     $bind_info['openid'] = $openid;
 //                     $bind_info['nickname'] = $user_info->nickname;
 //                     $bind_info['headimgurl'] = $user_info->headimgurl;

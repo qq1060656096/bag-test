@@ -275,6 +275,8 @@ function is_valid(pattern,str){
 }
 
 $(".bind1,.bind2").click(function(){
+	is_submit = false;
+	$('#submit').html("绑定");
 	$(".bind1,.bind2").removeClass('active');
 	$(".btn1").removeClass('active');
 	$(this).addClass('active');
