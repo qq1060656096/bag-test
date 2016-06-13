@@ -120,8 +120,8 @@ class ApiController extends ZController{
             setcookie( 'weibojs_'.$weibo->client_id, http_build_query($token) );
 
             $uid_get = $weibo->get_uid();
-    //         ZCommonFun::print_r_debug($uid_get);
-    //         exit;
+//             ZCommonFun::print_r_debug($uid_get);
+//             exit;
             if(isset($uid_get['error_code'])){
                 die('微博授权登陆错误，错误码：'.$uid_get['error_code'].',请联系管理员');
             }
@@ -129,6 +129,12 @@ class ApiController extends ZController{
     //         echo $uid;
 
             $user_message = $weibo->show_user_by_id($openid);//根据ID获取用户等基本信息
+//             echo $openid;
+//             ZCommonFun::print_r_debug($user_message);
+//             exit;
+            if(isset($user_message['error_code']) && $user_message['error_code']){
+                die('微博授权登陆错误，错误码：'.$user_message['error'].'');
+            }
             if( isset( $user_message['name'] ) && count($user_message)>0){
                 $openid = $openid;
                 $bind_info['openid'] = $openid;

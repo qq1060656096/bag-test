@@ -224,6 +224,11 @@ class UserProfileController extends ZController
 //       ZCommonFun::print_r_debug($bind);
 //       ZCommonFun::print_r_debug($bind_info);
 //       exit;
+      if(ZCommonSessionFun::get_user_id()>0 && $bind && isset($bind_info['openid']) ){
+          $model_User = new User();
+          $return = $model_User->userBind('', '', ZCommonSessionFun::get_user_id(), $bind_info['openid'], $bind, $bind_info['nickname'] , $bind_info['headimgurl'] ,false);
+          return $this->redirect(['user-profile/bind-list']);
+      }
       if($bind && isset($bind_info['openid'])){
           $model_OauthBind = new OauthBind();
 
@@ -252,6 +257,7 @@ class UserProfileController extends ZController
               }
           }
       }
+
       $model = new User();
       return $this->render('binding',['model'=>$model]);
   }
