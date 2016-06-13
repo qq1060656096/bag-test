@@ -103,7 +103,7 @@ class ApiController extends ZController{
         $zhao_uid = ZCommonSessionFun::get_user_id();
         $zhao_uid =  $zhao_uid>0 ? $zhao_uid : '';
         $weibo = new WeiBo(WB_AKEY , WB_SKEY);
-
+        $token = '';
         if (isset($_REQUEST['code'])) {
             $keys = array();
             $keys['code'] = $_REQUEST['code'];
@@ -111,6 +111,7 @@ class ApiController extends ZController{
             try {
                 $token = $weibo->getAccessToken( 'code', $keys ) ;
             } catch (\OAuthException $e) {
+//                 ZCommonFun::print_r_debug($e);
             }
         }
 
@@ -118,57 +119,57 @@ class ApiController extends ZController{
             $_SESSION['token'] = $token;
             setcookie( 'weibojs_'.$weibo->client_id, http_build_query($token) );
 
-        $uid_get = $weibo->get_uid();
-//         ZCommonFun::print_r_debug($uid_get);
-//         exit;
-        if(isset($uid_get['error_code'])){
-            die('微博授权登陆错误，错误码：'.$uid_get['error_code'].',请联系管理员');
-        }
-        $openid = $uid = $uid_get['uid'];
-//         echo $uid;
-
-        $user_message = $weibo->show_user_by_id($openid);//根据ID获取用户等基本信息
-        if( isset( $user_message['name'] ) && count($user_message)>0){
-            $openid = $openid;
-            $bind_info['openid'] = $openid;
-            $bind_info['nickname'] = $user_message['name'];
-            $bind_info['headimgurl'] = $user_message['profile_image_url'];
-            ZCommonSessionFun::set_session('bind_info', $bind_info);
-            ZCommonSessionFun::set_session('bind', OauthBind::typeWeiBo);
-            //微信登陆类型
-            if(intval($zhao_uid)>0){
-
-                return $this->redirect($this->bind_url);
-            }else{
-                ZCommonSessionFun::set_login_type(OauthBind::typeWeiBo);
+            $uid_get = $weibo->get_uid();
+    //         ZCommonFun::print_r_debug($uid_get);
+    //         exit;
+            if(isset($uid_get['error_code'])){
+                die('微博授权登陆错误，错误码：'.$uid_get['error_code'].',请联系管理员');
             }
-            return $this->redirect($this->bind_url);
-            /* $model_User = new User();
-            $return = $model_User->userBind('', '', $zhao_uid, $openid, OauthBind::typeWeiBo, $user_message['name'], $user_message['profile_image_url'],true);
-            //绑定成功或者已经绑定
-            if($return===0 || $return===1){
-                $user = $model_User->operationData['user']->attributes;
-                $user['nickname'] = $model_User->operationData['user_profile']->nickname;
-                $user['head_image'] = $model_User->operationData['user_profile']->head_image;
-                $user['openid'] = $openid;
-                ZCommonSessionFun::set_user_session($user);
-//                 ZCommonFun::print_r_debug($user_message);
-//                 ZCommonFun::print_r_debug( $model_User->operationData );
-//                 exit;
-                //微博登录类型
+            $openid = $uid = $uid_get['uid'];
+    //         echo $uid;
+
+            $user_message = $weibo->show_user_by_id($openid);//根据ID获取用户等基本信息
+            if( isset( $user_message['name'] ) && count($user_message)>0){
+                $openid = $openid;
+                $bind_info['openid'] = $openid;
+                $bind_info['nickname'] = $user_message['name'];
+                $bind_info['headimgurl'] = $user_message['profile_image_url'];
+                ZCommonSessionFun::set_session('bind_info', $bind_info);
+                ZCommonSessionFun::set_session('bind', OauthBind::typeWeiBo);
+                //微信登陆类型
                 if(intval($zhao_uid)>0){
 
                     return $this->redirect($this->bind_url);
                 }else{
                     ZCommonSessionFun::set_login_type(OauthBind::typeWeiBo);
                 }
-                return $this->redirect([ZCommonSessionFun::urlMyStr]);
-            } */
-        }
-//         echo $return;
-        ZCommonFun::print_r_debug( $model_User->operationData );
+                return $this->redirect($this->bind_url);
+                /* $model_User = new User();
+                $return = $model_User->userBind('', '', $zhao_uid, $openid, OauthBind::typeWeiBo, $user_message['name'], $user_message['profile_image_url'],true);
+                //绑定成功或者已经绑定
+                if($return===0 || $return===1){
+                    $user = $model_User->operationData['user']->attributes;
+                    $user['nickname'] = $model_User->operationData['user_profile']->nickname;
+                    $user['head_image'] = $model_User->operationData['user_profile']->head_image;
+                    $user['openid'] = $openid;
+                    ZCommonSessionFun::set_user_session($user);
+    //                 ZCommonFun::print_r_debug($user_message);
+    //                 ZCommonFun::print_r_debug( $model_User->operationData );
+    //                 exit;
+                    //微博登录类型
+                    if(intval($zhao_uid)>0){
 
-        ZCommonFun::print_r_debug($user_message);
+                        return $this->redirect($this->bind_url);
+                    }else{
+                        ZCommonSessionFun::set_login_type(OauthBind::typeWeiBo);
+                    }
+                    return $this->redirect([ZCommonSessionFun::urlMyStr]);
+                } */
+            }
+//         echo $return;
+//         ZCommonFun::print_r_debug( $model_User->operationData );
+
+//         ZCommonFun::print_r_debug($user_message);
         exit;
         }
     }

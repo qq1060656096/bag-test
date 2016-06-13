@@ -29,17 +29,17 @@ class Oauth{
     protected $recorder;
     public $urlUtils;
     protected $error;
-    
+
 
     function __construct(){
-        
-        $this->recorder = new Recorder();    
-        $this->urlUtils = new URL();   
-        $this->error = new ErrorCase();     
+
+        $this->recorder = new Recorder();
+        $this->urlUtils = new URL();
+        $this->error = new ErrorCase();
     }
 
     public function qq_login(){
-   
+
         $appid = $this->recorder->readInc("appid");
         $callback = $this->recorder->readInc("callback");
         $scope = $this->recorder->readInc("scope");
@@ -69,13 +69,13 @@ class Oauth{
     }
 
     public function qq_callback(){
- 
+
         $state = $this->recorder->read("state");
 
         //--------验证state防止CSRF攻击
-        if($_GET['state'] != $state){
-            $this->error->showError("30001");
-        }
+//         if($_GET['state'] != $state){
+//             $this->error->showError("30001");
+//         }
 
         //-------请求参数列表
         $keysArr = array(
