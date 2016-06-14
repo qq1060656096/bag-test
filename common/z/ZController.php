@@ -70,8 +70,22 @@ class ZController extends Controller{
         $LoginRedirect = new \LoginRedirectYii2();
         //设置第一次访问url
         $controller_action = Yii::$app->controller->id.'/'.Yii::$app->controller->action->id;
+        $controller_action = strtolower($controller_action);
+        $controller = strtolower(Yii::$app->controller->id);
+        if($controller_action=='login/login'){
 
-        $LoginRedirect->setFirstVisitUrl($controller_action);
+        }else if( $controller=='api' ){
+
+        }else if( $controller_action=='answer/resulte' ){
+            $LoginRedirect->setFirstVisitUrl([$controller_action,'au_id'=>Yii::$app->request->get('au_id')]);
+        }else if( $controller=='answer' ){
+            $LoginRedirect->setFirstVisitUrl([$controller_action,'id'=>Yii::$app->request->get('id')]);
+        }else if(  $controller_action=='survey/my' ){
+//             $LoginRedirect->setFirstVisitUrl($controller_action);
+        }else{
+            $LoginRedirect->setFirstVisitUrl($controller_action);
+        }
+
 //         ZCommonFun::print_r_debug($LoginRedirect->getFirstVisitUrl());
 //         ZCommonFun::print_r_debug($LoginRedirect->getFirstVisitUrl());
 //         ZCommonFun::print_r_debug(Yii::$app->session[$LoginRedirect->prefix]);

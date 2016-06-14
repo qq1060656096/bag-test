@@ -13,10 +13,7 @@ $this->title = '登录';
 
 $qq_login = Yii::$app->urlManager->createUrl(['api/login-qq']);
 
-$gourl = isset($_GET['gourl'])  && !empty($_GET['gourl'])? $_GET['gourl']:'';
-$LoginRedirect = new LoginRedirectYii2();
-$gourl = $LoginRedirect->getFirstVisitUrl() ;
-$gourl = $gourl ? $gourl : 'survey/my';
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -120,6 +117,12 @@ h1{
 
 	<footer class="footer">
     	<div sytle="text-align: center;">
+        	<div class="container">
+        		<div class="disclaimer" style="text-align: center;">
+        		     如果你在创建测试中有任何问题<br><a style="padding:0;margin:0;" href="http://jq.qq.com/?_wv=1027&amp;k=dJM7ON">点击此处加入QQ群【大神蒜大神算】</a><br>如无法点击请通过QQ群号加入：171807378<br>
+        		</div>
+        		<div class="copyright"></div>
+        	</div>
     		<p>
     			商务联系： dashensuan@qq.com
     		</p>
@@ -130,6 +133,7 @@ h1{
     			京ICP备09042499号-10<span><a href="http://dashensuan.com" >dashensuan.com</a></span>
     		</p>
     	</div>
+
     </footer>
 </div>
 <script>

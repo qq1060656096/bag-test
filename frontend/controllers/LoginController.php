@@ -53,7 +53,7 @@ class LoginController extends ZController{
         }
         $LoginRedirect = new \LoginRedirectYii2();
         $gourl = $LoginRedirect->getFirstVisitUrl();
-        $gourl = $gourl ? $gourl : Yii::$app->urlManager->createUrl( 'survey/my' );
+        $gourl = $gourl ? $gourl :  'survey/my' ;
         return $this->render('login',[
             'model'=>$model,
             'gourl'=>$gourl,

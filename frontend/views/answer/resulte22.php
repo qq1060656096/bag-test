@@ -141,7 +141,14 @@ var sharedata={title:'<?php echo $model->title;?>',img:'<?php echo Yii::$app->re
         					</div>
         				</div>
     				</div>
-					<hr>
+<hr>
+    				<div style="text-align: center;color: red;">
+
+							<?php echo ZController::$site_name ? ZController::$site_name.',':'';?>
+							可以自己创建测试的网站,快来创建你的测试.
+
+					</div>
+
 
 					<!-- 分享按钮区 -->
 					<div class="share">
