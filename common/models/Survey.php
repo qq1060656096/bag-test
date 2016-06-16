@@ -164,7 +164,7 @@ class Survey extends \yii\db\ActiveRecord
 
         $a_Question = $model_Question->find()->where($condition)->orderBy(['question_id'=>SORT_ASC])->all();
 
-        $a_QuestionOptions = $model_QuestionOptions->find()->where($condition)->orderBy(['qo_id'=>SORT_ASC])->all();
+        $a_QuestionOptions = $model_QuestionOptions->find()->where($condition)->orderBy(['question_id'=>SORT_ASC,'qo_id'=>SORT_ASC])->all();
 
         $a_Question? null :$a_Question=[];
         $a_QuestionOptions? null :$a_QuestionOptions=[];

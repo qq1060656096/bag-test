@@ -1141,7 +1141,7 @@ str;
             $message .= $message == '' && isset($check_arr['message']) && ! empty($check_arr['message']) ? $check_arr['message'] : '';
             $message ? $message .= '不能发布。' : null;
             // ZCommonFun::print_r_debug($check_arr);
-            // exit;\
+            // exit;
             $status = 0;
             if ($message == '') {
                 $model->is_publish = 1;

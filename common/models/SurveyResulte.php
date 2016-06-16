@@ -61,7 +61,7 @@ class SurveyResulte extends \yii\db\ActiveRecord
      */
     public function getAll($sid){
         $find = $this->find();
-        $models = $find->where(['s_id'=>$sid])->all(['sr_id'=>SORT_ASC]);
+        $models = $find->where(['s_id'=>$sid])->orderBy(['sr_id'=>SORT_ASC])->all();
         return $models;
     }
 
