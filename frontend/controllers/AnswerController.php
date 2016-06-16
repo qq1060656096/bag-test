@@ -106,8 +106,10 @@ class AnswerController extends ZController{
         $model_UsersProfile = null;
 //         ZCommonFun::print_r_debug($model->attributes);
         if( $model->uid ){
-            $model_Users = User::findOne( $model->uid );
-            $model_UsersProfile = UserProfile::findOne( $model->uid );
+            $zhao_condition['uid'] = $model->uid;
+            $model_Users = User::findOne( $zhao_condition);
+
+            $model_UsersProfile = UserProfile::findOne( $zhao_condition );
         }
 //         ZCommonFun::print_r_debug($model_UsersProfile->attributes);
         !$model_Users ? $model_Users = new User() : '';

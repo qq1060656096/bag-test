@@ -54,17 +54,17 @@ class SurveyResulte extends \yii\db\ActiveRecord
             'image'=>'图片'
         ];
     }
-    
+
     /**
      * 获取调查id所有结果
      * @param unknown $sid
      */
     public function getAll($sid){
         $find = $this->find();
-        $models = $find->where(['s_id'=>$sid])->all();
+        $models = $find->where(['s_id'=>$sid])->all(['sr_id'=>SORT_ASC]);
         return $models;
     }
-    
+
     /**
      * 测试结果
      * @param unknown $sid
@@ -81,11 +81,11 @@ class SurveyResulte extends \yii\db\ActiveRecord
         $number = sprintf("%.0f", $number);
         if($count<1)
             return null;
-            
-        $index = $number%$count;     
+
+        $index = $number%$count;
         return $models[$index];
     }
-    
+
     /**
      * 获取字符串ascii码
      * @param unknown $str
@@ -94,7 +94,7 @@ class SurveyResulte extends \yii\db\ActiveRecord
     function getStrAsciiCode($str){
         if(is_array($str) )
             $arr  = $str;
-        else 
+        else
             $arr = str_split($str);
         $number = 0;
         foreach ($arr as $char){
@@ -102,8 +102,8 @@ class SurveyResulte extends \yii\db\ActiveRecord
         }
         return $number;
     }
-    
-    
+
+
     /**
      * 测试结果2
      * @param unknown $sid
@@ -120,7 +120,7 @@ class SurveyResulte extends \yii\db\ActiveRecord
         }
         return isset($models[0]) ? $models[0] : null;
     }
-    
+
     /**
      * 分页查找测试结果
      * @param integer $survey_id
@@ -131,7 +131,7 @@ class SurveyResulte extends \yii\db\ActiveRecord
      * @return array
      */
     public function findOneSurveyResulte($survey_id,$limit,$offset,$question = true,$SurveyResulte_lis_multi=false){
-    
+
         $model_SurveyResulte = new SurveyResulte();
         $model_QuestionOptions = new QuestionOptions();
         $condition['s_id'] = $survey_id;
@@ -142,16 +142,16 @@ class SurveyResulte extends \yii\db\ActiveRecord
         //问题
         $data['question'] = [];
         if($data['count']>0){
-            
+
             $query = $model_SurveyResulte->find()->where($condition)->limit($limit)->offset($offset);
             $model_SurveyResulte = $SurveyResulte_lis_multi ? $query->all() : $query->one();
             $data['SurveyResulte'] = $model_SurveyResulte;
-            
+
         }
         $data['question']      = $question ?  (new Survey())->FindAllQuestionsOptions($survey_id) : [];
         return $data;
     }
-    
+
     public static function getImageUrl($model){
         $image = !empty( $model->image ) ? Yii::$app->request->getHostInfo().Yii::$app->request->baseUrl.UPLOAD_DIR.$model->image : DEFAULT_IMAGE;
         $image = Yii::$app->request->baseUrl.$image;
