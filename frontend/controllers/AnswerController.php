@@ -267,8 +267,9 @@ str;
         $model_Users = null;
         $model_UsersProfile = null;
         if( $model->uid ){
-            $model_Users = User::findOne( $model->uid );
-            $model_UsersProfile = UserProfile::findOne( $model->uid );
+            $zhao_condition['uid'] = $model->uid;
+            $model_Users = User::findOne($zhao_condition);
+            $model_UsersProfile = UserProfile::findOne( $zhao_condition );
         }
 
         !$model_Users ? $model_Users = new User() : '';
@@ -434,8 +435,9 @@ str;
         $model_Users = null;
         $model_UsersProfile = null;
         if( $model->uid ){
-            $model_Users = User::findOne( $model->uid );
-            $model_UsersProfile = UserProfile::findOne( $model->uid );
+            $zhao_condition['uid'] = $model->uid;
+            $model_Users = User::findOne( $zhao_condition );
+            $model_UsersProfile = UserProfile::findOne( $zhao_condition );
         }
 
         !$model_Users ? $model_Users = new User() : '';
