@@ -274,6 +274,7 @@ str;
 
         !$model_Users ? $model_Users = new User() : '';
         !$model_UsersProfile ? $model_UsersProfile = new UserProfile() : '';
+        $model_UsersProfile->uid = $model->uid ;
 
         $model_SurveyOperation = new SurveyOperation();
         $models_SurveyOperation = $model_SurveyOperation->getIsTop();
@@ -442,6 +443,7 @@ str;
 
         !$model_Users ? $model_Users = new User() : '';
         !$model_UsersProfile ? $model_UsersProfile = new UserProfile() : '';
+        $model_UsersProfile->uid = $model->uid ;
 //         echo $error;
 //         exit;
 //         ZCommonFun::print_r_debug($result);
