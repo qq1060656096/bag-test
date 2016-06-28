@@ -864,7 +864,7 @@ str;
                 @unlink(UPLOAD_DIR . $model_save_SurveyResulte->oldAttributes['image']);
             }
             $model_save_SurveyResulte->uid = ZCommonSessionFun::get_user_id();
-            if( empty($model_save_SurveyResulte->name) && empty($model_save_SurveyResulte->value) && empty( $model_save_SurveyResulte->intro) ){
+            if( empty($model_save_SurveyResulte->name) && empty($model_save_SurveyResulte->value) && empty( $model_save_SurveyResulte->intro) && empty( $model_save_SurveyResulte->image)){
 //                 $model_save_SurveyResulte = new SurveyResulte();
                 $model_save_SurveyResulte->sr_id>0 ?$model_save_SurveyResulte->delete() : null;
             }else{
