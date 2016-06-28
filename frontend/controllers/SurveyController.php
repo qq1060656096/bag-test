@@ -658,11 +658,12 @@ str;
         }
         $page = Yii::$app->request->get('page', 1);
 
-        // 查找问题
-        $questionData = $model->findOneQuestion($model->id, 1, $page - 1);
+
 
         $error = '';
         $posts = Yii::$app->request->post();
+//         ZCommonFun::print_r_debug($_POST);
+//         exit;
         // post提交
         $model_SurveyResulte = new SurveyOperation();
 
@@ -708,6 +709,17 @@ str;
                 default:
                     break;
             }
+        }
+
+        // 查找问题
+        $questionData = $model->findOneQuestion($model->id, 1, $page - 1);
+
+        if(count($questionData['question'])<1){
+
+            if(  !$model_SurveyResulte->save_question){
+//                 $page = $page - 1;
+            }
+
         }
 
         return $this->render('step4_2_question', [
@@ -852,13 +864,19 @@ str;
                 @unlink(UPLOAD_DIR . $model_save_SurveyResulte->oldAttributes['image']);
             }
             $model_save_SurveyResulte->uid = ZCommonSessionFun::get_user_id();
-            // 保存成功
-            $resulte = $model_save_SurveyResulte->save();
+            if( empty($model_save_SurveyResulte->name) && empty($model_save_SurveyResulte->value) && empty( $model_save_SurveyResulte->intro) ){
+//                 $model_save_SurveyResulte = new SurveyResulte();
+                $model_save_SurveyResulte->sr_id>0 ?$model_save_SurveyResulte->delete() : null;
+            }else{
+                // 保存成功
+                $resulte = $model_save_SurveyResulte->save();
+            }
+
 
             // ZCommonFun::print_r_debug($_POST);
             // ZCommonFun::print_r_debug($model_save_SurveyResulte);
             // exit;
-            if ($resulte) {
+            if (true ) {
                 $model->is_publish = 0;
                 $model->save();
                 // 添加下一个结果

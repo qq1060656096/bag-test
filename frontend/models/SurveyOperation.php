@@ -8,6 +8,7 @@ use common\models\QuestionOptions;
 use common\z\ZCommonFun;
 use common\z\ZCommonSessionFun;
 use common\models\SurverySearch;
+use common;
 /**
  * 问卷
  * @author drupal
@@ -15,6 +16,7 @@ use common\models\SurverySearch;
  */
 class SurveyOperation extends Survey{
     public $errorResulte = '';
+    public $save_question = false;
 
     /**
      * 获取置顶测试
@@ -122,18 +124,20 @@ class SurveyOperation extends Survey{
         $error='';
 
         if( isset($posts['label']['option-label'][0])){
-//             ZCommonFun::print_r_debug($posts);
-//             exit;
+
+
             //保存问题!empty($posts['label-name'] )
             if( isset($posts['label-name'] ) ){
-                $transacation = Yii::$app->db->beginTransaction();
+
+               $transacation = Yii::$app->db->beginTransaction();
                 try {
                     $question_id = isset ($posts['qid'] ) ? $posts['qid'] : 0;
                     if($question_id>0){
-                        $model_Question = Question::findOne($question_id);
+                        $model_Question = Question::findOne(['question_id'=>$question_id]);
+
                         //不是当前测试的问题
-                        if($model_Question->table_id!=$id){
-                            continue;
+                        if($model_Question && $model_Question->table_id!=$id){
+                            $model_Question = new Question();
                         }
                     }else{
                         $model_Question = new Question();
@@ -142,19 +146,23 @@ class SurveyOperation extends Survey{
                     $model_Question->label = $posts['label-name'];
                     $model_Question->table_id = $id;
                     $model_Question->uid = ZCommonSessionFun::get_user_id();
+                    $model_Question->update_time = date('Y-m-d H:i:s');
                     $save = 0 ;
+                    $len = count($posts['label']['option-label']);
+
                     if( $model_Question->save()){
-                        $len = count($posts['label']['option-label']);
+                        $this->save_question = true;
                         foreach ($posts['label']['option-label'] as $key=>$value){
-                               $qo_id = isset ($posts['label']['qo-id'][$key] ) ? $posts['label']['qo-id'][$key] : 0;
+
+                               $qo_id = isset ($posts['label']['qo-id'][$key] ) ? intval($posts['label']['qo-id'][$key]) : 0;
                                //验证问题
                                if( empty($value ) ){
                                    //删除空选项
-                                   $model_QuestionOptions = QuestionOptions::findOne($qo_id);
+                                   $model_QuestionOptions = $qo_id > 0 ? QuestionOptions::findOne($qo_id) : null;
                                    //不是当前测试的选项
-                                   if($model_QuestionOptions->table_id!=$id){
+                                   if( $model_QuestionOptions && $model_QuestionOptions->table_id!=$id){
                                        continue;
-                                   }else{
+                                   }else if( $model_QuestionOptions ){
                                        $model_QuestionOptions->delete();
                                    }
 
@@ -173,6 +181,7 @@ class SurveyOperation extends Survey{
                                 $model_QuestionOptions = new QuestionOptions();
 
                             }
+
                             $model_QuestionOptions->question_id = $model_Question->question_id;
                             $model_QuestionOptions->table_id = $id;
                             $model_QuestionOptions->uid = ZCommonSessionFun::get_user_id();
@@ -184,43 +193,64 @@ class SurveyOperation extends Survey{
                             if($model_QuestionOptions->save()) $save++;
 
                         }
-                    }else{
-                        $transacation->rollBack();
-                        $error = '保存失败';
-                    }
-                    if($save>0){
 
+                        if($save>0 || !empty($posts['label-name']) ){
+                            $error='保存成功';
+                            $is_commit = true;
+                            $this->save_question = true;
                             $transacation->commit();
-//                             ZCommonFun::print_r_debug($posts);
-//                             exit;
-                            if(isset($posts['save-next'])){
-//                                ZCommonFun::print_r_debug($save);
-//                                exit;
-                               return $url = ['step4_2_question','id'=>$id,'page'=>$page];
-                            }else{
-                               return $url = ['step4_2','id'=>$id];
-                            }
+                        }else{
+                            $this->save_question = false;
+                            if($model_Question && $model_Question->question_id>0&& $model_Question->delete() ){
+                               $error='删除成功';
 
+                               $is_commit = true;
+                               $transacation->commit();
 
+                           }else{
+
+                               $error='删除选项失败';
+                               throw new \Exception('删除选项失败');
+                           }
+                        }
                     }else{
-                        $transacation->rollBack();
-                        $error='请填写选项';
+
+                        $this->save_question = false;
+                        $error = '保存失败';
+                        throw new \Exception($error);
                     }
+
+
+
+
+
+
 
                 } catch (\Exception $e) {
-//                     ZCommonFun::print_r_debug($e);
-                    $transacation->rollBack();
-                    $error ='事物异常';
+                    if(isset($is_commit) && $is_commit === true){
+
+                    }else{
+                        $transacation->rollBack();
+                        $error ='事物异常';
+
+                    }
+                    $this->errorResulte = $error;
+
                 }
             }else{
+                $this->save_question = false;
                 $error ='提交表单错误';
             }
-//             ZCommonFun::print_r_debug($posts);
-//             exit;
-            $this->errorResulte = $error;
+
+            if(isset($posts['save-next'])){
+                //                ZCommonFun::print_r_debug($save);
+                //                exit;
+                return $url = ['step4_2_question','id'=>$id,'page'=>$page];
+            }else{
+                return $url = ['step4_2','id'=>$id];
+            }
         }
-//         ZCommonFun::print_r_debug($posts);
-//         exit;
+
     }
 
     /**
