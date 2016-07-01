@@ -291,15 +291,15 @@ str;
             'randSurvey'=>$this->getRandSurvey(),//随机测试
         ]);
 
-        return $this->render('answer',[
-            'data'=>$data,
-            'model'=>$model,
-            'result'=>$result,
-            'posts'=>$posts,
-            'image'=>Survey::getImageUrl($model),
-            'model_Users'=>$model_Users,
-            'model_UsersProfile'=>$model_UsersProfile,
-        ]);
+//         return $this->render('answer',[
+//             'data'=>$data,
+//             'model'=>$model,
+//             'result'=>$result,
+//             'posts'=>$posts,
+//             'image'=>Survey::getImageUrl($model),
+//             'model_Users'=>$model_Users,
+//             'model_UsersProfile'=>$model_UsersProfile,
+//         ]);
     }
 
 
@@ -462,15 +462,15 @@ str;
             'randSurvey'=>$this->getRandSurvey(),//随机测试
         ]);
 
-        return $this->render('step2answer',[
-            'data'=>$data,
-            'model'=>$model,
-            'error'=>$error,
-            'posts'=>$posts,
-            'image'=>Survey::getImageUrl($model),
-            'model_Users'=>$model_Users,
-            'model_UsersProfile'=>$model_UsersProfile,
-        ]);
+//         return $this->render('step2answer',[
+//             'data'=>$data,
+//             'model'=>$model,
+//             'error'=>$error,
+//             'posts'=>$posts,
+//             'image'=>Survey::getImageUrl($model),
+//             'model_Users'=>$model_Users,
+//             'model_UsersProfile'=>$model_UsersProfile,
+//         ]);
     }
 
 }

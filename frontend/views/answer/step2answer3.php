@@ -308,7 +308,7 @@ $(document).ready(function(){
     	$(this).closest(".question-row").find("input[type=radio]").attr('checked',false);
     	//选择答案
 	    $("input[type=radio]",this).attr('checked',true);
-	    console.log($("input[type=radio]",this).attr('checked'));
+	    //console.log($("input[type=radio]",this).attr('checked'));
 	    //直接跳转结果
 	    var res = $(this).find('input').attr('res');
 		  //提交
@@ -332,7 +332,7 @@ $(document).ready(function(){
 	    skip_question++;
 	    skip_question--;
 	    var question_row_len = $(".question-row").length;
-	    console.log('show_index=',show_index,'--',question_row_len);
+	    //console.log('show_index=',show_index,'--',question_row_len);
 		  //提交
 	    if(question_row_len>0 &&  skip_question>0){
 
@@ -355,8 +355,8 @@ $(document).ready(function(){
 	    }
 		  //zhao end 屏蔽 name和age元素动画
 		$(".question-row").eq(index).animate({"opacity":"0"},'slow',function(){
-			$(".question-row").eq(index).hide();
-			$(".question-row").eq(show_index).fadeIn('slow');
+			$(".question-row").hide();
+			$(".question-row").eq(show_index).show();
 			index++;
 	    });
     });
