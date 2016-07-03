@@ -330,6 +330,7 @@ str;
 
         $error = '';
         if(isset($posts['name']) ){
+            is_array($posts['options']) ? : $posts['options']=array();
             $op = count($posts['options'])>0 ? true :false;
             $res = isset($posts['res']) ? intval($posts['res']) : 0;
             $res_model_SurveyResulte = $res>0 ? SurveyResulte::findOne($res) : null;
