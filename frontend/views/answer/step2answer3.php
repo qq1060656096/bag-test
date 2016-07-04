@@ -312,7 +312,7 @@ $(document).ready(function(){
 	    //直接跳转结果
 	    var res = $(this).find('input').attr('res');
 		  //提交
-	    if($(this).hasClass('options') &&  res ){
+	    if( res > 0 ){
 	        $("#res").val(res);
 	        $(".question-row").hide();
 	        $("#panel1").show();
@@ -321,7 +321,7 @@ $(document).ready(function(){
 			$(".header-title").hide();
 			$(".more-test,.more-footer").hide();
 			$(".title-sub,.test-image").hide();
-// 	    	$("form").submit();
+	    	//$("form").submit();
 		    return true;
 		}
 		  //index当前元素索引
@@ -350,7 +350,7 @@ $(document).ready(function(){
 			$(".header-title").hide();
 			$(".more-test,.more-footer").hide();
 
-// 			$("form").submit();
+			//$("form").submit();
 		    return true;
 	    }
 		  //zhao end 屏蔽 name和age元素动画
